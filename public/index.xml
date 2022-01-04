@@ -14,9 +14,9 @@
     
     <item>
       <title>Python basics</title>
-      <link>https://deepbas.netlify.app/courses/example/python/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/python/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/example/python/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/python/</guid>
       <description>&lt;p&gt;Build a foundation in Python.&lt;/p&gt;
 &lt;p&gt;
   &lt;i class=&#34;fas fa-clock  pr-1 fa-fw&#34;&gt;&lt;/i&gt; 1-2 hours per week, for 8 weeks&lt;/p&gt;
@@ -51,9 +51,9 @@
     
     <item>
       <title>Visualization</title>
-      <link>https://deepbas.netlify.app/courses/example/visualization/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/visualization/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/example/visualization/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/visualization/</guid>
       <description>&lt;p&gt;Learn how to visualize data with Plotly.&lt;/p&gt;
 &lt;p&gt;
   &lt;i class=&#34;fas fa-clock  pr-1 fa-fw&#34;&gt;&lt;/i&gt; 1-2 hours per week, for 8 weeks&lt;/p&gt;
@@ -81,9 +81,9 @@ fig.show()
     
     <item>
       <title>Statistics</title>
-      <link>https://deepbas.netlify.app/courses/example/stats/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/stats/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/example/stats/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/stats/</guid>
       <description>&lt;p&gt;Introduction to statistics for data science.&lt;/p&gt;
 &lt;p&gt;
   &lt;i class=&#34;fas fa-clock  pr-1 fa-fw&#34;&gt;&lt;/i&gt; 1-2 hours per week, for 8 weeks&lt;/p&gt;
@@ -292,7 +292,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-587429361&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-791682534&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -302,7 +302,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-587429361&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-791682534&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
