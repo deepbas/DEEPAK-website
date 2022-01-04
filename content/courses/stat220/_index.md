@@ -14,10 +14,10 @@ type: book
 
 - Data wrangling and formatting {{<hl>}}Using the tidyverse set of libraries{{</hl>}}
 - Exploratory data analysis {{<hl>}}including data visualization using ggplot2{{</hl>}} 
-- Data acquisition{{<hl>}} using web-scraping and APIs{{</hl>}} 
-- Statistical learning {{<hl>}} basics of supervised and unsupervised learning {{<hl>}}
+- Data acquisition {{<hl>}}using web-scraping and APIs{{</hl>}} 
+- Statistical learning {{<hl>}}basics of supervised and unsupervised learning{{<hl>}}
 - Text mining and language processing
-- Reproducible research and dynamic programming {{<hl>}} using R/RStudio/RShiny {{<hl>}}
+- Reproducible research and dynamic programming {{<hl>}}using R/RStudio/RShiny{{<hl>}}
 
 ## Course overview 
 
@@ -43,14 +43,4 @@ If you took Stat 120, 230, or 250 at Carleton, then you are in good shape. It is
 
 {{< mention "admin" >}}
 
-## FAQs
 
-{{< spoiler text="Are there prerequisites?" >}}
-There are no prerequisites for the first course.
-{{< /spoiler >}}
-
-{{< spoiler text="How often do the courses run?" >}}
-Continuously, at your own pace.
-{{< /spoiler >}}
-
-{{< cta cta_text="Begin the course" cta_link="python" >}}
