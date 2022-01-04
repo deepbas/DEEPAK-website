@@ -34,11 +34,11 @@
     
     <item>
       <title>Hello R Markdown</title>
-      <link>https://deepbas.netlify.app/post/2020-12-01-r-rmarkdown/</link>
+      <link>https://deepbas.netlify.app/2020/12/01/hello-r-markdown/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
-      <guid>https://deepbas.netlify.app/post/2020-12-01-r-rmarkdown/</guid>
+      <guid>https://deepbas.netlify.app/2020/12/01/hello-r-markdown/</guid>
       <description>
-&lt;script src=&#34;https://deepbas.netlify.app/post/2020-12-01-r-rmarkdown/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://deepbas.netlify.app/2020/12/01/hello-r-markdown/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
@@ -74,7 +74,7 @@ pie(
   init.angle = -50, border = NA
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;https://deepbas.netlify.app/post/2020-12-01-r-rmarkdown/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
+&lt;img src=&#34;https://deepbas.netlify.app/2020/12/01/hello-r-markdown/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: A fancy pie chart.
 &lt;/p&gt;
@@ -85,9 +85,9 @@ Figure 1: A fancy pie chart.
     
     <item>
       <title>Writing technical content in Academic</title>
-      <link>https://deepbas.netlify.app/post/writing-technical-content/</link>
+      <link>https://deepbas.netlify.app/2019/07/12/writing-technical-content-in-academic/</link>
       <pubDate>Fri, 12 Jul 2019 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/post/writing-technical-content/</guid>
+      <guid>https://deepbas.netlify.app/2019/07/12/writing-technical-content-in-academic/</guid>
       <description>&lt;p&gt;Academic is designed to give technical content creators a seamless experience. You can focus on the content and Academic handles the rest.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Highlight your code snippets, take notes on math classes, and draw diagrams from textual representation.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;On this page, you&amp;rsquo;ll find some examples of the types of technical content that can be rendered with Academic.&lt;/p&gt;
@@ -111,7 +111,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-593274861&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-164723589&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -121,7 +121,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-593274861&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-164723589&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
@@ -363,9 +363,9 @@ You found me!
     
     <item>
       <title>Display Jupyter Notebooks with Academic</title>
-      <link>https://deepbas.netlify.app/post/jupyter/</link>
+      <link>https://deepbas.netlify.app/2019/02/05/display-jupyter-notebooks-with-academic/</link>
       <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/post/jupyter/</guid>
+      <guid>https://deepbas.netlify.app/2019/02/05/display-jupyter-notebooks-with-academic/</guid>
       <description>&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from IPython.core.display import Image
 Image(&#39;https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png&#39;)
 &lt;/code&gt;&lt;/pre&gt;
@@ -672,7 +672,7 @@ gitcreds_set()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;If you are using the maize RStudio server, then you can connect to
 GitHub without any extra software downloads. If you are using RStudio on
 your computer, then you will need to download Git software (as directed
-in &lt;a href=&#34;software.Rmd&#34;&gt;Software in Stat 220&lt;/a&gt;) to use GitHub connected
+in [Software in Stat 220]({{&amp;lt; ref “software” &amp;gt;}}) to use GitHub connected
 projects.&lt;/p&gt;
 &lt;p&gt;I will host all of our course materials on GitHub, and you will use
 GitHub to submit homework and collaborate on projects.&lt;/p&gt;

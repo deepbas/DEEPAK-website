@@ -28,9 +28,9 @@
     
     <item>
       <title>Display Jupyter Notebooks with Academic</title>
-      <link>https://deepbas.netlify.app/post/jupyter/</link>
+      <link>https://deepbas.netlify.app/2019/02/05/display-jupyter-notebooks-with-academic/</link>
       <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/post/jupyter/</guid>
+      <guid>https://deepbas.netlify.app/2019/02/05/display-jupyter-notebooks-with-academic/</guid>
       <description>&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from IPython.core.display import Image
 Image(&#39;https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png&#39;)
 &lt;/code&gt;&lt;/pre&gt;
