@@ -1,5 +1,6 @@
 ---
 date: "2021-01-01"
+linkTitle: Week 1
 title: Week 1 Materials
 type: book
 weight: 20
