@@ -4,12 +4,6 @@
   
   
   <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/week1/python/</loc><lastmod>2021-01-01T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/week4/visualization/</loc><lastmod>2021-01-01T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/week3/stats/</loc><lastmod>2021-01-01T00:00:00+00:00</lastmod></url>
-  <url>
     <loc>https://deepbas.netlify.app/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/talk/example-talk/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod></url>
@@ -32,8 +26,6 @@
   <url>
     <loc>https://deepbas.netlify.app/tags/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/week2/intro/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
-  <url>
     <loc>https://deepbas.netlify.app/post/writing-technical-content/</loc><lastmod>2019-07-12T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/publication-type/3/</loc><lastmod>2019-04-07T00:00:00+00:00</lastmod></url>
@@ -55,8 +47,6 @@
     <loc>https://deepbas.netlify.app/slides/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/slides/example/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/tutorials/lect1/</loc><lastmod>2017-09-14T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/tag/deep-learning/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
   <url>
@@ -81,5 +71,7 @@
     <loc>https://deepbas.netlify.app/admin/</loc></url>
   <url>
     <loc>https://deepbas.netlify.app/courses/stat220/tutorials/pat/</loc></url>
+  <url>
+    <loc>https://deepbas.netlify.app/courses/stat220/tutorials/lect1/</loc></url>
   <url>
     <loc>https://deepbas.netlify.app/author/%E5%90%B3%E6%81%A9%E9%81%94/</loc></url></urlset>
