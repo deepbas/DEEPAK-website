@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>📊 Learn Data Science | Deepak Bastola</title>
+    <title>📊 STAT220: Introduction to Data Science | Deepak Bastola</title>
     <link>https://deepbas.netlify.app/courses/stat220/</link>
       <atom:link href="https://deepbas.netlify.app/courses/stat220/index.xml" rel="self" type="application/rss+xml" />
-    <description>📊 Learn Data Science</description>
+    <description>📊 STAT220: Introduction to Data Science</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Sun, 24 Jan 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://deepbas.netlify.app/courses/stat220/featured.jpg</url>
-      <title>📊 Learn Data Science</title>
+      <title>📊 STAT220: Introduction to Data Science</title>
       <link>https://deepbas.netlify.app/courses/stat220/</link>
     </image>
     
