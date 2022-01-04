@@ -111,7 +111,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-185749623&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-593274861&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -121,7 +121,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-185749623&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-593274861&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
@@ -672,7 +672,7 @@ gitcreds_set()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;If you are using the maize RStudio server, then you can connect to
 GitHub without any extra software downloads. If you are using RStudio on
 your computer, then you will need to download Git software (as directed
-in &lt;a href=&#34;&#34;&gt;Software in Stat 220&lt;/a&gt;) to use GitHub connected
+in &lt;a href=&#34;software.Rmd&#34;&gt;Software in Stat 220&lt;/a&gt;) to use GitHub connected
 projects.&lt;/p&gt;
 &lt;p&gt;I will host all of our course materials on GitHub, and you will use
 GitHub to submit homework and collaborate on projects.&lt;/p&gt;
@@ -861,6 +861,158 @@ for our classroom use.&lt;/p&gt;
 &lt;h2&gt;Reuse&lt;/h2&gt;
 &lt;p&gt;This guide is licensed under the CC BY-NC 3.0 Creative
 Commons License.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Software in Stat 220</title>
+      <link>https://deepbas.netlify.app/courses/stat220/tutorials/software/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/tutorials/software/</guid>
+      <description>
+&lt;script src=&#34;https://deepbas.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;div id=&#34;rrstudio&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;R/RStudio&lt;/h2&gt;
+&lt;p&gt;The use of the R programming language with the RStudio interface is an
+essential component of this course. You have two options for using
+RStudio:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The &lt;strong&gt;server version&lt;/strong&gt; of RStudio on the web at
+(&lt;a href=&#34;https://maize.mathcs.carleton.edu&#34; class=&#34;uri&#34;&gt;https://maize.mathcs.carleton.edu&lt;/a&gt;). The advantage of using the
+server version is that all of your work will be stored in the cloud,
+where it is automatically saved and backed up. This means that you
+can access your work from any computer on campus using a web
+browser. The downside is that you have to share limited
+computational resources with each other! This limitation is
+especially pronounced this term when classes are being taught
+remotely. We are unsure what type of load will be placed on maize,
+so if you can download a local version of R and RStudio, I recommend
+you do so. Use your Carleton credentials to access your account and
+you need to be running the Carleton VPN (below) to access this
+server.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A &lt;strong&gt;local version&lt;/strong&gt; of RStudio installed on your machine. This
+option is highly recommended due to the computational resources this
+course demands. The downside to this approach is that your work is
+only stored locally, but I get around this problem by keeping all of
+my work on GitHub. You will learn how to use GitHub throughout the
+course. Both R and RStudio are free and open-source.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Installing R/RStudio (not needed if you are using the maize
+server)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Download the latest version of R: &lt;a href=&#34;https://cran.r-project.org/&#34; class=&#34;uri&#34;&gt;https://cran.r-project.org/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Download the free Rstudio desktop version:
+&lt;a href=&#34;https://www.rstudio.com/products/rstudio/download/&#34; class=&#34;uri&#34;&gt;https://www.rstudio.com/products/rstudio/download/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Use the default download and install options for each. For R,
+download the “precompiled binary” distribution rather than the
+source code&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Updating R/RStudio (not needed if you are using the maize
+server)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;If you have used a local version of R/RStudio before and it is still
+installed on your machine, then you should make sure that you have
+the most recent versions of each program.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;To check your version of R, run the command &lt;code&gt;getRversion()&lt;/code&gt; and
+compare your version to the newest version posted on
+&lt;a href=&#34;https://cran.r-project.org/&#34; class=&#34;uri&#34;&gt;https://cran.r-project.org/&lt;/a&gt;. If you need an update, then
+install the newer version using the installation directions
+above.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;In RStudio, check for updates with the menu option
+&lt;code&gt;Help &amp;gt; Check for updates&lt;/code&gt;. Follow directions if an update is
+needed.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;did-it-work-a-sanity-check-after-your-installupdate&#34;&gt;Did it work? (A sanity check after your install/update)&lt;/h3&gt;
+&lt;p&gt;Do whatever is appropriate for your operating system to launch
+RStudio. You should get a window similar to the screenshot you see
+&lt;a href=&#34;https://www.rstudio.com/wp-content/uploads/2014/04/rstudio-workbench.png&#34;&gt;here&lt;/a&gt;,
+but yours will be more boring because you haven’t written any code
+or made any figures yet!&lt;/p&gt;
+&lt;p&gt;Put your cursor in the pane labeled Console, which is where you
+interact with the live R process. Create a simple object with code
+like &lt;code&gt;x &amp;lt;- 2 * 4&lt;/code&gt; (followed by enter or return). Then inspect the
+&lt;code&gt;x&lt;/code&gt; object by typing &lt;code&gt;x&lt;/code&gt; followed by enter or return. You should see
+the value 8 printed. If this happened, you’ve succeeded in
+installing R and RStudio!&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;git-and-github&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Git and GitHub&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://happygitwithr.com/big-picture.html#why-git&#34;&gt;Git&lt;/a&gt; is version
+control software that you install locally on your computer. Git is
+already installed on the maize RStudio server.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://happygitwithr.com/big-picture.html#why-github&#34;&gt;Github&lt;/a&gt; is a
+cloud-based service for hosting git projects. It allows multiple users
+to share and contribute to projects and it is how you will be submitting
+homework assignments and projects for this class. More information about
+Github for this class is found in &lt;a href=&#34;git_stat220.md&#34;&gt;Getting setup with Git and
+GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you are using a local install of R/RStudio, then you will need to
+install Git.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Installing Git&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Directions for both Windows &amp;amp; Mac here:
+&lt;a href=&#34;http://happygitwithr.com/install-git.html&#34; class=&#34;uri&#34;&gt;http://happygitwithr.com/install-git.html&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;If you are using &lt;strong&gt;maize&lt;/strong&gt;, then there is nothing you need to
+install.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Windows users should follow Option 1 in 6.2.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Mac users can follow Option 1 in 6.3 if comfortable, otherwise
+follow Option 2&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Linux users can follow 6.4.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;slack&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Slack&lt;/h2&gt;
+&lt;p&gt;We will use Slack for all course communication. &lt;a href=&#34;https://join.slack.com/t/stat220-fa21/shared_invite/zt-uvpbbjgj-cyr3olDzY~s7PkaY~Vu7Sg&#34;&gt;Sign up for our course
+Slack team
+here&lt;/a&gt;!
+You will need to create an account with a username, and log in to read
+and post. You can use Slack right from a &lt;a href=&#34;https://stat220-fa21.slack.com&#34;&gt;web
+browser&lt;/a&gt;, or you can download a
+standalone Slack application to your
+&lt;a href=&#34;https://slack.com/downloads/osx&#34;&gt;Mac&lt;/a&gt;,
+&lt;a href=&#34;https://slack.com/downloads/windows&#34;&gt;Windows&lt;/a&gt;,
+&lt;a href=&#34;https://slack.com/downloads/linux&#34;&gt;Linux&lt;/a&gt; and/or
+&lt;a href=&#34;https://slack.com/downloads/android&#34;&gt;Android&lt;/a&gt;/&lt;a href=&#34;https://slack.com/downloads/ios&#34;&gt;iOS&lt;/a&gt;
+device. You can control whether you receive notifications on new posts
+by going to Preferences, as well as decide which ‘channels’ to subscribe
+to. A ‘channel’ is a discussion thread, which is used to organize
+communications into topics. You can learn more about Slack features
+&lt;a href=&#34;https://slack.com/help/articles/218080037-Getting-started-for-new-Slack-users&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Several channels have been set up for specific parts of the course. Feel
+free to ask questions anytime. You can browse the available channels in
+our team by clicking on “Channels” on the left-hand panel.&lt;/p&gt;
+&lt;p&gt;There is also an #anonymous channel that you can use if you’d like to
+ask a question or provide a comment anonymously. To have a post appear
+anonymously in this channel, compose a direct message to yourself (by
+clicking on your username in the ‘Direct Messages’ menu on the left
+panel) that begins with /anon #anonymous your question. Then the text
+your question will be sent to the #anonymous channel by the anonymous
+bot. Zoom For synchronous class meeting and office hours we will use the
+Zoom video conferencing software. I recommend downloading the Zoom app
+for your operating system.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;latex&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;LaTeX&lt;/h2&gt;
+&lt;p&gt;If you want to render R Markdown documents to PDFs, then you need to
+install LaTeX. Below are the recommended installers for Windows and Mac:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://www.tug.org/mactex/&#34;&gt;MacTeX&lt;/a&gt; for Mac (3.2GB)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://miktex.org/download&#34;&gt;MiKTeX&lt;/a&gt; for Windows (190MB)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Alternatively, you can install the &lt;code&gt;tinytex&lt;/code&gt; R package by running
+&lt;code&gt;install.packages(&#34;tinytex&#34;)&lt;/code&gt; in the console.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you are using maize, then there is nothing you need to install.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;acknowledgements&#34; class=&#34;section level2 appendix&#34;&gt;
+&lt;h2&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;This installation guide is based on the guide from stat545.com.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;resuse&#34; class=&#34;section level2 appendix&#34;&gt;
+&lt;h2&gt;Resuse&lt;/h2&gt;
+&lt;p&gt;This work is licensed under the CC BY-NC 3.0 Creative Commons License.&lt;/p&gt;
 &lt;/div&gt;
 </description>
     </item>
