@@ -111,7 +111,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-279465183&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-516978324&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -121,7 +121,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-279465183&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-516978324&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
@@ -654,40 +654,6 @@ gitcreds_set()&lt;/code&gt;&lt;/pre&gt;
 &lt;div id=&#34;acknowledgments&#34; class=&#34;section level2 appendix&#34;&gt;
 &lt;h2&gt;Acknowledgments&lt;/h2&gt;
 &lt;p&gt;This work is is licensed under a &lt;a href=&#34;http://creativecommons.org/licenses/by-nc/4.0/&#34;&gt;Creative Commons Attribution-NonCommercial 4.0 International License&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Day 1 Slides</title>
-      <link>https://deepbas.netlify.app/courses/stat220/tutorials/lect1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/tutorials/lect1/</guid>
-      <description>
-&lt;script src=&#34;https://deepbas.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
-
-
-&lt;p&gt;class: inverse, center, middle&lt;/p&gt;
-&lt;div id=&#34;r-markdown&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;R Markdown&lt;/h2&gt;
-&lt;p&gt;This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;When you click the &lt;strong&gt;Knit&lt;/strong&gt; button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;slide-with-bullets&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Slide with Bullets&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Bullet 1&lt;/li&gt;
-&lt;li&gt;Bullet 2&lt;/li&gt;
-&lt;li&gt;Bullet 3&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-&lt;div id=&#34;slide-with-r-output&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Slide with R Output&lt;/h2&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;slide-with-plot&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Slide with Plot&lt;/h2&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(pressure)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 </description>
     </item>
