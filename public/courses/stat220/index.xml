@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>📊 STAT220: Introduction to Data Science | Deepak Bastola</title>
+    <title>📊 STAT 220: Introduction to Data Science | Deepak Bastola</title>
     <link>https://deepbas.netlify.app/courses/stat220/</link>
       <atom:link href="https://deepbas.netlify.app/courses/stat220/index.xml" rel="self" type="application/rss+xml" />
-    <description>📊 STAT220: Introduction to Data Science</description>
+    <description>📊 STAT 220: Introduction to Data Science</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Sun, 24 Jan 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://deepbas.netlify.app/courses/stat220/featured.jpg</url>
-      <title>📊 STAT220: Introduction to Data Science</title>
+      <title>📊 STAT 220: Introduction to Data Science</title>
       <link>https://deepbas.netlify.app/courses/stat220/</link>
     </image>
     
     <item>
       <title>Python basics</title>
-      <link>https://deepbas.netlify.app/courses/stat220/python/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/week1/python/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/python/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/week1/python/</guid>
       <description>&lt;p&gt;Build a foundation in Python.&lt;/p&gt;
 &lt;p&gt;
   &lt;i class=&#34;fas fa-clock  pr-1 fa-fw&#34;&gt;&lt;/i&gt; 1-2 hours per week, for 8 weeks&lt;/p&gt;
@@ -51,9 +51,9 @@
     
     <item>
       <title>Visualization</title>
-      <link>https://deepbas.netlify.app/courses/stat220/visualization/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/week4/visualization/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/visualization/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/week4/visualization/</guid>
       <description>&lt;p&gt;Learn how to visualize data with Plotly.&lt;/p&gt;
 &lt;p&gt;
   &lt;i class=&#34;fas fa-clock  pr-1 fa-fw&#34;&gt;&lt;/i&gt; 1-2 hours per week, for 8 weeks&lt;/p&gt;
@@ -81,9 +81,9 @@ fig.show()
     
     <item>
       <title>Statistics</title>
-      <link>https://deepbas.netlify.app/courses/stat220/stats/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/week3/stats/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/stats/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/week3/stats/</guid>
       <description>&lt;p&gt;Introduction to statistics for data science.&lt;/p&gt;
 &lt;p&gt;
   &lt;i class=&#34;fas fa-clock  pr-1 fa-fw&#34;&gt;&lt;/i&gt; 1-2 hours per week, for 8 weeks&lt;/p&gt;
@@ -118,9 +118,9 @@ The variance of the distribution is $\sigma^{2}$.
     
     <item>
       <title>Hello R Markdown</title>
-      <link>https://deepbas.netlify.app/courses/stat220/intro/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/week2/intro/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/intro/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/week2/intro/</guid>
       <description>
 &lt;script src=&#34;https://deepbas.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
@@ -158,7 +158,7 @@ pie(
   init.angle = -50, border = NA
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;https://deepbas.netlify.app/courses/stat220/intro_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
+&lt;img src=&#34;https://deepbas.netlify.app/courses/stat220/Week2/intro_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: A fancy pie chart.
 &lt;/p&gt;

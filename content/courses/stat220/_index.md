@@ -2,7 +2,7 @@
 date: "2021-01-24"
 linkTitle: Data Science
 summary: A course focusing on the computational side of data analysis
-title: "\U0001F4CA STAT220: Introduction to Data Science"
+title: "\U0001F4CA STAT 220: Introduction to Data Science"
 type: book
 ---
 
