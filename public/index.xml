@@ -13,7 +13,7 @@
     </image>
     
     <item>
-      <title>Python basics</title>
+      <title>Week 1 Materials</title>
       <link>https://deepbas.netlify.app/courses/stat220/week1/python/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/week1/python/</guid>
@@ -129,10 +129,10 @@ The variance of the distribution is $\sigma^{2}$.
     
     <item>
       <title>My first post</title>
-      <link>https://deepbas.netlify.app/courses/stat220/r-markdown/my-first-post/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/week1/my-first-post/</link>
       <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/r-markdown/my-first-post/</guid>
-      <description>&lt;p&gt;My first post!! This process is very smooth.&lt;/p&gt;
+      <guid>https://deepbas.netlify.app/courses/stat220/week1/my-first-post/</guid>
+      <description>&lt;p&gt;Smooth !!&lt;/p&gt;
 </description>
     </item>
     
@@ -352,7 +352,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-173459682&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-693178542&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -362,7 +362,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-173459682&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-693178542&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

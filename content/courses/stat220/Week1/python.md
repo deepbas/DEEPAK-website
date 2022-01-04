@@ -1,6 +1,6 @@
 ---
 date: "2021-01-01"
-title: Python basics
+title: Week 1 Materials
 type: book
 weight: 20
 ---

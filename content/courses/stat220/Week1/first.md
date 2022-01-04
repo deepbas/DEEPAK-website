@@ -19,4 +19,4 @@ image:
 projects: []
 ---
 
-My first post!! This process is very smooth.
+Smooth !!
