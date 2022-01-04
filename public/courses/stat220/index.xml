@@ -108,6 +108,15 @@ The variance of the distribution is $\sigma^{2}$.
     </item>
     
     <item>
+      <title>My first post</title>
+      <link>https://deepbas.netlify.app/courses/stat220/r-markdown/my-first-post/</link>
+      <pubDate>Mon, 27 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/r-markdown/my-first-post/</guid>
+      <description>&lt;p&gt;My first post!! This process is very smooth.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Hello R Markdown</title>
       <link>https://deepbas.netlify.app/courses/stat220/intro/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
