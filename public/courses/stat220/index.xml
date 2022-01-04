@@ -13,6 +13,26 @@
     </image>
     
     <item>
+      <title>Comparative Politics and the Comparative Method</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week1/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week1/</guid>
+      <description>&lt;h2 id=&#34;content&#34;&gt;Content&lt;/h2&gt;
+&lt;p&gt;In &lt;strong&gt;module 1.1&lt;/strong&gt;, we will be discussing an overview of comparative politics. First, we will talk about some of the most important theoretical perspectives in the discipline, emphasizing the role of institutions in politics. Second, we will discuss the important elements of an explanation in political science: independent variables, dependent variables and causal mechanisms. You will complete a causal diagram exercise with a partner to practice this concept.Third, we’ll talk about the difference between correlation and causation, or in other words how variables are sometimes related to one another through a causal relationship whereas at other times the relationship between two variables is purely spurious.&lt;/p&gt;
+&lt;p&gt;In &lt;strong&gt;module 1.2&lt;/strong&gt;, we will be discussing the comparative method. In this module we’ll be looking at the role of hypotheses in comparative politics and how they can be tested using a handful of simple methodological tools that harness variation in independent and dependent variables across country or regional cases.&lt;/p&gt;
+&lt;p&gt;In both modules you will be reading relevant articles and textbook chapters, as well as watch lecture and supporting videos that relay important information about the concepts listed above. You will then take a quiz to ensure you have understood what you read. These quizzes will help prepare you for the final exam.&lt;/p&gt;
+&lt;h2 id=&#34;objectives&#34;&gt;Objectives&lt;/h2&gt;
+&lt;p&gt;By the end of unit, you should be able to:&lt;/p&gt;
+&lt;p&gt;Explain the difference between an independent and dependent variable. (Course objective 1)&lt;/p&gt;
+&lt;p&gt;Demonstrate how “causal mechanisms” link independent and dependent variables. (Course objectives 1, 2, &amp;amp; 4)&lt;/p&gt;
+&lt;p&gt;Devise an appropriate test for whether a causal relationship between a dependent and independent variable exists. (Course objective 6)&lt;/p&gt;
+&lt;h2 id=&#34;lecture-slides&#34;&gt;Lecture Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.emmanuelteitelbaum.com/slides/psc1001_1.1/#/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34; title=&#34;Slides&#34;&gt;Module 1.1 Slides&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.emmanuelteitelbaum.com/slides/psc1001_1.2/#/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34; title=&#34;Slides&#34;&gt;Module 1.2 Slides&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Cache credentials for RStudio and GitHub</title>
       <link>https://deepbas.netlify.app/courses/stat220/tutorials/pat/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
