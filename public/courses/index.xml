@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Current Courses | Deepak Bastola</title>
+    <title>Courses | Deepak Bastola</title>
     <link>https://deepbas.netlify.app/courses/</link>
       <atom:link href="https://deepbas.netlify.app/courses/index.xml" rel="self" type="application/rss+xml" />
-    <description>Current Courses</description>
+    <description>Courses</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Sun, 24 Jan 2021 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
-      <title>Current Courses</title>
+      <title>Courses</title>
       <link>https://deepbas.netlify.app/courses/</link>
     </image>
     
