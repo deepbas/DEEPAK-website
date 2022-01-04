@@ -35,9 +35,8 @@ If you took Stat 120, 230, or 250 at Carleton, then you are in good shape. It is
 - Draw informed conclusions from your data and communicate your findings using both written and interactive platforms.
 
 
-## Course Modules 
+{{% staticref "pdf/STAT_220_Syllabus.pdf" "newtab" %}}VIEW THE SYLLABUS{{% /staticref %}}
 
-{{< list_children >}}
 
 ## Meet your instructor
 
