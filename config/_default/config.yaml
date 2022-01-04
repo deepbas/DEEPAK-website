@@ -6,7 +6,7 @@ theme: "starter-hugo-academic"
 
 title: Deepak Bastola # Website name
 baseurl: 'https://deepbas.netlify.app/' # Website URL
-copyright: '' # Footer text, e.g. '© {year} Me'
+copyright: 'Deepak Bastola' # Footer text, e.g. '© {year} Me'
 
 ############################
 ## LANGUAGE

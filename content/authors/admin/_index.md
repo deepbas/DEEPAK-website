@@ -1,5 +1,5 @@
 ---
-bio: My research interests include bayesian statistics and machine learning.
+bio: My research interests include Bayesian statistics and machine learning.
 
 education:
   courses:
@@ -34,7 +34,7 @@ social:
   link: https://twitter.com/aphsansar
 - icon: graduation-cap
   icon_pack: fas
-  link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
+  link: https://scholar.google.com/citations?user=9JtQBSEAAAAJ&hl=en&oi=ao
 - icon: github
   icon_pack: fab
   link: https://github.com/deepbas
