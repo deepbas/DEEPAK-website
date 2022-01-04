@@ -16,43 +16,21 @@
   <url>
     <loc>https://deepbas.netlify.app/event/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/tag/academic/</loc><lastmod>2021-12-27T21:28:57-06:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/categories/</loc><lastmod>2021-12-27T21:28:57-06:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/category/demo/</loc><lastmod>2021-12-27T21:28:57-06:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/post/my-first-post/</loc><lastmod>2021-12-27T21:28:57-06:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/post/</loc><lastmod>2021-12-27T21:28:57-06:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/tags/</loc><lastmod>2021-12-27T21:28:57-06:00</lastmod></url>
-  <url>
     <loc>https://deepbas.netlify.app/courses/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/courses/stat220/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/authors/</loc><lastmod>2020-12-13T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/author/deepak-bastola/</loc><lastmod>2020-12-13T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/post/getting-started/</loc><lastmod>2020-12-13T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/author/%E5%90%B3%E6%81%A9%E9%81%94/</loc><lastmod>2020-12-13T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/tag/%E5%BC%80%E6%BA%90/</loc><lastmod>2020-12-13T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/category/%E6%95%99%E7%A8%8B/</loc><lastmod>2020-12-13T00:00:00+00:00</lastmod></url>
+    <loc>https://deepbas.netlify.app/categories/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/post/2020-12-01-r-rmarkdown/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/tag/plot/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
+    <loc>https://deepbas.netlify.app/post/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/category/r/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/tag/r-markdown/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/tag/regression/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
+    <loc>https://deepbas.netlify.app/tags/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/courses/stat220/week2/intro/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
@@ -61,6 +39,10 @@
     <loc>https://deepbas.netlify.app/publication-type/3/</loc><lastmod>2019-04-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/publication/preprint/</loc><lastmod>2019-04-07T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/authors/</loc><lastmod>2019-09-05T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/author/deepak-bastola/</loc><lastmod>2019-09-05T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/publication_types/</loc><lastmod>2019-04-07T00:00:00+00:00</lastmod></url>
   <url>
@@ -94,4 +76,8 @@
   <url>
     <loc>https://deepbas.netlify.app/publication/conference-paper/</loc><lastmod>2013-07-01T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/admin/</loc></url></urlset>
+    <loc>https://deepbas.netlify.app/admin/</loc></url>
+  <url>
+    <loc>https://deepbas.netlify.app/courses/stat220/tutorials/pat/</loc></url>
+  <url>
+    <loc>https://deepbas.netlify.app/author/%E5%90%B3%E6%81%A9%E9%81%94/</loc></url></urlset>

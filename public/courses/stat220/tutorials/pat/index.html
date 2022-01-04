@@ -60,10 +60,10 @@
   
     
   
-  <meta name="description" content="Visiting Assistant Professor of Statistics" />
+  <meta name="description" content="After you have signed up for a GitHub account and gone through all of the account verification steps, you will need to generate a personal access token (PAT) and let R know what that is." />
 
   
-  <link rel="alternate" hreflang="en-us" href="https://deepbas.netlify.app/categories/" />
+  <link rel="alternate" hreflang="en-us" href="https://deepbas.netlify.app/courses/stat220/tutorials/pat/" />
 
   
   
@@ -268,8 +268,6 @@
   
 
   
-    <link rel="alternate" href="/categories/index.xml" type="application/rss+xml" title="Deepak Bastola" />
-  
 
   
     <link rel="manifest" href="/manifest.webmanifest" />
@@ -278,7 +276,7 @@
   <link rel="icon" type="image/png" href="/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png" />
   <link rel="apple-touch-icon" type="image/png" href="/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_180x180_fill_lanczos_center_3.png" />
 
-  <link rel="canonical" href="https://deepbas.netlify.app/categories/" />
+  <link rel="canonical" href="https://deepbas.netlify.app/courses/stat220/tutorials/pat/" />
 
   
   
@@ -301,13 +299,12 @@
   <meta property="twitter:card" content="summary" />
   
   <meta property="og:site_name" content="Deepak Bastola" />
-  <meta property="og:url" content="https://deepbas.netlify.app/categories/" />
-  <meta property="og:title" content="Categories | Deepak Bastola" />
-  <meta property="og:description" content="Visiting Assistant Professor of Statistics" /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
+  <meta property="og:url" content="https://deepbas.netlify.app/courses/stat220/tutorials/pat/" />
+  <meta property="og:title" content="Cache credentials for RStudio and GitHub | Deepak Bastola" />
+  <meta property="og:description" content="After you have signed up for a GitHub account and gone through all of the account verification steps, you will need to generate a personal access token (PAT) and let R know what that is." /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
     
-      <meta property="og:updated_time" content="2020-12-01T21:13:14-05:00" />
     
   
 
@@ -319,15 +316,17 @@
 
   
 
+  
 
 
 
 
-  <title>Categories | Deepak Bastola</title>
+
+  <title>Cache credentials for RStudio and GitHub | Deepak Bastola</title>
 </head>
 
 
-<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   "  >
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="45b81787e457f9cdaaf67be4a5398030" >
 
   
   
@@ -524,7 +523,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link " href="/courses/"><span>Courses</span></a>
+          <a class="nav-link  active" href="/courses/"><span>Courses</span></a>
         </li>
 
         
@@ -626,7 +625,9 @@
   </div>
 
   <div class="page-body">
-    
+    <article class="article">
+
+  
 
 
 
@@ -644,54 +645,13 @@
   
   
   
-    
-  
-<div class="universal-wrapper pt-3">
-  <h1>Categories</h1>
+<div class="article-container pt-3">
+  <h1>Cache credentials for RStudio and GitHub</h1>
 
   
 
-  
-</div>
-
-
-
-<div class="universal-wrapper">
-  
-
-  
   
     
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="media stream-item">
-  <div class="media-body">
-
-    <div class="section-subheading article-title mb-0 mt-0">
-      <a href="/category/r/" >R</a>
-    </div>
-
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-
-      
-        
 
 
 <div class="article-metadata">
@@ -705,7 +665,7 @@
     
       
     
-    Dec 1, 2020
+    Jan 1, 0001
   </span>
   
 
@@ -725,24 +685,290 @@
 
 </div>
 
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
       
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>After you have signed up for a GitHub account and gone through all of the account verification steps, you will need to generate a personal access token (PAT) and let R know what that is. To do this, I suggest following these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Setup options in Git by running the following code chunk in your console:</li>
+</ol>
+<pre class="r"><code>library(usethis)
+use_git_config(user.name = &quot;Jane Doe&quot;, user.email = &quot;jane@example.org&quot;)</code></pre>
+<pre><code>changing the first two lines to your own name and email (this should be the email associated with your GitHub account).</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Next, you should generate a PAT:</li>
+</ol>
+<pre class="r"><code>create_github_token()</code></pre>
+<pre><code>This function will preselect the recommended scopes. I recommend just clicking &quot;Generate token&quot; unless you know of a reason to tweak the scopes. Store this token somewhere, because you’ll never be able to see it again once you leave that page or close the window. Treat this PAT like a password.</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Now that you have credentials, you need to store them. I recommend using the <code>{gitcreds}</code> package. Run the below chunk (after installing the package if you’re using your own laptop):</li>
+</ol>
+<pre class="r"><code>library(gitcreds)
+gitcreds_set()</code></pre>
+<pre><code>Respond to the prompt with your personal access token (PAT).</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>You should be setup! Try to clone a GitHub project and talk to me if you still hit issues.</li>
+</ol>
+<div id="acknowledgments" class="section level2 appendix">
+<h2>Acknowledgments</h2>
+<p>This work is is licensed under a <a href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p>
+</div>
+
     </div>
 
     
 
-  </div>
-  <div class="ml-3">
+
+
+
+
+
+
+
+<div class="share-box">
+  <ul class="share">
     
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;text=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
     
-  </div>
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;t=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Cache%20credentials%20for%20RStudio%20and%20GitHub&amp;body=https://deepbas.netlify.app/courses/stat220/tutorials/pat/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;title=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="whatsapp://send?text=Cache%20credentials%20for%20RStudio%20and%20GitHub%20https://deepbas.netlify.app/courses/stat220/tutorials/pat/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;title=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
     
   
-
   
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="https://deepbas.netlify.app/"><img class="avatar mr-3 avatar-circle" src="/author/deepak-bastola/avatar_hua6f338ad0e16d11b4a73fbcaceb7bb4d_322460_270x270_fill_q75_lanczos_center.jpg" alt="Deepak Bastola"></a>
+    
 
-</div>
+    <div class="media-body">
+      <h5 class="card-title"><a href="https://deepbas.netlify.app/">Deepak Bastola</a></h5>
+      <h6 class="card-subtitle">Visiting Assistant Professor of Statistics</h6>
+      <p class="card-text">My research interests include Bayesian statistics and machine learning.</p>
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="/#contact" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/aphsansar" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=9JtQBSEAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener">
+        <i class="fas fa-graduation-cap"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/deepbas" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://www.linkedin.com/in/deepakbastola/" target="_blank" rel="noopener">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
   </div>
 
   <div class="page-footer">
