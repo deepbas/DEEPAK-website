@@ -24,7 +24,7 @@ GitHub to submit homework and collaborate on projects.
 
 If you are **not** working on the maize RStudio server, then make sure
 that you have installed all of the software mentioned in [Software in
-Stat 220](software.md). In addition, you should install the `usethis`
+Stat 220](https://deepbas.netlify.app/courses/stat220/tutorials/software/). In addition, you should install the `usethis`
 and `gitcreds` R packages.
 
 Everyone needs to connect Git and GitHub by doing the following:

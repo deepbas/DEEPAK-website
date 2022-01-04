@@ -63,7 +63,7 @@ gitcreds_set()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;If you are using the maize RStudio server, then you can connect to
 GitHub without any extra software downloads. If you are using RStudio on
 your computer, then you will need to download Git software (as directed
-in [Software in Stat 220]({{&amp;lt; ref “software” &amp;gt;}}) to use GitHub connected
+in &lt;a href=&#34;https://deepbas.netlify.app/courses/stat220/tutorials/software/&#34;&gt;Software in Stat 220&lt;/a&gt; to use GitHub connected
 projects.&lt;/p&gt;
 &lt;p&gt;I will host all of our course materials on GitHub, and you will use
 GitHub to submit homework and collaborate on projects.&lt;/p&gt;
@@ -71,7 +71,7 @@ GitHub to submit homework and collaborate on projects.&lt;/p&gt;
 &lt;div id=&#34;getting-setup-with-git-and-github&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Getting setup with Git and GitHub&lt;/h2&gt;
 &lt;p&gt;If you are &lt;strong&gt;not&lt;/strong&gt; working on the maize RStudio server, then make sure
-that you have installed all of the software mentioned in &lt;a href=&#34;software.md&#34;&gt;Software in
+that you have installed all of the software mentioned in &lt;a href=&#34;https://deepbas.netlify.app/courses/stat220/tutorials/software/&#34;&gt;Software in
 Stat 220&lt;/a&gt;. In addition, you should install the &lt;code&gt;usethis&lt;/code&gt;
 and &lt;code&gt;gitcreds&lt;/code&gt; R packages.&lt;/p&gt;
 &lt;p&gt;Everyone needs to connect Git and GitHub by doing the following:&lt;/p&gt;
