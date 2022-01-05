@@ -38,7 +38,7 @@ weight: 20
         or in the student solution manual.
 -   You *cannot* use any resources other than the ones listed above to
     complete assignments (homework, reports, etc) for this class.
-    (e.g. you cannot use a friend’s old assignments or reports, answers
+    (e.g. you cannot use a friend’s old assignments or reports, answers
     found on the internet, textbook (instructor) solutions manual, etc.)
 
 ### Examples that violate the academic integrity policy

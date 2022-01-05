@@ -12,7 +12,7 @@ weight: 20
 If you are using the maize RStudio server, then you can connect to
 GitHub without any extra software downloads. If you are using RStudio on
 your computer, then you will need to download Git software (as directed
-in [Software in Stat 220](software.md)) to use GitHub connected
+in [Software in Stat 220](https://deepbas.io/courses/stat220/software/)) to use GitHub connected
 projects.
 
 I will host all of our course materials on GitHub, and you will use

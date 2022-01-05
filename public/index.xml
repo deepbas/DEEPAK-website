@@ -54,7 +54,7 @@ or in the student solution manual.&lt;/li&gt;
 &lt;/li&gt;
 &lt;li&gt;You &lt;em&gt;cannot&lt;/em&gt; use any resources other than the ones listed above to
 complete assignments (homework, reports, etc) for this class.
-(e.g. you cannot use a friend’s old assignments or reports, answers
+(e.g. you cannot use a friend’s old assignments or reports, answers
 found on the internet, textbook (instructor) solutions manual, etc.)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id=&#34;examples-that-violate-the-academic-integrity-policy&#34;&gt;Examples that violate the academic integrity policy&lt;/h3&gt;
@@ -125,7 +125,7 @@ writing.&lt;/p&gt;
 &lt;p&gt;If you are using the maize RStudio server, then you can connect to
 GitHub without any extra software downloads. If you are using RStudio on
 your computer, then you will need to download Git software (as directed
-in &lt;a href=&#34;software.md&#34;&gt;Software in Stat 220&lt;/a&gt;) to use GitHub connected
+in &lt;a href=&#34;https://deepbas.io/courses/stat220/software/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Software in Stat 220&lt;/a&gt;) to use GitHub connected
 projects.&lt;/p&gt;
 &lt;p&gt;I will host all of our course materials on GitHub, and you will use
 GitHub to submit homework and collaborate on projects.&lt;/p&gt;
@@ -190,7 +190,7 @@ talk to me in student hours.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id=&#34;individual-assignments&#34;&gt;Individual assignments&lt;/h2&gt;
-&lt;p&gt;If you followed the suggestions in the &lt;a href=&#34;rstudio_stat220.md&#34;&gt;Using Rstudio in Stat
+&lt;p&gt;If you followed the suggestions in the &lt;a href=&#34;https://deepbas.io/courses/stat220/rstudio-in-stat-220/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Using Rstudio in Stat
 220&lt;/a&gt; page, then you should already have an
 assignments folder on your computer or maize account.&lt;/p&gt;
 &lt;p&gt;Each new assignment/project will be posted as a repository on GitHub and
@@ -390,7 +390,7 @@ files to Github by the deadline.&lt;/p&gt;
 &lt;h2 id=&#34;group-work&#34;&gt;Group work&lt;/h2&gt;
 &lt;p&gt;Collaborative Github assignments are pretty similar to individual assignments.&lt;/p&gt;
 &lt;h3 id=&#34;creating-a-grouppartner-assignment-repo-and-project&#34;&gt;Creating a group/partner assignment repo and project&lt;/h3&gt;
-&lt;p&gt;Go to our course GitHub organization page(&lt;a href=&#34;https://github.com/stat220-fa21&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/stat220-fa21&lt;/a&gt;) and find the repo for your group, for example if your group name is &amp;ldquo;team01&amp;rdquo; the you might find the &lt;code&gt;mp1-team01&lt;/code&gt; repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).&lt;/p&gt;
+&lt;p&gt;Go to our course GitHub organization page(&lt;a href=&#34;https://github.com/stat220/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/stat220/&lt;/a&gt;) and find the repo for your group, for example if your group name is &amp;ldquo;team01&amp;rdquo; the you might find the &lt;code&gt;mp1-team01&lt;/code&gt; repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).&lt;/p&gt;
 &lt;h4 id=&#34;working-with-collaborative-repos&#34;&gt;Working with collaborative repos&lt;/h4&gt;
 &lt;p&gt;For group homework, I suggest that only the &lt;em&gt;recorder&lt;/em&gt; edit the group-homework-x.Rmd file to avoid merge conflicts! Other group members can create a new Markdown doc to run and save commands. Only the recorder needs to &lt;strong&gt;push&lt;/strong&gt; changes (answers) to the Github repo and all others can then &lt;strong&gt;pull&lt;/strong&gt; these changes (i.e. the final answers) after the HW is submitted.&lt;/p&gt;
 &lt;p&gt;When you are working together on a Github project, you should commit and push your modifications frequently. You will also need to frequently &lt;strong&gt;pull&lt;/strong&gt; updates from Github down to your local version of RStudio. These updates are changes that your teammates have made since your last pull.  To pull in changes, click the &amp;ldquo;Down&amp;rdquo;  &lt;strong&gt;Pull&lt;/strong&gt; arrow in the Git tab (shown above).&lt;/p&gt;
@@ -708,7 +708,7 @@ corner of your RStudio window and select &lt;strong&gt;New Project…&lt;/strong
 &lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Warning: Do not&lt;/strong&gt; create an RStudio project in the main stat220 folder
 because it is not good practice to have RStudio projects in subfolders
-of another project (e.g. a project within a project is not recommended).&lt;/p&gt;
+of another project (e.g. a project within a project is not recommended).&lt;/p&gt;
 &lt;hr&gt;
 &lt;h1 id=&#34;file-organization-using-your-own-rstudio&#34;&gt;File organization: Using your own Rstudio&lt;/h1&gt;
 &lt;p&gt;Create a folder called &lt;strong&gt;stat220&lt;/strong&gt; somewhere on your computer. Within
@@ -771,7 +771,7 @@ Project…&lt;/strong&gt; option shown in step 5 above.&lt;/p&gt;
 &lt;hr&gt;
 &lt;h1 id=&#34;best-practices-or-what-not-to-do&#34;&gt;Best practices (or what not to do)&lt;/h1&gt;
 &lt;ul&gt;
-&lt;li&gt;Never save files to a lab computer hard drive (e.g. desktop,
+&lt;li&gt;Never save files to a lab computer hard drive (e.g. desktop,
 downloads, etc). They will be erased when you log off.&lt;/li&gt;
 &lt;li&gt;Do not use gmail as a file storage system! Avoid emailing yourself
 files that you created (and saved) on a lab computer. Eventually you
@@ -1039,7 +1039,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-921387645&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-358942167&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1049,7 +1049,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-921387645&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-358942167&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

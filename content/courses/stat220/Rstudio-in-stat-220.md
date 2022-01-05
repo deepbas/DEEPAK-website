@@ -89,7 +89,7 @@ server.
 
 **Warning: Do not** create an RStudio project in the main stat220 folder
 because it is not good practice to have RStudio projects in subfolders
-of another project (e.g. a project within a project is not recommended).
+of another project (e.g. a project within a project is not recommended).
 
 ------------------------------------------------------------------------
 
@@ -125,7 +125,7 @@ Project…** option shown in step 5 above.
 
 # Best practices (or what not to do)
 
--   Never save files to a lab computer hard drive (e.g. desktop,
+-   Never save files to a lab computer hard drive (e.g. desktop,
     downloads, etc). They will be erased when you log off.
 -   Do not use gmail as a file storage system! Avoid emailing yourself
     files that you created (and saved) on a lab computer. Eventually you
