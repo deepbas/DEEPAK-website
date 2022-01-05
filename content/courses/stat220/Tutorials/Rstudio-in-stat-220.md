@@ -1,5 +1,12 @@
-Using Rstudio in Stat 220
-================
+---
+title: Using Rstudio in Stat 220
+draft: false  
+toc: false  
+type: book  
+weight: 20
+---
+
+Key points
 
 There will be a lot of Rstudio content thrown your way this term, most
 in the form of .Rmd Markdown files. To stay organized, I *strongly*
