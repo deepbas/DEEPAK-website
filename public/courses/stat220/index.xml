@@ -13,9 +13,113 @@
     </image>
     
     <item>
+      <title>Assignments in Stat 220</title>
+      <link>https://deepbas.netlify.app/courses/stat220/homework-in-stat-220/</link>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/homework-in-stat-220/</guid>
+      <description>&lt;h2 id=&#34;dos-and-dont-of-collaboration-for-group-assignments&#34;&gt;Do’s and Don’t of collaboration for group assignments&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;All group members should contribute to each question.&lt;/li&gt;
+&lt;li&gt;Don’t delegate questions among group members.&lt;/li&gt;
+&lt;li&gt;If a group member didn’t contribute sufficiently to an assignment,
+please let me know via email.&lt;/li&gt;
+&lt;li&gt;If you aren’t able to contribute sufficiently to an assignment,
+please send me an email explaining your situation. An isolated
+“miss” of group work due to personal issues is understandable, but
+you will lose points from your (individual) group grade if I see a
+pattern of multiple misses without a reasonable explanation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;dos-and-dont-of-collaboration-for-individual-assignments&#34;&gt;Do’s and Don’t of collaboration for individual assignments&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;You &lt;em&gt;can&lt;/em&gt; discuss homework problems with classmates but you must
+write up &lt;strong&gt;your own&lt;/strong&gt; homework solutions and &lt;strong&gt;do your own work in R
+(no sharing commands or output)&lt;/strong&gt;.
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Do not share R commands/code in any way&lt;/strong&gt;, including, but not
+limited to, sending commands via email, slack, text, or showing
+commands in a shared screen with the intention of showing a
+classmate your solution to a problem.&lt;/li&gt;
+&lt;li&gt;You &lt;strong&gt;can&lt;/strong&gt; share a screen to help troubleshoot a coding problem
+in R.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;You &lt;em&gt;can&lt;/em&gt; use the following resources to complete your homework:
+&lt;ul&gt;
+&lt;li&gt;Carleton faculty (myself, other math fac, etc)&lt;/li&gt;
+&lt;li&gt;discussions with classmates (see above) or knowledgeable friends&lt;/li&gt;
+&lt;li&gt;Carleton resources like stats lab assistants&lt;/li&gt;
+&lt;li&gt;student solutions provided in the back of your student textbook
+or in the student solution manual.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;You &lt;em&gt;cannot&lt;/em&gt; use any resources other than the ones listed above to
+complete assignments (homework, reports, etc) for this class.
+(e.g. you cannot use a friend’s old assignments or reports, answers
+found on the internet, textbook (instructor) solutions manual, etc.)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;examples-that-violate-the-academic-integrity-policy&#34;&gt;Examples that violate the academic integrity policy&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;sending your .Rmd homework file to another person in the class&lt;/li&gt;
+&lt;li&gt;receiving an .Rmd homework file from another person&lt;/li&gt;
+&lt;li&gt;sharing a screen and copying code, verbatim, from another person&lt;/li&gt;
+&lt;li&gt;sending/receiving R commands&lt;/li&gt;
+&lt;li&gt;neglecting to acknowledge classmates with whom you worked with on an
+assignment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;format-and-content&#34;&gt;Format and Content&lt;/h2&gt;
+&lt;p&gt;Submit via GitHub (for most assignments) an organized and correctly
+ordered assignment.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Content: Good data scientists need to do more than just write code;
+they should be able to interpret and explain their analyzes.
+&lt;ul&gt;
+&lt;li&gt;Provide a &lt;strong&gt;written answer&lt;/strong&gt; first, followed by any required R
+code and output.&lt;/li&gt;
+&lt;li&gt;Use &lt;strong&gt;complete sentences&lt;/strong&gt; when answering any problem that
+requires an explanation or overall problem summary.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;When including code:
+&lt;ul&gt;
+&lt;li&gt;Be sure to show the natural sequence of work needed to answer
+the problem.&lt;/li&gt;
+&lt;li&gt;Include brief comments explain your code steps.&lt;/li&gt;
+&lt;li&gt;Do not include typos or unnecessary commands/output.&lt;/li&gt;
+&lt;li&gt;Always include code output.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;At the top of each individual assignment &lt;strong&gt;include the names of
+classmates that you worked with&lt;/strong&gt; on all or part of the assignment
+(but each person must write up their assignment on their own)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Disability Accommodations:&lt;/strong&gt; Carleton College is committed to
+providing equitable access to learning opportunities for all students.
+The Disability Services office (Henry House, 107 Union Street) is the
+campus office that collaborates with students who have disabilities to
+provide and/or arrange reasonable accommodations. If you have, or think
+you may have, a disability (e.g., mental health, attentional, learning,
+autism spectrum disorders, chronic health, traumatic brain injury and
+concussions, vision, hearing, mobility, or speech impairments), please
+contact &lt;a href=&#34;mailto:disability@carleton.edu&#34;&gt;disability@carleton.edu&lt;/a&gt; or call Sam Thayer (’10),
+Accessibility Specialist (x4464) or Chris Dallager, Director of
+Disability Services (x5250) to arrange a confidential discussion
+regarding equitable access and reasonable accommodations.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Academic Honesty:&lt;/strong&gt; All work that you turn in under your name must
+follow Carleton’s academic integrity policy. The use of textbook
+solution manuals (physical or online solutions), homework, reports or
+exams done by past students are not allowed. Look at the College’s
+&lt;a href=&#34;https://www.carleton.edu/writing/plagiarism/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Writing Across the
+Curriculum&lt;/a&gt; website for
+additional guidance on plagiarism and how to avoid plagiarism in their
+writing.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>GitHub Classroom Guide for Students in Stat 220</title>
       <link>https://deepbas.netlify.app/courses/stat220/github-in-stat-220/</link>
-      <pubDate>Sun, 24 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/github-in-stat-220/</guid>
       <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;If you are using the maize RStudio server, then you can connect to
@@ -34,7 +138,7 @@ and &lt;code&gt;gitcreds&lt;/code&gt; R packages.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Register for account on GitHub (&lt;a href=&#34;https://github.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/&lt;/a&gt;). I recommend
-using a username that incorporates your name (e.g., aloy). Please use
+using a username that incorporates your name (e.g., dbastola). Please use
 your Carleton email with this account.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
@@ -94,16 +198,22 @@ added directly to your account (within the Stat220 organization). This
 repository will contain assignment details (README, .Rmd).&lt;/p&gt;
 &lt;h3 id=&#34;creating-an-individual-assignment-repo-and-project&#34;&gt;Creating an individual assignment repo and project&lt;/h3&gt;
 &lt;ol&gt;
-&lt;li&gt;Go to our course GitHub organization page
-(&lt;a href=&#34;https://github.com/stat220-fa21&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/stat220-fa21&lt;/a&gt;) and find your homework repo, such as &lt;code&gt;hw-1-username&lt;/code&gt; (where your username is attached).&lt;/li&gt;
-&lt;li&gt;Enter the online assignment repository on GitHub. Click the green
+&lt;li&gt;
+&lt;p&gt;Go to our course GitHub organization page
+(&lt;a href=&#34;https://github.com/stat220/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://github.com/stat220/&lt;/a&gt;) and find your homework repo, such as &lt;code&gt;hw-1-username&lt;/code&gt; (where your username is attached).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enter the online assignment repository on GitHub. Click the green
 &lt;strong&gt;&amp;ldquo;Code&amp;rdquo;&lt;/strong&gt; button. Most of you should just use the default setting
 which is to &amp;ldquo;clone&amp;rdquo; (copy) using HTTPS. Click the clipboard to the
 right of the URL to copy the repo location. (If you are using SSH,
 make sure it says &amp;ldquo;Clone with SSH&amp;rdquo; in bold in the top left of the
 pop-up box. If not, click the &amp;ldquo;SSH&amp;rdquo; button and copy the link in the
-box to your clipboard.)&lt;/li&gt;
-&lt;li&gt;Now open up RStudio and create a project as follows:&lt;/li&gt;
+box to your clipboard.)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now open up RStudio and create a project as follows:&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;
 &lt;ul&gt;
 &lt;li&gt;Click the &lt;strong&gt;Project&lt;/strong&gt; button in the upper right corner of your
@@ -331,7 +441,7 @@ Commons License.&lt;/p&gt;
     <item>
       <title>Using Rstudio in Stat 220</title>
       <link>https://deepbas.netlify.app/courses/stat220/rstudio-in-stat-220/</link>
-      <pubDate>Sun, 24 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/rstudio-in-stat-220/</guid>
       <description>&lt;p&gt;Key points&lt;/p&gt;
 &lt;p&gt;There will be a lot of Rstudio content thrown your way this term, most
@@ -679,113 +789,9 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     </item>
     
     <item>
-      <title>Assignments in Stat 220</title>
-      <link>https://deepbas.netlify.app/courses/stat220/homework-in-stat-220/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/homework-in-stat-220/</guid>
-      <description>&lt;h2 id=&#34;dos-and-dont-of-collaboration-for-group-assignments&#34;&gt;Do’s and Don’t of collaboration for group assignments&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;All group members should contribute to each question.&lt;/li&gt;
-&lt;li&gt;Don’t delegate questions among group members.&lt;/li&gt;
-&lt;li&gt;If a group member didn’t contribute sufficiently to an assignment,
-please let me know via email.&lt;/li&gt;
-&lt;li&gt;If you aren’t able to contribute sufficiently to an assignment,
-please send me an email explaining your situation. An isolated
-“miss” of group work due to personal issues is understandable, but
-you will lose points from your (individual) group grade if I see a
-pattern of multiple misses without a reasonable explanation.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;dos-and-dont-of-collaboration-for-individual-assignments&#34;&gt;Do’s and Don’t of collaboration for individual assignments&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;You &lt;em&gt;can&lt;/em&gt; discuss homework problems with classmates but you must
-write up &lt;strong&gt;your own&lt;/strong&gt; homework solutions and &lt;strong&gt;do your own work in R
-(no sharing commands or output)&lt;/strong&gt;.
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Do not share R commands/code in any way&lt;/strong&gt;, including, but not
-limited to, sending commands via email, slack, text, or showing
-commands in a shared screen with the intention of showing a
-classmate your solution to a problem.&lt;/li&gt;
-&lt;li&gt;You &lt;strong&gt;can&lt;/strong&gt; share a screen to help troubleshoot a coding problem
-in R.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;You &lt;em&gt;can&lt;/em&gt; use the following resources to complete your homework:
-&lt;ul&gt;
-&lt;li&gt;Carleton faculty (myself, other math fac, etc)&lt;/li&gt;
-&lt;li&gt;discussions with classmates (see above) or knowledgeable friends&lt;/li&gt;
-&lt;li&gt;Carleton resources like stats lab assistants&lt;/li&gt;
-&lt;li&gt;student solutions provided in the back of your student textbook
-or in the student solution manual.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;You &lt;em&gt;cannot&lt;/em&gt; use any resources other than the ones listed above to
-complete assignments (homework, reports, etc) for this class.
-(e.g. you cannot use a friend’s old assignments or reports, answers
-found on the internet, textbook (instructor) solutions manual, etc.)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&#34;examples-that-violate-the-academic-integrity-policy&#34;&gt;Examples that violate the academic integrity policy&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;sending your .Rmd homework file to another person in the class&lt;/li&gt;
-&lt;li&gt;receiving an .Rmd homework file from another person&lt;/li&gt;
-&lt;li&gt;sharing a screen and copying code, verbatim, from another person&lt;/li&gt;
-&lt;li&gt;sending/receiving R commands&lt;/li&gt;
-&lt;li&gt;neglecting to acknowledge classmates with whom you worked with on an
-assignment&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;format-and-content&#34;&gt;Format and Content&lt;/h2&gt;
-&lt;p&gt;Submit via GitHub (for most assignments) an organized and correctly
-ordered assignment.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Content: Good data scientists need to do more than just write code;
-they should be able to interpret and explain their analyzes.
-&lt;ul&gt;
-&lt;li&gt;Provide a &lt;strong&gt;written answer&lt;/strong&gt; first, followed by any required R
-code and output.&lt;/li&gt;
-&lt;li&gt;Use &lt;strong&gt;complete sentences&lt;/strong&gt; when answering any problem that
-requires an explanation or overall problem summary.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;When including code:
-&lt;ul&gt;
-&lt;li&gt;Be sure to show the natural sequence of work needed to answer
-the problem.&lt;/li&gt;
-&lt;li&gt;Include brief comments explain your code steps.&lt;/li&gt;
-&lt;li&gt;Do not include typos or unnecessary commands/output.&lt;/li&gt;
-&lt;li&gt;Always include code output.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;At the top of each individual assignment &lt;strong&gt;include the names of
-classmates that you worked with&lt;/strong&gt; on all or part of the assignment
-(but each person must write up their assignment on their own)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;Disability Accommodations:&lt;/strong&gt; Carleton College is committed to
-providing equitable access to learning opportunities for all students.
-The Disability Services office (Henry House, 107 Union Street) is the
-campus office that collaborates with students who have disabilities to
-provide and/or arrange reasonable accommodations. If you have, or think
-you may have, a disability (e.g., mental health, attentional, learning,
-autism spectrum disorders, chronic health, traumatic brain injury and
-concussions, vision, hearing, mobility, or speech impairments), please
-contact &lt;a href=&#34;mailto:disability@carleton.edu&#34;&gt;disability@carleton.edu&lt;/a&gt; or call Sam Thayer (’10),
-Accessibility Specialist (x4464) or Chris Dallager, Director of
-Disability Services (x5250) to arrange a confidential discussion
-regarding equitable access and reasonable accommodations.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Academic Honesty:&lt;/strong&gt; All work that you turn in under your name must
-follow Carleton’s academic integrity policy. The use of textbook
-solution manuals (physical or online solutions), homework, reports or
-exams done by past students are not allowed. Look at the College’s
-&lt;a href=&#34;https://www.carleton.edu/writing/plagiarism/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Writing Across the
-Curriculum&lt;/a&gt; website for
-additional guidance on plagiarism and how to avoid plagiarism in their
-writing.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Software in Stat 220</title>
       <link>https://deepbas.netlify.app/courses/stat220/software/</link>
-      <pubDate>Sun, 24 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/software/</guid>
       <description>
 &lt;script src=&#34;https://deepbas.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;

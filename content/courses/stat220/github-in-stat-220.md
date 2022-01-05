@@ -30,7 +30,7 @@ and `gitcreds` R packages.
 Everyone needs to connect Git and GitHub by doing the following:
 
 1.  Register for account on GitHub (<https://github.com/>). I recommend
-    using a username that incorporates your name (e.g., aloy). Please use
+    using a username that incorporates your name (e.g., dbastola). Please use
     your Carleton email with this account.
 
 2.  Setup options in Git by running the following code chunk in your
@@ -78,11 +78,10 @@ Everyone needs to connect Git and GitHub by doing the following:
     talk to me in student hours.
 
 
-
 ## Individual assignments
 
 If you followed the suggestions in the [Using Rstudio in Stat
-220](rstudio_stat220.md) page, then you should already have an
+220](https://deepbas.io/courses/stat220/rstudio-in-stat-220/) page, then you should already have an
 assignments folder on your computer or maize account.
 
 Each new assignment/project will be posted as a repository on GitHub and
@@ -92,7 +91,8 @@ repository will contain assignment details (README, .Rmd).
 ### Creating an individual assignment repo and project
 
 1.  Go to our course GitHub organization page
-    (<https://github.com/stat220-fa21>) and find your homework repo, such as `hw-1-username` (where your username is attached).
+    (<https://github.com/stat220/>) and find your homework repo, such as `hw-1-username` (where your username is attached).
+    
 2.  Enter the online assignment repository on GitHub. Click the green
     **"Code"** button. Most of you should just use the default setting
     which is to "clone" (copy) using HTTPS. Click the clipboard to the
@@ -100,6 +100,7 @@ repository will contain assignment details (README, .Rmd).
     make sure it says "Clone with SSH" in bold in the top left of the
     pop-up box. If not, click the "SSH" button and copy the link in the
     box to your clipboard.)
+    
 3.  Now open up RStudio and create a project as follows:
 
 -   Click the **Project** button in the upper right corner of your
@@ -187,15 +188,13 @@ Commit pop-up window or in the Git tab (shown above).
 To "turn in" an assignment, all you need to do is push all your relevant
 files to Github by the deadline.
 
-
-
 ## Group work
 
 Collaborative Github assignments are pretty similar to individual assignments.
 
 ### Creating a group/partner assignment repo and project
 
-Go to our course GitHub organization page(<https://github.com/stat220-fa21>) and find the repo for your group, for example if your group name is "team01" the you might find the `mp1-team01` repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).
+Go to our course GitHub organization page(<https://github.com/stat220/>) and find the repo for your group, for example if your group name is "team01" the you might find the `mp1-team01` repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).
 
 #### Working with collaborative repos
 
