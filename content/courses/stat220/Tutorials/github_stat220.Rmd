@@ -106,14 +106,14 @@ repository will contain assignment details (README, .Rmd).
 
 \  
 ```{r, fig.align='center', out.width = "80%"}
-knitr::include_graphics("img/maize_project.png")
+knitr::include_graphics("/img/maize_project.png")
 ```
 
 -   Select **Version Control** and then **New Project**
 
 ```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("img/maize_version.png")
-knitr::include_graphics("img/maize_git.png")
+knitr::include_graphics("/img/maize_version.png")
+knitr::include_graphics("/img/maize_git.png")
 ```
 
 -   Paste the link you just copied into the Repository URL box. Leave
@@ -122,7 +122,7 @@ knitr::include_graphics("img/maize_git.png")
     click **Create Project**
 
 ```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("img/maize_clone.png")
+knitr::include_graphics("/img/maize_clone.png")
 ```
 
 \  \  
@@ -163,7 +163,7 @@ from trying to remember what your code originally looked like.
 You can make commits in the Git tab in RStudio.
 
 ```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("img/maize_gittab.png", error = FALSE)
+knitr::include_graphics("/img/maize_gittab.png", error = FALSE)
 ```
 
 Click the **Commit** button in the Git tab. Check the boxes of the files
