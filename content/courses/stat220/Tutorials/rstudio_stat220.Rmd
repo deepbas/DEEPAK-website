@@ -2,10 +2,6 @@
 title: "Using RStudio in Stat 220"
 description: |
   Suggested file organization, RStudio project basics, and RStudio best practices for Stat 220.
-output:
-  distill::distill_article:
-    toc: true
-    toc_depth: 2
 ---
 
 ## Key idea: Make a Stat220 folder
@@ -18,8 +14,6 @@ There will be a lot of Rstudio content thrown your way this term, most in the fo
     - **Content:** This folder should be used to save any non-assignment files (e.g. slides, examples) for this class. You will create this subfolder by creating an RStudio project (see step 5 below). 
 
 To get started with this organization, follow the steps below. 
-
-
 
 ## File organization: Using maize
 

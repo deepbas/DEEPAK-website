@@ -111,7 +111,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-583461729&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-392854716&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -121,7 +121,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-583461729&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-392854716&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
@@ -965,7 +965,7 @@ follow Option 2&lt;/p&gt;&lt;/li&gt;
 &lt;/div&gt;
 &lt;div id=&#34;slack&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Slack&lt;/h2&gt;
-&lt;p&gt;We will use Slack for all course communication. &lt;a href=&#34;https://join.slack.com/t/stat220-fa21/shared_invite/zt-uvpbbjgj-cyr3olDzY~s7PkaY~Vu7Sg&#34;&gt;Sign up for our course
+&lt;p&gt;We will use Slack for all course communication. &lt;a href=&#34;https://join.slack.com/t/stat220datasc-wmz5924/shared_invite/zt-110xuf0zq-0Ap9EaQAp46YiilE4Jvc~A&#34;&gt;Sign up for our course
 Slack team
 here&lt;/a&gt;!
 You will need to create an account with a username, and log in to read

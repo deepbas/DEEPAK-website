@@ -119,7 +119,7 @@ Directions for both Windows & Mac here:
 
 We will use Slack for all course communication. [Sign up for our course
 Slack team
-here](https://join.slack.com/t/stat220-fa21/shared_invite/zt-uvpbbjgj-cyr3olDzY~s7PkaY~Vu7Sg)!
+here](https://join.slack.com/t/stat220datasc-wmz5924/shared_invite/zt-110xuf0zq-0Ap9EaQAp46YiilE4Jvc~A)!
 You will need to create an account with a username, and log in to read
 and post. You can use Slack right from a [web
 browser](https://stat220-fa21.slack.com), or you can download a
