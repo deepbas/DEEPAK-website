@@ -133,3 +133,13 @@ Project…** option shown in step 5 above.
     gmail, downloading, editing a doc, then uploading it back to
     drive/dropbox is another great way to lose work.
 -   Avoid [this](https://xkcd.com/1459/) and [this](http://phdcomics.com/comics.php?f=1531).
+
+
+
+# Acknowledgments {.appendix}
+This installation guide is based on the guide from Katie St. Clair
+
+# Reuse {.appendix}
+
+Text and figures are licensed under Creative Commons Attribution CC BY-NC 3.0.
+

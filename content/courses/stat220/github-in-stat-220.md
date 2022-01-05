@@ -1,30 +1,29 @@
 ---
-title: "GitHub Classroom Guide for Stat 220"
-description: |
-  This guide will help you setup Git and GitHub for use in Stat 220.
+title: GitHub Classroom Guide for Students in Stat 220
+draft: false  
+toc: false  
+type: book  
+weight: 20
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval=FALSE, error = FALSE)
-```
 
 ## Overview
 
 If you are using the maize RStudio server, then you can connect to
 GitHub without any extra software downloads. If you are using RStudio on
 your computer, then you will need to download Git software (as directed
-in [Software in Stat 220](https://deepbas.netlify.app/courses/stat220/tutorials/software/) to use GitHub connected
+in [Software in Stat 220](software.md)) to use GitHub connected
 projects.
 
 I will host all of our course materials on GitHub, and you will use
 GitHub to submit homework and collaborate on projects.
 
 
+
 ## Getting setup with Git and GitHub
 
 If you are **not** working on the maize RStudio server, then make sure
 that you have installed all of the software mentioned in [Software in
-Stat 220](https://deepbas.netlify.app/courses/stat220/tutorials/software/). In addition, you should install the `usethis`
+Stat 220](software.md). In addition, you should install the `usethis`
 and `gitcreds` R packages.
 
 Everyone needs to connect Git and GitHub by doing the following:
@@ -36,10 +35,10 @@ Everyone needs to connect Git and GitHub by doing the following:
 2.  Setup options in Git by running the following code chunk in your
     console:
 
-```r
-library(usethis)
-use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
-```
+    ``` r
+    library(usethis)
+    use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
+    ```
 
     changing the first two lines to your own name and email (this should
     be the email associated with your GitHub account).
@@ -55,18 +54,19 @@ use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
     -   **Strongly recommended:** Cache credential using a HTTPS linked
         project.
 
-        Complete the steps in [Section 9.1 of Happy Git with
-        R](https://happygitwithr.com/https-pat.html) to get a
+        Complete the steps in [Section 10.1 of Happy Git with
+        R](http://happygitwithr.com/credential-caching.html) to get a
         personal access token (you will need to install the `usethis`
-        package first). Then, follow the directions in [Section 9.2
+        package first). Then, follow the directions in [Section 10.2.1
         of Happy Git with
-        R](https://happygitwithr.com/https-pat.html#call-an-r-function-to-store-your-credentials)
-        
+        R](https://happygitwithr.com/credential-caching.html#call-an-r-function-to-store-your-credentials)
+        (I've had good luck with the `gitcreds` package, and it is
+        installed on maize.)
 
     -   A second method is to generate a SSH key. First check to see if
         you have a SSH key. Go into the shell (again, through RStudio
         `Tools -> Shell`) and complete on this page
-        <http://happygitwithr.com/ssh-keys.html>, which is Chapter 10 in
+        <http://happygitwithr.com/ssh-keys.html>, which is Chapter 11 in
         Happy Git with R.
 
 4.  (optional) Follow the instructions here
@@ -75,6 +75,7 @@ use_git_config(user.name = "Jane Doe", user.email = "jane@example.org")
     line push/pull to work that is fine. Try connecting to GitHub via
     RStudio, as detailed next. If you can't connect via RStudio then
     talk to me in student hours.
+
 
 
 ## Individual assignments
@@ -90,7 +91,7 @@ repository will contain assignment details (README, .Rmd).
 ### Creating an individual assignment repo and project
 
 1.  Go to our course GitHub organization page
-    (<https://deepbas.io/courses/stat220/>) and find your homework repo, such as `hw-1-username` (where your username is attached).
+    (<https://github.com/stat220-fa21>) and find your homework repo, such as `hw-1-username` (where your username is attached).
 2.  Enter the online assignment repository on GitHub. Click the green
     **"Code"** button. Most of you should just use the default setting
     which is to "clone" (copy) using HTTPS. Click the clipboard to the
@@ -103,29 +104,21 @@ repository will contain assignment details (README, .Rmd).
 -   Click the **Project** button in the upper right corner of your
     RStudio window and select **New Project...**.
 
-\  
-```{r, echo= FALSE, fig.align='center', out.width = "80%"}
-knitr::include_graphics("img/maize_project.png")
-```
 
+![](/img/maize_project.png)
 
 -   Select **Version Control** and then **New Project**
 
-```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("img/maize_version.png")
-knitr::include_graphics("img/maize_git.png")
-```
+![](/img/maize_version.png)
+
+![](/img/maize_git.png)
 
 -   Paste the link you just copied into the Repository URL box. Leave
     the Project directory name blank (or keep the auto-filled name). Use
     the **Browse** button to find your **assignments** folder, then
     click **Create Project**
 
-```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("/img/maize_clone.png")
-```
-
-\  \  
+![](/img/maize_clone.png)
 
 **Warning:** If you received an error in the above steps, you may have
 to clone with HTTPS instead of SSH (or vice versa). You can do this by
@@ -162,9 +155,7 @@ from trying to remember what your code originally looked like.
 
 You can make commits in the Git tab in RStudio.
 
-```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("/img/maize_gittab.png", error = FALSE)
-```
+![](/img/maize_gittab.png)
 
 Click the **Commit** button in the Git tab. Check the boxes of the files
 that you want to commit, enter your commit message (briefly state what
@@ -195,13 +186,15 @@ Commit pop-up window or in the Git tab (shown above).
 To "turn in" an assignment, all you need to do is push all your relevant
 files to Github by the deadline.
 
+
+
 ## Group work
 
 Collaborative Github assignments are pretty similar to individual assignments.
 
 ### Creating a group/partner assignment repo and project
 
-Go to our course GitHub organization page and find the repo for your group, for example if your group name is "team01" the you might find the `mp1-team01` repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).
+Go to our course GitHub organization page(<https://github.com/stat220-fa21>) and find the repo for your group, for example if your group name is "team01" the you might find the `mp1-team01` repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).
 
 #### Working with collaborative repos
 
@@ -209,7 +202,9 @@ For group homework, I suggest that only the *recorder* edit the group-homework-x
 
 When you are working together on a Github project, you should commit and push your modifications frequently. You will also need to frequently **pull** updates from Github down to your local version of RStudio. These updates are changes that your teammates have made since your last pull.  To pull in changes, click the "Down"  **Pull** arrow in the Git tab (shown above). 
 
-If you get an error about conflict after pulling or pushing, don't freak out! This can happen if you edit a file (usually an .Rmd or .R file) in a location that was also changed by a teammate. When this happens you should attempt to fix the **merge conflict**. Take a look at [this resource site](http://r-pkgs.had.co.nz/git.html#git-pull) and try to fix the merge conflict in Rstudio. 
+If you get an error about conflict after pulling or pushing, don't freak out! This can happen if you edit a file (usually an .Rmd or .R file) in a location that was also changed by a teammate. When this happens you should attempt to fix the **merge conflict**. Take a look at [this resource site](http://r-pkgs.had.co.nz/git.html#git-pull) and try to fix the merge conflict in Rstudio. Katie also created a diagram shown below that "explains" how and when conflicts will likely happen and how you can resolve the problems in Rstudio. If that doesn't work contact me!
+
+![My conflict resolution diagram!](/img/ConflictResolution.JPG "fig:")
 
 
 ## Additional resources
@@ -225,9 +220,12 @@ If you get an error about conflict after pulling or pushing, don't freak out! Th
 
 ## Acknowledgements {.appendix}
 
-This installation guide is based on the guide from Adam Loy.
+Most of this content in this guide was taken from
+<https://github.com/jfiksel/github-classroom-for-students> and edited
+for our classroom use. 
 
 ## Reuse {.appendix}
 
 This guide is licensed under the CC BY-NC 3.0 Creative
 Commons License.
+
