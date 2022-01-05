@@ -5,7 +5,8 @@ description: |
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE, error = FALSE)
+options(knitr.graphics.error = FALSE)
 ```
 
 ## Overview
@@ -163,7 +164,7 @@ from trying to remember what your code originally looked like.
 You can make commits in the Git tab in RStudio.
 
 ```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("img/maize_gittab.png")
+knitr::include_graphics("img/maize_gittab.png", error = FALSE)
 ```
 
 Click the **Commit** button in the Git tab. Check the boxes of the files
@@ -215,6 +216,8 @@ If you get an error about conflict after pulling or pushing, don't freak out! Th
 
 
 ![Conflict Resolution](img/maize_home.png)
+
+
 
 ## Additional resources
 

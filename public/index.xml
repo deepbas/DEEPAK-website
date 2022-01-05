@@ -111,7 +111,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-392854716&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-149358627&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -121,7 +121,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-392854716&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-149358627&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
@@ -755,6 +755,7 @@ box to your clipboard.)&lt;/li&gt;
 RStudio window and select &lt;strong&gt;New Project…&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt; &lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;knitr::include_graphics(&amp;quot;img/maize_project.png&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Select &lt;strong&gt;Version Control&lt;/strong&gt; and then &lt;strong&gt;New Project&lt;/strong&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Paste the link you just copied into the Repository URL box. Leave
@@ -830,12 +831,16 @@ files to Github by the deadline.&lt;/p&gt;
 &lt;p&gt;Collaborative Github assignments are pretty similar to individual assignments.&lt;/p&gt;
 &lt;div id=&#34;creating-a-grouppartner-assignment-repo-and-project&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Creating a group/partner assignment repo and project&lt;/h3&gt;
-&lt;p&gt;Go to our course GitHub organization page(&lt;a href=&#34;https://github.com/stat220-fa21&#34; class=&#34;uri&#34;&gt;https://github.com/stat220-fa21&lt;/a&gt;) and find the repo for your group, for example if your group name is “team01” the you might find the &lt;code&gt;mp1-team01&lt;/code&gt; repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).&lt;/p&gt;
+&lt;p&gt;Go to our course GitHub organization page and find the repo for your group, for example if your group name is “team01” the you might find the &lt;code&gt;mp1-team01&lt;/code&gt; repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).&lt;/p&gt;
 &lt;div id=&#34;working-with-collaborative-repos&#34; class=&#34;section level4&#34;&gt;
 &lt;h4&gt;Working with collaborative repos&lt;/h4&gt;
 &lt;p&gt;For group homework, I suggest that only the &lt;em&gt;recorder&lt;/em&gt; edit the group-homework-x.Rmd file to avoid merge conflicts! Other group members can create a new Markdown doc to run and save commands. Only the recorder needs to &lt;strong&gt;push&lt;/strong&gt; changes (answers) to the Github repo and all others can then &lt;strong&gt;pull&lt;/strong&gt; these changes (i.e. the final answers) after the HW is submitted.&lt;/p&gt;
 &lt;p&gt;When you are working together on a Github project, you should commit and push your modifications frequently. You will also need to frequently &lt;strong&gt;pull&lt;/strong&gt; updates from Github down to your local version of RStudio. These updates are changes that your teammates have made since your last pull. To pull in changes, click the “Down” &lt;strong&gt;Pull&lt;/strong&gt; arrow in the Git tab (shown above).&lt;/p&gt;
 &lt;p&gt;If you get an error about conflict after pulling or pushing, don’t freak out! This can happen if you edit a file (usually an .Rmd or .R file) in a location that was also changed by a teammate. When this happens you should attempt to fix the &lt;strong&gt;merge conflict&lt;/strong&gt;. Take a look at &lt;a href=&#34;http://r-pkgs.had.co.nz/git.html#git-pull&#34;&gt;this resource site&lt;/a&gt; and try to fix the merge conflict in Rstudio. Katie also created a diagram shown below that “explains” how and when conflicts will likely happen and how you can resolve the problems in Rstudio. If that doesn’t work contact me!&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;img/maize_home.png&#34; alt=&#34;&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;Conflict Resolution&lt;/p&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
