@@ -24,7 +24,7 @@ GitHub to submit homework and collaborate on projects.
 
 If you are **not** working on the maize RStudio server, then make sure
 that you have installed all of the software mentioned in [Software in
-Stat 220](software.md). In addition, you should install the `usethis`
+Stat 220](https://deepbas.io/courses/stat220/software/). In addition, you should install the `usethis`
 and `gitcreds` R packages.
 
 Everyone needs to connect Git and GitHub by doing the following:
@@ -55,12 +55,12 @@ Everyone needs to connect Git and GitHub by doing the following:
     -   **Strongly recommended:** Cache credential using a HTTPS linked
         project.
 
-        Complete the steps in [Section 10.1 of Happy Git with
-        R](http://happygitwithr.com/credential-caching.html) to get a
+        Complete the steps in [Section 9.3 of Happy Git with
+        R](https://happygitwithr.com/https-pat.html) to get a
         personal access token (you will need to install the `usethis`
-        package first). Then, follow the directions in [Section 10.2.1
+        package first). Then, follow the directions in [Section 9.4.1
         of Happy Git with
-        R](https://happygitwithr.com/credential-caching.html#call-an-r-function-to-store-your-credentials)
+        R](https://happygitwithr.com/https-pat.html#call-an-r-function-to-store-your-credentials)
         (I've had good luck with the `gitcreds` package, and it is
         installed on maize.)
 

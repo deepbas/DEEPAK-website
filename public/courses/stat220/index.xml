@@ -131,7 +131,7 @@ projects.&lt;/p&gt;
 GitHub to submit homework and collaborate on projects.&lt;/p&gt;
 &lt;h2 id=&#34;getting-setup-with-git-and-github&#34;&gt;Getting setup with Git and GitHub&lt;/h2&gt;
 &lt;p&gt;If you are &lt;strong&gt;not&lt;/strong&gt; working on the maize RStudio server, then make sure
-that you have installed all of the software mentioned in &lt;a href=&#34;software.md&#34;&gt;Software in
+that you have installed all of the software mentioned in &lt;a href=&#34;https://deepbas.io/courses/stat220/software/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Software in
 Stat 220&lt;/a&gt;. In addition, you should install the &lt;code&gt;usethis&lt;/code&gt;
 and &lt;code&gt;gitcreds&lt;/code&gt; R packages.&lt;/p&gt;
 &lt;p&gt;Everyone needs to connect Git and GitHub by doing the following:&lt;/p&gt;
@@ -162,10 +162,10 @@ so I recommend trying that first.&lt;/p&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;strong&gt;Strongly recommended:&lt;/strong&gt; Cache credential using a HTTPS linked
 project.&lt;/p&gt;
-&lt;p&gt;Complete the steps in &lt;a href=&#34;http://happygitwithr.com/credential-caching.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Section 10.1 of Happy Git with
+&lt;p&gt;Complete the steps in &lt;a href=&#34;https://happygitwithr.com/https-pat.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Section 9.3 of Happy Git with
 R&lt;/a&gt; to get a
 personal access token (you will need to install the &lt;code&gt;usethis&lt;/code&gt;
-package first). Then, follow the directions in &lt;a href=&#34;https://happygitwithr.com/credential-caching.html#call-an-r-function-to-store-your-credentials&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Section 10.2.1
+package first). Then, follow the directions in &lt;a href=&#34;https://happygitwithr.com/https-pat.html#call-an-r-function-to-store-your-credentials&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Section 9.4.1
 of Happy Git with
 R&lt;/a&gt;
 (I&amp;rsquo;ve had good luck with the &lt;code&gt;gitcreds&lt;/code&gt; package, and it is
@@ -869,9 +869,9 @@ already installed on the maize RStudio server.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://happygitwithr.com/big-picture.html#why-github&#34;&gt;Github&lt;/a&gt; is a
 cloud-based service for hosting git projects. It allows multiple users
 to share and contribute to projects and it is how you will be submitting
-homework assignments and projects for this class. More information about
-Github for this class is found in &lt;a href=&#34;git_stat220.md&#34;&gt;Getting setup with Git and
-GitHub&lt;/a&gt;.&lt;/p&gt;
+homework assignments and projects for this class. More information about Git and
+Github can also be found in &lt;a href=&#34;https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r/&#34;&gt;Getting setup with Git and
+GitHub&lt;/a&gt; and &lt;a href=&#34;https://sahirbhatnagar.com/rpkg/#gitgithub&#34;&gt;Git and Github&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you are using a local install of R/RStudio, then you will need to
 install Git.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Installing Git&lt;/strong&gt;&lt;/p&gt;

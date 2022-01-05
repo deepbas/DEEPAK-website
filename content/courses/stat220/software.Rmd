@@ -92,9 +92,9 @@ already installed on the maize RStudio server.
 [Github](https://happygitwithr.com/big-picture.html#why-github) is a
 cloud-based service for hosting git projects. It allows multiple users
 to share and contribute to projects and it is how you will be submitting
-homework assignments and projects for this class. More information about
-Github for this class is found in [Getting setup with Git and
-GitHub](git_stat220.md).
+homework assignments and projects for this class. More information about Git and
+Github can also be found in [Getting setup with Git and
+GitHub](https://rfortherestofus.com/2021/02/how-to-use-git-github-with-r/) and [Git and Github](https://sahirbhatnagar.com/rpkg/#gitgithub).
 
 If you are using a local install of R/RStudio, then you will need to
 install Git.
