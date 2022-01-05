@@ -1,5 +1,6 @@
 ---
 title: Using Rstudio in Stat 220
+date: "2022-01-05"
 draft: false  
 toc: false  
 type: book  

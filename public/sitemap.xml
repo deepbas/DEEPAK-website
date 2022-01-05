@@ -4,9 +4,11 @@
   
   
   <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/github-in-stat-220/</loc></url>
+    <loc>https://deepbas.netlify.app/courses/stat220/github-in-stat-220/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/rstudio-in-stat-220/</loc></url>
+    <loc>https://deepbas.netlify.app/courses/stat220/rstudio-in-stat-220/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/courses/stat220/homework-in-stat-220/</loc></url>
   <url>
     <loc>https://deepbas.netlify.app/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod></url>
   <url>
@@ -17,6 +19,8 @@
     <loc>https://deepbas.netlify.app/courses/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/courses/stat220/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/courses/stat220/software/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/categories/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
@@ -75,7 +79,5 @@
     <loc>https://deepbas.netlify.app/admin/</loc></url>
   <url>
     <loc>https://deepbas.netlify.app/courses/stat220/pat/</loc></url>
-  <url>
-    <loc>https://deepbas.netlify.app/courses/stat220/software/</loc></url>
   <url>
     <loc>https://deepbas.netlify.app/author/%E5%90%B3%E6%81%A9%E9%81%94/</loc></url></urlset>
