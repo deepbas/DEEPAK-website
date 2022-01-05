@@ -60,10 +60,10 @@
   
     
   
-  <meta name="description" content="After you have signed up for a GitHub account and gone through all of the account verification steps, you will need to generate a personal access token (PAT) and let R know what that is." />
+  <meta name="description" content="Using Rstudio in Stat 220 There will be a lot of Rstudio content thrown your way this term, most in the form of .Rmd Markdown files. To stay organized, I strongly suggest you create a stat220 folder that contains the following subfolders:" />
 
   
-  <link rel="alternate" hreflang="en-us" href="https://deepbas.netlify.app/courses/stat220/tutorials/pat/" />
+  <link rel="alternate" hreflang="en-us" href="https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/" />
 
   
   
@@ -276,7 +276,7 @@
   <link rel="icon" type="image/png" href="/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png" />
   <link rel="apple-touch-icon" type="image/png" href="/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_180x180_fill_lanczos_center_3.png" />
 
-  <link rel="canonical" href="https://deepbas.netlify.app/courses/stat220/tutorials/pat/" />
+  <link rel="canonical" href="https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/" />
 
   
   
@@ -299,9 +299,9 @@
   <meta property="twitter:card" content="summary" />
   
   <meta property="og:site_name" content="Deepak Bastola" />
-  <meta property="og:url" content="https://deepbas.netlify.app/courses/stat220/tutorials/pat/" />
-  <meta property="og:title" content="Cache credentials for RStudio and GitHub | Deepak Bastola" />
-  <meta property="og:description" content="After you have signed up for a GitHub account and gone through all of the account verification steps, you will need to generate a personal access token (PAT) and let R know what that is." /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
+  <meta property="og:url" content="https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/" />
+  <meta property="og:title" content="Deepak Bastola" />
+  <meta property="og:description" content="Using Rstudio in Stat 220 There will be a lot of Rstudio content thrown your way this term, most in the form of .Rmd Markdown files. To stay organized, I strongly suggest you create a stat220 folder that contains the following subfolders:" /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
     
@@ -322,11 +322,11 @@
 
 
 
-  <title>Cache credentials for RStudio and GitHub | Deepak Bastola</title>
+  <title>Deepak Bastola</title>
 </head>
 
 
-<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="45b81787e457f9cdaaf67be4a5398030" >
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="31581e82b86e61355be875b205156162" >
 
   
   
@@ -646,7 +646,7 @@
   
   
 <div class="article-container pt-3">
-  <h1>Cache credentials for RStudio and GitHub</h1>
+  <h1></h1>
 
   
 
@@ -699,39 +699,344 @@
   <div class="article-container">
 
     <div class="article-style">
-      
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+      <h1 id="using-rstudio-in-stat-220">Using Rstudio in Stat 220</h1>
+<p>There will be a lot of Rstudio content thrown your way this term, most
+in the form of .Rmd Markdown files. To stay organized, I <em>strongly</em>
+suggest you create a <strong>stat220</strong> folder that contains the following
+subfolders:</p>
+<ul>
+<li><strong>stat220</strong> folder
+<ul>
+<li>
+<p><strong>Assignments:</strong> This folder will contain subfolders for each
+assignment. Each assignment subfolder (e.g. homework1,
+homework2, …) will be a Github connected RStudio project that
+you will create <strong>once an assignment is posted.</strong></p>
+</li>
+<li>
+<p><strong>Content:</strong> This folder should be used to save any
+non-assignment files (e.g. slides, examples) for this class. You
+will create this subfolder by creating an RStudio project (see
+step 5 below).</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>To get started with this organization, follow the steps below.</p>
+<hr>
+<h1 id="file-organization-using-maize">File organization: Using maize</h1>
+<p>The server (online) version of Rstudio is run from a unix server. You
+can navigate this file system using unix commands, but I assume that
+most or all of you will just use Rstudio to access your files on this
+server.</p>
+<ul>
+<li><strong>1.</strong> In Rstudio, click the <strong>Files</strong> <em>tab</em> in the lower right-hand
+window. Note: this is <strong>not</strong> the same as the <strong>File</strong> <em>menu</em>
+option.</li>
+</ul>
+<p>
 
 
-<p>After you have signed up for a GitHub account and gone through all of the account verification steps, you will need to generate a personal access token (PAT) and let R know what that is. To do this, I suggest following these steps:</p>
-<ol style="list-style-type: decimal">
-<li>Setup options in Git by running the following code chunk in your console:</li>
-</ol>
-<pre class="r"><code>library(usethis)
-use_git_config(user.name = &quot;Jane Doe&quot;, user.email = &quot;jane@example.org&quot;)</code></pre>
-<pre><code>changing the first two lines to your own name and email (this should be the email associated with your GitHub account).</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Next, you should generate a PAT:</li>
-</ol>
-<pre class="r"><code>create_github_token()</code></pre>
-<pre><code>This function will preselect the recommended scopes. I recommend just clicking &quot;Generate token&quot; unless you know of a reason to tweak the scopes. Store this token somewhere, because you’ll never be able to see it again once you leave that page or close the window. Treat this PAT like a password.</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Now that you have credentials, you need to store them. I recommend using the <code>{gitcreds}</code> package. Run the below chunk (after installing the package if you’re using your own laptop):</li>
-</ol>
-<pre class="r"><code>library(gitcreds)
-gitcreds_set()</code></pre>
-<pre><code>Respond to the prompt with your personal access token (PAT).</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>You should be setup! Try to clone a GitHub project and talk to me if you still hit issues.</li>
-</ol>
-<div id="acknowledgments" class="section level2 appendix">
-<h2>Acknowledgments</h2>
-<p>This installation guide is based on the guide from Adam Loy.</p>
-</div>
-<div id="reuse" class="section level2 appendix">
-<h2>Reuse</h2>
-<p>This work is is licensed under a <a href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.</p>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_files.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<ul>
+<li><strong>2.</strong> Verify that you are in your <strong>HOME</strong> folder (should simply
+say Home right under the New Folder button). To navigate to your
+Home folder (if somehow you are not in it), click the <strong>…</strong> button
+(far right side of the <strong>Files</strong> tab) and enter a ~ (tilde) symbol</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_home.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<ul>
+<li><strong>3.</strong> Click the <strong>New Folder</strong> button and name the folder
+<strong>stat220</strong>.</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_newfolder.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<ul>
+<li><strong>4.</strong> Click on this newly created (empty) <strong>stat220</strong> folder.
+Within the folder create another <strong>New Folder</strong> and name it
+<strong>assignments</strong>.</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_stat220.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<ul>
+<li>
+<p><strong>5.</strong> Within the <strong>stat220</strong> folder, create an <strong>RStudio project</strong>
+called <strong>content</strong> with the following steps:</p>
+<ul>
+<li><strong>a.</strong> Click the <strong>Project</strong> button in the upper righthand
+corner of your RStudio window and select <strong>New Project…</strong>.</li>
+</ul>
+</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_project.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<ul>
+<li><strong>b.</strong> Select <strong>New Directory</strong> and then <strong>New Project</strong></li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_newdirectory.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_newdirectory2.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<ul>
+<li><strong>c.</strong> Enter <strong>content</strong> as the <strong>Directory name</strong> and use the
+<strong>Browse</strong> button to find your <strong>stat220</strong> folder. Then click
+<strong>Create Project</strong>.</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_create.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<ul>
+<li><strong>d.</strong> You should now have a new folder called <strong>content</strong> in your
+<strong>stat220</strong> folder and this folder will contain an RStudio project
+<code>.Rproj</code>. Feel free to add subfolders to this <strong>content</strong> folder
+(e.g. slides, examples, etc).</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_Rproj.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p><strong>Warning: Do not</strong> create an RStudio project in the main stat220 folder
+because it is not good practice to have RStudio projects in subfolders
+of another project (e.g. a project within a project is not recommended).</p>
+<hr>
+<h1 id="file-organization-using-your-own-rstudio">File organization: Using your own Rstudio</h1>
+<p>Create a folder called <strong>stat220</strong> somewhere on your computer. Within
+this folder create an <strong>assignments</strong> subfolder. Then complete <strong>step
+5</strong> from above to create a <strong>content</strong> RStudio project folder.</p>
+<hr>
+<h1 id="rstudio-projects">RStudio projects</h1>
+<p>Once you’ve created a project, your R session should be running within
+that project folder. You can check which project you are in by checking
+the project name in the upper righthand part of your RStudio window.
+Here we see the <strong>content</strong> project is open:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_content.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p>Running R from an RStudio project sets your <strong>working directory</strong> to the
+project folder:</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="img/maize_getwd.png" alt="" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p>This allows for easy file path access to all files related to this
+project.</p>
+<p>To <strong>start</strong> a project, click on the <code>.Rproj</code> file or use the <strong>Open
+Project…</strong> option shown in step 5 above.</p>
+<hr>
+<h1 id="best-practices-or-what-not-to-do">Best practices (or what not to do)</h1>
+<ul>
+<li>Never save files to a lab computer hard drive (e.g. desktop,
+downloads, etc). They will be erased when you log off.</li>
+<li>Do not use gmail as a file storage system! Avoid emailing yourself
+files that you created (and saved) on a lab computer. Eventually you
+will lose work this way.</li>
+<li>Avoid using online versions of google drive and dropbox. Similar to
+gmail, downloading, editing a doc, then uploading it back to
+drive/dropbox is another great way to lose work.</li>
+<li>Avoid <a href="https://xkcd.com/1459/" target="_blank" rel="noopener">this</a> and <a href="http://phdcomics.com/comics.php?f=1531" target="_blank" rel="noopener">this</a>.</li>
+</ul>
 
     </div>
 
@@ -755,7 +1060,7 @@ gitcreds_set()</code></pre>
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;text=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/&amp;text=" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -768,7 +1073,7 @@ gitcreds_set()</code></pre>
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;t=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/&amp;t=" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -781,7 +1086,7 @@ gitcreds_set()</code></pre>
       
       
       <li>
-        <a href="mailto:?subject=Cache%20credentials%20for%20RStudio%20and%20GitHub&amp;body=https://deepbas.netlify.app/courses/stat220/tutorials/pat/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
+        <a href="mailto:?subject=&amp;body=https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -794,7 +1099,7 @@ gitcreds_set()</code></pre>
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;title=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
+        <a href="https://www.linkedin.com/shareArticle?url=https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/&amp;title=" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -807,7 +1112,7 @@ gitcreds_set()</code></pre>
       
       
       <li>
-        <a href="whatsapp://send?text=Cache%20credentials%20for%20RStudio%20and%20GitHub%20https://deepbas.netlify.app/courses/stat220/tutorials/pat/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
+        <a href="whatsapp://send?text=%20https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -820,7 +1125,7 @@ gitcreds_set()</code></pre>
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://deepbas.netlify.app/courses/stat220/tutorials/pat/&amp;title=Cache%20credentials%20for%20RStudio%20and%20GitHub" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/&amp;title=" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>

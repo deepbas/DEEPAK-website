@@ -6,7 +6,6 @@ description: |
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE, error = FALSE)
-options(knitr.graphics.error = FALSE)
 ```
 
 ## Overview
@@ -105,15 +104,16 @@ repository will contain assignment details (README, .Rmd).
     RStudio window and select **New Project...**.
 
 \  
-```{r, fig.align='center', out.width = "80%"}
-knitr::include_graphics("/img/maize_project.png")
+```{r, echo= FALSE, fig.align='center', out.width = "80%"}
+knitr::include_graphics("img/maize_project.png")
 ```
+
 
 -   Select **Version Control** and then **New Project**
 
 ```{r echo=FALSE, fig.align='center', out.width="100%"}
-knitr::include_graphics("/img/maize_version.png")
-knitr::include_graphics("/img/maize_git.png")
+knitr::include_graphics("img/maize_version.png")
+knitr::include_graphics("img/maize_git.png")
 ```
 
 -   Paste the link you just copied into the Repository URL box. Leave
