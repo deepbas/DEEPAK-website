@@ -113,6 +113,7 @@ Directions for both Windows & Mac here:
 
 -   Linux users can follow 6.4.
 
+![](/img/maize_gittab.png)
 
 ## Slack
 
