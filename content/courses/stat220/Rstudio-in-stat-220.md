@@ -39,25 +39,25 @@ server.
     window. Note: this is **not** the same as the **File** *menu*
     option.
 
-![](img/maize_files.png)
+![](/img/maize_files.png)
 
 -   **2.** Verify that you are in your **HOME** folder (should simply
     say Home right under the New Folder button). To navigate to your
     Home folder (if somehow you are not in it), click the **…** button
     (far right side of the **Files** tab) and enter a \~ (tilde) symbol
 
-![](img/maize_home.png)
+![](/img/maize_home.png)
 
 -   **3.** Click the **New Folder** button and name the folder
     **stat220**.
 
-![](img/maize_newfolder.png)
+![](/img/maize_newfolder.png)
 
 -   **4.** Click on this newly created (empty) **stat220** folder.
     Within the folder create another **New Folder** and name it
     **assignments**.
 
-![](img/maize_stat220.png)
+![](/img/maize_stat220.png)
 
 -   **5.** Within the **stat220** folder, create an **RStudio project**
     called **content** with the following steps:
@@ -65,26 +65,26 @@ server.
     -   **a.** Click the **Project** button in the upper righthand
         corner of your RStudio window and select **New Project…**.
 
-![](img/maize_project.png)
+![](/img/maize_project.png)
 
 -   **b.** Select **New Directory** and then **New Project**
 
-![](img/maize_newdirectory.png)
+![](/img/maize_newdirectory.png)
 
-![](img/maize_newdirectory2.png)
+![](/img/maize_newdirectory2.png)
 
 -   **c.** Enter **content** as the **Directory name** and use the
     **Browse** button to find your **stat220** folder. Then click
     **Create Project**.
 
-![](img/maize_create.png)
+![](/img/maize_create.png)
 
 -   **d.** You should now have a new folder called **content** in your
     **stat220** folder and this folder will contain an RStudio project
     `.Rproj`. Feel free to add subfolders to this **content** folder
     (e.g. slides, examples, etc).
 
-![](img/maize_Rproj.png)
+![](/img/maize_Rproj.png)
 
 **Warning: Do not** create an RStudio project in the main stat220 folder
 because it is not good practice to have RStudio projects in subfolders
@@ -107,12 +107,12 @@ that project folder. You can check which project you are in by checking
 the project name in the upper righthand part of your RStudio window.
 Here we see the **content** project is open:
 
-![](img/maize_content.png)
+![](/img/maize_content.png)
 
 Running R from an RStudio project sets your **working directory** to the
 project folder:
 
-![](img/maize_getwd.png)
+![](/img/maize_getwd.png)
 
 This allows for easy file path access to all files related to this
 project.
