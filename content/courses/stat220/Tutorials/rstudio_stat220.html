@@ -23,30 +23,16 @@ description: |
 <h2>File organization: Using maize</h2>
 <p>The server (online) version of Rstudio is run from a unix server. You can navigate this file system using unix commands, but I assume that most or all of you will just use Rstudio to access your files on this server.</p>
 <p><strong>1.</strong> In Rstudio, click the <strong>Files</strong> <em>tab</em> in the lower righthand window. Note: this is <strong>not</strong> the same as the <strong>File</strong> <em>menu</em> option.</p>
-<p><img src="img/maize_files.png" width="206" style="display: block; margin: auto;" /></p>
 <p><strong>2.</strong> Verify that you are in your <strong>HOME</strong> folder (should simply say Home right under the New Folder button). To navigate to your Home folder (if somehow you are not in it), click the <strong>…</strong> button (far right side of the <strong>Files</strong> tab) and enter a ~ (tilde) symbol</p>
-<p><img src="img/maize_home.png" width="217" style="display: block; margin: auto;" /></p>
-<p><strong>3.</strong> Click the <strong>New Folder</strong> button and name the folder <strong>stat220</strong>.
-<img src="img/maize_newfolder.png" width="212" style="display: block; margin: auto;" /></p>
+<p><strong>3.</strong> Click the <strong>New Folder</strong> button and name the folder <strong>stat220</strong>.</p>
 <p><strong>4.</strong> Click on this newly created (empty) <strong>stat220</strong> folder. Within the folder create another <strong>New Folder</strong> and name it <strong>assignments</strong>.</p>
-<p><img src="img/maize_stat220.png" width="105" style="display: block; margin: auto;" /></p>
 <p><strong>5.</strong> Within the <strong>stat220</strong> folder, create an <strong>RStudio project</strong> called <strong>content</strong> with the following steps:</p>
 <ul>
-<li><strong>a.</strong> Click the <strong>Project</strong> button in the upper right corner of your RStudio window and select <strong>New Project…</strong>.</li>
+<li><p><strong>a.</strong> Click the <strong>Project</strong> button in the upper right corner of your RStudio window and select <strong>New Project…</strong>.</p></li>
+<li><p><strong>b.</strong> Select <strong>New Directory</strong> and then <strong>New Project</strong></p></li>
+<li><p><strong>c.</strong> Enter <strong>content</strong> as the <strong>Directory name</strong> and use the <strong>Browse</strong> button to find your <strong>stat220</strong> folder. Then click <strong>Create Project</strong>.</p></li>
+<li><p><strong>d.</strong> You should now have a new folder called <strong>content</strong> in your <strong>stat220</strong> folder and this folder will contain an RStudio project <code>.Rproj</code>. Feel free to add subfolders to this <strong>content</strong> folder (e.g. slides, examples, etc).</p></li>
 </ul>
-<p><img src="img/maize_project.png" width="164" style="display: block; margin: auto;" /></p>
-<ul>
-<li><strong>b.</strong> Select <strong>New Directory</strong> and then <strong>New Project</strong></li>
-</ul>
-<p><img src="img/maize_newdirectory.png" width="50%" style="display: block; margin: auto;" /><img src="img/maize_newdirectory2.png" width="50%" style="display: block; margin: auto;" /></p>
-<ul>
-<li><strong>c.</strong> Enter <strong>content</strong> as the <strong>Directory name</strong> and use the <strong>Browse</strong> button to find your <strong>stat220</strong> folder. Then click <strong>Create Project</strong>.</li>
-</ul>
-<p><img src="img/maize_create.png" width="50%" style="display: block; margin: auto;" /></p>
-<ul>
-<li><strong>d.</strong> You should now have a new folder called <strong>content</strong> in your <strong>stat220</strong> folder and this folder will contain an RStudio project <code>.Rproj</code>. Feel free to add subfolders to this <strong>content</strong> folder (e.g. slides, examples, etc).</li>
-</ul>
-<p><img src="img/maize_Rproj.png" width="216" style="display: block; margin: auto;" /></p>
 <p><strong>Warning: Do not</strong> create an RStudio project in the main stat220 folder because it is not good practice to have RStudio projects in subfolders of another project (e.g. a project within a project is not recommended).</p>
 </div>
 <div id="file-organization-using-your-own-rstudio-install" class="section level2">
@@ -56,9 +42,7 @@ description: |
 <div id="rstudio-projects" class="section level2">
 <h2>RStudio projects</h2>
 <p>Once you’ve created a project, your R session should be running within that project folder. You can check which project you are in by checking the project name in the upper right part of your RStudio window. Here we see the <strong>content</strong> project is open:</p>
-<p><img src="img/maize_content.png" width="123" style="display: block; margin: auto;" /></p>
 <p>Running R from an RStudio project sets your <strong>working directory</strong> to the project folder:</p>
-<p><img src="img/maize_getwd.png" width="216" style="display: block; margin: auto;" /></p>
 <p>This allows for easy file path access to all files related to this project.</p>
 <p>To <strong>start</strong> a project, click on the <code>.Rproj</code> file or use the <strong>Open Project…</strong> option shown in step 5 above.</p>
 </div>

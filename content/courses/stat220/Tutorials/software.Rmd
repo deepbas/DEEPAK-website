@@ -6,7 +6,8 @@ description: |
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE, error = FALSE)
+options(knitr.graphics.error = FALSE)
 ```
 
 ## R/RStudio
@@ -81,7 +82,6 @@ RStudio:
     installing R and RStudio!
 
 
-
 ## Git and GitHub
 
 [Git](https://happygitwithr.com/big-picture.html#why-git) is version
@@ -114,15 +114,13 @@ Directions for both Windows & Mac here:
 -   Linux users can follow 6.4.
 
 
-
 ## Slack
 
 We will use Slack for all course communication. [Sign up for our course
 Slack team
 here](https://join.slack.com/t/stat220datasc-wmz5924/shared_invite/zt-110xuf0zq-0Ap9EaQAp46YiilE4Jvc~A)!
 You will need to create an account with a username, and log in to read
-and post. You can use Slack right from a [web
-browser](https://stat220-fa21.slack.com), or you can download a
+and post. You can download a
 standalone Slack application to your
 [Mac](https://slack.com/downloads/osx),
 [Windows](https://slack.com/downloads/windows),
@@ -149,7 +147,6 @@ Zoom video conferencing software. I recommend downloading the Zoom app
 for your operating system.
 
 
-
 ## LaTeX
 
 If you want to render R Markdown documents to PDFs, then you need to
@@ -164,10 +161,9 @@ install LaTeX. Below are the recommended installers for Windows and Mac:
 
 If you are using maize, then there is nothing you need to install.
 
-
 ## Acknowledgements {.appendix}
 
-This installation guide is based on the guide from stat545.com. 
+This installation guide is based on the guide from Adam Loy.
 
 ## Resuse {.appendix}
 

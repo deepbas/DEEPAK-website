@@ -6,6 +6,11 @@ description: |
 
 ## Key idea: Make a Stat220 folder
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval=FALSE, error = FALSE)
+options(knitr.graphics.error = FALSE)
+```
+
 There will be a lot of Rstudio content thrown your way this term, most in the form of .Rmd Markdown files. To stay organized, I *strongly* suggest you create a **stat220** folder that contains the following subfolders:
 
 - **stat220** folder
@@ -34,12 +39,10 @@ knitr::include_graphics("img/maize_home.png")
 ```
 
 
-
 **3.** Click the **New Folder** button and name the folder **stat220**. 
 ```{r echo=FALSE, fig.align='center'}
 knitr::include_graphics("img/maize_newfolder.png")
 ```
-
 
 
 **4.** Click on this newly created (empty) **stat220** folder. Within the folder create another **New Folder** and  name it **assignments**.
@@ -79,16 +82,12 @@ knitr::include_graphics("img/maize_create.png")
 knitr::include_graphics("img/maize_Rproj.png")
 ```
 
-
-
 **Warning: Do not** create an RStudio project in the main stat220 folder because it is not good practice to have RStudio projects in subfolders of another project (e.g. a project within a project is not recommended). 
-
 
 
 ## File organization: Using your own Rstudio install
 
 Create a folder called **stat220** somewhere on your computer. Within this folder create an **assignments** subfolder. Then complete **step 5** from above to create a **content** RStudio project folder.
-
 
 
 ## RStudio projects
@@ -110,7 +109,6 @@ This allows for easy file path access to all files related to this project.
 To **start** a project, click on the `.Rproj` file or use the **Open Project...** option shown in step 5 above. 
 
 
-
 ## Best practices  (or what not to do)
 
 - Never save files to a lab computer hard drive (e.g. desktop, downloads, etc). They will be erased when you log off. 
@@ -124,7 +122,6 @@ To **start** a project, click on the `.Rproj` file or use the **Open Project...*
 This installation guide is based on the guide from Katie St. Clair
 
 ## Reuse {.appendix}
-
 
 Text and figures are licensed under Creative Commons Attribution CC BY-NC 3.0.
 
