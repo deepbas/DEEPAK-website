@@ -14,9 +14,9 @@
     
     <item>
       <title>Using Rstudio in Stat 220</title>
-      <link>https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/rstudio-in-stat-220/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/tutorials/rstudio-in-stat-220/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/rstudio-in-stat-220/</guid>
       <description>&lt;p&gt;Key points&lt;/p&gt;
 &lt;p&gt;There will be a lot of Rstudio content thrown your way this term, most
 in the form of .Rmd Markdown files. To stay organized, I &lt;em&gt;strongly&lt;/em&gt;
@@ -360,9 +360,9 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     
     <item>
       <title>Cache credentials for RStudio and GitHub</title>
-      <link>https://deepbas.netlify.app/courses/stat220/tutorials/pat/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/pat/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/tutorials/pat/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/pat/</guid>
       <description>
 &lt;script src=&#34;https://deepbas.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
@@ -401,9 +401,9 @@ gitcreds_set()&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>GitHub Classroom Guide for Stat 220</title>
-      <link>https://deepbas.netlify.app/courses/stat220/tutorials/github_stat220/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/github_stat220/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/tutorials/github_stat220/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/github_stat220/</guid>
       <description>
 &lt;script src=&#34;https://deepbas.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
@@ -604,9 +604,9 @@ Commons License.&lt;/p&gt;
     
     <item>
       <title>Software in Stat 220</title>
-      <link>https://deepbas.netlify.app/courses/stat220/tutorials/software/</link>
+      <link>https://deepbas.netlify.app/courses/stat220/software/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/tutorials/software/</guid>
+      <guid>https://deepbas.netlify.app/courses/stat220/software/</guid>
       <description>
 &lt;script src=&#34;https://deepbas.netlify.app/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
