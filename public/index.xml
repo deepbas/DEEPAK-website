@@ -13,6 +13,19 @@
     </image>
     
     <item>
+      <title>Week 1 Summary</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week1/</link>
+      <pubDate>Thu, 06 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week1/</guid>
+      <description>&lt;h2 id=&#34;wednedsay-0105&#34;&gt;Wednedsay, 01/05&lt;/h2&gt;
+&lt;p&gt;Students are expected to open a GitHub account, verify it, and connect RStudio with that account using personal access token (PAT) credential methods. Once this step is finished, students should clone a git repository on their local machines using git version control methods, modify the files, save, commit, and push the changes to the remote repository associated with their GitHub username.&lt;/p&gt;
+&lt;h2 id=&#34;friday-0107&#34;&gt;Friday, 01/07&lt;/h2&gt;
+&lt;h2 id=&#34;lecture-slides&#34;&gt;Lecture Slides&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day1.pdf&#34; target=&#34;_blank&#34;&gt;Day 1 Slides&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Assignments in Stat 220</title>
       <link>https://deepbas.netlify.app/courses/stat220/homework-in-stat-220/</link>
       <pubDate>Wed, 05 Jan 2022 00:00:00 +0000</pubDate>
@@ -1039,7 +1052,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-829615743&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-453276198&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1049,7 +1062,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-829615743&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-453276198&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
