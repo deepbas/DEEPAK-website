@@ -16,9 +16,9 @@ Welcome!
 
 ### Before next class
 
-Students are expected to open a GitHub account, verify it, and connect RStudio with that account using personal access token (PAT) credential methods. Once this step is finished, students should clone a git repository on their local machines using git version control methods, modify the files, save, commit, and push the changes to the remote repository associated with their GitHub username.
+Students are expected to open a GitHub account, verify it, and connect RStudio with that account using personal access token (PAT) credential methods. Once this step is finished, students should clone a git repository on their local machines using git version control methods, modify the files, save, commit, and push the changes to the remote repository associated with their GitHub username. Here is one useful video about Git and Github, [Introduction to Git and Github](https://www.youtube.com/watch?v=BCQHnlnPusY).
 
-Also, please read through all the course set-up modules and test your R-Skills by doing the test-assignment named hw0-username accessible here, [Stat 220 Organization GitHub page](https://github.com/stat220/). If you could comfortably do the R component of this test assignment, then you are in pretty good shape. If not then, you need to spend more time practicing R. If you can successfully push your modifications, then you should be set up for this course, technically.
+Also, please read through all the course set-up modules and test your R skills by doing the test-assignment named hw0-username accessible here, [Stat 220 Organization GitHub page](https://github.com/stat220/). If you could comfortably do the R component of this test assignment, then you are in pretty good shape. If not then, you need to spend more time practicing R. In addition, if you can successfully push your modifications, then you should be set up for this course, technically.
 
 ## Friday, 01/07
 
