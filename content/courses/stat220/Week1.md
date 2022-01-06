@@ -1,5 +1,5 @@
 ---
-title: Week 1 Summary
+title: Week 1 (In progress!)
 linktitle: Week 1
 lastmod: "2022-01-06"
 draft: false  
