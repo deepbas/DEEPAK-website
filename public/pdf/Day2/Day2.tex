@@ -1,0 +1,485 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+  ignorenonframetext,
+]{beamer}
+\title{Introduction to Data Science}
+\author{Stat 220 Bastola}
+\date{2022-01-06}
+
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usetheme[]{metropolis}
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Introduction to Data Science},
+  pdfauthor={Stat 220 Bastola},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\def\begincols{\begin{columns}}
+\def\begincol{\begin{column}}
+\def\endcol{\end{column}}
+\def\endcols{\end{columns}}
+
+\setbeamercolor{structure}{fg=blue!55!green}
+\usepackage{graphicx}
+\usepackage{mathabx}
+\usepackage{xcolor}
+
+
+%% change fontsize of R code
+\let\oldShaded\Shaded
+\let\endoldShaded\endShaded
+\renewenvironment{Shaded}{\tiny\oldShaded}{\endoldShaded}
+
+%% change fontsize of output
+\let\oldverbatim\verbatim
+\let\endoldverbatim\endverbatim
+\renewenvironment{verbatim}{\tiny\oldverbatim}{\endoldverbatim}
+
+%\usepackage[sfdefault]{FiraSans}
+
+% declare overall beamer theme to use as baseline
+\usetheme{default}
+
+
+% make code-output smaller
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{fontsize=\tiny,commandchars=\\\{\}}
+
+% make console-output smaller:
+  \makeatletter
+\def\verbatim{\tiny\@verbatim \frenchspacing\@vobeyspaces \@xverbatim}
+\makeatother
+
+
+\setlength{\parskip}{1pt}
+
+
+\setlength{\OuterFrameSep}{0pt}
+\makeatletter
+\preto{\@verbatim}{\topsep=1pt \partopsep=1pt }
+\makeatother
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{Something about me}
+\protect\hypertarget{something-about-me}{}
+\begincols
+  \begincol{.60\textwidth}
+\begin{itemize}
+    \item First year at Carleton
+    \item Originally from Nepal
+    \item PhD in Applied Statistics from UC-Riverside
+    \item Diverse education background
+    \item Avid learner and traveler
+\end{itemize}
+
+\endcol
+\begincol{.40\textwidth}
+
+\endcol \endcols
+\end{frame}
+
+\begin{frame}{COVID-19 related policies}
+\protect\hypertarget{covid-19-related-policies}{}
+\begin{itemize}
+\item Stay home when sick. (Even if you don’t have COVID-19, you should stay home if you aren’t feeling well.)
+\item Follow \href{https://www.cdc.gov/coronavirus/2019-ncov/vaccines/fully-vaccinated.html}{CDC} on testing, quarantine, and isolation.
+\item Follow the College mask-wearing policy
+\end{itemize}
+\end{frame}
+
+\begin{frame}{What is data science?}
+\protect\hypertarget{what-is-data-science}{}
+\textbf{Data Science}:
+
+\begin{itemize}
+\tightlist
+\item
+  the science of extracting meaningful information from data
+\end{itemize}
+
+\vspace*{0.7in}
+
+\begin{quote}
+Computer science is more than just programming; it is the creation of
+appropriate abstractions to express computational structures and the
+development of algorithms that operate on those abstractions. Similarly,
+statistics is more than just collections of estimators and tests; it is
+the interplay of general notions of sampling, models, distributions, and
+decision-making. {[}Data science{]} is based on the idea that these
+styles of thinking support each other. - Michael Jordan, UC Berkeley
+\end{quote}
+\end{frame}
+
+\begin{frame}{Data Scientist}
+\protect\hypertarget{data-scientist}{}
+The ``data scientist'' mashup:
+
+\begin{itemize}
+\tightlist
+\item
+  ``The definitions of data science are converging around the
+  intersection of mathematics, statistics, and computer science---with
+  some area of application (e.g., finance, biology, political
+  science).''
+\item
+  ``I have heard data scientists referred to equally as
+
+  \begin{itemize}
+  \tightlist
+  \item
+    `the computer scientist who was the best of his peers in his
+    statistics courses' and
+  \item
+    `the statistician who was the best of his peers in his computer
+    science courses.'''
+  \end{itemize}
+\end{itemize}
+
+\begin{quote}
+-Jennifer Lewis Priestley
+\href{http://magazine.amstat.org/blog/2016/01/01/data-science-the-evolution-or-the-extinction-of-statistics/}{Data
+Science: The Evolution or the Extinction of Statistics?}
+\end{quote}
+\end{frame}
+
+\begin{frame}{Data Science Education}
+\protect\hypertarget{data-science-education}{}
+\begin{itemize}
+\tightlist
+\item
+  Many schools now offer
+  \href{http://datascience.community/colleges}{degrees} in some form of
+  data science (data analytics)
+\item
+  A B.S. (or Masters) in Data Science includes courses like:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Intro Stats, Intro Programming, Intro Data Science
+  \item
+    Regression (modeling)
+  \item
+    Machine Learning, Data mining
+  \item
+    Database management
+  \item
+    Data visualization
+  \item
+    Big Data
+  \item
+    Applications (econ, poli sci, bio)
+  \item
+    Ethics
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Stat 220: Data Science}
+\protect\hypertarget{stat-220-data-science}{}
+Focus on the ``soup to nuts'' approach to problem solving
+
+\begin{itemize}
+\tightlist
+\item
+  data wrangling
+
+  \begin{itemize}
+  \tightlist
+  \item
+    reshaping, cleaning, gathering
+  \end{itemize}
+\item
+  learning from data
+
+  \begin{itemize}
+  \tightlist
+  \item
+    EDA tools
+  \item
+    statistical learning methods
+  \item
+    network data, spatial data
+  \end{itemize}
+\item
+  communication
+
+  \begin{itemize}
+  \tightlist
+  \item
+    reproducibility
+  \item
+    effective visualization
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{How to make friends and succeed in Data Science?}
+\protect\hypertarget{how-to-make-friends-and-succeed-in-data-science}{}
+\begin{enumerate}
+\tightlist
+\item
+  \emph{Actively follow along!} RMarkdown documents will be provided for
+  you each week - use these to take notes and run code ``live'' in
+  class.
+\item
+  \emph{Ask questions!} This is new for everyone, no question is a bad
+  question.
+\item
+  \emph{When you don't know if something will work, try it!}
+  Experimentation is key in this class.
+\item
+  \emph{BRING YOUR LAPTOP.} Charged, everyday.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Tell me something about yourself}
+\protect\hypertarget{tell-me-something-about-yourself}{}
+\begincols
+  \begincol{.60\textwidth}
+\begin{itemize}
+\item Your name?
+\item Gender Pronouns?
+\item Why are you interested in data science?
+\item Rate your R Skills from 1 to 10.
+\end{itemize}
+\endcol
+\begincol{.40\textwidth}
+
+\endcol \endcols
+\end{frame}
+
+\begin{frame}[fragile]{Class Instruction}
+\protect\hypertarget{class-instruction}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Main Course Webpage for Instruction}
+\end{Highlighting}
+\end{Shaded}
+
+\center{\url{https://deepbas.io/courses/stat220/}}
+
+\begin{itemize}
+\tightlist
+\item
+  Bookmark this page
+\item
+  Should be checked multiple times a day
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Collaborative notes}
+\protect\hypertarget{collaborative-notes}{}
+\begin{itemize}
+\item Each day, two of you will collaborate on notes to share with the class
+\item Creates a crowd-sourced version of what we do in class
+\item Helps anyone who needs to miss class
+\item You'll do this 3x throughout the course
+\item \href{https://drive.google.com/drive/folders/1xgSlButXtTHNvZCi9QkhOv3YSBDeB1UH?usp=sharing}{Sign up here}
+\item Notes are due 24 hours after class, count as a HW assignment
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Necessary skills to be mastered}
+\protect\hypertarget{necessary-skills-to-be-mastered}{}
+\begin{itemize}
+\item
+  programming with data
+\item
+  statistical modeling
+\item
+  domain knowledge
+\item
+  communication
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Why aren't we learning Python?}
+\protect\hypertarget{why-arent-we-learning-python}{}
+When Hadley Wickham was asked ``Why R?''
+
+\vspace*{0.5in}
+
+\begin{quote}
+And the second reason, which is both a huge strength of R and a bit of a
+weakness, is that R is \textbf{not just a programming language}. It was
+designed from day 1 to be an \textbf{environment that can do data
+analysis}. So, compared to the other options like Python, you can get up
+and running in R doing data science, learning much, much less about
+programming to get started. And that generally makes it like
+\textbf{easier to get up and running if you don't have formal training
+in computer science or software engineering}.
+\end{quote}
+
+\begin{quote}
+-Hadley Wickham,
+\href{https://www.r-bloggers.com/advice-to-young-and-old-programmers-a-conversation-with-hadley-wickham/}{Advice
+to Young (and Old) Programmers: A Conversation with Hadley Wickham}
+\end{quote}
+\end{frame}
+
+\begin{frame}[fragile]{Using R Markdown for data science}
+\protect\hypertarget{using-r-markdown-for-data-science}{}
+\begin{itemize}
+\tightlist
+\item
+  You will use \href{http://rmarkdown.rstudio.com/lesson-1.html}{R
+  Markdown} for all work in this class
+\item
+  A Markdown (\texttt{.Rmd}) file contains
+
+  \begin{itemize}
+  \tightlist
+  \item
+    R code
+  \item
+    written answers, description of results, report, etc.
+  \end{itemize}
+\item
+  The Markdown file is \texttt{knit} to generate an output document
+
+  \begin{itemize}
+  \tightlist
+  \item
+    pdf, html, word
+  \item
+    presentations (html, beamer pdf)
+  \item
+    dashboards, interactive graphics (html)
+  \end{itemize}
+\item
+  Markdown is designed for \textbf{reproducibility}!
+\item
+  The slides I produce for this class are R Markdown's
+  \href{http://rmarkdown.rstudio.com/beamer_presentation_format.html}{\texttt{beamer}}
+\end{itemize}
+\end{frame}
+
+\end{document}
