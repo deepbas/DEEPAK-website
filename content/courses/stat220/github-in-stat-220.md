@@ -204,7 +204,7 @@ When you are working together on a Github project, you should commit and push yo
 
 If you get an error about conflict after pulling or pushing, don't freak out! This can happen if you edit a file (usually an .Rmd or .R file) in a location that was also changed by a teammate. When this happens you should attempt to fix the **merge conflict**. Take a look at [this resource site](http://r-pkgs.had.co.nz/git.html#git-pull) and try to fix the merge conflict in Rstudio. Katie also created a diagram shown below that "explains" how and when conflicts will likely happen and how you can resolve the problems in Rstudio. If that doesn't work contact me!
 
-![My conflict resolution diagram!](/img/ConflictResolution.JPG "fig:")
+![My conflict resolution diagram!](/img/ConflictResolution.JPG)
 
 
 ## Additional resources
