@@ -221,8 +221,7 @@ If you get an error about conflict after pulling or pushing, don't freak out! Th
 ## Acknowledgements {.appendix}
 
 Most of this content in this guide was taken from
-<https://github.com/jfiksel/github-classroom-for-students> and edited
-for our classroom use. 
+<https://github.com/jfiksel/github-classroom-for-students>, edited for our classroom use by Katie St. Clair.
 
 ## Reuse {.appendix}
 
