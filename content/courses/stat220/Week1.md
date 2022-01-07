@@ -38,6 +38,7 @@ Please read [GW RMarkdown](https://r4ds.had.co.nz/r-markdown.html#r-markdown), [
 
 - Link to [In Class Activity](https://github.com/stat220/01-R-markdown_example) 
 
+{{% staticref "pdf/Day2.pdf" "newtab" %}}Day 2 Slides{{% /staticref %}}
 
 
 Optional (if you need more review):
