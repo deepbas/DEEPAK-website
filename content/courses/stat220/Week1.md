@@ -26,7 +26,12 @@ Also, please read through all the course set-up modules and test your R skills b
 
 ### Before Class
 
-Please read [GW RMarkdown](https://r4ds.had.co.nz/r-markdown.html#r-markdown), [GW Chapter 1](https://r4ds.had.co.nz/introduction.html) and [GW Chapter 20](https://r4ds.had.co.nz/vectors.html) to prepare for class.
+{{% callout note %}}
+Please read [GW RMarkdown](https://r4ds.had.co.nz/r-markdown.html#r-markdown), [GW Chapter 1](https://r4ds.had.co.nz/introduction.html) and [GW Chapter 20](https://r4ds.had.co.nz/vectors.html) to prepare for the class.
+{{% /callout %}}
+
+
+
 
 Optional (if you need more review):
 

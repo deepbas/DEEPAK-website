@@ -9,5 +9,4 @@ weight: 30
 ---
 
 
-
 {{% staticref "cheatsheets/rmarkdown-2.0.pdf" "newtab" %}}R markdown Cheatsheet{{% /staticref %}}
