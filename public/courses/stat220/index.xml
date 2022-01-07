@@ -31,6 +31,21 @@
     Please read &lt;a href=&#34;https://r4ds.had.co.nz/r-markdown.html#r-markdown&#34;&gt;GW RMarkdown&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/introduction.html&#34;&gt;GW Chapter 1&lt;/a&gt; and &lt;a href=&#34;https://r4ds.had.co.nz/vectors.html&#34;&gt;GW Chapter 20&lt;/a&gt; to prepare for the class.
   &lt;/div&gt;
 &lt;/div&gt;
+&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;R-markdown and Reproducible workflows&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Getting up and running with R markdown&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Basic R-codes practice&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Link to &lt;a href=&#34;https://github.com/stat220/01-R-markdown_example&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Optional (if you need more review):&lt;/p&gt;
 &lt;p&gt;If it has been a LONG time since you took STAT 120 or used R, then this crash course is helpful: &lt;a href=&#34;https://rstudio.cloud/learn/primers/1.2&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;programming basics primer from RStudio&lt;/a&gt;. These resources are also useful if you feel like you are starting from scratch: &lt;a href=&#34;https://ismayc.github.io/rbasics-book/3-rstudiobasics.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;R and RStudio Basics&lt;/a&gt; and &lt;a href=&#34;https://ismayc.github.io/rbasics-book/4-rmarkdown.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;R Markdown&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;See you in class!&lt;/p&gt;

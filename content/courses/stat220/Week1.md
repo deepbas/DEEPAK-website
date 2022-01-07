@@ -30,6 +30,13 @@ Also, please read through all the course set-up modules and test your R skills b
 Please read [GW RMarkdown](https://r4ds.had.co.nz/r-markdown.html#r-markdown), [GW Chapter 1](https://r4ds.had.co.nz/introduction.html) and [GW Chapter 20](https://r4ds.had.co.nz/vectors.html) to prepare for the class.
 {{% /callout %}}
 
+### In Class
+
+- R-markdown and Reproducible workflows
+- Getting up and running with R markdown
+- Basic R-codes practice
+
+- Link to [In Class Activity](https://github.com/stat220/01-R-markdown_example) 
 
 
 
