@@ -44,5 +44,4 @@ Optional (if you need more review):
 
 If it has been a LONG time since you took STAT 120 or used R, then this crash course is helpful: [programming basics primer from RStudio](https://rstudio.cloud/learn/primers/1.2). These resources are also useful if you feel like you are starting from scratch: [R and RStudio Basics](https://ismayc.github.io/rbasics-book/3-rstudiobasics.html) and [R Markdown](https://ismayc.github.io/rbasics-book/4-rmarkdown.html).
 
-See you in class!
 

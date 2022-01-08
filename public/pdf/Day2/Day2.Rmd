@@ -397,7 +397,7 @@ There are a total of
 
 .right-narrow[
 
-In what year were there highest number of babies born with the name `Aimee`?
+In what year were there highest proportion of babies born with the name `Aimee`?
 
 ``` `r knitr::inline_expr(' filtered_names$year[which.max(filtered_names$prop)]')` ```
 
