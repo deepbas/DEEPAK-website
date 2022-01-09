@@ -25,7 +25,7 @@
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;It is useful to go over this interesting video on &lt;a href=&#34;https://www.youtube.com/watch?v=FdVy57oGJuc&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Basics of ggplot2&lt;/a&gt; before class.&lt;/p&gt;
-&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/FdVy57oGJuc&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/FdVy57oGJuc?start=43&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
 </description>
     </item>
     
@@ -1102,7 +1102,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-192634785&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-492716853&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1112,7 +1112,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-192634785&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-492716853&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

@@ -18,4 +18,4 @@ Please read [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#introd
 
 It is useful to go over this interesting video on [Basics of ggplot2](https://www.youtube.com/watch?v=FdVy57oGJuc) before class.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/FdVy57oGJuc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/FdVy57oGJuc?start=43" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
