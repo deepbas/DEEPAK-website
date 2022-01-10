@@ -5,7 +5,7 @@ author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
 output:
   xaringan::moon_reader:
-    css: [default, metropolis, metropolis-fonts]
+    css: [default, metropolis, metropolis-fonts, "custom.css"]
     lib_dir: libs
     nature:
       ratio: '16:9'
@@ -84,6 +84,10 @@ library(tidyverse)
 
 ```{css, echo = FALSE}
 .red{ color: red;}
+.remark-code, .remark-inline-code {
+    font-family: 'Fira Mono', 'Source Code Pro', monospace;
+}
+
 ```
 
 
@@ -96,7 +100,7 @@ library(tidyverse)
 
 --
 
-- We usually store objects in the workspace using the assignment **operator** `<-`
+- We usually store objects in the workspace using the assignment **operator** '<-'
 
 
 ```{r,  tidy=FALSE}

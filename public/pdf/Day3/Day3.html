@@ -10,6 +10,7 @@
     <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
     <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
     <script src="libs/countdown-0.3.5/countdown.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -80,6 +81,10 @@ class: center, top, my-title, title-slide
 
 &lt;style type="text/css"&gt;
 .red{ color: red;}
+.remark-code, .remark-inline-code {
+    font-family: 'Fira Mono', 'Source Code Pro', monospace;
+}
+
 &lt;/style&gt;
 
 
@@ -92,7 +97,7 @@ class: center, top, my-title, title-slide
 
 --
 
-- We usually store objects in the workspace using the assignment **operator** `&lt;-`
+- We usually store objects in the workspace using the assignment **operator** '&lt;-'
 
 
 
@@ -716,7 +721,7 @@ my.list &lt;- list(myVec=x, myDf=x.df, myString=c("hi","bye"))
 - What data type is `c(x,NA)`?  What data type is `c(x,"NA")`?
 
 
-<div class="countdown" id="timer_61dc68f1" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61dc6d41" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -739,7 +744,7 @@ class: action
 - Why `dim(x.mat[1:2,1])` return `NULL` while `dim(x.mat[1:2,1:2])` returns a dimension?
 
 
-<div class="countdown" id="timer_61dc6590" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61dc6dd0" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 ---
@@ -754,7 +759,7 @@ class: action
 - What class of object does the command `my.list[[3]]` return?
 - What class of object does the command `unlist(my.list)` return? Why are all the entries `character`s?
 
-<div class="countdown" id="timer_61dc66bb" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61dc6e2c" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -766,7 +771,7 @@ class: action
 - In what year were highest number of babies were named `Alex` in Minnesota?
 
 
-<div class="countdown" id="timer_61dc6584" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61dc6d89" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 ---
@@ -864,7 +869,7 @@ babynames_MN_John &lt;- babynames %&gt;% filter(state=="MN",  name == "John")
 - Repeat the above steps with babies named `John` from Minnesota or Michigan.
 
 
-<div class="countdown" id="timer_61dc6734" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61dc6afc" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
