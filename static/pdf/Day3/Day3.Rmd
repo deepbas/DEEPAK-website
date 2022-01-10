@@ -1,5 +1,5 @@
 ---
-title: "R Basics Continued"
+title: "Data Objects and Basics Data Visualization"
 subtitle: "<br/> STAT 220"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -16,585 +16,729 @@ output:
       countIncrementalSlides: false
 ---
 
+<style type="text/css">
+
+.hljs-github .hljs {
+    background: #e5e5e5;
+}
+
+.inline-c, remark-inline-code {
+   background: #e5e5e5;
+   border-radius: 3px;
+   padding: 4px;
+   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+}
+
+.yellow-h{
+   background: #ffff88;
+}
+
+.out-t, remark-inline-code {
+   background: #9fff9f;
+   border-radius: 3px;
+   padding: 4px;
+   
+}
+
+.pull-left-c {
+    float: left;
+    width: 58%;
+    
+}
+
+.pull-right-c {
+    float: right;
+    width: 38%;
+    
+}
+
+.medium {
+    font-size: 75%
+    
+}
+
+.small {
+    font-size: 50%
+    }
+
+.action {
+    background-color: #f2eecb;
+  
+}
+
+</style>
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
                       dev = 'svg',
                       collapse = TRUE)
-```
 
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+
+```
 
 ```{css, echo = FALSE}
-.red { color: red; }
-
+.red{ color: red;}
 ```
 
-# Replicability vs. Reproducibility
 
-- Scientific findings should be **replicatable**
+# Objects in R
 
-    * Asha repeats Bob's lab experiment and gets different data but makes the same conclusions as Bob
-    
+- Anything created or imported into R is called an .yellow-h[object]
+<br>
+--
+  - vectors, data frames, matrices, lists, functions, lm, ...
+
 --
 
-- Statistical findings should be **reproducible**
+- We usually store objects in the workspace using the assignment **operator** `<-`
 
-    * Asha takes Bob's data and gets the exact same statistical results as Bob
+
+```{r,  tidy=FALSE}
+x <- c(8,2,1,3)
+ls()
+```
+
 --
 
-- Statistical findings should be *easily* **reproducible**
+- The `=` operator also does assignment, but it is mainly used for argument specification inside a function.
 
-    * Asha only needs to hit one button to reproduce Bob's results.
-    
-    * Asha only needs to hit one button to reproduce Bob's analysis on a *new data set*
+--
+
+```{r,  tidy=FALSE}
+y <- rnorm(3, mean = 10, sd = 2)
+ls()
+```
+
+--
+
+- .red[Please don't use `=` for assignment!!!]
 
 
 ---
 
+# Data structures and types
 
-# Reproducible data science
+.pull-left[
 
+- Every object is a **vector** 
 
-### Short-term impact
+- `NULL` = empty object (vector of length 0)
 
-- Are the tables and figures reproducible from the code and data?
+- `typeof()`: tells us about storage of data
+    - Logical: TRUE or FALSE 
+    - Integer and double
+    - Character: string ("") of text
+    - List
 
-- Does the code work as intended?
-
-- In addition to what was done, is it clear **why** it was done? 
-(e.g., how were parameter settings chosen?)
-
---
-
-### Long-term impact
-
-- Can the code be used for other data?
-
-- Can you extend the code to do other things?
-
----
-
-
-# Making your work reproducible
-
-* You need a scriptable program (e.g. R, Python)
-
-    * forces you to record the linear sequence of events in an analysis
-    
-    * avoid point-n-click!
-    
-    * avoid any "by hand" actions (e.g. data cleaning in Excel)
+]    
 
 --
 
-.red[But scriptable doesn't always mean reproducible!!]
+.pull-right[
+
+```{r,  tidy=FALSE}
+x <- c(8,2,1,3)
+typeof(x)  # type of storage mode 
+typeof(c(8L,2L,1L,3L))  # adding L forces integer type
+x == 1
+typeof(x == 1)
+```
+
+]
+
+
+---
+
+# Data structures and types
+
+.pull-left[
+
+- Every object is a **vector** 
+
+- `NULL` = empty object (vector of length 0)
+
+- `typeof()`: tells us about storage of data
+    - Logical: TRUE or FALSE 
+    - Integer and double
+    - Character: string ("") of text
+    - List
+
+`class` further describes the object
+
+
+]    
+
+
+.pull-right[
+
+```{r,  tidy=FALSE}
+x <- c(8,2,1,3)
+typeof(x)  # type of storage mode 
+typeof(c(8L,2L,1L,3L))  # adding L forces integer type
+x == 1
+typeof(x == 1)
+```
+
+<br>
+
+```{r, tidy = FALSE}
+class(x)   # object class is numeric
+```
+
+]
+
+---
+
+# Object Oriented Programming
+
+- In R, commands care about object class and type
 
 --
 
-* You should make your workflow  transparent and easily followed, $\rightarrow$ R Markdown
+  - Ex: the default `plot` command wants a vector of data or a formula to form a scatterplot
+  
+--
 
-    * meaningful file and variable names
-    
-    * don't overly complicate code, use packages when only when needed (the fewer dependencies the better)
-    
-    * only relevant code included
-    
-    * **written description of your analysis process and results alongside your code**
+```{r, eval=FALSE}
+plot(y ~ x, data= mydata) # makes scatterplot if x and y numeric
+```
 
+--
 
----
-background-image: url(`r xaringan:::karl`)
-background-size: cover
-class: center, bottom, inverse
+- but if you give `plot` a `lm` regression object it will produce a set of diagnostic plots for that regression model.
 
-# Karl Broman’s [Steps toward Reproducible Research](https://www.biostat.wisc.edu/~kbroman/presentations/repro_research_JSM2016_withnotes.pdf)
+```{r, eval=FALSE}
+my_lm <- lm(y ~ x, data= mydata)  # make a linear model
+plot(my_lm)  # makes multiple diagnostic plots
+```
 
----
+--
 
+- In your **Console** window, type `?plot` then hit **tab**. 
 
-# Reproducibility using R markdown
+> ?plot
 
-- Karl Broman paraphrasing Mark Holder: 
-
-    + **Your closest collaborator is you six months ago, but you don’t reply to emails.**
-    
-    + You need to document your workflow for both yourself and current/future collaborators
-    
-
-
-- R Markdown is a literate programming language that integrates R code, results and write-up.
-
-    + literate = it is readable and easy to learn
-
-
- <img src="http://r4ds.had.co.nz/images/RMarkdownFlow.png" width=600>
+    - see `plot`, `plot.acf`, ...
 
 ---
 
+# Atomic Vectors and lists
 
-# Assignment-0 Recap
+- R uses two types of vectors to store info
+    - **atomic vectors**: all entries have the same data type 
+    - **lists**: entries can contain other objects that can differ in data type
+    
+- All vectors have a length
 
-```{r, echo=FALSE,  message=FALSE, comment=FALSE}
-#install.packages("babynames")
-library(babynames)
+--
+
+```{r, tidy = FALSE}
+x    # atomic vector
+
+length(x)
+```
+
+--
+
+```{r}
+
+x_list <- list(x, 1, "a")  # list
+
+length(x_list)
+```
+
+---
+
+# Atomic Vectors: Matrices
+
+- You can add **attributes**, such as **dimension**, to vectors
+- A **matrix** is a 2-dimensional vector containing entries of the same type
+
+--
+
+.pull-left[
+
+```{r}
+x_mat <- matrix(x, nrow = 2, byrow = TRUE)
+x_mat
+attributes(x_mat)
+```
+
+
+```{r}
+typeof(x_mat)   # type of entries
+class(x_mat)   # info about object
+```
+
+]
+
+--
+.pull-right[
+
+- or you can bind vectors of the same length to create columns or rows:
+```{r}
+x_mat2 <- cbind(x, 2*x)
+x_mat2
+```
+
+
+]
+
+
+---
+
+# Lists: Data frames 
+
+- A **data frame** is a list of atomic vectors of the same length, but not necessarily the same data type
+- the `babynames` data frame has columns that are `integer` and `character` types
+
+--
+
+```{r}
+babynames <- `read.csv`("https://raw.githubusercontent.com/deepbas/statdatasets/main/baby-names-by-state.csv")
+class(babynames)
+typeof(babynames)
+glimpse(babynames)
+```
+
+---
+
+# Coercion and the factor class
+
+- Entries in atomic vectors must be the same data type
+- R will default to the most complex data type if more than one type is given
+
+--
+
+```{r}
+y <- c(1, 2, "a")
+```
+
+--
+
+```{r}
+typeof(y)
+y
+```
+
+--
+
+- This example was **implicit coercion**
+
+--
+
+- **Explicit coercion** intentionally forces a data type that is different from the "default" type
+```{r}
+y <- as.character(c(1,2,3))
+```
+
+```{r, tidy = TRUE}
+typeof(y)
+y
+```
+
+---
+
+#  Coercion and the factor class
+
+- Logical values coerced into 0 for `FALSE` and 1 for `TRUE` when applying math functions
+
+```{r}
+x <- c(8,2,1,3)
+x >= 5  # which entries >= 5?
+sum(x >= 5)  # how many >=5 ?
+```
+
+- What will `mean` of a logical vector measure?
+
+```{r, eval = FALSE}
+mean(x >= 5) 
+```
+
+--
+
+
+```{r, echo=FALSE}
+mean(x >= 5) 
+```
+
+---
+
+# Data types: factors 
+
+- Factors are a class of data that are stored as **integers**
+
+```{r}
+x_fct <- as.factor(c("yes", "no", "no"))
+
+class(x_fct)
+typeof(x_fct)
+```
+
+--
+
+- The attribute `levels` is a character vector of possible values
+    - Values are stored as the integers (1=first `level`, 2=second `level`, etc)
+    - Levels are ordered alphabetically/numerically (unless specified otherwise)
+    
+--
+
+```{r}
+str(x_fct)
+levels(x_fct)
+```
+---
+
+# Subsetting: Atomic Vector
+
+- subset with `[]` by referencing index value (from 1 to vector length):
+
+```{r}
+x
+x[c(4, 2)]  # get 4th and 2nd entries
+```
+
+--
+
+- subset by omitting entries
+```{r}
+x[-c(4, 2)]  # omit 4th and 2nd entries
+```
+
+--
+
+- subset with a logical vector
+```{r}
+x[c(TRUE, FALSE, TRUE, FALSE)]  # get 1st and 3rd entries
+```
+
+
+---
+
+# Subsetting: Matrices
+
+- access entries using subsetting `[row,column]`
+```{r}
+x_mat2
+```
+
+--
+
+```{r}
+x_mat2[, 1] # first column
+```
+
+--
+
+```{r}
+x_mat2[1:2, 1] # first 2 rows of first column
+```
+
+--
+
+- .yellow-h[R doesn't always preserve class]:  
+
+```{r}
+class(x_mat2[1,])  # one row (or col) is no longer a matrix (1D)
+```
+
+---
+
+# Subsetting: Data frames
+
+- you can access entries like a matrix:
+
+```{r}
+x_df <- data.frame(x = x, double_x = x*2)
+x_df
+```
+
+--
+
+```{r}
+x_df[, 1]  # first column, all rows
+```
+
+--
+
+```{r}
+class(x_df[, 1])  # first column is no longer a data frame
+```
+
+--
+
+- One column of a data frame is no longer a data frame 
+
+---
+
+# Subsetting: Data frames 
+
+.pull-left[
+- or access columns with `$`
+```{r}
+x_df$x  # get variable x column
+```
+
+
+
+- you can also use column names to subset:
+```{r}
+# get 2 rows of Name and Sex
+#babynames[1:2, c("name", "sex")] 
+```
+
+]
+
+--
+
+.pull-right[
+
+- Recall: a **list** is a vector with entries that can be different object types
+```{r}
+my_list <- list(myVec = x, 
+                myDf = x_df, 
+                myString = c("hi", "bye"))
+my_list
+```
+
+
+]
+
+---
+
+# Subsetting: Lists 
+
+.pull-left[
+
+- Like a data frame, can use the `$` to access **named** objects stored in the list
+  - E.g.: `my_list$myDf` return the **data frame** `myDf` 
+
+```{r}
+my_list$myDf
+class(my_list$myDf)
+```
+
+]
+
+--
+
+.pull-right[
+
+- one `[]` operator gives you the object at the given location but preserves the list type
+  - `my_list[2]` return a **list** of length one with entry `myDf` 
+  
+```{r}
+my_list[2]
+```
+
+
+```{r}
+str(my_list[2])
+```
+
+]
+
+---
+
+# Subsetting: Lists 
+
+- the double  `[[]]` operator  gives you the object stored at that location (equivalent to using `$`)
+  - `my_list[[2]]` or `my_list[["myDf"]]` return the **data frame** `myDf` 
+
+```{r}
+my_list[[2]]
+str(my_list[[2]])
+```
+
+---
+class: action
+
+# Your Turn
+Please git clone the repository [02-Data-Objects-Viz](https://github.com/stat220/02-DataObj_Viz_Activity) to your local folder.
+
+````md
+`r ''````{r}
+babynames <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/baby-names-by-state.csv")
+x <- c(3,6,9,5,1)
+x.mat <- cbind(x, 2*x)
+x.df <- data.frame(x=x,double.x=x*2)
+my.list <- list(myVec=x, myDf=x.df, myString=c("hi","bye"))
+
+```
+````
+
+### Question 1: data types
+
+- What data type is `x`? What data type is `babynames$number`? 
+- What data type is `c(x, babynames$year)`?
+- What data type is `c(x,NA)`?  What data type is `c(x,"NA")`?
+
+
+`r countdown(minutes = 3, seconds = 00, top = 1, color_background = "inherit")`
+
+
+
+---
+
+class: action
+
+# Your Turn
+
+### Question 2: Subsetting and coercion
+
+- How can we reverse the order of entries in `x`?
+- What does `which(x < 5)` equal?
+- What does `sum(c(TRUE,FALSE,FALSE,FALSE, TRUE))` equal?
+- What does `sum(x[c(TRUE,FALSE,FALSE,FALSE, TRUE)])` equal?
+- What does `sum(x < 5)` equal?
+- What does `sum(x[x < 5])` equal?
+- Why `dim(x.mat[1:2,1])` return `NULL` while `dim(x.mat[1:2,1:2])` returns a dimension?
+
+
+`r countdown(minutes = 5, seconds = 00, top = 1, color_background = "inherit")`
+---
+class: action
+
+# Your Turn
+
+### Question 3: Lists
+
+- Using `my.list`, show three ways to write one command that gives the 3rd entry of variable `x` in data frame `myDf`
+- What class of object does the command `my.list[3]` return?
+- What class of object does the command `my.list[[3]]` return?
+- What class of object does the command `unlist(my.list)` return? Why are all the entries `character`s?
+
+`r countdown(minutes = 3, seconds = 00, top = 1, color_background = "inherit")`
+
+--
+
+### Question 4: Data Frames
+
+- What is the total number of babies born in Minnesota with name `Alex`?
+- In what year were highest number of babies were named `Alex` in Minnesota?
+
+
+`r countdown(minutes = 3, seconds = 00, top = 1, color_background = "inherit")`
+---
+
+class: center, inverse, bottom
+background-image: url("images/data_viz.jpg")
+background-size: contain
+
+
+# .red[Data Visualization]
+
+
+### provides a powerful way to communicate data-driven findings, motivate analyses, and detect flaw
+
+---
+
+# **ggplot2**  &mdash; Overview
+
+- A powerful package for visualising data 
+
+--
+
+- Used widely by academics and industries alike
+
+--
+
+- Some useful resources
+
+    - [The package documentation](https://www.rdocumentation.org/packages/ggplot2/versions/3.2.1)
+    - [The book](https://ggplot2-book.org/) by its creator Hadley Wickham
+    - [The reference page](https://ggplot2.tidyverse.org/reference/)
+    - [The extensions](https://exts.ggplot2.tidyverse.org/), maintained by the `ggplot2` community
+
+---
+# **ggplot2** &mdash; Basics 
+
+- The `ggplot` function and the `data` argument
+  - specify a data frame in the main `ggplot` function
+
+```{r, eval=FALSE, tidy=FALSE}
+ggplot(data = df)
+```
+
+--
+
+- The mapping aesthetics, or .yellow-h[aes]; most importantly, the variable(s) that we want to plot
+  - specify as an additional argument in the same `ggplot` function
+
+```{r, eval=FALSE, tidy=FALSE}
+ggplot(data = df, mapping = aes(x = x-variable, y = y-variable))
+```
+
+---
+
+# **ggplot2** &mdash; Basics
+
+- The geometric objects, or .yellow-h[geom]; the visual representations
+  - specify, after a plus sign .yellow-h[+], as an additional function
+
+```{r, eval=FALSE, tidy=FALSE}
+ggplot(data = df, mapping = aes(x = x-variable, y = y-variable)) +
+       geom_point() #<<
+```
+
+- Additional aesthestics like `color`, `size`, `shape`, and `alpha` (i.e. transparency) are possible.
+  
+```{r, eval=FALSE, tidy=FALSE}
+ggplot(data = df, mapping = aes(x = x-variable, y = y-variable)) +
+       geom_point(color = z-variable) #<<
+```
+
+---
+
+class: action
+
+# Your Turn
+
+```{r}
 #install.packages("tidyverse")
 library(tidyverse)
-filtered_names <- babynames %>% filter(name=="John")
+babynames_MN_John <- babynames %>% filter(state=="MN",  name == "John")
 ```
 
 
-```{r eval=require('DT'), echo = FALSE, tidy=FALSE}
-DT::datatable(
-  head(babynames, 24),
-  fillContainer = FALSE, options = list(pageLength = 6)
-)
-```
+### Question 5: Basic Plot using `ggplot2`.
+
+- What are the grammar of graphics needed to create a scatter-plot of the number of babies born in Minnesota named `John` vs year they were born?
+- Fill in the data and aesthetic mapping in the below code chunk. What is returned? What's missing?
+- Add the appropriate geometric object to create the scatter plot. This is called adding a *layer* to a plot.
+- Repeat the above steps with babies named `John` from Minnesota or Michigan.
 
 
---
-
-```{r comment='#'}
-dim(babynames)
-```
-
+`r countdown(minutes = 3, seconds = 00, top = 1, color_background = "inherit")`
 
 ---
 
-# Communication is important!
-
-```{r trend, fig.height=4, dev='svg', echo=FALSE}
-par(mar = c(4, 4, 1, .1))
-ggplot(data=filtered_names, aes(x=year, y=prop)) + geom_line(aes(colour=sex)) + 
-  xlab('Year') +  ylab('Prop. of Babies Named John')
-```
-
---
-
-.red[The overall trend of baby name `John` has been on a steady decline over the years.]
-
----
-
-# Basic anatomy of R-markdown
-
-
-1. The **metadata**
-
-1. The **text** 
-
-1. The **code**
-
-1. The **output**
-
-
----
-
-# Let's look at the source anatomy 
-
-Please git clone this repository to your local folder.
-
-![](images/01-githubpage.png)
-
-```{r echo = FALSE}
-library(countdown)
-countdown(minutes = 5)
-```
-
----
-
-
-# Metadata and output types
-
-.pull-left[
-
-**YAML** (yet another markup language)
-
--  data serialization language that is often used for writing configuration files.
-
-
-Basic recipe: 
-```yaml
----
-key: value
----
-```
-
-
-Example:
-
-```yaml
----
-title: My title
-output:
-  github_document
-    toc: true
-    theme: flatly
----
-```
-
-]
-
---
-
-.pull-right[
-
-**Output types**
-
-- html_document (can’t view in GitHub repo)
-- pdf_document (need MikTex or MacTex installed)
-- github_document (creates a .md Markdown doc, viewable on
-GitHub)
-- ioslides_presentation, beamer_presentation
-
-
-```yaml
----
-title: "Baby Name Trends"
-output: github_document
----
-```
-
-```yaml
----
-title: "Baby Name Trends"
-output: github_document
-params: 
-  attribute: value
----
-```
-
-]
-
-
----
-
-
-# Parameters
-
-```yaml
----
-title: "Baby Name Trends"
-output: html_document
-params: 
-  name:
-  from:
-  to:
----
-```
-
-
-To Do:
-
-- Change the parameters and output types!!
-- Try 'Knit with Parameters'
-
-```{r echo = FALSE}
-library(countdown)
-countdown(minutes = 6)
-```
-
-
----
-
-# Text
-
-Use markdown to format the text
-
-[10 minute tutorial](https://commonmark.org/help/tutorial/)
-
-![](images/01-rmarkdown_tutorial.png)
-
-
-
----
-
-
-# Text
-
-- Simple  rules for 
-
---
-    * section headers (`#`,`##`,etc)
---
-    * lists (need ~2 tabs to create sublists)
---
-    * formatting (bold `**`, italics `*`)
---
-    * tables
---
-    * R syntax (use backward tick ` ` `)
---
-    * web links `[linked text](url)`
---
-    * latex math equations $\beta_1 + \beta_2$
---
-    * in HTML docs, you can use HTML commands (in pdf, latex commands)
-   
-For further help, look at [R Markdown Cheatsheet](https://deepbas.io/courses/stat220/cheatsheets/)
-    
----
-
-
-# Code chunks
-
-Code goes in **chunks**, defined by three backticks
-
-```{r, echo=FALSE, comment=FALSE, include=FALSE, message=FALSE}
-library(babynames)
-library(tidyverse)
-library(ggplot2)
-
-filtered_names <- babynames %>% filter(name=="Aimee", year < max(year), year > min(year))
-
-```
-
-````
-```{r}`r ''`
-
-filtered_names <- babynames %>% filter(name=="Amiee", year < max(year), year > min(year))
-
-ggplot(data=filtered_names, aes(x=year, y=prop)) + 
-  geom_line(aes(colour=sex)) + 
-  xlab('Year') + 
-  ylab('Prop. of Babies Named Aimee')
-
-```
-````
----
-
-
-
-
-#  Adding/running chunks
-
-Let's
-
-1. Add chunks with button or:
-
-   Command (or Cmd) `⌘` + Option (or Alt) `⌥` +  `i` (Mac)
-  
-   Ctrl + Alt + `i` (Windows/Linux)
-   
-1. Run chunks by:
-
-   Run current chunk button (interactive)
-   
-   Knit button / run all chunks
-   
----
-
-
-# Inline code
-
-.left-wide[
-
-How many babies were born with name 'Aimee'?
-
-``` `r knitr::inline_expr(' sum(filtered_names$n)')` ```
-
-There are a total of
-`r  sum(filtered_names$n)` babies.
-
-]
---
-
-.right-narrow[
-
-In what year were there highest proportion of babies born with the name `Aimee`?
-
-``` `r knitr::inline_expr(' filtered_names$year[which.max(filtered_names$prop)]')` ```
-
-`Aimee` name was the most popular in 
-`r filtered_names$year[which.max(filtered_names$prop)]`.
-
-]
-
----
-
-
-# Chunk options
-
-.pull-left[
-````
-```{r}`r ''`
-glimpse(filtered_names)
-```
-````
-]
-
-
-.pull-right[
-```{r}
-dplyr::glimpse(filtered_names)
-```
-]
-
----
-# echo
-
-
-````
-```{r echo=FALSE}`r ''`
-glimpse(filtered_names)
+# Your Turn &mdash; add appropriate labels
+
+````md
+`r ''````{r}
+ggplot(data = babynames_MN_MI_John , mapping = aes(x = year, y = number)) +
+  geom_point(aes(colour=state))+
+  xlab("Year") +
+  ylab(bquote(Number~of~babies~named~.("John"))   
 ```
 ````
 
-
-
-```{r echo=FALSE}
-glimpse(filtered_names)
+```{r, echo = FALSE, fig.height=4}
+babynames_MN_MI_John <- babynames %>% filter(state=="MN" | state == "MI",  name == "John")
+ggplot(data = babynames_MN_MI_John , mapping = aes(x = year, y = number)) +
+  geom_point(aes(colour=state))+
+  xlab("Year") +
+  ylab(bquote(Number~of~babies~named~.("John")))+
+  ggtitle("Number of babies named John over time") +
+  theme(plot.title = element_text(hjust = 0.5))    # center the plot title
 ```
-
-
----
-
-# eval
-
-.pull-left[
-````
-```{r eval=FALSE}`r ''`
-glimpse(filtered_names)
-```
-````
-]
-
-.pull-right[
-```{r eval=FALSE}
-glimpse(filtered_names)
-```
-]
-
----
-# include
-.pull-left[
-````
-```{r include=FALSE}`r ''`
-glimpse(filtered_names)
-```
-````
-]
-.pull-right[
-```{r include=FALSE}
-glimpse(filtered_names)
-```
-]
-
----
-
-# results
-.pull-left[
-.code108[
-````
-```{r echo=TRUE, results='hide'}`r ''`
-glimpse(filtered_names)
-```
-````
-]
-]
-
-.pull-right[
-.code108[
-```{r echo=TRUE, results='hide'}
-glimpse(filtered_names)
-```
-]
-]
-
-
----
-# Chunk option take-aways
-+ Place between curly braces<br>`{r option=value}`
-
-+ Multiple options separated by commas<br>`{r option1=value, option2=value}`
-
-+ Careful! The `r` part is the **code engine** (other engines possible)
-
----
-# Chunk labels
-
-.code100[
-````
-```{r peek, echo=FALSE, results='hide'}`r ''`
-glimpse(filtered_names)
-```
-````
-
-]
-
-+ Place between curly braces<br>`{r label}`
-+ Separate options with commas<br>`{r label, option1=value}`
-+ Careful! Don't duplicate labels
-
-.code100[
-````
-```{r peek}`r ''`
-head(filtered_names)
-```
-````
-]
-.code100[
-```
-Error in parse_block(g[-1], g[1], params.src) : 
-  duplicate label 'peek'
-Calls: <Anonymous> ... process_file -> split_file -> lapply -> FUN -> parse_block
-Execution halted
-```
-]
-
-???
-how can we make it easier on ourselves to explore the code in here?
-show how to add chunk labels and view in IDE interactively
-
----
-
-# The setup chunk
-.pull-left[
-````
-```{r setup, include=FALSE}`r ''`
-knitr::opts_chunk$set(
-  collapse = TRUE,   
-  comment = "#>", 
-  out.width = "100%" 
-)
-```
-````
-]
-.pull-right[
-+ A special chunk label: `setup`
-
-+ Typically the first
-
-+ All following chunks will use these options (i.e., sets global chunk options)
-
-+ **Tip**: set `include=FALSE`
-
-+ You can (and should) use individual chunk options too
-]
-
----
-
-
-#  Exercise
-
-Customize this report
-
-1. Label the code chunk with your plot in it.
-
-1. Add your setup chunk.
-
-1. Add `fig.path = "figs/"` as a knitr code chunk option for a single plot. What happened? What happens if you don't include the forwardslash?
-
-1. Knit and behold
-
-1. Add it to a global setup chunk instead
-
-```{r echo=FALSE}
-countdown(minutes = 5)
-```
-
----
-
-# Acknowledgments
-
-Parts of these slides were adapted from previous works of Adam Loy and Katie St. Clair.
 
 
 

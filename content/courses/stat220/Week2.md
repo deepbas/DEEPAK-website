@@ -20,4 +20,14 @@ It is useful to go over this interesting video on [Basics of ggplot2](https://ww
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FdVy57oGJuc?start=43" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Also, please start to work on HW1 that will be due at 10 PM on Wednesday, 01/12. You are required to submit the HW via GitHub (i.e., push your submission to the GitHub repo named 'hw1-username' under the class GitHub organization, [Stat220](https://github.com/orgs/stat220/)). I will also post the first group assignment shortly.
+Also, please start to work on HW1 that will be due at 10 PM on Wednesday, 01/12. You are required to submit the HW via GitHub (i.e., push your submission to the GitHub repo named 'hw1-username' under the class GitHub organization, [Stat220](https://github.com/orgs/stat220/)). 
+
+### In Class
+
+- Basic R Objects
+- Basic Visualizations with `ggplot2`
+
+Day 3 Slides ({{% staticref "pdf/Day3/Day3.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/02-DataObj_Viz_Activity) 
+
