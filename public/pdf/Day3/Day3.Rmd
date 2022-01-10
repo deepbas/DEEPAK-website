@@ -494,7 +494,7 @@ x_df$x  # get variable x column
 - you can also use column names to subset:
 ```{r}
 # get 2 rows of Name and Sex
-#babynames[1:2, c("name", "sex")] 
+babynames[1:2, c("name", "sex")] 
 ```
 
 ]
