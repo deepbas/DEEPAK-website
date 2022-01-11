@@ -31,3 +31,13 @@ Day 3 Slides ({{% staticref "pdf/Day3/Day3.html" "newtab" %}}html{{% /staticref 
 
 - Link to [In Class Activity](https://github.com/stat220/02-DataObj_Viz_Activity) 
 
+
+Wednesday, 01/12
+
+### Before Class
+
+We learned about basic on R objects and just scratched the surface of data visualization using `ggplot2`. We will delve deeply into 'ggplot2' in this class. 
+
+{{% callout note %}}
+Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#introduction-1), [GW Chapter 28](https://r4ds.had.co.nz/graphics-for-communication.html), and [Irizarry Chapter 10](https://rafalab.github.io/dsbook/data-visualization-principles.html){{% /callout %}}
+
