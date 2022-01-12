@@ -31,7 +31,6 @@ Day 3 Slides ({{% staticref "pdf/Day3/Day3.html" "newtab" %}}html{{% /staticref 
 
 - Link to [In Class Activity](https://github.com/stat220/02-DataObj_Viz_Activity) 
 
-
 Wednesday, 01/12
 
 ### Before Class
@@ -41,3 +40,12 @@ We learned about basics of R objects and just scratched the surface of data visu
 {{% callout note %}}
 Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#introduction-1), [GW Chapter 28](https://r4ds.had.co.nz/graphics-for-communication.html), and [Irizarry Chapter 10](https://rafalab.github.io/dsbook/data-visualization-principles.html){{% /callout %}}
 
+
+### In Class
+
+- More `ggplot` layers
+- Advanced visualizations
+
+Day 4 Slides ({{% staticref "pdf/Day4/Day4.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/03-visualization-activity) 

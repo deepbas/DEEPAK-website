@@ -44,6 +44,15 @@
     Continue reading &lt;a href=&#34;https://r4ds.had.co.nz/data-visualisation.html#introduction-1&#34;&gt;GW Chapter 3&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/graphics-for-communication.html&#34;&gt;GW Chapter 28&lt;/a&gt;, and &lt;a href=&#34;https://rafalab.github.io/dsbook/data-visualization-principles.html&#34;&gt;Irizarry Chapter 10&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
+&lt;h3 id=&#34;in-class-1&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;More &lt;code&gt;ggplot&lt;/code&gt; layers&lt;/li&gt;
+&lt;li&gt;Advanced visualizations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Day 4 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day4/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/03-visualization-activity&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
@@ -866,6 +875,7 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
       <pubDate>Thu, 06 Jan 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/cheatsheets/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/rmarkdown-2.0.pdf&#34; target=&#34;_blank&#34;&gt;R markdown Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/data-visualization.pdf&#34; target=&#34;_blank&#34;&gt;ggplot Cheatsheet&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -1120,7 +1130,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-187954362&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-125639748&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1130,7 +1140,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-187954362&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-125639748&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

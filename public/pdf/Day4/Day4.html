@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Graphics with ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
+    <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.3.5/countdown.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, top, my-title, title-slide
+
+# Graphics with ggplot2
+## <br/> STAT 220
+### Bastola
+### January 12 2022
+
+---
+
+
+&lt;style type="text/css"&gt;
+
+.hljs-github .hljs {
+    background: #e5e5e5;
+}
+
+.inline-c, remark-inline-code {
+   background: #e5e5e5;
+   border-radius: 3px;
+   padding: 4px;
+   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+}
+
+.yellow-h{
+   background: #ffff88;
+}
+
+.out-t, remark-inline-code {
+   background: #9fff9f;
+   border-radius: 3px;
+   padding: 4px;
+   
+}
+
+.pull-left-c {
+    float: left;
+    width: 58%;
+    
+}
+
+.pull-right-c {
+    float: right;
+    width: 38%;
+    
+}
+
+.medium {
+    font-size: 75%
+    
+}
+
+.small {
+    font-size: 50%
+    }
+
+.action {
+    background-color: #f2eecb;
+  
+}
+
+&lt;/style&gt;
+
+
+
+
+&lt;style type="text/css"&gt;
+.red{ color: red;}
+.remark-code, .remark-inline-code {
+    font-family: 'Fira Mono', 'Source Code Pro', monospace;}
+.remark-slide-scaler {
+    overflow-y: auto;
+}
+&lt;/style&gt;
+
+
+# Layered Grammar of Graphics
+
+.pull-left[
+- Essentials
+
+    - Data
+
+    - **Aesthetic mappings**
+
+    - **Geometric objects**
+
+]
+
+--
+
+.pull-right[
+
+- Additional elements
+
+    - Facets
+
+    - **Coordinate system**
+
+    - **Statistical transformations**
+
+    - **Position adjustments**
+
+    - Scales
+
+    - Theme
+
+]
+
+---
+
+# Common **ggplot2** options 
+
+
+```
+ggplot(data) +    # data
+  &lt;geometry_funs&gt;(aes(&lt;variables&gt;)) + # aesthetic variable mapping
+  &lt;label_funs&gt; +  # add context
+  &lt;facet_funs&gt; +  # add facets (optional)
+  &lt;coordinate_funs&gt; +  # play with coords (optional)
+  &lt;scale_funs&gt; + # play with scales (optional)
+  &lt;theme_funs&gt; # play with axes, colors, etc (optional)
+```
+
+--
+
+- See the [Rstudio cheatsheets](https://rstudio.com/resources/cheatsheets/) for more details
+
+
+---
+
+# Hate Crime and income inequality
+
+A FiveThirtyEight article published in 2017 claimed that higher rates of hate crimes were tied to greater income inequality.
+
+
+```r
+glimpse(hate_crimes)
+Rows: 51
+Columns: 17
+$ X                                        &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10…
+$ state                                    &lt;chr&gt; "Alabama", "Alaska", "Arizona…
+$ median_household_income                  &lt;int&gt; 42278, 67629, 49254, 44922, 6…
+$ share_unemployed_seasonal                &lt;dbl&gt; 0.060, 0.064, 0.063, 0.052, 0…
+$ share_population_in_metro_areas          &lt;dbl&gt; 0.64, 0.63, 0.90, 0.69, 0.97,…
+$ share_population_with_high_school_degree &lt;dbl&gt; 0.821, 0.914, 0.842, 0.824, 0…
+$ share_non_citizen                        &lt;dbl&gt; 0.02, 0.04, 0.10, 0.04, 0.13,…
+$ share_white_poverty                      &lt;dbl&gt; 0.12, 0.06, 0.09, 0.12, 0.09,…
+$ gini_index                               &lt;dbl&gt; 0.472, 0.422, 0.455, 0.458, 0…
+$ share_non_white                          &lt;dbl&gt; 0.35, 0.42, 0.49, 0.26, 0.61,…
+$ share_voters_voted_trump                 &lt;dbl&gt; 0.63, 0.53, 0.50, 0.60, 0.33,…
+$ hate_crimes_per_100k_splc                &lt;dbl&gt; 0.12583893, 0.14374012, 0.225…
+$ avg_hatecrimes_per_100k_fbi              &lt;dbl&gt; 1.8064105, 1.6567001, 3.41392…
+$ state_code                               &lt;chr&gt; "AL", "AK", "AZ", "AR", "CA",…
+$ region                                   &lt;chr&gt; "South", "West", "West", "Sou…
+$ division                                 &lt;chr&gt; "East South Central", "Pacifi…
+$ support                                  &lt;chr&gt; "Trump", "Trump", "Split", "T…
+```
+
+---
+
+# Layering geoms
+
+
+When you are iteratively building plots, it's useful to store the .yellow-h[base plot] as an object
+
+
+
+```r
+base &lt;- ggplot(hate_crimes, aes(x=median_household_income, y=hate_crimes_per_100k_splc)) 
+base
+```
+
+--
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Layering geoms
+
+
+```r
+base + 
+  geom_point() 
+```
+
+--
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A better plot 
+
+
+```r
+base + 
+  geom_text(aes(label=state_code, color=region))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Labeling your graphics
+
+In `ggplot2` you can add/change the title, subtitle, caption, and x- and y-axis labels by adding a `labs()` layer. Below is an example illustrating it’s use:
+
+
+```r
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy)) + labs(
+    title = "Put your informative title here",
+    subtitle = "and your subtitle here",
+    x = "New x label",
+    y = "New y label",
+    caption = "Put a caption here"
+  )
+```
+
+---
+
+
+# Plotting variables
+
+
+```r
+ggplot(data = mtcars, aes(x=mpg, y=cyl)) + 
+  geom_point(aes(col=as.factor(cyl), pch=as.factor(cyl))) +
+  labs(x='Miles per gallon', y='Number of cylinders') + 
+  guides(col=FALSE, pch=FALSE)
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: action
+
+# Your Turn 1
+Please git clone the GitHub repository [`03-visualizations`](https://github.com/stat220/03-visualization-activity).
+
+The data frame in this exercise is called `datasaurus_dozen` and it's in the `datasauRus` package. This single data frame contains 13 datasets. 
+
+.pull-left[
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+<div class="countdown" id="timer_61deff8c" style="top:1;right:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+]
+
+---
+
+# Statistical transformations: Default stats
+
+Common geom | stat 
+---------------|-----------------
+`geom_histogram()`|`stat_bin()`     
+`geom_bar()`|`stat_count()`     
+`geom_smooth()`|`stat_smooth()`  
+`geom_boxplot()`|`stat_boxplot()` 
+`geom_density()`|`stat_density()`   
+
+--
+
+- Every geom has a default stat
+
+- Often no need to explicitly specify the stat
+
+- Check help files: `?geom_bar`
+
+---
+
+# Weather Dataset
+
+The data set `Weather` contains data on weather-related variables for several world cities.
+
+
+```r
+#install.packages(mosaicData)
+library(mosaicData)
+data(Weather)
+glimpse(Weather)
+Rows: 3,655
+Columns: 25
+$ city          &lt;chr&gt; "Auckland", "Auckland", "Auckland", "Auckland", "Aucklan…
+$ date          &lt;date&gt; 2016-01-01, 2016-01-02, 2016-01-03, 2016-01-04, 2016-01…
+$ year          &lt;dbl&gt; 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 2016, 20…
+$ month         &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ day           &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1…
+$ high_temp     &lt;dbl&gt; 68, 68, 77, 73, 69, 69, 71, 77, 69, 71, 75, 69, 71, 75, …
+$ avg_temp      &lt;dbl&gt; 65, 66, 72, 66, 62, 63, 66, 70, 66, 66, 67, 66, 66, 68, …
+$ low_temp      &lt;dbl&gt; 62, 64, 66, 60, 55, 57, 60, 64, 64, 62, 59, 62, 62, 62, …
+$ high_dewpt    &lt;dbl&gt; 64, 64, 70, 66, 55, 54, 59, 72, 68, 63, 61, 66, 61, 63, …
+$ avg_dewpt     &lt;dbl&gt; 60, 63, 67, 60, 52, 51, 54, 67, 61, 58, 58, 62, 57, 61, …
+$ low_dewpt     &lt;dbl&gt; 55, 61, 64, 54, 48, 46, 50, 59, 55, 55, 54, 59, 54, 59, …
+$ high_humidity &lt;dbl&gt; 100, 100, 100, 100, 82, 88, 83, 100, 100, 88, 94, 100, 8…
+$ avg_humidity  &lt;dbl&gt; 82, 94, 91, 76, 69, 65, 65, 92, 81, 76, 72, 87, 73, 80, …
+$ low_humidity  &lt;dbl&gt; 68, 88, 74, 53, 56, 46, 53, 83, 64, 64, 53, 78, 64, 65, …
+$ high_hg       &lt;dbl&gt; 30.15, 30.04, 29.80, 30.12, 30.21, 30.24, 30.24, 30.01, …
+$ avg_hg        &lt;dbl&gt; 30.09, 29.90, 29.73, 29.90, 30.14, 30.22, 30.13, 29.79, …
+$ low_hg        &lt;dbl&gt; 30.01, 29.80, 29.68, 29.77, 30.09, 30.18, 30.04, 29.62, …
+$ high_vis      &lt;dbl&gt; 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,…
+$ avg_vis       &lt;dbl&gt; 6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,…
+$ low_vis       &lt;dbl&gt; 4, 1, 1, 6, 6, 6, 6, 2, 4, 6, 6, 3, 6, 6, 6, 6, 6, 2, 6,…
+$ high_wind     &lt;dbl&gt; 21, 33, 18, 15, 13, 17, 22, 21, 18, 20, 17, 16, 18, 17, …
+$ avg_wind      &lt;dbl&gt; 15, 21, 12, 10, 7, 8, 12, 14, 11, 15, 10, 8, 13, 9, 7, 4…
+$ low_wind      &lt;dbl&gt; 28, 46, NA, NA, NA, 28, 25, 28, 29, NA, 26, NA, NA, NA, …
+$ precip        &lt;chr&gt; "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "…
+$ events        &lt;chr&gt; "Rain", "Rain", "Rain", "Rain", NA, NA, "Rain", "Rain", …
+```
+
+---
+
+# Weather patterns
+
+
+```r
+ggplot(Weather, aes(y=avg_temp)) + geom_boxplot()
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-12-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns
+
+
+```r
+ggplot(Weather, aes(y=avg_temp, group=city)) + geom_boxplot(aes(color=city))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-13-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns
+
+
+```r
+ggplot(Weather, aes(x=date, y=avg_temp))+geom_point()
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-14-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns
+
+
+```r
+ggplot(Weather, aes(x=date, y=avg_temp)) + 
+  geom_point(aes(color=city))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-15-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+Chicago &lt;- Weather %&gt;% filter(city=='Chicago')
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_point(color='blue')
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-16-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_point(aes(color=events))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-17-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_smooth()
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-18-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_smooth()+ geom_point()
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-19-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
+  geom_point(aes(color=month))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-20-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
+  geom_point(aes(color=as.factor(month)))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-21-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_histogram() 
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-22-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_histogram(bins = 50) 
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-23-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+
+
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_density(fill='lightblue')
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-24-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_density(fill='lightblue', alpha=0.5)
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-25-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=avg_temp, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5)
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-26-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=avg_temp, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
+  facet_wrap(~month, nrow=3)
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-27-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather patterns in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=avg_vis, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
+  facet_wrap(~month, nrow=3)
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-28-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+class: action
+
+# Your Turn 2
+
+- `datasaurus_dozen` in the `datasauRus` package contains 13 datasets. We will use 4 of these datasets for this exercise.
+
+-  Create this ribbon of plots using `facet_wrap`.
+
+
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-30-1.svg" style="display: block; margin: auto;" /&gt;
+
+<div class="countdown" id="timer_61deff50" style="bottom:0;left:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Weather events
+
+
+```r
+ggplot(Weather, aes(x=events)) + 
+  geom_bar()+
+  theme(axis.text.x = element_text(angle = 15, vjust = 0.5, hjust=1))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-31-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather events &amp;mdash; proportions
+
+
+```r
+ggplot(Weather, aes(x=events, y = ..count../sum(..count..))) +   # change y-axis to proportion
+  geom_bar()+
+  theme(axis.text.x = element_text(angle = 15, vjust = 0.5, hjust=1))
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-32-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather events
+
+
+```r
+ggplot(Weather, aes(x=events)) + 
+  geom_bar() + 
+  coord_flip()
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-33-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weather events in Chicago
+
+
+```r
+ggplot(Chicago, aes(x=events)) + 
+  geom_bar() + 
+  coord_flip() +
+  facet_wrap(~year, nrow=2)
+```
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-34-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: action
+
+# Your Turn 3
+
+- The `mpg` data set is loaded with the `tidyverse`. Run `?mpg` for info.
+
+-  Create this bar chart of vehicle `class`
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-35-1.svg" style="display: block; margin: auto;" /&gt;
+
+<div class="countdown" id="timer_61df0048" style="top:0;right:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Gapminder dataset
+
+
+```r
+gap_dat &lt;-read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/gapminder2018.csv")
+gapminder &lt;- gap_dat %&gt;% filter(year == 2018)
+glimpse(gapminder)
+Rows: 193
+Columns: 8
+$ country         &lt;chr&gt; "Afghanistan", "Albania", "Algeria", "Andorra", "Angol…
+$ year            &lt;int&gt; 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, 2018, …
+$ income          &lt;int&gt; 1870, 12400, 13700, 51500, 5850, 21000, 18900, 8660, 4…
+$ life_expectancy &lt;dbl&gt; 58.7, 78.0, 77.9, NA, 65.2, 77.6, 77.0, 76.0, 82.9, 81…
+$ population      &lt;int&gt; 36400000, 2930000, 42000000, 77000, 30800000, 103000, …
+$ four_regions    &lt;chr&gt; "asia", "europe", "africa", "europe", "africa", "ameri…
+$ eight_regions   &lt;chr&gt; "asia_west", "europe_east", "africa_north", "europe_we…
+$ six_regions     &lt;chr&gt; "south_asia", "europe_central_asia", "middle_east_nort…
+```
+
+
+---
+class: action
+
+# Your Turn 4
+
+The provides values for life expectancy, GDP per capita, and population, every five years, from 1960 to 2018
+Use `gapminder` dataset to answer the given set of problems.
+
+&lt;img src="Day4_files/figure-html/unnamed-chunk-37-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+<div class="countdown" id="timer_61defcb0" style="bottom:0;left:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

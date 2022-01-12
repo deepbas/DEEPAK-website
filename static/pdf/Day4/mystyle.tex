@@ -1,0 +1,44 @@
+\def\begincols{\begin{columns}}
+\def\begincol{\begin{column}}
+\def\endcol{\end{column}}
+\def\endcols{\end{columns}}
+
+\setbeamercolor{structure}{fg=blue!55!green}
+\usepackage{graphicx}
+\usepackage{mathabx}
+\usepackage{xcolor}
+
+
+%% change fontsize of R code
+\let\oldShaded\Shaded
+\let\endoldShaded\endShaded
+\renewenvironment{Shaded}{\tiny\oldShaded}{\endoldShaded}
+
+%% change fontsize of output
+\let\oldverbatim\verbatim
+\let\endoldverbatim\endverbatim
+\renewenvironment{verbatim}{\tiny\oldverbatim}{\endoldverbatim}
+
+%\usepackage[sfdefault]{FiraSans}
+
+% declare overall beamer theme to use as baseline
+\usetheme{default}
+
+
+% make code-output smaller
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{fontsize=\tiny,commandchars=\\\{\}}
+
+% make console-output smaller:
+  \makeatletter
+\def\verbatim{\tiny\@verbatim \frenchspacing\@vobeyspaces \@xverbatim}
+\makeatother
+
+
+\setlength{\parskip}{1pt}
+
+
+\setlength{\OuterFrameSep}{0pt}
+\makeatletter
+\preto{\@verbatim}{\topsep=1pt \partopsep=1pt }
+\makeatother
+

@@ -1,0 +1,567 @@
+---
+title: "Graphics with ggplot2"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    nature:
+      ratio: '16:9'
+      titleSlideClass: ["center", "top", "my-title"]
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+---
+
+<style type="text/css">
+
+.hljs-github .hljs {
+    background: #e5e5e5;
+}
+
+.inline-c, remark-inline-code {
+   background: #e5e5e5;
+   border-radius: 3px;
+   padding: 4px;
+   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+}
+
+.yellow-h{
+   background: #ffff88;
+}
+
+.out-t, remark-inline-code {
+   background: #9fff9f;
+   border-radius: 3px;
+   padding: 4px;
+   
+}
+
+.pull-left-c {
+    float: left;
+    width: 58%;
+    
+}
+
+.pull-right-c {
+    float: right;
+    width: 38%;
+    
+}
+
+.medium {
+    font-size: 75%
+    
+}
+
+.small {
+    font-size: 50%
+    }
+
+.action {
+    background-color: #f2eecb;
+  
+}
+
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment=NA, 
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 4, fig.width = 6, fig.align='center')
+
+
+
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(dslabs)
+library(datasauRus)
+```
+
+```{css, echo = FALSE}
+.red{ color: red;}
+.remark-code, .remark-inline-code {
+    font-family: 'Fira Mono', 'Source Code Pro', monospace;}
+.remark-slide-scaler {
+    overflow-y: auto;
+}
+```
+
+
+# Layered Grammar of Graphics
+
+.pull-left[
+- Essentials
+
+    - Data
+
+    - **Aesthetic mappings**
+
+    - **Geometric objects**
+
+]
+
+--
+
+.pull-right[
+
+- Additional elements
+
+    - Facets
+
+    - **Coordinate system**
+
+    - **Statistical transformations**
+
+    - **Position adjustments**
+
+    - Scales
+
+    - Theme
+
+]
+
+---
+
+# Common **ggplot2** options 
+
+
+```
+ggplot(data) +    # data
+  <geometry_funs>(aes(<variables>)) + # aesthetic variable mapping
+  <label_funs> +  # add context
+  <facet_funs> +  # add facets (optional)
+  <coordinate_funs> +  # play with coords (optional)
+  <scale_funs> + # play with scales (optional)
+  <theme_funs> # play with axes, colors, etc (optional)
+```
+
+--
+
+- See the [Rstudio cheatsheets](https://rstudio.com/resources/cheatsheets/) for more details
+
+
+---
+
+# Hate Crime and income inequality
+
+A FiveThirtyEight article published in 2017 claimed that higher rates of hate crimes were tied to greater income inequality.
+
+```{r,  warning=FALSE, message=FALSE, echo=-1}
+hate_crimes <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/HateCrime.csv")
+glimpse(hate_crimes)
+```
+
+---
+
+# Layering geoms
+
+
+When you are iteratively building plots, it's useful to store the .yellow-h[base plot] as an object
+
+
+```{r fig.height = 3.7, fig.wigth = 7, fig.align='center', eval=FALSE}
+base <- ggplot(hate_crimes, aes(x=median_household_income, y=hate_crimes_per_100k_splc)) 
+base
+```
+
+--
+
+```{r fig.height = 3.7, fig.wigth = 7, fig.align='center', echo=FALSE}
+base <- ggplot(hate_crimes, aes(x=median_household_income, y=hate_crimes_per_100k_splc)) 
+base
+```
+
+---
+
+# Layering geoms
+
+```{r fig.height = 3.7, fig.wigth = 7, fig.align='center', eval=FALSE}
+base + 
+  geom_point() 
+```
+
+--
+
+```{r fig.height = 3.7, fig.wigth = 7, fig.align='center', echo=FALSE}
+base + 
+  geom_point() 
+```
+
+---
+
+# A better plot 
+
+```{r, warning=FALSE}
+base + 
+  geom_text(aes(label=state_code, color=region))
+```
+
+---
+
+# Labeling your graphics
+
+In `ggplot2` you can add/change the title, subtitle, caption, and x- and y-axis labels by adding a `labs()` layer. Below is an example illustrating it’s use:
+
+```{r eval=FALSE}
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy)) + labs(
+    title = "Put your informative title here",
+    subtitle = "and your subtitle here",
+    x = "New x label",
+    y = "New y label",
+    caption = "Put a caption here"
+  )
+```
+
+---
+
+
+# Plotting variables
+
+```{r fig.height = 4, fig.width = 6, fig.align='center'}
+ggplot(data = mtcars, aes(x=mpg, y=cyl)) + 
+  geom_point(aes(col=as.factor(cyl), pch=as.factor(cyl))) +
+  labs(x='Miles per gallon', y='Number of cylinders') + 
+  guides(col=FALSE, pch=FALSE)
+```
+
+
+---
+class: action
+
+# Your Turn 1
+Please git clone the GitHub repository [`03-visualizations`](https://github.com/stat220/03-visualization-activity).
+
+The data frame in this exercise is called `datasaurus_dozen` and it's in the `datasauRus` package. This single data frame contains 13 datasets. 
+
+.pull-left[
+
+```{r, echo=FALSE}
+dino_data <- datasaurus_dozen %>%
+   filter(dataset == "dino")
+ggplot(data = dino_data, mapping = aes(x = x, y = y)) +
+  geom_point()
+```
+
+]
+
+.pull-right[
+`r countdown(minutes = 5, seconds = 00, top = 1, color_background = "inherit")`
+]
+
+---
+
+# Statistical transformations: Default stats
+
+Common geom | stat 
+---------------|-----------------
+`geom_histogram()`|`stat_bin()`     
+`geom_bar()`|`stat_count()`     
+`geom_smooth()`|`stat_smooth()`  
+`geom_boxplot()`|`stat_boxplot()` 
+`geom_density()`|`stat_density()`   
+
+--
+
+- Every geom has a default stat
+
+- Often no need to explicitly specify the stat
+
+- Check help files: `?geom_bar`
+
+---
+
+# Weather Dataset
+
+The data set `Weather` contains data on weather-related variables for several world cities.
+
+```{r}
+#install.packages(mosaicData)
+library(mosaicData)
+data(Weather)
+glimpse(Weather)
+```
+
+---
+
+# Weather patterns
+
+```{r}
+ggplot(Weather, aes(y=avg_temp)) + geom_boxplot()
+```
+
+---
+
+# Weather patterns
+
+```{r}
+ggplot(Weather, aes(y=avg_temp, group=city)) + geom_boxplot(aes(color=city))
+```
+
+---
+
+# Weather patterns
+
+```{r, fig.height = 3.7, fig.wigth = 7, fig.align='center'}
+ggplot(Weather, aes(x=date, y=avg_temp))+geom_point()
+```
+
+---
+
+# Weather patterns
+
+```{r, fig.height = 3.7, fig.wigth = 7, fig.align='center'}
+ggplot(Weather, aes(x=date, y=avg_temp)) + 
+  geom_point(aes(color=city))
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r, fig.height = 3.7, fig.wigth = 7, fig.align='center'}
+Chicago <- Weather %>% filter(city=='Chicago')
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_point(color='blue')
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_point(aes(color=events))
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_smooth()
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_smooth()+ geom_point()
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
+  geom_point(aes(color=month))
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
+  geom_point(aes(color=as.factor(month)))
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_histogram() 
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_histogram(bins = 50) 
+```
+
+---
+
+
+
+
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_density(fill='lightblue')
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_density(fill='lightblue', alpha=0.5)
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=avg_temp, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5)
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=avg_temp, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
+  facet_wrap(~month, nrow=3)
+```
+
+---
+
+# Weather patterns in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=avg_vis, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
+  facet_wrap(~month, nrow=3)
+```
+
+---
+class: action
+
+# Your Turn 2
+
+- `datasaurus_dozen` in the `datasauRus` package contains 13 datasets. We will use 4 of these datasets for this exercise.
+
+-  Create this ribbon of plots using `facet_wrap`.
+
+```{r, echo=FALSE}
+library(datasauRus)
+dino_data_four <- datasaurus_dozen %>%
+   filter(dataset == "dino" | dataset == "star" | dataset == "x_shape"| dataset == "away")
+```
+
+```{r, echo=FALSE}
+ggplot(dino_data_four, aes(x = x, y = y, color = dataset)) +
+  geom_point() +
+  facet_wrap(~ dataset, ncol = 2) +
+  theme(legend.position = "none")
+```
+
+`r countdown(minutes = 5, seconds = 00, left = 0 , color_background = "inherit")`
+
+---
+
+# Weather events
+
+```{r}
+ggplot(Weather, aes(x=events)) + 
+  geom_bar()+
+  theme(axis.text.x = element_text(angle = 15, vjust = 0.5, hjust=1))
+```
+
+---
+
+# Weather events &mdash; proportions
+
+```{r}
+ggplot(Weather, aes(x=events, y = ..count../sum(..count..))) +   # change y-axis to proportion
+  geom_bar()+
+  theme(axis.text.x = element_text(angle = 15, vjust = 0.5, hjust=1))
+```
+
+---
+
+# Weather events
+
+```{r}
+ggplot(Weather, aes(x=events)) + 
+  geom_bar() + 
+  coord_flip()
+```
+
+---
+
+# Weather events in Chicago
+
+```{r}
+ggplot(Chicago, aes(x=events)) + 
+  geom_bar() + 
+  coord_flip() +
+  facet_wrap(~year, nrow=2)
+```
+
+
+---
+class: action
+
+# Your Turn 3
+
+- The `mpg` data set is loaded with the `tidyverse`. Run `?mpg` for info.
+
+-  Create this bar chart of vehicle `class`
+
+```{r echo=FALSE}
+ggplot(data = mpg) +
+  geom_bar(mapping = aes(x = class, fill = class))
+```
+
+`r countdown(minutes = 3, seconds = 00, top = 0, color_background = "inherit")`
+
+---
+
+# Gapminder dataset
+
+```{r}
+gap_dat <-read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/gapminder2018.csv")
+gapminder <- gap_dat %>% filter(year == 2018)
+glimpse(gapminder)
+
+```
+
+
+---
+class: action
+
+# Your Turn 4
+
+The provides values for life expectancy, GDP per capita, and population, every five years, from 1960 to 2018.
+Use `gapminder` dataset to answer the given set of problems.
+
+```{r, echo=FALSE}
+gap_dat <- read_csv("/home/deepak/Desktop/stat220/data/gapminder2018.csv")
+gapminder <- gap_dat %>% filter(year == 2018)
+
+ggplot(gapminder, mapping = aes(x = four_regions, y = population)) +
+  geom_violin() +
+  scale_y_log10()
+```
+
+
+`r countdown(minutes = 10, seconds = 00, left = 0, color_background = "inherit")`
+

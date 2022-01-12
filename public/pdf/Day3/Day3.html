@@ -19,7 +19,7 @@ class: center, top, my-title, title-slide
 # Data Objects and Basics Data Visualization
 ## <br/> STAT 220
 ### Bastola
-### January 10 2022
+### January 12 2022
 
 ---
 
@@ -590,7 +590,10 @@ x_df$x  # get variable x column
 
 ```r
 # get 2 rows of Name and Sex
-#babynames[1:2, c("name", "sex")] 
+babynames[1:2, c("name", "sex")] 
+##      name sex
+## 1   David boy
+## 2 Michael boy
 ```
 
 ]
@@ -721,7 +724,7 @@ my.list &lt;- list(myVec=x, myDf=x.df, myString=c("hi","bye"))
 - What data type is `c(x,NA)`?  What data type is `c(x,"NA")`?
 
 
-<div class="countdown" id="timer_61dc6d41" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61de7891" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -744,7 +747,7 @@ class: action
 - Why `dim(x.mat[1:2,1])` return `NULL` while `dim(x.mat[1:2,1:2])` returns a dimension?
 
 
-<div class="countdown" id="timer_61dc6dd0" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61de7853" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 ---
@@ -759,7 +762,7 @@ class: action
 - What class of object does the command `my.list[[3]]` return?
 - What class of object does the command `unlist(my.list)` return? Why are all the entries `character`s?
 
-<div class="countdown" id="timer_61dc6e2c" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61de79d8" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -771,7 +774,7 @@ class: action
 - In what year were highest number of babies were named `Alex` in Minnesota?
 
 
-<div class="countdown" id="timer_61dc6d89" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61de7a6f" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 ---
@@ -869,7 +872,7 @@ babynames_MN_John &lt;- babynames %&gt;% filter(state=="MN",  name == "John")
 - Repeat the above steps with babies named `John` from Minnesota or Michigan.
 
 
-<div class="countdown" id="timer_61dc6afc" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61de798a" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
