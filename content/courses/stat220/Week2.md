@@ -56,7 +56,7 @@ Friday, 01/14
 ### Before Class
 
 - Go over previous in-class activities, lectures.
-- Start working on Gruop HW 1.
+- Start working on Group HW 1.
 
 {{% callout note %}}
 Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html), [Visualizing Spatial Data](https://clauswilke.com/dataviz/geospatial-data.html) and [Leaflet R Package](https://rstudio.github.io/leaflet/){{% /callout %}}
