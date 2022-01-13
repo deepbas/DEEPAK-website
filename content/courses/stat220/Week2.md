@@ -49,3 +49,21 @@ Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#i
 Day 4 Slides ({{% staticref "pdf/Day4/Day4.html" "newtab" %}}html{{% /staticref %}})
 
 - Link to [In Class Activity](https://github.com/stat220/03-visualization-activity) 
+
+
+Friday, 01/14
+
+### Before Class
+
+- Go over previous in-class activities, lectures.
+- Start working on Gruop HW 1.
+
+{{% callout note %}}
+Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html), [Visualizing Spatial Data](https://clauswilke.com/dataviz/geospatial-data.html) and [Leaflet R Package](https://rstudio.github.io/leaflet/){{% /callout %}}
+
+
+
+
+
+
+
