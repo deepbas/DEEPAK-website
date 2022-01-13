@@ -35,7 +35,7 @@ Wednesday, 01/12
 
 ### Before Class
 
-We learned about basics of R objects and just scratched the surface of data visualization using `ggplot2`. We will delve deeply into 'ggplot2' in this class. 
+We learned about basics of R objects and just scratched the surface of data visualization using `ggplot2`. We will delve deeply into `ggplot2` in this class. 
 
 {{% callout note %}}
 Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#introduction-1), [GW Chapter 28](https://r4ds.had.co.nz/graphics-for-communication.html), and [Irizarry Chapter 10](https://rafalab.github.io/dsbook/data-visualization-principles.html){{% /callout %}}

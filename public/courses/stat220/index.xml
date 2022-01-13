@@ -38,7 +38,7 @@
 &lt;/ul&gt;
 &lt;p&gt;Wednesday, 01/12&lt;/p&gt;
 &lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
-&lt;p&gt;We learned about basics of R objects and just scratched the surface of data visualization using &lt;code&gt;ggplot2&lt;/code&gt;. We will delve deeply into &amp;lsquo;ggplot2&amp;rsquo; in this class.&lt;/p&gt;
+&lt;p&gt;We learned about basics of R objects and just scratched the surface of data visualization using &lt;code&gt;ggplot2&lt;/code&gt;. We will delve deeply into &lt;code&gt;ggplot2&lt;/code&gt; in this class.&lt;/p&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
     Continue reading &lt;a href=&#34;https://r4ds.had.co.nz/data-visualisation.html#introduction-1&#34;&gt;GW Chapter 3&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/graphics-for-communication.html&#34;&gt;GW Chapter 28&lt;/a&gt;, and &lt;a href=&#34;https://rafalab.github.io/dsbook/data-visualization-principles.html&#34;&gt;Irizarry Chapter 10&lt;/a&gt;
