@@ -43,7 +43,7 @@ Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#i
 
 ### In Class
 
-- More `ggplot` layers
+- More `ggplot2` layers
 - Advanced visualizations
 
 Day 4 Slides ({{% staticref "pdf/Day4/Day4.html" "newtab" %}}html{{% /staticref %}})
