@@ -61,8 +61,15 @@ Friday, 01/14
 {{% callout note %}}
 Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html), [Visualizing Spatial Data](https://clauswilke.com/dataviz/geospatial-data.html) and [Leaflet R Package](https://rstudio.github.io/leaflet/){{% /callout %}}
 
+### In Class
 
+- Some useful aesthetics
+- More advanced maps
+- Simple interactive maps with `leaflet`
 
+Day 5 Slides ({{% staticref "pdf/Day5/Day5.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/04-more-visualizations) 
 
 
 

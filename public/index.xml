@@ -64,6 +64,16 @@
     Please skim through &lt;a href=&#34;https://clauswilke.com/dataviz/coordinate-systems-axes.html&#34;&gt;Coordinate Systems and Axes&lt;/a&gt;, &lt;a href=&#34;https://clauswilke.com/dataviz/geospatial-data.html&#34;&gt;Visualizing Spatial Data&lt;/a&gt; and &lt;a href=&#34;https://rstudio.github.io/leaflet/&#34;&gt;Leaflet R Package&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
+&lt;h3 id=&#34;in-class-2&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Some useful aesthetics&lt;/li&gt;
+&lt;li&gt;More advanced maps&lt;/li&gt;
+&lt;li&gt;Simple interactive maps with &lt;code&gt;leaflet&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Day 5 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day5/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/04-more-visualizations&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
@@ -1141,7 +1151,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-189472635&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-679135248&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1151,7 +1161,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-189472635&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-679135248&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

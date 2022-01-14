@@ -1,0 +1,709 @@
+---
+title: "More Data Visualization Tools"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    nature:
+      ratio: '16:9'
+      titleSlideClass: ["center", "top", "my-title"]
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+      countdown: 60000
+---
+
+<style type="text/css">
+
+.hljs-github .hljs {
+    background: #e5e5e5;
+}
+
+.inline-c, remark-inline-code {
+   background: #e5e5e5;
+   border-radius: 3px;
+   padding: 4px;
+   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+}
+
+.yellow-h{
+   background: #ffff88;
+}
+
+.out-t, remark-inline-code {
+   background: #9fff9f;
+   border-radius: 3px;
+   padding: 4px;
+   
+}
+
+.pull-left-c {
+    float: left;
+    width: 58%;
+    
+}
+
+.pull-right-c {
+    float: right;
+    width: 38%;
+    
+}
+
+.medium {
+    font-size: 75%
+    
+}
+
+.small {
+    font-size: 50%
+    }
+
+.action {
+    background-color: #f2eecb;
+  
+}
+
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment=NA, 
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 4, fig.width = 6, fig.align='center')
+
+
+
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(dslabs)
+library(datasauRus)
+library(stringr)
+library(choroplethr)
+library(xaringanExtra)
+library(ggthemes)
+library(leaflet)
+xaringanExtra::use_panelset()
+
+# necessary packages
+library(maps)
+library(mapproj)
+library(leaflet)
+library(SpatialEpi)
+library(maps)
+library(spdep)
+library(maptools)
+library(sp)
+
+data("df_pop_state")
+
+replaceCommas<-function(x){
+  x <- as.numeric(gsub("\\,", "", x))
+}
+
+addSpace <- function(x){
+  x <- as.character(gsub("-", " ", x, fixed = TRUE))
+}
+
+
+#Backup Data-set
+# cases per 100k
+#cases <- read.csv("/home/deepak/Desktop/stat220/data/cases.dat", sep = "", header = FALSE)
+cases <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/cases.dat", sep = "", header = FALSE)
+cases$Population <- df_pop_state$value
+colnames(cases) <- c("States", "7.day.average.case","7.day.average.deaths","TotalCases","TotalDeaths", "Population")
+cases$`7.day.average.case` <- replaceCommas(cases$`7.day.average.case`)
+cases$TotalCases <- replaceCommas(cases$TotalCases)
+cases$TotalDeaths <- replaceCommas(cases$TotalDeaths)
+cases$States <- addSpace(cases$States)
+
+cases$Deaths.per.100k <- (cases$TotalDeaths/cases$Population)*100000
+cases$Cases.per.100k <- (as.numeric(cases$TotalCases)/as.numeric(cases$Population))*100000
+cases <- cases%>%  mutate(States = tolower(States))
+
+covid <- cases
+
+# leaflet
+
+MNcounty <- map("county","Minnesota", plot=FALSE, fill=TRUE)
+MNmap <- map2SpatialPolygons(MNcounty,IDs = MNcounty$names)
+mydata <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/covid.csv", header = TRUE)
+
+# Data Wrangling
+
+casesMN <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/minnesota-cases.dat", sep = "", header = FALSE)
+casesMN$Population <- mydata$Population
+colnames(casesMN)  <- c("Counties", "7.day.average.cases","7.day.average.deaths","TotalCases","TotalDeaths", "Population")
+casesMN$`7.day.average.cases` <- replaceCommas(casesMN$`7.day.average.cases`)
+casesMN$`7.day.average.deaths` <-  replaceCommas(casesMN$`7.day.average.deaths`)
+casesMN$TotalCases <- replaceCommas(casesMN$TotalCases)
+casesMN$TotalDeaths <- replaceCommas(casesMN$TotalDeaths)
+casesMN$incidence <- casesMN$TotalCases/casesMN$Population
+ID <- seq.int(nrow(mydata))
+
+d <- data.frame(ID = mydata$County, obs = casesMN$`7.day.average.cases`, incidence = casesMN$incidence)
+
+rownames(d) <- d$ID
+map <- SpatialPolygonsDataFrame(MNmap, d, match.ID = FALSE)
+
+
+pal <- colorNumeric(palette = "RdYlBu", domain = map$obs)
+labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", map$ID, map$obs)
+labels <- lapply(labels, htmltools::HTML)
+r_colors <- rgb(t(col2rgb(colors())/263))
+names(r_colors) <- colors()
+
+# Final dataset
+set.seed(516)
+x1 <- rnorm(60, 20, 3)
+x2 <- rnorm(60, 36, 2.5)
+x1 <- data.frame(x=x1, type="Mountain #1")
+x2 <- data.frame(x=x2, type="Mountain #2")
+dat <- rbind(x1,x2)
+colnames(dat) <- c("Height", "Location")
+
+#write.csv(dat, "/home/deepak/Desktop/stat220/data/mountain.csv")
+
+```
+
+```{css, echo = FALSE}
+.red{ color: red;}
+.remark-code, .remark-inline-code {
+    font-family: 'Fira Mono', 'Source Code Pro', monospace;}
+.remark-slide-scaler {
+    overflow-y: auto;
+```
+
+
+# So far ...
+
+We know
+
+- A basic set of geometries
+
+- How to map variables to aesthetics
+
+- How to layer `geoms`
+
+- How to change axis labels and titles
+
+- Statistical transformations
+
+---
+
+# More to learn ...
+
+Today
+
+- Changing scales (e.g., color, shape, linetype)
+
+- Changing coordinates
+
+- Changing themes
+
+- Adding annotations
+
+- Mapping spatial data
+
+---
+
+# Changing scales
+
+```{r eval=FALSE}
+scale_<aes>_<method>()
+```
+
+.pull-left[
+Examples:
+
+- `scale_fill_manual()`
+
+- `scale_fill_brewer()`
+
+- `scale_color_viridis()`
+
+- `scale_shape_manual()`
+]
+
+.pull-right[
+Recommended reading:
+
+- [Using colors in R](http://stat545.com/block018_colors.html)
+
+- [Taking control of qualitative colors in ggplot2](http://stat545.com/block019_enforce-color-scheme.html)
+]
+
+---
+
+# Example
+
+Let's make Mountain #1 `green3` and Mountain #2 `lightblue3`
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r scale-fill, echo=FALSE, fig.height = 2.5, fig.width = 4.5, out.width="60%", fig.align='center'}
+ggplot(dat) +
+  geom_histogram(
+    aes(x = Height, fill = Location), 
+    binwidth = 1,
+    color = "white")+
+    scale_fill_manual(values = c("green3", "lightblue3"))
+```
+]
+.panel[.panel-name[Code]
+```{r scale-fill, echo=TRUE, fig.show='hide', fig.height = 2.5, fig.width = 4.5}
+```
+]
+]
+
+---
+
+# Changing themes
+.pull-left[
+**Theme:** The non-data ink on your plots
+
+Examples:
+
+- background color
+
+- tick marks
+
+- grid lines
+
+- legend position and appearance
+]
+
+--
+
+.pull-right[
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(patchwork)
+p1 <- ggplot(dat) +
+  geom_histogram(
+    aes(x = Height, fill = Location), 
+    binwidth = 1,
+    color = "white"
+  ) +
+  scale_fill_manual(values = c("green3", "lightblue3")) 
+
+p2 <- p1 + theme_bw()
+
+p3 <- p1 + theme_tufte() 
+
+pthemes <- p1 + p2 + p3 + plot_layout(ncol = 1)
+pthemes
+```
+
+]
+
+
+---
+
+
+# Prepackaged themes
+
+.pull-left[
+`ggplot2` themes
+- `theme_grey()`
+- `theme_bw()`
+- `theme_linedraw()`
+- `theme_light()`
+- `theme_dark()`
+- `theme_minimal()`
+- `theme_classic()`
+- `theme_void()`
+- `theme_test()`
+]
+
+.pull-right[
+`ggthemes` themes
+- `theme_clean()`
+- `theme_economist()`
+- `theme_excel()`
+- `theme_fivethirtyeight()`
+- `theme_gdocs()`
+- `theme_solarized()`
+- `theme_stata()`
+- `theme_tufte()`
+- `theme_wsj()`
+-  And more!
+]
+
+
+---
+
+# Annotations
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r annotate, echo=FALSE}
+last_plot() +
+  theme(legend.position = "none") +
+  annotate("text", x = 20, y = 15, label = "Mountain #1", color = "green3") +
+  annotate("text", x = 36, y = 15, label = "Mountain #2", color = "lightblue3") 
+```
+]
+.panel[.panel-name[Code]
+.code100[
+```{r annotate, fig.align='center', fig.show='hide'}
+```
+]
+]
+]
+
+
+---
+
+class: action
+
+# Your Turn 1
+
+Please git clone the repository [More visualizations](https://github.com/stat220/04-more-visualizations).
+
+- Apply `theme_light()` to the histogram
+- Close "gap" between bars and axis
+- Remove legend title, border and minor grid lines
+- Re-position legend & remove the background
+
+```{r echo=FALSE, fig.height = 2.5, fig.width = 4.5, out.width="60%", fig.align='center'}
+p1 +
+  theme_light()
+```
+
+```{r echo=FALSE}
+countdown(5, 00)
+```
+
+---
+
+
+# Changing coordinates
+
+By default, `ggplot2` uses a Cartesian coordinate system, but there are others available!
+
+.pull-left[
+-  `coord_cartesian` 
+- `coord_equal`     
+- `coord_fixed`   
+-  `coord_flip`      
+- `coord_map` 
+]
+.pull-right[
+-  `coord_polar`     
+- `coord_quickmap`  
+- `coord_sf`       
+-  `coord_trans`   
+]
+
+
+---
+
+# Cartesian vs. Polar Coordinates
+
+.pull-left[
+
+```{r}
+ggplot(data = mpg) +
+ geom_bar(mapping = aes(x = class, fill = class))
+```
+
+]
+
+--
+
+.pull-right[
+
+```{r}
+ggplot(data = mpg) +
+ geom_bar(
+  mapping = aes(x = class, fill = class)) +
+ coord_polar(theta = "x")
+```
+]
+
+
+---
+
+# **ggplot2** maps
+
+The `ggplot2` package contains latitude and longitude to define geographic boundaries
+
+- some regions: `state`, `usa`, `world`, `county`
+- see `?map_data` or `?maps` for more regions (may need to install `maps`)
+
+```{r}
+states <- map_data("state")
+glimpse(states)
+```
+
+---
+
+# What is a map?
+
+A set of latitude longitude points...
+
+```{r}
+ggplot(states) + geom_point(aes(long, lat))
+```
+
+---
+
+# What is a map?
+
+... that are connected with lines in a very specific order.
+
+```{r, fig.height = 4, fig.width =7, out.width = "60%", fig.align='center'}
+ggplot(states) + geom_path(aes(long, lat, group = group))
+```
+
+---
+
+class: middle
+
+## Necessary map data
+
+- latitude/longitude points for all map boundaries
+
+- which boundary group all lat/long points belong 
+
+- the order to connect points within each group
+
+---
+
+# Adding state-level information
+
+-  Add other geographic information by adding geometric layers to the plot
+
+-  Add non-geopgraphic information by altering the fill color for each state
+
+    + Use `geom = "polygon"` to treat states as solid shapes to add color
+
+    + Incorporate numeric information using color shade or intensity
+    
+    + Incorporate categorical informaion using color hue
+
+---
+
+
+
+
+# Maps using *geom_polygon*
+
+`geom_polygon` connects the dots between lat (`y`) and long (`x`) points in a given `group`.  It connects start and end points which allows you to `fill` a closed polygon shape
+
+```{r}
+ggplot(states, aes(x=long, y=lat, group=group)) + 
+    geom_polygon(color="black", fill="lightblue")
+```
+
+---
+
+# Maps using *geom_polygon*
+
+Why is scale so important in a map?
+
+```{r}
+ggplot(states, aes(x=long, y=lat, group=group)) + 
+    geom_polygon(color="black", fill="lightblue") + 
+    coord_fixed(ratio=3)
+```
+
+---
+
+# Covid mortality rate
+
+```{r, echo = FALSE}
+glimpse(covid)
+```
+
+.footnote[Source: https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/]
+
+---
+
+# Combining datasets
+
+We need to add the covid info to the state polygon data set
+
+```{r}
+covid_data <- left_join(states, covid, by = c("region" = "States"))
+```
+
+```{r echo=FALSE}
+print(as_tibble(covid_data), n = 5)
+```
+
+---
+
+# US Population
+
+```{r, fig.height = 4, fig.width = 7, fig.align='center'}
+Population_map <- ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = Population))
+Population_map
+```
+
+---
+
+# COVID Cases per 100k
+
+```{r, fig.height = 4, fig.width = 7, fig.align='center'}
+Covid_cases_map <- ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = Cases.per.100k))
+Covid_cases_map
+```
+
+---
+
+# COVID Deaths per 100k
+
+
+```{r, fig.height = 4, fig.width = 7, fig.align='center'}
+Covid_death_map <- ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = Deaths.per.100k))
+Covid_death_map
+```
+
+
+---
+
+# Adjusting the coordinate system + theme
+
+```{r}
+Covid_cases_map + coord_map() + theme_map() +  theme(legend.position="right") 
+```
+
+---
+
+# Adjusting the color
+
+```{r eval = FALSE, fig.height = 4, fig.width=7, out.width = "60%", fig.align='center'}
+ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cut_interval(Cases.per.100k, n=8))) +
+  scale_fill_brewer(palette = "Blues") +
+  labs(fill = "Cases per \n 100,000") + theme(legend.position="right") 
+```
+
+```{r echo = FALSE, fig.height = 4, fig.width=7, out.width = "60%", fig.align='center'}
+ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cut_interval(Cases.per.100k, n=8))) +
+  scale_fill_brewer(palette = "Blues") +
+  labs(fill = "Cases per \n 100,000") +
+  coord_map() + 
+  theme_map() +  theme(legend.position="right") 
+```
+
+---
+
+# Adjusting the color
+
+```{r eval = FALSE, fig.height = 4, fig.width=7, out.width = "60%", fig.align='center'}
+ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cut_interval(Deaths.per.100k, n=8))) +
+  scale_fill_brewer(palette = "Blues") +
+  labs(fill = "Deaths per \n 100,000") +  theme(legend.position="right") 
+```
+
+```{r echo = FALSE, fig.height = 4, fig.width=7, out.width = "60%", fig.align='center'}
+ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cut_interval(Deaths.per.100k, n=8))) +
+  scale_fill_brewer(palette = "Blues") +
+  labs(fill = "Deaths per \n 100,000") +
+  coord_map() + 
+  theme_map() +  theme(legend.position="right") 
+```
+
+---
+
+# Cloropleth maps
+
+- Uses color or shading of subregions to visual data
+
+- Displays divided geographical areas or regions that are coloured in relation to a numeric variable.
+
+```{r}
+ACS <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/ACS.csv")
+ACS <- dplyr::filter(ACS, !(region  %in% c("Alaska", "Hawaii"))) # only 48+D.C.
+ACS$region <- tolower(ACS$region)  # lower case (match states regions)
+glimpse(ACS)
+```
+
+---
+
+# Cloropleth maps using **geom_map**
+
+- Don't need to merge `ACS` and `states` data! 
+
+```{r}
+ggplot(data=ACS) + coord_map() + 
+  geom_map(aes(map_id = region, fill = PercentInState), map = states) +
+  expand_limits(x=states$long, y=states$lat) + ggtitle("% Born in State")
+```
+
+
+---
+
+class: action
+
+# Your Turn 2
+
+Use American Community Survey (ACS) data to complete this exercise.
+
+
+```{r, echo=FALSE}
+# change to a diverging color
+ggplot(data=ACS) + coord_map() + 
+  geom_map(aes(map_id = region, fill = MedianIncome - 27000), map = states) +
+  expand_limits(x=states$long, y=states$lat) + ggtitle("Deviation from national median income") + 
+  scale_fill_distiller(type = "div")
+```
+
+
+```{r echo=FALSE}
+countdown(6, 00, color_background = "#FAEFD1")
+```
+
+---
+
+# Visualization using **leaflet** in R
+
+```{r}
+# Leaflet
+data <- data.frame(lat  = 44.4583, long = -93.1616) 
+leaflet(data) %>%
+   addTiles() %>%
+   addMarkers(lat = ~lat, lng = ~long, popup="Our Northfield") #<< 
+```
+
+---
+# Interactive Maps: Covid Cases in Minnesota
+
+
+```{r, fig.align = "center"}
+l <- leaflet(map) %>% addTiles()
+l %>% addPolygons(color = "grey", weight = 1, fillColor = ~pal(obs), fillOpacity = 0.5,
+    highlightOptions = highlightOptions(weight = 4),
+    label = labels,
+    labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+    textsize = "15px", direction = "auto")) %>%
+    addLegend(pal = pal, values = ~obs, opacity = 0.5, title = "Observed Cases", position = "bottomright")
+```
+
+---
+class: center, middle, inverse
+
+## Acknowledgement: some of the slides are based on previous works of Adam Loy and Katie St. Clair.
+
