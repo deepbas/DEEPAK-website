@@ -14,7 +14,7 @@ weight: 20
 ### Before Class
 
 {{% callout note %}}
-Please read [GW Chapter 5](https://r4ds.had.co.nz/transform.html), (optional) [Irizarry Sections 4.1-4.11](https://rafalab.github.io/dsbook/tidyverse.html), and start working on individual HW2.{{% /callout %}}
+Please read [GW Chapter 5](https://r4ds.had.co.nz/transform.html), [Irizarry Sections 4.1-4.11](https://rafalab.github.io/dsbook/tidyverse.html)(optional), and start working on individual HW2.{{% /callout %}}
 
 Also, it may be useful to go over this interesting video on [Basics of `dplyr`](https://www.youtube.com/watch?v=BaFkbNOaof8) before class.
 

@@ -21,7 +21,7 @@
 &lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please read &lt;a href=&#34;https://r4ds.had.co.nz/transform.html&#34;&gt;GW Chapter 5&lt;/a&gt;, (optional) &lt;a href=&#34;https://rafalab.github.io/dsbook/tidyverse.html&#34;&gt;Irizarry Sections 4.1-4.11&lt;/a&gt;, and start working on individual HW2.
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/transform.html&#34;&gt;GW Chapter 5&lt;/a&gt;, &lt;a href=&#34;https://rafalab.github.io/dsbook/tidyverse.html&#34;&gt;Irizarry Sections 4.1-4.11&lt;/a&gt;(optional), and start working on individual HW2.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;Also, it may be useful to go over this interesting video on &lt;a href=&#34;https://www.youtube.com/watch?v=BaFkbNOaof8&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Basics of &lt;code&gt;dplyr&lt;/code&gt;&lt;/a&gt; before class.&lt;/p&gt;
@@ -1167,7 +1167,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-749862315&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-863154927&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1177,7 +1177,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-749862315&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-863154927&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
