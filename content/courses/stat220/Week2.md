@@ -8,7 +8,8 @@ type: book
 weight: 20
 ---
 
-Monday, 01/10
+<span style="color:orange">**Monday, 01/10**</span>
+
 
 ### Before Class
 
@@ -32,7 +33,9 @@ Day 3 Slides ({{% staticref "pdf/Day3/Day3.pdf" "newtab" %}}pdf{{% /staticref %}
 
 - Link to [In Class Activity](https://github.com/stat220/02-DataObj_Viz_Activity) 
 
-Wednesday, 01/12
+
+<span style="color:orange">**Wednesday, 01/12**</span>
+
 
 ### Before Class
 
@@ -51,7 +54,8 @@ Day 4 Slides ({{% staticref "pdf/Day4/Day4.pdf" "newtab" %}}pdf{{% /staticref %}
 
 - Link to [In Class Activity](https://github.com/stat220/03-visualization-activity) 
 
-Friday, 01/14
+<span style="color:orange">**Friday, 01/14**</span>
+
 
 ### Before Class
 
@@ -63,7 +67,7 @@ Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz
 
 ### In Class
 
-- Some useful aesthetics
+- Some more useful aesthetics
 - More advanced maps
 - Simple interactive maps with `leaflet`
 

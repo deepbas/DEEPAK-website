@@ -17,7 +17,8 @@
       <link>https://deepbas.netlify.app/courses/stat220/week2/</link>
       <pubDate>Sat, 08 Jan 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/week2/</guid>
-      <description>&lt;p&gt;Monday 01/10&lt;/p&gt;
+      <description>&lt;p&gt;Monday, 01/10&lt;/p&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;Monday, 01/10&lt;/span&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
@@ -1151,7 +1152,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-184935762&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-193486572&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1161,7 +1162,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-184935762&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-193486572&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
