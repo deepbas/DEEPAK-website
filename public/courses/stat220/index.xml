@@ -912,7 +912,8 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
       <pubDate>Thu, 06 Jan 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/cheatsheets/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/rmarkdown-2.0.pdf&#34; target=&#34;_blank&#34;&gt;R markdown Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/data-visualization.pdf&#34; target=&#34;_blank&#34;&gt;ggplot Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/data-visualization.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;ggplot&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/data-transformation.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;dplyr&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

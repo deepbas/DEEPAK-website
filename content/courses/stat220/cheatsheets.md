@@ -11,5 +11,6 @@ weight: 30
 
 {{% staticref "cheatsheets/rmarkdown-2.0.pdf" "newtab" %}}R markdown Cheatsheet{{% /staticref %}}
 
-{{% staticref "cheatsheets/data-visualization.pdf" "newtab" %}}ggplot Cheatsheet{{% /staticref %}}
+{{% staticref "cheatsheets/data-visualization.pdf" "newtab" %}}`ggplot` Cheatsheet{{% /staticref %}}
 
+{{% staticref "cheatsheets/data-transformation.pdf" "newtab" %}}`dplyr` Cheatsheet{{% /staticref %}}
