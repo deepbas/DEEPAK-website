@@ -8,7 +8,7 @@ type: book
 weight: 20
 ---
 
-Monday 01/10
+[**Monday, 01/10**]
 
 ### Before Class
 
@@ -32,7 +32,7 @@ Day 3 Slides ({{% staticref "pdf/Day3/Day3.pdf" "newtab" %}}pdf{{% /staticref %}
 
 - Link to [In Class Activity](https://github.com/stat220/02-DataObj_Viz_Activity) 
 
-Wednesday, 01/12
+[**Wednesday, 01/12**]
 
 ### Before Class
 
@@ -51,7 +51,8 @@ Day 4 Slides ({{% staticref "pdf/Day4/Day4.pdf" "newtab" %}}pdf{{% /staticref %}
 
 - Link to [In Class Activity](https://github.com/stat220/03-visualization-activity) 
 
-Friday, 01/14
+[**Friday, 01/14**]
+{{.Title | markdownify}}
 
 ### Before Class
 
