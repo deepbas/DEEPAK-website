@@ -19,7 +19,7 @@ class: center, top, my-title, title-slide
 # Data Objects and Basics Data Visualization
 ## <br/> STAT 220
 ### Bastola
-### January 12 2022
+### January 16 2022
 
 ---
 
@@ -724,7 +724,7 @@ my.list &lt;- list(myVec=x, myDf=x.df, myString=c("hi","bye"))
 - What data type is `c(x,NA)`?  What data type is `c(x,"NA")`?
 
 
-<div class="countdown" id="timer_61de7891" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61e44fcd" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -747,7 +747,7 @@ class: action
 - Why `dim(x.mat[1:2,1])` return `NULL` while `dim(x.mat[1:2,1:2])` returns a dimension?
 
 
-<div class="countdown" id="timer_61de7853" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61e44f37" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 ---
@@ -762,7 +762,7 @@ class: action
 - What class of object does the command `my.list[[3]]` return?
 - What class of object does the command `unlist(my.list)` return? Why are all the entries `character`s?
 
-<div class="countdown" id="timer_61de79d8" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61e44de1" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -774,7 +774,7 @@ class: action
 - In what year were highest number of babies were named `Alex` in Minnesota?
 
 
-<div class="countdown" id="timer_61de7a6f" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61e44fa9" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 ---
@@ -872,7 +872,7 @@ babynames_MN_John &lt;- babynames %&gt;% filter(state=="MN",  name == "John")
 - Repeat the above steps with babies named `John` from Minnesota or Michigan.
 
 
-<div class="countdown" id="timer_61de798a" style="top:1;right:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61e45058" style="top:1;right:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -884,8 +884,8 @@ babynames_MN_John &lt;- babynames %&gt;% filter(state=="MN",  name == "John")
 ```{r}
 ggplot(data = babynames_MN_MI_John , mapping = aes(x = year, y = number)) +
   geom_point(aes(colour=state))+
-  xlab("Year") +
-  ylab(bquote(Number~of~babies~named~.("John"))   
+  xlab("Year") + ylab(bquote(Number~of~babies~named~.("John"))  +
+  theme(plot.title = element_text(hjust = 0.5))    # center the plot title
 ```
 ````
 

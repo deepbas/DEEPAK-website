@@ -729,8 +729,8 @@ babynames_MN_John <- babynames %>% filter(state=="MN",  name == "John")
 `r ''````{r}
 ggplot(data = babynames_MN_MI_John , mapping = aes(x = year, y = number)) +
   geom_point(aes(colour=state))+
-  xlab("Year") +
-  ylab(bquote(Number~of~babies~named~.("John"))   
+  xlab("Year") + ylab(bquote(Number~of~babies~named~.("John"))  +
+  theme(plot.title = element_text(hjust = 0.5))    # center the plot title
 ```
 ````
 

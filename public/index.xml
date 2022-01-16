@@ -32,7 +32,7 @@
 &lt;li&gt;Basic R Objects&lt;/li&gt;
 &lt;li&gt;Basic Visualizations with &lt;code&gt;ggplot2&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Day 3 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day3/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 3 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day3/Day3.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day3/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/02-DataObj_Viz_Activity&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -49,7 +49,7 @@
 &lt;li&gt;More &lt;code&gt;ggplot2&lt;/code&gt; layers&lt;/li&gt;
 &lt;li&gt;Advanced visualizations&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Day 4 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day4/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 4 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day4/Day4.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day4/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/03-visualization-activity&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -70,7 +70,7 @@
 &lt;li&gt;More advanced maps&lt;/li&gt;
 &lt;li&gt;Simple interactive maps with &lt;code&gt;leaflet&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Day 5 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day5/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 5 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day5/Day5.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day5/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/04-more-visualizations&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -1151,7 +1151,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-679135248&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-184935762&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1161,7 +1161,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-679135248&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-184935762&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

@@ -550,8 +550,7 @@ class: action
 
 # Your Turn 4
 
-The `gapminder` dataset provides values for life expectancy, GDP per capita, and population, every five years, from 1960 to 2018.
-Use `gapminder` dataset to answer the given set of problems.
+The `gapminder` dataset provides values for life expectancy, GDP per capita, and population, every five years, from 1960 to 2018. Use `gapminder` dataset to answer the given set of problems.
 
 ```{r, echo=FALSE}
 gap_dat <- read_csv("/home/deepak/Desktop/stat220/data/gapminder2018.csv")

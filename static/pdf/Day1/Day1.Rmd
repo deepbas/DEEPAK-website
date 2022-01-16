@@ -1,0 +1,428 @@
+---
+title: "Introduction to Data Science"
+author: "Stat 220 Bastola"
+date: "`r Sys.Date()`"
+output:
+  beamer_presentation:
+    includes:
+      in_header: mystyle.tex
+    keep_tex: yes
+    theme: metropolis
+  slidy_presentation: default
+header-includes: \usepackage{amsmath}
+fontsize: 10pt
+urlcolor: blue
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, size = "small", collapse=TRUE, comment=NA, warning = FALSE, message = FALSE)
+```
+
+## What is data science?
+
+
+
+## Something about me
+
+\begincols
+  \begincol{.60\textwidth}
+\begin{itemize}
+    \item First year in Carleton
+    \item Originally from Nepal
+    \item PhD in Applied Statistics at UC-Riverside
+    \item Diverse education background
+    \item Avid traveller
+\end{itemize}
+
+\endcol
+\begincol{.40\textwidth}
+
+![Me without mask](Deepak.jpg)
+
+ \endcol
+\endcols
+   
+
+## COVID-19 related policies
+
+\begin{itemize}
+\item Stay home when sick. (Even if you don’t have COVID-19, you should stay home if you aren’t feeling well.)
+\item Follow \href{https://www.cdc.gov/coronavirus/2019-ncov/vaccines/fully-vaccinated.html}{CDC} on testing, quarantine, and isolation.
+\item Follow the College mask-wearing policy
+\end{itemize}
+
+
+## Collaborative notes
+
+\begin{itemize}
+\item Each day, two of you will collaborate on notes to share with the class
+\item Creates a crowd-sourced version of what we do in class
+\item Helps anyone who needs to miss class
+\item You'll do this 3x throughout the course
+\item \href{https://drive.google.com/drive/folders/1xgSlButXtTHNvZCi9QkhOv3YSBDeB1UH?usp=sharing}{Sign up here}
+\item Notes are due 24 hours after class, count as a HW assignment
+\end{itemize}
+
+
+## Data Science education
+
+- Many schools now offer [degrees](http://datascience.community/colleges) in some form of data science (data analytics)
+- A B.S. (or Masters) in Data Science includes courses like:
+    + Intro Stats, Intro Programming, Intro Data Science
+    + Regression (modeling)
+    + Machine Learning, Data mining
+    + Database management
+    + Data visualization
+    + Big Data
+    + Applications (econ, poli sci, bio)
+    + Ethics
+
+
+## Stat 220: Data Science
+
+Focus on the "soup to nuts" approach to problem solving
+
+- data wrangling
+    + reshaping, cleaning, gathering
+- learning from data
+    + EDA tools
+    + statistical learning methods
+    + network data, spatial data
+- communication
+    + reproducibility
+    + effective visualization
+
+
+## Using R Markdown for data science
+
+- You will use [R Markdown](http://rmarkdown.rstudio.com/lesson-1.html) for all work in this class
+- A Markdown (`.Rmd`) file contains
+    + R code 
+    + written answers, description of results, report, etc.
+- The Markdown file is `knit` to generate an output document 
+    + pdf, html, word
+    + presentations (html, beamer pdf)
+    + dashboards, interactive graphics (html)
+- Markdown is designed for **reproducibility**!
+- The slides I produce for this class are R Markdown's [`beamer`](http://rmarkdown.rstudio.com/beamer_presentation_format.html)
+
+
+## Class Instruction
+
+\center{https://deepbas.io/courses/stat220/}
+
+
+
+## Problem!
+
+- The **estimated** SE varies from sample to sample, along with $\bar{x}$!
+
+- In $z$, only $\bar{x}$ varies from sample to sample
+$$z = \dfrac{\bar{x} - \mu}{\sigma/\sqrt{n}} \sim N(0,1)$$
+
+- In $t$, both $\bar{x}$ and $s$ vary from sample to sample
+$$t = \dfrac{\bar{x} - \mu}{s/\sqrt{n}} \sim ???$$
+
+
+
+
+## Inference for means:
+
+
+- **Check:** Check the one- or two-sample size conditions for the CLT
+
+- **Tests:** Use t-ratios of the form
+
+$$
+t = \dfrac{\textrm{stat} - \textrm{null value}}{SE}
+$$
+
+- P-values computed from a t-distribution with appropriate df
+    - `pt(t, df= )` gives the area to the left of `t`
+    
+- **Confidence intervals:** CI of the form
+$$\textrm{stat} \pm t^* SE$$
+- The t* multiplier comes from a t-distribution with appropriate df
+    - `qt(0.975, df= )` gives $t^*$ for 95% confidence
+
+
+
+## Florida lakes
+
+
+- 53 lakes were sampled, pH recorded
+
+    - Is average pH in Florida lakes different from 7 (neutral)?
+
+
+- Let $\mu$ be the mean pH for all Florida lakes
+$$
+H_0: \mu = 7 \ \ \ \  H_A: \mu \neq 7
+$$
+
+
+
+- Can we use a t-test?
+
+    - $n=53$ is a decent sample size
+    
+    - check sample distribution of pHs
+
+
+## Florida lakes
+
+- sampled pH's roughly symmetric, so $n=53$ is "big enough" for the CLT
+
+```{r, fig.width=9}
+lakes <- read.csv("http://www.lock5stat.com/datasets1e/FloridaLakes.csv")
+hist(lakes$pH)
+```
+
+## Florida lakes
+
+$$
+H_0: \mu = 7 \ \ \ \  H_A: \mu \neq 7
+$$
+
+- Data: The average pH was $\bar{x}=6.591$ with a standard deviation of $s=1.288$.
+
+```{r}
+mean(lakes$pH)
+sd(lakes$pH)
+```
+
+
+- The t-test stat is
+$$
+t = \dfrac{6.591 - 7}{1.288/\sqrt{53}} \approx -2.31
+$$
+
+- **Intepret t**: The observed mean of 6.591 is 2.31 SEs below 7.
+
+
+
+## Florida lakes
+
+
+$$
+H_0: \mu = 7 \ \ \ \  H_A: \mu \neq 7
+$$
+
+- **p-value** $2 \times P(t < -2.31)$, or double left tail area below -2.31
+    - use t-distribution with $df = 53-1= 52$
+    
+```{r}
+2*pt(-2.31, df=53-1)  # df = n-1
+```
+
+- **Interpret:** The p-value is 0.025. If the mean pH of all lakes is 7, then we would see a sample mean that is at least 2.31 SEs away from 7 about 2.5% of the time in samples of 53 lakes. 
+
+
+- **Conclusion:** There is a statistically significant difference between the observed mean pH of 6.591 and the hypothesized mean of 7 (t=-2.31, df=52, p=0.025). 
+
+
+## Florida lakes
+
+- We can also use `t.test`!
+
+
+```{r, size = "huge"}
+t.test(lakes$pH, mu  = 7)
+```
+
+
+## Florida lakes
+
+
+- How different is the population mean from 7?
+
+- 95% CI for $\mu$:
+
+
+$$
+6.591 \pm 2.0066 \dfrac{1.288}{\sqrt{53}} = 6.591 \pm 0.355 = 6.236, 6.946
+$$
+where $t^*$ corresponds to 95% confidence (97.5th percentile):
+```{r}
+qt(.975, df=53-1)
+```
+
+- We are 95% confident that the mean pH of all lakes is between 6.236 and 6.946 (slightly acidic).
+
+## Academic Performance Index (API) 
+
+- Academic Performance Index (API) is a number reflecting a school’s performance on a statewide standardized test
+    - simple random sample of $n=200$ schools
+    - variable `growth` measures the growth in API from 1999 to 2000 (API 2000 - API 1999).
+
+```{r}
+api <- read.csv("http://people.carleton.edu/~kstclair/data/api.csv")
+```
+
+
+```{r}
+api$wealth <- ifelse(api$meals > 50, "low","high")
+table(api$wealth)
+library(dplyr)
+api %>% group_by(wealth) %>% summarize(mean(growth), sd(growth))
+```
+
+## API
+
+```{r}
+boxplot(growth ~ wealth, data=api, xlab="API growth (2000 - 1999)" , horizontal=T)
+```
+
+
+
+## Hypothesis Test
+
+- Can we use t-inference methods to compare mean growths?
+    - both samples sizes (98 and 102) can be deemed large 
+    - No severe skewness (but two extreme outliers)
+
+
+- Estimated Standard Error 
+$$
+SD_{\bar{x}_h - \bar{x}_l} = \sqrt{\dfrac{28.75380^2}{102} + \dfrac{29.95048^2}{98}} = 4.1544
+$$
+
+- Test statistics 
+
+$$
+t = \dfrac{(25.24510 - 38.82653) - 0}{4.154404} = -3.2692
+$$
+
+The observed mean difference is 3.3 SEs below the hypothesized mean difference of 0.
+
+## Two-sample t-test
+
+```{r}
+t.test(growth ~ wealth, data = api)
+```
+
+The p-value is 0.001273. If there is no difference between mean growth in the two populations,
+then there is just a 0.13% chance of seeing a sample mean difference that is 3.27 standard errors or more
+away from 0.
+
+
+## Outliers
+
+```{r}
+which(api$growth > 120 )
+api %>% slice(74,119)  
+```
+
+
+## Remove Outliers
+
+```{r}
+t.test(growth ~ wealth, data = api, subset = -c(74,119))
+```
+
+How does removing outliers influence `t-test` stat and p-value?
+
+
+## Confidence Interval
+
+95 % Confidence Interval from the output:
+
+- Without Outliers: (-23.57, -8.96)
+- With Outliers: (-21.77, -5.39)
+
+Removing Outliers:
+
+- the difference in means shifted further away from 0
+- CI shifted further from a difference of 0
+- decrease the SE of our sample difference
+
+Interpretation: We are 95% confident that the mean API growth between 1999 and 2000 for all low wealth
+schools is anywhere from 8.96 points to 23.57 points higher than the mean API growth for all high wealth
+schools in California.
+
+
+## Paired Data
+
+- Data are paired if the data being compared consists of paired data values
+
+- Common paired data examples:
+ 
+    - Two measurements on each case
+     - natural pairs (twins, spouses, etc)
+
+
+- Use paired data to reduce natural variation in the response when comparing the two groups/treatments
+ 
+    - comparing group 1 and 2 responses among similar individuals 
+    - reduces the effects of confounding variables
+     - reduces the SE for the mean difference!
+
+
+## Analyzing paired data
+
+
+- Look at the difference between responses for each unit (pair)
+$$d_{i} = x_{1,i} - x_{2,i}$$
+
+- Analyze the **mean of these differences** rather than the average difference between two groups
+$$\textrm{sample mean difference: } \bar{d}$$
+$$\textrm{sample SD of difference: } s_d$$
+$$\textrm{population mean difference: } \mu_d$$
+
+
+- Use **one sample** inference methods for these differences
+
+## Tuition example
+
+- How much higher is non-resident tuition, on average, compared to resident tuition?
+
+- Use the `Tuition2006.csv` lab manual data
+
+    - the variable `Diff` computues the difference `Res` - `NonRes`
+    
+```{r}
+tuition <- read.csv("http://math.carleton.edu/Stats215/RLabManual/Tuition2006.csv")
+str(tuition)
+```
+
+## Tuition example
+
+- Smaller sample size (n=19) and slightly left-skewed distribution
+    - or roughly symmetric with one low case!
+
+
+```{r, eval=FALSE}
+hist(tuition$Diff)
+qqnorm(tuition$Diff)
+qqline(tuition$Diff)
+```
+
+
+
+\begincols
+  \begincol{.60\textwidth}
+```{r, echo=FALSE}
+hist(tuition$Diff)
+```
+ \endcol
+\begincol{.40\textwidth}
+```{r, echo=FALSE}
+qqnorm(tuition$Diff)
+qqline(tuition$Diff)
+```
+ \endcol
+\endcols
+
+
+## Tuition example
+
+
+- We are 95% confident that the mean tuition for non-residents is $2,585 to $4584 higher than mean tuition for residents.
+
+```{r}
+t.test(tuition$Diff)
+sd(tuition$Diff)/sqrt(19)  # SE for mean diff
+```
+
+
+

@@ -27,7 +27,8 @@ Also, please start to work on HW1 that will be due at 10 PM on Wednesday, 01/12.
 - Basic R Objects
 - Basic Visualizations with `ggplot2`
 
-Day 3 Slides ({{% staticref "pdf/Day3/Day3.html" "newtab" %}}html{{% /staticref %}})
+Day 3 Slides ({{% staticref "pdf/Day3/Day3.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day3/Day3.html" "newtab" %}}html{{% /staticref %}})
+
 
 - Link to [In Class Activity](https://github.com/stat220/02-DataObj_Viz_Activity) 
 
@@ -46,10 +47,9 @@ Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#i
 - More `ggplot2` layers
 - Advanced visualizations
 
-Day 4 Slides ({{% staticref "pdf/Day4/Day4.html" "newtab" %}}html{{% /staticref %}})
+Day 4 Slides ({{% staticref "pdf/Day4/Day4.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day4/Day4.html" "newtab" %}}html{{% /staticref %}})
 
 - Link to [In Class Activity](https://github.com/stat220/03-visualization-activity) 
-
 
 Friday, 01/14
 
@@ -67,10 +67,8 @@ Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz
 - More advanced maps
 - Simple interactive maps with `leaflet`
 
-Day 5 Slides ({{% staticref "pdf/Day5/Day5.html" "newtab" %}}html{{% /staticref %}})
+Day 5 Slides ({{% staticref "pdf/Day5/Day5.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day5/Day5.html" "newtab" %}}html{{% /staticref %}})
 
 - Link to [In Class Activity](https://github.com/stat220/04-more-visualizations) 
-
-
 
 

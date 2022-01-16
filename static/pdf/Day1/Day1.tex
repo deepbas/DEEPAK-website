@@ -1,0 +1,913 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+  ignorenonframetext,
+]{beamer}
+\title{Introduction to Data Science}
+\author{Stat 220 Bastola}
+\date{2022-01-04}
+
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usetheme[]{metropolis}
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Introduction to Data Science},
+  pdfauthor={Stat 220 Bastola},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\def\begincols{\begin{columns}}
+\def\begincol{\begin{column}}
+\def\endcol{\end{column}}
+\def\endcols{\end{columns}}
+
+\setbeamercolor{structure}{fg=blue!55!green}
+\usepackage{graphicx}
+\usepackage{mathabx}
+\usepackage{xcolor}
+
+
+%% change fontsize of R code
+\let\oldShaded\Shaded
+\let\endoldShaded\endShaded
+\renewenvironment{Shaded}{\tiny\oldShaded}{\endoldShaded}
+
+%% change fontsize of output
+\let\oldverbatim\verbatim
+\let\endoldverbatim\endverbatim
+\renewenvironment{verbatim}{\tiny\oldverbatim}{\endoldverbatim}
+
+\usepackage[sfdefault]{FiraSans}
+
+% declare overall beamer theme to use as baseline
+\usetheme{default}
+
+
+% make code-output smaller
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{fontsize=\tiny,commandchars=\\\{\}}
+
+% make console-output smaller:
+  \makeatletter
+\def\verbatim{\tiny\@verbatim \frenchspacing\@vobeyspaces \@xverbatim}
+\makeatother
+
+
+\setlength{\parskip}{1pt}
+
+
+\setlength{\OuterFrameSep}{0pt}
+\makeatletter
+\preto{\@verbatim}{\topsep=1pt \partopsep=1pt }
+\makeatother
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\frame{\titlepage}
+
+\begin{frame}{What is data science?}
+\protect\hypertarget{what-is-data-science}{}
+\end{frame}
+
+\begin{frame}{Something about me}
+\protect\hypertarget{something-about-me}{}
+\begincols
+  \begincol{.60\textwidth}
+\begin{itemize}
+    \item First year in Carleton
+    \item Originally from Nepal
+    \item PhD in Applied Statistics at UC-Riverside
+    \item Diverse education background
+    \item Avid traveller
+\end{itemize}
+
+\endcol
+\begincol{.40\textwidth}
+
+\begin{figure}
+\centering
+\includegraphics{Deepak.jpg}
+\caption{Me without mask}
+\end{figure}
+
+\endcol \endcols
+\end{frame}
+
+\begin{frame}{COVID-19 related policies}
+\protect\hypertarget{covid-19-related-policies}{}
+\begin{itemize}
+\item Stay home when sick. (Even if you don’t have COVID-19, you should stay home if you aren’t feeling well.)
+\item Follow \href{https://www.cdc.gov/coronavirus/2019-ncov/vaccines/fully-vaccinated.html}{CDC} on testing, quarantine, and isolation.
+\item Follow the College mask-wearing policy
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Collaborative notes}
+\protect\hypertarget{collaborative-notes}{}
+\begin{itemize}
+\item Each day, two of you will collaborate on notes to share with the class
+\item Creates a crowd-sourced version of what we do in class
+\item Helps anyone who needs to miss class
+\item You'll do this 3x throughout the course
+\item \href{https://drive.google.com/drive/folders/1xgSlButXtTHNvZCi9QkhOv3YSBDeB1UH?usp=sharing}{Sign up here}
+\item Notes are due 24 hours after class, count as a HW assignment
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Data Science education}
+\protect\hypertarget{data-science-education}{}
+\begin{itemize}
+\tightlist
+\item
+  Many schools now offer
+  \href{http://datascience.community/colleges}{degrees} in some form of
+  data science (data analytics)
+\item
+  A B.S. (or Masters) in Data Science includes courses like:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Intro Stats, Intro Programming, Intro Data Science
+  \item
+    Regression (modeling)
+  \item
+    Machine Learning, Data mining
+  \item
+    Database management
+  \item
+    Data visualization
+  \item
+    Big Data
+  \item
+    Applications (econ, poli sci, bio)
+  \item
+    Ethics
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Stat 220: Data Science}
+\protect\hypertarget{stat-220-data-science}{}
+Focus on the ``soup to nuts'' approach to problem solving
+
+\begin{itemize}
+\tightlist
+\item
+  data wrangling
+
+  \begin{itemize}
+  \tightlist
+  \item
+    reshaping, cleaning, gathering
+  \end{itemize}
+\item
+  learning from data
+
+  \begin{itemize}
+  \tightlist
+  \item
+    EDA tools
+  \item
+    statistical learning methods
+  \item
+    network data, spatial data
+  \end{itemize}
+\item
+  communication
+
+  \begin{itemize}
+  \tightlist
+  \item
+    reproducibility
+  \item
+    effective visualization
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Using R Markdown for data science}
+\protect\hypertarget{using-r-markdown-for-data-science}{}
+\begin{itemize}
+\tightlist
+\item
+  You will use \href{http://rmarkdown.rstudio.com/lesson-1.html}{R
+  Markdown} for all work in this class
+\item
+  A Markdown (\texttt{.Rmd}) file contains
+
+  \begin{itemize}
+  \tightlist
+  \item
+    R code
+  \item
+    written answers, description of results, report, etc.
+  \end{itemize}
+\item
+  The Markdown file is \texttt{knit} to generate an output document
+
+  \begin{itemize}
+  \tightlist
+  \item
+    pdf, html, word
+  \item
+    presentations (html, beamer pdf)
+  \item
+    dashboards, interactive graphics (html)
+  \end{itemize}
+\item
+  Markdown is designed for \textbf{reproducibility}!
+\item
+  The slides I produce for this class are R Markdown's
+  \href{http://rmarkdown.rstudio.com/beamer_presentation_format.html}{\texttt{beamer}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Class Instruction}
+\protect\hypertarget{class-instruction}{}
+\center{https://deepbas.io/courses/stat220/}
+\end{frame}
+
+\begin{frame}{Problem!}
+\protect\hypertarget{problem}{}
+\begin{itemize}
+\item
+  The \textbf{estimated} SE varies from sample to sample, along with
+  \(\bar{x}\)!
+\item
+  In \(z\), only \(\bar{x}\) varies from sample to sample
+  \[z = \dfrac{\bar{x} - \mu}{\sigma/\sqrt{n}} \sim N(0,1)\]
+\item
+  In \(t\), both \(\bar{x}\) and \(s\) vary from sample to sample
+  \[t = \dfrac{\bar{x} - \mu}{s/\sqrt{n}} \sim ???\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Inference for means:}
+\protect\hypertarget{inference-for-means}{}
+\begin{itemize}
+\item
+  \textbf{Check:} Check the one- or two-sample size conditions for the
+  CLT
+\item
+  \textbf{Tests:} Use t-ratios of the form
+\end{itemize}
+
+\[
+t = \dfrac{\textrm{stat} - \textrm{null value}}{SE}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  P-values computed from a t-distribution with appropriate df
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{pt(t,\ df=\ )} gives the area to the left of \texttt{t}
+  \end{itemize}
+\item
+  \textbf{Confidence intervals:} CI of the form
+  \[\textrm{stat} \pm t^* SE\]
+\item
+  The t* multiplier comes from a t-distribution with appropriate df
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{qt(0.975,\ df=\ )} gives \(t^*\) for 95\% confidence
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Florida lakes}
+\protect\hypertarget{florida-lakes}{}
+\begin{itemize}
+\item
+  53 lakes were sampled, pH recorded
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Is average pH in Florida lakes different from 7 (neutral)?
+  \end{itemize}
+\item
+  Let \(\mu\) be the mean pH for all Florida lakes \[
+  H_0: \mu = 7 \ \ \ \  H_A: \mu \neq 7
+  \]
+\item
+  Can we use a t-test?
+
+  \begin{itemize}
+  \item
+    \(n=53\) is a decent sample size
+  \item
+    check sample distribution of pHs
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Florida lakes}
+\protect\hypertarget{florida-lakes-1}{}
+\begin{itemize}
+\tightlist
+\item
+  sampled pH's roughly symmetric, so \(n=53\) is ``big enough'' for the
+  CLT
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lakes }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"http://www.lock5stat.com/datasets1e/FloridaLakes.csv"}\NormalTok{)}
+\FunctionTok{hist}\NormalTok{(lakes}\SpecialCharTok{$}\NormalTok{pH)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Day1_files/figure-beamer/unnamed-chunk-2-1.pdf}
+\end{frame}
+
+\begin{frame}[fragile]{Florida lakes}
+\protect\hypertarget{florida-lakes-2}{}
+\[
+H_0: \mu = 7 \ \ \ \  H_A: \mu \neq 7
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  Data: The average pH was \(\bar{x}=6.591\) with a standard deviation
+  of \(s=1.288\).
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(lakes}\SpecialCharTok{$}\NormalTok{pH)}
+\NormalTok{[}\DecValTok{1}\NormalTok{] }\FloatTok{6.590566}
+\FunctionTok{sd}\NormalTok{(lakes}\SpecialCharTok{$}\NormalTok{pH)}
+\NormalTok{[}\DecValTok{1}\NormalTok{] }\FloatTok{1.288449}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\item
+  The t-test stat is \[
+  t = \dfrac{6.591 - 7}{1.288/\sqrt{53}} \approx -2.31
+  \]
+\item
+  \textbf{Intepret t}: The observed mean of 6.591 is 2.31 SEs below 7.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Florida lakes}
+\protect\hypertarget{florida-lakes-3}{}
+\[
+H_0: \mu = 7 \ \ \ \  H_A: \mu \neq 7
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{p-value} \(2 \times P(t < -2.31)\), or double left tail area
+  below -2.31
+
+  \begin{itemize}
+  \tightlist
+  \item
+    use t-distribution with \(df = 53-1= 52\)
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{2}\SpecialCharTok{*}\FunctionTok{pt}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{2.31}\NormalTok{, }\AttributeTok{df=}\DecValTok{53{-}1}\NormalTok{)  }\CommentTok{\# df = n{-}1}
+\NormalTok{[}\DecValTok{1}\NormalTok{] }\FloatTok{0.02489032}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\item
+  \textbf{Interpret:} The p-value is 0.025. If the mean pH of all lakes
+  is 7, then we would see a sample mean that is at least 2.31 SEs away
+  from 7 about 2.5\% of the time in samples of 53 lakes.
+\item
+  \textbf{Conclusion:} There is a statistically significant difference
+  between the observed mean pH of 6.591 and the hypothesized mean of 7
+  (t=-2.31, df=52, p=0.025).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Florida lakes}
+\protect\hypertarget{florida-lakes-4}{}
+\begin{itemize}
+\tightlist
+\item
+  We can also use \texttt{t.test}!
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t.test}\NormalTok{(lakes}\SpecialCharTok{$}\NormalTok{pH, }\AttributeTok{mu  =} \DecValTok{7}\NormalTok{)}
+
+\NormalTok{    One Sample t}\SpecialCharTok{{-}}\NormalTok{test}
+
+\NormalTok{data}\SpecialCharTok{:}\NormalTok{  lakes}\SpecialCharTok{$}\NormalTok{pH}
+\NormalTok{t }\OtherTok{=} \SpecialCharTok{{-}}\FloatTok{2.3134}\NormalTok{, df }\OtherTok{=} \DecValTok{52}\NormalTok{, p}\SpecialCharTok{{-}}\NormalTok{value }\OtherTok{=} \FloatTok{0.02469}
+\NormalTok{alternative hypothesis}\SpecialCharTok{:}\NormalTok{ true mean is not equal to }\DecValTok{7}
+\DecValTok{95}\NormalTok{ percent confidence interval}\SpecialCharTok{:}
+ \FloatTok{6.235425} \FloatTok{6.945707}
+\NormalTok{sample estimates}\SpecialCharTok{:}
+\NormalTok{mean of x }
+ \FloatTok{6.590566} 
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Florida lakes}
+\protect\hypertarget{florida-lakes-5}{}
+\begin{itemize}
+\item
+  How different is the population mean from 7?
+\item
+  95\% CI for \(\mu\):
+\end{itemize}
+
+\[
+6.591 \pm 2.0066 \dfrac{1.288}{\sqrt{53}} = 6.591 \pm 0.355 = 6.236, 6.946
+\] where \(t^*\) corresponds to 95\% confidence (97.5th percentile):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qt}\NormalTok{(.}\DecValTok{975}\NormalTok{, }\AttributeTok{df=}\DecValTok{53{-}1}\NormalTok{)}
+\NormalTok{[}\DecValTok{1}\NormalTok{] }\FloatTok{2.006647}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  We are 95\% confident that the mean pH of all lakes is between 6.236
+  and 6.946 (slightly acidic).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Academic Performance Index (API)}
+\protect\hypertarget{academic-performance-index-api}{}
+\begin{itemize}
+\tightlist
+\item
+  Academic Performance Index (API) is a number reflecting a school's
+  performance on a statewide standardized test
+
+  \begin{itemize}
+  \tightlist
+  \item
+    simple random sample of \(n=200\) schools
+  \item
+    variable \texttt{growth} measures the growth in API from 1999 to
+    2000 (API 2000 - API 1999).
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{api }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"http://people.carleton.edu/\textasciitilde{}kstclair/data/api.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{api}\SpecialCharTok{$}\NormalTok{wealth }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(api}\SpecialCharTok{$}\NormalTok{meals }\SpecialCharTok{\textgreater{}} \DecValTok{50}\NormalTok{, }\StringTok{"low"}\NormalTok{,}\StringTok{"high"}\NormalTok{)}
+\FunctionTok{table}\NormalTok{(api}\SpecialCharTok{$}\NormalTok{wealth)}
+
+\NormalTok{high  low }
+ \DecValTok{102}   \DecValTok{98} 
+\FunctionTok{library}\NormalTok{(dplyr)}
+\NormalTok{api }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{group\_by}\NormalTok{(wealth) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{summarize}\NormalTok{(}\FunctionTok{mean}\NormalTok{(growth), }\FunctionTok{sd}\NormalTok{(growth))}
+\CommentTok{\# A tibble: 2 x 3}
+\NormalTok{  wealth }\StringTok{\textasciigrave{}}\AttributeTok{mean(growth)}\StringTok{\textasciigrave{}} \StringTok{\textasciigrave{}}\AttributeTok{sd(growth)}\StringTok{\textasciigrave{}}
+  \SpecialCharTok{\textless{}}\NormalTok{chr}\SpecialCharTok{\textgreater{}}           \ErrorTok{\textless{}}\NormalTok{dbl}\SpecialCharTok{\textgreater{}}        \ErrorTok{\textless{}}\NormalTok{dbl}\SpecialCharTok{\textgreater{}}
+\DecValTok{1}\NormalTok{ high             }\FloatTok{25.2}         \FloatTok{28.8}
+\DecValTok{2}\NormalTok{ low              }\FloatTok{38.8}         \FloatTok{30.0}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{API}
+\protect\hypertarget{api}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{boxplot}\NormalTok{(growth }\SpecialCharTok{\textasciitilde{}}\NormalTok{ wealth, }\AttributeTok{data=}\NormalTok{api, }\AttributeTok{xlab=}\StringTok{"API growth (2000 {-} 1999)"}\NormalTok{ , }\AttributeTok{horizontal=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Day1_files/figure-beamer/unnamed-chunk-9-1.pdf}
+\end{frame}
+
+\begin{frame}{Hypothesis Test}
+\protect\hypertarget{hypothesis-test}{}
+\begin{itemize}
+\item
+  Can we use t-inference methods to compare mean growths?
+
+  \begin{itemize}
+  \tightlist
+  \item
+    both samples sizes (98 and 102) can be deemed large
+  \item
+    No severe skewness (but two extreme outliers)
+  \end{itemize}
+\item
+  Estimated Standard Error \[
+  SD_{\bar{x}_h - \bar{x}_l} = \sqrt{\dfrac{28.75380^2}{102} + \dfrac{29.95048^2}{98}} = 4.1544
+  \]
+\item
+  Test statistics
+\end{itemize}
+
+\[
+t = \dfrac{(25.24510 - 38.82653) - 0}{4.154404} = -3.2692
+\]
+
+The observed mean difference is 3.3 SEs below the hypothesized mean
+difference of 0.
+\end{frame}
+
+\begin{frame}[fragile]{Two-sample t-test}
+\protect\hypertarget{two-sample-t-test}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t.test}\NormalTok{(growth }\SpecialCharTok{\textasciitilde{}}\NormalTok{ wealth, }\AttributeTok{data =}\NormalTok{ api)}
+
+\NormalTok{    Welch Two Sample t}\SpecialCharTok{{-}}\NormalTok{test}
+
+\NormalTok{data}\SpecialCharTok{:}\NormalTok{  growth by wealth}
+\NormalTok{t }\OtherTok{=} \SpecialCharTok{{-}}\FloatTok{3.2692}\NormalTok{, df }\OtherTok{=} \FloatTok{196.71}\NormalTok{, p}\SpecialCharTok{{-}}\NormalTok{value }\OtherTok{=} \FloatTok{0.001273}
+\NormalTok{alternative hypothesis}\SpecialCharTok{:}\NormalTok{ true difference }\ControlFlowTok{in}\NormalTok{ means between group high and group low is not equal to }\DecValTok{0}
+\DecValTok{95}\NormalTok{ percent confidence interval}\SpecialCharTok{:}
+ \SpecialCharTok{{-}}\FloatTok{21.774321}  \SpecialCharTok{{-}}\FloatTok{5.388544}
+\NormalTok{sample estimates}\SpecialCharTok{:}
+\NormalTok{mean }\ControlFlowTok{in}\NormalTok{ group high  mean }\ControlFlowTok{in}\NormalTok{ group low }
+          \FloatTok{25.24510}           \FloatTok{38.82653} 
+\end{Highlighting}
+\end{Shaded}
+
+The p-value is 0.001273. If there is no difference between mean growth
+in the two populations, then there is just a 0.13\% chance of seeing a
+sample mean difference that is 3.27 standard errors or more away from 0.
+\end{frame}
+
+\begin{frame}[fragile]{Outliers}
+\protect\hypertarget{outliers}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{which}\NormalTok{(api}\SpecialCharTok{$}\NormalTok{growth }\SpecialCharTok{\textgreater{}} \DecValTok{120}\NormalTok{ )}
+\NormalTok{[}\DecValTok{1}\NormalTok{]  }\DecValTok{74} \DecValTok{119}
+\NormalTok{api }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{slice}\NormalTok{(}\DecValTok{74}\NormalTok{,}\DecValTok{119}\NormalTok{)  }
+\NormalTok{           cds stype            name                 sname snum}
+\DecValTok{1} \FloatTok{5.471911e+13}\NormalTok{     E Lincoln Element    Lincoln Elementary }\DecValTok{5873}
+\DecValTok{2} \FloatTok{1.975342e+13}\NormalTok{     E Washington Elem Washington Elementary }\DecValTok{2543}
+\NormalTok{                    dname dnum       cname cnum flag pcttest api00 api99 target}
+\DecValTok{1}\NormalTok{ Exeter Union Elementary  }\DecValTok{226}\NormalTok{      Tulare   }\DecValTok{53}   \ConstantTok{NA}      \DecValTok{98}   \DecValTok{693}   \DecValTok{504}     \DecValTok{15}
+\DecValTok{2}\NormalTok{   Redondo Beach Unified  }\DecValTok{585}\NormalTok{ Los Angeles   }\DecValTok{18}   \ConstantTok{NA}     \DecValTok{100}   \DecValTok{745}   \DecValTok{615}      \DecValTok{9}
+\NormalTok{  growth sch.wide comp.imp both awards meals ell yr.rnd mobility acs.k3 acs}\FloatTok{.46}
+\DecValTok{1}    \DecValTok{189}\NormalTok{      Yes      Yes  Yes    Yes    }\DecValTok{50}  \DecValTok{18}   \SpecialCharTok{\textless{}}\ConstantTok{NA}\SpecialCharTok{\textgreater{}}        \DecValTok{9}     \DecValTok{18}     \ConstantTok{NA}
+\DecValTok{2}    \DecValTok{130}\NormalTok{      Yes      Yes  Yes    Yes    }\DecValTok{41}  \DecValTok{20}   \SpecialCharTok{\textless{}}\ConstantTok{NA}\SpecialCharTok{\textgreater{}}       \DecValTok{16}     \DecValTok{19}     \DecValTok{30}
+\NormalTok{  acs.core pct.resp not.hsg hsg some.col col.grad grad.sch avg.ed full emer}
+\DecValTok{1}       \ConstantTok{NA}       \DecValTok{93}      \DecValTok{28}  \DecValTok{23}       \DecValTok{27}       \DecValTok{14}        \DecValTok{8}   \FloatTok{2.51}   \DecValTok{91}    \DecValTok{9}
+\DecValTok{2}       \ConstantTok{NA}       \DecValTok{81}      \DecValTok{11}  \DecValTok{26}       \DecValTok{32}       \DecValTok{16}       \DecValTok{16}   \FloatTok{2.99}  \DecValTok{100}    \DecValTok{3}
+\NormalTok{  enroll api.stu    pw  fpc wealth}
+\DecValTok{1}    \DecValTok{196}     \DecValTok{177} \FloatTok{30.97} \DecValTok{6194}\NormalTok{   high}
+\DecValTok{2}    \DecValTok{391}     \DecValTok{313} \FloatTok{30.97} \DecValTok{6194}\NormalTok{   high}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Remove Outliers}
+\protect\hypertarget{remove-outliers}{}
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t.test}\NormalTok{(growth }\SpecialCharTok{\textasciitilde{}}\NormalTok{ wealth, }\AttributeTok{data =}\NormalTok{ api, }\AttributeTok{subset =} \SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{74}\NormalTok{,}\DecValTok{119}\NormalTok{))}
+
+\NormalTok{    Welch Two Sample t}\SpecialCharTok{{-}}\NormalTok{test}
+
+\NormalTok{data}\SpecialCharTok{:}\NormalTok{  growth by wealth}
+\NormalTok{t }\OtherTok{=} \SpecialCharTok{{-}}\FloatTok{4.395}\NormalTok{, df }\OtherTok{=} \FloatTok{174.97}\NormalTok{, p}\SpecialCharTok{{-}}\NormalTok{value }\OtherTok{=} \FloatTok{1.916e{-}05}
+\NormalTok{alternative hypothesis}\SpecialCharTok{:}\NormalTok{ true difference }\ControlFlowTok{in}\NormalTok{ means between group high and group low is not equal to }\DecValTok{0}
+\DecValTok{95}\NormalTok{ percent confidence interval}\SpecialCharTok{:}
+ \SpecialCharTok{{-}}\FloatTok{23.571116}  \SpecialCharTok{{-}}\FloatTok{8.961945}
+\NormalTok{sample estimates}\SpecialCharTok{:}
+\NormalTok{mean }\ControlFlowTok{in}\NormalTok{ group high  mean }\ControlFlowTok{in}\NormalTok{ group low }
+          \FloatTok{22.56000}           \FloatTok{38.82653} 
+\end{Highlighting}
+\end{Shaded}
+
+How does removing outliers influence \texttt{t-test} stat and p-value?
+\end{frame}
+
+\begin{frame}{Confidence Interval}
+\protect\hypertarget{confidence-interval}{}
+95 \% Confidence Interval from the output:
+
+\begin{itemize}
+\tightlist
+\item
+  Without Outliers: (-23.57, -8.96)
+\item
+  With Outliers: (-21.77, -5.39)
+\end{itemize}
+
+Removing Outliers:
+
+\begin{itemize}
+\tightlist
+\item
+  the difference in means shifted further away from 0
+\item
+  CI shifted further from a difference of 0
+\item
+  decrease the SE of our sample difference
+\end{itemize}
+
+Interpretation: We are 95\% confident that the mean API growth between
+1999 and 2000 for all low wealth schools is anywhere from 8.96 points to
+23.57 points higher than the mean API growth for all high wealth schools
+in California.
+\end{frame}
+
+\begin{frame}{Paired Data}
+\protect\hypertarget{paired-data}{}
+\begin{itemize}
+\item
+  Data are paired if the data being compared consists of paired data
+  values
+\item
+  Common paired data examples:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Two measurements on each case
+  \item
+    natural pairs (twins, spouses, etc)
+  \end{itemize}
+\item
+  Use paired data to reduce natural variation in the response when
+  comparing the two groups/treatments
+
+  \begin{itemize}
+  \tightlist
+  \item
+    comparing group 1 and 2 responses among similar individuals
+  \item
+    reduces the effects of confounding variables
+  \item
+    reduces the SE for the mean difference!
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Analyzing paired data}
+\protect\hypertarget{analyzing-paired-data}{}
+\begin{itemize}
+\item
+  Look at the difference between responses for each unit (pair)
+  \[d_{i} = x_{1,i} - x_{2,i}\]
+\item
+  Analyze the \textbf{mean of these differences} rather than the average
+  difference between two groups
+  \[\textrm{sample mean difference: } \bar{d}\]
+  \[\textrm{sample SD of difference: } s_d\]
+  \[\textrm{population mean difference: } \mu_d\]
+\item
+  Use \textbf{one sample} inference methods for these differences
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tuition example}
+\protect\hypertarget{tuition-example}{}
+\begin{itemize}
+\item
+  How much higher is non-resident tuition, on average, compared to
+  resident tuition?
+\item
+  Use the \texttt{Tuition2006.csv} lab manual data
+
+  \begin{itemize}
+  \tightlist
+  \item
+    the variable \texttt{Diff} computues the difference \texttt{Res} -
+    \texttt{NonRes}
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tuition }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"http://math.carleton.edu/Stats215/RLabManual/Tuition2006.csv"}\NormalTok{)}
+\FunctionTok{str}\NormalTok{(tuition)}
+\StringTok{\textquotesingle{}data.frame\textquotesingle{}}\SpecialCharTok{:}   \DecValTok{19}\NormalTok{ obs. of  }\DecValTok{5}\NormalTok{ variables}\SpecialCharTok{:}
+ \ErrorTok{$}\NormalTok{ X          }\SpecialCharTok{:}\NormalTok{ int  }\DecValTok{1} \DecValTok{2} \DecValTok{3} \DecValTok{4} \DecValTok{5} \DecValTok{6} \DecValTok{7} \DecValTok{8} \DecValTok{9} \DecValTok{10}\NormalTok{ ...}
+ \SpecialCharTok{$}\NormalTok{ Institution}\SpecialCharTok{:}\NormalTok{ chr  }\StringTok{"Univ of Akron (OH)"} \StringTok{"Athens State (AL)"} \StringTok{"Ball State (IN)"} \StringTok{"Bloomsburg U (PA)"}\NormalTok{ ...}
+ \SpecialCharTok{$}\NormalTok{ Res        }\SpecialCharTok{:}\NormalTok{ int  }\DecValTok{4200} \DecValTok{1900} \DecValTok{3400} \DecValTok{3200} \DecValTok{3400} \DecValTok{2600} \DecValTok{3300} \DecValTok{2900} \DecValTok{2200} \DecValTok{3400}\NormalTok{ ...}
+ \SpecialCharTok{$}\NormalTok{ NonRes     }\SpecialCharTok{:}\NormalTok{ int  }\DecValTok{8800} \DecValTok{3600} \DecValTok{8600} \DecValTok{7000} \DecValTok{12700} \DecValTok{5700} \DecValTok{5900} \DecValTok{3400} \DecValTok{4600} \DecValTok{7300}\NormalTok{ ...}
+ \SpecialCharTok{$}\NormalTok{ Diff       }\SpecialCharTok{:}\NormalTok{ int  }\SpecialCharTok{{-}}\DecValTok{4600} \SpecialCharTok{{-}}\DecValTok{1700} \SpecialCharTok{{-}}\DecValTok{5200} \SpecialCharTok{{-}}\DecValTok{3800} \SpecialCharTok{{-}}\DecValTok{9300} \SpecialCharTok{{-}}\DecValTok{3100} \SpecialCharTok{{-}}\DecValTok{2600} \SpecialCharTok{{-}}\DecValTok{500} \SpecialCharTok{{-}}\DecValTok{2400} \SpecialCharTok{{-}}\DecValTok{3900}\NormalTok{ ...}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\begin{frame}[fragile]{Tuition example}
+\protect\hypertarget{tuition-example-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Smaller sample size (n=19) and slightly left-skewed distribution
+
+  \begin{itemize}
+  \tightlist
+  \item
+    or roughly symmetric with one low case!
+  \end{itemize}
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(tuition}\SpecialCharTok{$}\NormalTok{Diff)}
+\FunctionTok{qqnorm}\NormalTok{(tuition}\SpecialCharTok{$}\NormalTok{Diff)}
+\FunctionTok{qqline}\NormalTok{(tuition}\SpecialCharTok{$}\NormalTok{Diff)}
+\end{Highlighting}
+\end{Shaded}
+
+\begincols
+  \begincol{.60\textwidth}
+
+\includegraphics{Day1_files/figure-beamer/unnamed-chunk-15-1.pdf}
+\endcol \begincol{.40\textwidth}
+\includegraphics{Day1_files/figure-beamer/unnamed-chunk-16-1.pdf}
+\endcol \endcols
+\end{frame}
+
+\begin{frame}[fragile]{Tuition example}
+\protect\hypertarget{tuition-example-2}{}
+\begin{itemize}
+\tightlist
+\item
+  We are 95\% confident that the mean tuition for non-residents is
+  \$2,585 to \$4584 higher than mean tuition for residents.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t.test}\NormalTok{(tuition}\SpecialCharTok{$}\NormalTok{Diff)}
+
+\NormalTok{    One Sample t}\SpecialCharTok{{-}}\NormalTok{test}
+
+\NormalTok{data}\SpecialCharTok{:}\NormalTok{  tuition}\SpecialCharTok{$}\NormalTok{Diff}
+\NormalTok{t }\OtherTok{=} \SpecialCharTok{{-}}\FloatTok{7.5349}\NormalTok{, df }\OtherTok{=} \DecValTok{18}\NormalTok{, p}\SpecialCharTok{{-}}\NormalTok{value }\OtherTok{=} \FloatTok{5.69e{-}07}
+\NormalTok{alternative hypothesis}\SpecialCharTok{:}\NormalTok{ true mean is not equal to }\DecValTok{0}
+\DecValTok{95}\NormalTok{ percent confidence interval}\SpecialCharTok{:}
+ \SpecialCharTok{{-}}\FloatTok{4583.580} \SpecialCharTok{{-}}\FloatTok{2584.841}
+\NormalTok{sample estimates}\SpecialCharTok{:}
+\NormalTok{mean of x }
+\SpecialCharTok{{-}}\FloatTok{3584.211} 
+\FunctionTok{sd}\NormalTok{(tuition}\SpecialCharTok{$}\NormalTok{Diff)}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(}\DecValTok{19}\NormalTok{)  }\CommentTok{\# SE for mean diff}
+\NormalTok{[}\DecValTok{1}\NormalTok{] }\FloatTok{475.6813}
+\end{Highlighting}
+\end{Shaded}
+\end{frame}
+
+\end{document}
