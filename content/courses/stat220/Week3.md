@@ -18,3 +18,13 @@ Please read [GW Chapter 5](https://r4ds.had.co.nz/transform.html), [Irizarry Sec
 Also, it may be useful to go over this short video on the [basics of `dplyr`](https://www.youtube.com/watch?v=BaFkbNOaof8) before class.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BaFkbNOaof8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+### In Class
+
+- Basic data wrangling
+- Implementation of the five verbs
+
+Day 6 Slides ({{% staticref "pdf/Day6/Day6.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day6/Day6.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/05-Data-Wrangling) 

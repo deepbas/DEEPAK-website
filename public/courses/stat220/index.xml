@@ -25,7 +25,17 @@
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;Also, it may be useful to go over this short video on the &lt;a href=&#34;https://www.youtube.com/watch?v=BaFkbNOaof8&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;basics of &lt;code&gt;dplyr&lt;/code&gt;&lt;/a&gt; before class.&lt;/p&gt;
-&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/BaFkbNOaof8&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;</description>
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/BaFkbNOaof8&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Basic data wrangling&lt;/li&gt;
+&lt;li&gt;Implementation of the five verbs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Day 6 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day6/Day6.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day6/Day6.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/05-Data-Wrangling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>

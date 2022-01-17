@@ -1,0 +1,670 @@
+---
+title: "Data wrangling with **dplyr**"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, metropolis, metropolis-fonts]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    nature:
+      ratio: '16:9'
+      titleSlideClass: ["center", "top", "my-title"]
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+      countdown: 60000
+---
+
+<style type="text/css">
+
+.hljs-github .hljs {
+    background: #e5e5e5;
+}
+
+.inline-c, remark-inline-code {
+   background: #e5e5e5;
+   border-radius: 3px;
+   padding: 4px;
+   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+}
+
+.yellow-h{
+   background: #ffff88;
+}
+
+.out-t, remark-inline-code {
+   background: #9fff9f;
+   border-radius: 3px;
+   padding: 4px;
+   
+}
+
+.pull-left-c {
+    float: left;
+    width: 58%;
+    
+}
+
+.pull-right-c {
+    float: right;
+    width: 38%;
+    
+}
+
+.large {
+    font-size: 200%
+    
+}
+
+.medium {
+    font-size: 75%
+    
+}
+
+.small {
+    font-size: 50%
+    }
+
+.action {
+    background-color: #f2eecb;
+  
+}
+
+</style>
+
+```{css, echo = FALSE}
+.red{ color: red;}
+.remark-code, .remark-inline-code {
+    font-family: 'Fira Mono', 'Source Code Pro', monospace;}
+.remark-slide-scaler {
+    overflow-y: auto;}
+.remark-slide-content {
+  font-size: 24px;
+  padding: 20px 80px 20px 80px;
+}
+.remark-code, .remark-inline-code {
+  background: #f0f0f0;
+}
+.remark-code {
+  font-size: 20px;
+}
+.huge .remark-code { /*Change made here*/
+  font-size: 200% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 75% !important;
+}
+
+```
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment=NA, 
+                      warning = FALSE,
+                      message = FALSE,
+                      fig.height = 4, fig.width = 6, fig.align='center')
+
+
+
+library(dplyr)
+library(dslabs)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+```
+
+
+# Data Wrangling 
+
+.blockquote[the process of .out-t[cleaning and unifying messy and complex data sets for easy access and analysis]]
+
+--
+
+.pull-left[
+- .yellow-h["data janitor work"]
+- importing data
+- cleaning data
+- changing shape of data
+]
+.pull-right[
+- fixing errors and poorly formatted data elements
+- transforming columns and rows
+- filtering, subsetting
+]
+
+
+
+---
+background-image: url("images/dplyr.png")
+background-position: 100% 100% 
+background-size: 100% 100%
+
+---
+
+# Essential data wrangling tasks
+
+
+1. Extract a subset of columns
+
+--
+
+2. Extract a subset of rows
+
+--
+
+3. Order the rows from smallest to largest (or largest to smallest)
+
+--
+
+4. Compute a table of summary statistics, perhaps by group
+
+--
+
+5. Create new columns
+
+---
+
+# The Five Verbs
+
+The creater of `dplyr`, [Hadley Wickham](https://en.wikipedia.org/wiki/Hadley_Wickham), argues that most of the operations on a data table can be achieved with
+
+- *select()*
+- *filter()*
+- *mutate()*
+- *arrange()*
+- *summarize()*
+
+---
+
+# Babynames Dataset
+
+- Names of babies born in the U.S. .yellow-h[between 1880 and 2017]
+- Source: Social Security Administration
+
+--
+
+```{r}
+library(babynames)
+glimpse(babynames)
+```
+
+---
+
+# Find a subset of the columns using *select()*:
+
+- `select()`: take a .yellow-h[subset of the columns (variables/features)]
+
+
+```{r}
+babynames %>%
+  select(year, name, n) %>% #<<
+  head()
+```
+
+
+---
+
+# Using **%>%**
+
+- `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+
+---
+
+# Using **%>%**
+
+You can build up a series of pipes
+
+```{r, eval=FALSE}
+babynames %>%                   # dataframe first and then... #<<
+  select(year, name, n) %>%
+  head()
+```
+
+---
+
+# Using **%>%**
+
+You can build up a series of pipes
+
+
+```{r, eval=FALSE}
+babynames %>%                   # dataframe first and then... 
+  select(year, name, n) %>%     # select columns `year`, `name`, and `n` #<<
+  head()                    
+```
+
+---
+
+# Using **%>%**
+
+You can build up a series of pipes
+
+
+```{r, eval=FALSE}
+babynames %>%                   # dataframe first and then... 
+  select(year, name, n) %>%     # select columns year, name, and n 
+  head()                        # display header of the data frame #<<
+```
+
+
+--
+
+```{r, echo=FALSE}
+babynames %>%
+  select(year, name, n) %>%
+  head()
+```
+
+---
+
+# **select()** helpers
+
+
+`:` select range of columns
+```{r eval=FALSE}
+select(gapminder, income:population)
+```
+
+--
+
+`-` select every column but
+```{r eval=FALSE}
+select(gapminder, -c(income,population))
+```
+
+---
+
+# **select()** helpers
+
+`starts_with()` select columns that start with...
+```{r eval=FALSE}
+select(gapminder, starts_with("p"))
+```
+
+--
+
+`ends_with()` select columns that end with...
+```{r eval=FALSE}
+select(gapminder, ends_with("y"))
+```
+
+--
+
+`contains()` select columns whose names contain...
+```{r eval=FALSE}
+select(gapminder, contains("e"))
+```
+
+---
+
+class: action
+
+#  Your Turn 1
+
+- Please git clone the repository on [data wrangling activity](https://github.com/stat220/05-Data-Wrangling) from the course GitHub organization.
+
+- Which of these is **NOT** a way to select the `name` and `n` columns together?
+
+```{r eval=FALSE}
+select(babynames, -c(year, sex, prop))
+
+select(babynames, name:n)
+
+select(babynames, starts_with("n"))
+
+select(babynames, ends_with("n"))
+```
+
+```{r echo=FALSE}
+countdown(2)
+```
+---
+
+
+# Find a subset of the rows using *filter()*:
+
+- `filter()`: take a .yellow-h[subset of the rows (observations)]
+
+```{r}
+babynames %>%
+  filter(name == "Bella") %>%
+  head()
+```
+
+
+---
+
+# Use both *filter()* and *select()*
+
+
+```{r}
+bella <- babynames %>%
+  filter(name == "Bella") %>%
+  select(year, name, sex, n)
+
+```
+
+--
+
+.pull-left[
+
+```{r}
+head(bella)
+```
+
+]
+
+.tiny[
+.pull-right[
+```{r}
+dim(bella)
+class(bella)
+```
+]
+]
+
+---
+
+# Some Operators
+
+Operator|Definition                   
+---|---
+`<`| less than                    
+`<=`|	less than or equal to
+`>`| greater than
+`>=`|	greater than or equal to 
+`==`|	exactly equal to 
+`!=`|	not equal to 
+`x & y`| `x` AND `y`                  
+`x %in% y`| test if `x` is in `y`   
+
+
+---
+class:action
+
+#  Your Turn 2
+
+Use `filter()` with the logical operators to extract:
+
+- All of the names where prop is greater than or equal to 0.08
+
+- All of the babies named "Rose"
+
+- All of the names that have a missing value for n
+
+
+```{r echo=FALSE}
+countdown(2)
+```
+---
+
+
+# *summarize()* or *summarise()*
+
+If we want to .yellow-h[compare summary statistics], we might use `summarize()`.
+
+```{r}
+babynames %>% 
+  filter(name == "Bella", sex == "F") %>% 
+  summarise(total = sum(n), max = max(n), mean = mean(n)) #<<
+```
+
+--
+
+.pull-left[
+```{r}
+babynames %>% 
+  filter(name == "Bella", sex == "F") %>% 
+  summarize(n = n()) #<<
+```
+]
+
+.pull-right[
+```{r}
+babynames %>% 
+  summarize(nname = n_distinct(name)) #<<
+```
+]
+
+---
+
+class: action
+
+# Your Turn 3
+
+Use the codes mentioned so far to compute three statistics:
+
+1. the total number of children who ever had your name
+1. the maximum number of children given your name in a single year
+1. the mean number of children given your name per year 
+
+`r countdown(minutes = 4, seconds = 00, left = 0, color_background = "inherit")`
+
+---
+
+
+# Boolean operators
+
+For help, `?base::Logic`
+
+```{r echo=FALSE, out.width = "80%", fig.align='center'}
+knitr::include_graphics("images/07-transform-logical.png")
+```
+
+.footnote[Source: *R for Data Science*, by Grolemund & Wickham]
+---
+
+
+class:action
+
+# Your Turn 4
+
+Use Boolean operators to alter the code below to return only the rows that contain:
+
+- Girls named Rhea
+
+- Names that were used by exactly 5 or 6 children in 1990
+
+- Names that are one of Apple, Yoroi, Ada
+
+```{r eval=FALSE}
+filter(babynames, name == "Ada" | name == "Rhea")
+```
+
+```{r echo=FALSE}
+countdown(4)
+```
+
+---
+
+
+# Using *group_by()*
+
+```{r}
+babynames %>% 
+  group_by(year, sex) #<<
+```
+
+---
+
+
+# Using *group_by()* along with *summarize()*
+
+```{r}
+babynames %>%
+  group_by(year) %>%  #<<
+  summarise(total = sum(n)) #<<
+
+```
+
+---
+
+
+# *mutate()*
+
+- `mutate()` lets us .yellow-h[create new variables based on manipulations of the old variables]
+
+
+```{r}
+babynames <- babynames %>%
+  group_by(year) %>%
+  mutate(percent = prop * 100) #<<
+head(babynames)
+```
+
+---
+
+# *arrange()*
+
+.yellow-h[Order rows from smallest to largest]
+
+```{r eval=FALSE}
+arrange(.data, ...)
+```
+
+--
+
+```{r eval=FALSE}
+arrange(babynames, n)
+```
+
+---
+
+# *desc()*
+
+Changes ordering from largest to smallest.
+
+.scroll-box-10[
+```{r}
+arrange(babynames, desc(n)) #<<
+```
+]
+---
+
+# Most common names in 1990
+
+```{r}
+babynames %>%
+  filter(year == 1990) %>% #<<
+  arrange(desc(prop))  #<<
+```
+
+---
+
+# *top_n()* 
+
+Most common name in each year
+
+```{r}
+babynames %>%
+  group_by(year) %>% #<<
+  top_n(1, prop)     #<<
+
+```
+---
+
+class: action
+
+# Your Turn 5
+
+Find the year your first name is most common. 
+
+```{r, echo=FALSE, fig.align="center"}
+# Filter for the names Steven, Thomas, and Matthew 
+selected_names <- babynames %>%
+  filter(name %in% c("Dan"), sex == "M")
+
+# Plot the names using a different color for each name
+Dan_plot <- ggplot(selected_names, aes(x = year, y = prop, color = name)) +
+  geom_line() +
+  scale_x_continuous(name = NULL, breaks = seq(1880, 2017, by = 20)) +
+  labs(y = "Proportion of babies",
+       title = "Proportion of boys with the name Dan") +
+  theme(plot.title = element_text(hjust = 0.5))
+Dan_plot  
+
+#ggsave(plot = Dan_plot, filename = "images/Dan_plot.png", height = 3, width = 6)
+
+```
+
+
+`r countdown(minutes = 3, seconds = 00, left = 0, color_background = "inherit")`
+
+---
+
+## Vectorized function
+
+.font150[
+a function that takes a vector as input, is applied to every element of the vector, and returns a vector (of the original length) as output
+]
+
+---
+
+# *min_rank()*
+
+.font120[
+A go to ranking function (ties share the lowest rank)
+
+```{r}
+min_rank(c(50, 100, 1000))
+```
+
+
+```{r}
+min_rank(desc(c(50, 100, 1000)))
+```
+]
+---
+class: action
+
+#  Your Turn 6
+
+- Use `min_rank()` and `mutate()` to rank each row in `babynames` from largest `prop` to smallest `prop`.
+
+- Compute each name's rank within its `year` and `sex`.
+
+- Then compute the median rank for each combination of `name` and `sex`, and arrange the results from highest median rank to lowest.
+
+
+`r countdown(minutes = 6, seconds = 00, left = 0, color_background = "inherit")`
+
+
+---
+
+# Summary
+
+.font120[
+- Extract variables with `select()`
+
+- Extract cases with `filter()` 
+
+- Arrange cases, with `arrange()`
+
+- Make tables of summaries with `summarize()`
+
+- Make new variables, with `mutate()`
+]
+
+---
+
+class: center, middle, inverse
+
+## Acknowledgement: some of the slides are based on previous works of Adam Loy and Katie St. Clair.
+
