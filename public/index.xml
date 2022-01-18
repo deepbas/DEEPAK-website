@@ -37,10 +37,10 @@
 &lt;/ul&gt;
 &lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 01/19&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
-&lt;p&gt;Finish HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.&lt;/p&gt;
+&lt;p&gt;Finish Individual HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.&lt;/p&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please read &lt;a href=&#34;https://rafalab.github.io/dsbook/joining-tables.html&#34;&gt;Irizarry Chapter 23&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/relational-data.html#introduction-7&#34;&gt;GW Chapter 13&lt;/a&gt;(optional)
+    Please read &lt;a href=&#34;https://style.tidyverse.org/&#34;&gt;R Style Guide Chapters 2,4, and 5&lt;/a&gt;,  &lt;a href=&#34;https://rafalab.github.io/dsbook/joining-tables.html&#34;&gt;Irizarry Chapter 23&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/relational-data.html#introduction-7&#34;&gt;GW Chapter 13&lt;/a&gt;(optional)
   &lt;/div&gt;
 &lt;/div&gt;
 </description>
@@ -1186,7 +1186,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-867159243&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-253876194&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1196,7 +1196,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-867159243&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-253876194&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

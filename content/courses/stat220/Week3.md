@@ -34,8 +34,8 @@ Day 6 Slides ({{% staticref "pdf/Day6/Day6.pdf" "newtab" %}}pdf{{% /staticref %}
 
 ### Before Class
 
-Finish HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.
+Finish Individual HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.
 
 {{% callout note %}}
-Please read [Irizarry Chapter 23](https://rafalab.github.io/dsbook/joining-tables.html), [GW Chapter 13](https://r4ds.had.co.nz/relational-data.html#introduction-7)(optional){{% /callout %}}
+Please read [R Style Guide Chapters 2,4, and 5](https://style.tidyverse.org/),  [Irizarry Chapter 23](https://rafalab.github.io/dsbook/joining-tables.html), [GW Chapter 13](https://r4ds.had.co.nz/relational-data.html#introduction-7)(optional){{% /callout %}}
 
