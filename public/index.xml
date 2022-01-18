@@ -43,6 +43,8 @@
     Please read &lt;a href=&#34;https://style.tidyverse.org/&#34;&gt;R Style Guide Chapters 2,4, and 5&lt;/a&gt;,  &lt;a href=&#34;https://rafalab.github.io/dsbook/joining-tables.html&#34;&gt;Irizarry Chapter 23&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/relational-data.html#introduction-7&#34;&gt;GW Chapter 13&lt;/a&gt;(optional)
   &lt;/div&gt;
 &lt;/div&gt;
+&lt;p&gt;It would also be nice to go over this short video in &lt;a href=&#34;https://www.youtube.com/watch?v=Yg-pNqzDuN4&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;joining data with &lt;code&gt;dplyr&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/Yg-pNqzDuN4?start=10&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
 </description>
     </item>
     
@@ -1186,7 +1188,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-253876194&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-416593872&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1196,7 +1198,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-253876194&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-416593872&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

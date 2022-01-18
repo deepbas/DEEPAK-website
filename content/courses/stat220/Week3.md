@@ -39,3 +39,7 @@ Finish Individual HW2 by 10 PM, and start working on Group HW2. The first midter
 {{% callout note %}}
 Please read [R Style Guide Chapters 2,4, and 5](https://style.tidyverse.org/),  [Irizarry Chapter 23](https://rafalab.github.io/dsbook/joining-tables.html), [GW Chapter 13](https://r4ds.had.co.nz/relational-data.html#introduction-7)(optional){{% /callout %}}
 
+It would also be nice to go over this short video in [joining data with `dplyr`](https://www.youtube.com/watch?v=Yg-pNqzDuN4).
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Yg-pNqzDuN4?start=10" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
