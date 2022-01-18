@@ -28,3 +28,8 @@ Also, it may be useful to go over this short video on the [basics of `dplyr`](ht
 Day 6 Slides ({{% staticref "pdf/Day6/Day6.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day6/Day6.html" "newtab" %}}html{{% /staticref %}})
 
 - Link to [In Class Activity](https://github.com/stat220/05-Data-Wrangling) 
+
+
+<span style="color:orange">**Wednesday, 01/19**</span>
+
+Finish HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.
