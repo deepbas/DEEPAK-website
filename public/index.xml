@@ -36,7 +36,13 @@
 &lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/05-Data-Wrangling&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 01/19&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
 &lt;p&gt;Finish HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://rafalab.github.io/dsbook/joining-tables.html&#34;&gt;Irizarry Chapter 22&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/relational-data.html#introduction-7&#34;&gt;GW Chapter 13&lt;/a&gt;(optional)
+  &lt;/div&gt;
+&lt;/div&gt;
 </description>
     </item>
     
@@ -1180,7 +1186,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-864931275&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-645738291&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1190,7 +1196,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-864931275&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-645738291&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

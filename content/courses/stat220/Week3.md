@@ -32,4 +32,10 @@ Day 6 Slides ({{% staticref "pdf/Day6/Day6.pdf" "newtab" %}}pdf{{% /staticref %}
 
 <span style="color:orange">**Wednesday, 01/19**</span>
 
+### Before Class
+
 Finish HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.
+
+{{% callout note %}}
+Please read [Irizarry Chapter 22](https://rafalab.github.io/dsbook/joining-tables.html), [GW Chapter 13](https://r4ds.had.co.nz/relational-data.html#introduction-7)(optional){{% /callout %}}
+
