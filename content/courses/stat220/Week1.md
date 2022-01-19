@@ -12,7 +12,7 @@ weight: 20
 
 Welcome!
 
-{{% staticref "pdf/Day1.pdf" "newtab" %}}Day 1 Slides{{% /staticref %}}
+{{% staticref "pdf/Day1/Day1.pdf" "newtab" %}}Day 1 Slides{{% /staticref %}}
 
 ### Before next class
 

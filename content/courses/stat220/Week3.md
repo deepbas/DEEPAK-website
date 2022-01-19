@@ -43,3 +43,13 @@ It would also be nice to go over this short video in [joining data with `dplyr`]
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Yg-pNqzDuN4?start=10" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+### In Class
+
+- More data wrangling
+- Basic data joins (two-verbs)
+
+Day 7 Slides ({{% staticref "pdf/Day7/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day7/Day7.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/06-data-joins) 
+
+
