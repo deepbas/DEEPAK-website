@@ -46,7 +46,7 @@ It would also be nice to go over this short video in [joining data with `dplyr`]
 ### In Class
 
 - More data wrangling
-- Basic data joins (two-verbs)
+- Basic data joins (two-table verbs)
 
 Day 7 Slides ({{% staticref "pdf/Day7/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day7/Day7.html" "newtab" %}}html{{% /staticref %}})
 
