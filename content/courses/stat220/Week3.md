@@ -53,3 +53,8 @@ Day 7 Slides ({{% staticref "pdf/Day7/Day7.pdf" "newtab" %}}pdf{{% /staticref %}
 - Link to [In Class Activity](https://github.com/stat220/06-data-joins) 
 
 
+<span style="color:orange">**Friday, 01/21**</span>
+
+{{% callout note %}}
+MIDTERM I{{% /callout %}}
+
