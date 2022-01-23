@@ -13,6 +13,21 @@
     </image>
     
     <item>
+      <title>Week 4</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week4/</link>
+      <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week4/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 01/24&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/tidy-data.html&#34;&gt;GW Chapter 12&lt;/a&gt; on tidy data and reshaping data. Start working on individual HW3 and submit Group HW2 on GitHub before class.
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 3</title>
       <link>https://deepbas.netlify.app/courses/stat220/week3/</link>
       <pubDate>Sun, 16 Jan 2022 00:00:00 +0000</pubDate>
