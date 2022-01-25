@@ -33,6 +33,13 @@
 &lt;ul&gt;
 &lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/07-tidy-data&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 01/26&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/data-import.html&#34;&gt;GW Chapter 11&lt;/a&gt; and skim through &lt;a href=&#34;https://rafalab.github.io/dsbook/importing-data.html&#34;&gt;IDS Chapter 5&lt;/a&gt; on importing data. If you need more indepth description of dates/times in lubridate, read &lt;a href=&#34;https://r4ds.had.co.nz/dates-and-times.html&#34;&gt;GW Chapter 16&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
 </description>
     </item>
     
