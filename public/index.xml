@@ -984,6 +984,15 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     </item>
     
     <item>
+      <title>Link to datasets</title>
+      <link>https://deepbas.netlify.app/courses/stat220/data/</link>
+      <pubDate>Thu, 06 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/data/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/data/simple-1.dat&#34; target=&#34;_blank&#34;&gt;Simple Data file&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Example Talk</title>
       <link>https://deepbas.netlify.app/talk/example-talk/</link>
       <pubDate>Sat, 01 Jun 2030 13:00:00 +0000</pubDate>
@@ -1234,7 +1243,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-835416297&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-417628359&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1244,7 +1253,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-835416297&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-417628359&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
