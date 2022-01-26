@@ -1,0 +1,847 @@
+---
+title: "Data Imports"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [css/xaringan-themer.css, css/my-theme.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    nature:
+      highlightStyle: tomorrow #http://arm.rbind.io/slides/xaringan.html#77
+      highlightLines: true
+      highlightLanguage: r
+      countIncrementalSlides: false
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+      countdown: 60000
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(tidyr)
+library(dplyr)
+library(dslabs)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+library(lubridate)
+library(janitor)
+library(rvest)
+library(forcats)
+library(here)
+library(forcats)
+library(flipbookr)
+library(patchwork)
+library(ggthemes)
+
+# set ggplot theme
+# theme_set(theme_bw(base_size = 24))
+
+yt <- 0
+
+desserts <- read_csv("/home/deepak/Desktop/stat220/MyStat220/data/desserts.csv")
+
+```
+
+
+```{r xaringan-themer, include = FALSE}
+# Use xaringan theme from first set
+```
+
+
+# Working Directories
+
+The working directory is where R looks for files and saves files by default.
+
+```{r, eval=FALSE, echo=TRUE}
+# see working directory
+getwd()
+# change your working directory
+setwd()
+````
+
+--
+
+To set working directory to your **STAT 220** course folder
+
+```{r, eval=FALSE}
+setwd("path/to/stat220-folder/")  # set
+getwd()     # check
+```
+
+--
+
+Useful Terminal Commands:
+
+```
+$ cd   
+$ ls
+$ pwd
+```
+
+---
+
+# Web Imports
+
+To your working folder:
+
+```{r}
+url <- "https://raw.githubusercontent.com/deepbas/statdatasets/main/murders.csv"
+dat <- read_csv(url)
+```
+
+--
+
+To temporary folder:
+
+```{r}
+download.file(url, "murders.csv")
+tempfile()
+```
+
+--
+
+Download, store, and then remove:
+
+```{r}
+tmp_filename <- tempfile()
+download.file(url, tmp_filename)
+mydat <- read_csv(tmp_filename)
+file.remove(tmp_filename)
+```
+
+---
+
+background-image: url(https://raw.githubusercontent.com/tidyverse/readr/master/man/figures/logo.png)
+background-position: 85% 40%
+background-size: 30%
+
+class: left, middle
+
+# readr
+
+.pull-left[
+- `readr` is a part of **tidyverse** library 
+
+- Includes functions for reading data stored in text file spreadsheets
+into R.
+
+- Functions in the package include `read_csv()`, `read_tsv()`, `read_delim()` and more.
+
+- These differ by the delimiter they use to split columns.
+]
+
+---
+
+# `readr` functions
+
+function .hidden[XXXXXX] | reads
+:---------|:----------------------
+read_csv()   | Comma separated values
+read_csv2()  | Semi-colon separated values
+read_delim() | General delimited files
+read_fwf()   | Fixed width files
+read_log()   | Apache log files
+read_table() | Space separated
+read_tsv()   | Tab delimited values
+
+---
+
+class: middle
+
+# Basic syntax
+
+.font120[
+All `readr` functions share a common syntax
+
+```{r eval=FALSE}
+df <- read_csv(file = "path/to/file.csv", ...)
+```
+]
+
+---
+
+# Base R Imports
+
+- R-base import functions 
+  * `read.csv()`
+  * `read.table()`
+  * `read.delim()` 
+  
+- Generate data frames rather than tibbles 
+
+- Character variables are converted to factors
+  * Can be avoided by setting the argument `stringsAsFactors=FALSE`
+
+
+---
+
+class: middle
+
+# Advantages of `readr`
+
+- `readr` functions are:
+  * ~ 10 times faster
+  
+  * Return tibbles
+  
+  * Have more intuitive defaults.
+  
+  * No row names, no strings as factors.
+
+---
+
+# Data frames and tibbles Conversion
+
+<img src="images/09-tibble.png" width="50%" height="45%">
+
+- `as_tibble()` - convert a data frame to a tibble
+
+- `as.data.frame()` - convert a tibble to a data frame
+
+---
+
+class: action
+
+#  Your turn `r (yt <- yt + 1)`
+
+Please git clone the repository on [Data Imports](https://github.com/stat220/08-data-imports) to your local folder.
+
+**Task:** Use `read_csv()` to import the `desserts` data set from <br>
+ [https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv](https://raw.githubusercontent.com/deepbas/statdatasets/main/murders.csv)
+ 
+Store the data in the `desserts` object
+ 
+Overview of data
+
+- Contains results from series 1-8 of *The Great British Bake Off*
+
+- Case defined by series, episode and baker
+
+- Data set created by Alison Hill
+
+```{r, echo=FALSE}
+countdown::countdown(3)
+```
+
+---
+
+# Did it work as expected?
+
+.pull-left-60[
+```{r echo=FALSE}
+glimpse(desserts)
+```
+]
+
+.pull-right-40[
+
+Something to note ..
+
+- `technical` is character, not numeric
+
+- `uk_airdate` is character, not date
+
+]
+
+---
+
+# The `col_types` argument
+
+By default, looks at first 1000 rows to guess variable data types (`guess_max`)
+
+.code100[
+```{r}
+desserts <- read_csv(
+  "https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv",
+  col_types = list( #<<
+    technical = col_number(), #<<
+    uk_airdate = col_date()   #<<
+  ) #<<
+)
+```
+]
+
+---
+
+# Looking for `problems`
+
+List of potential problems parsing the file
+
+```{r}
+problems(desserts)
+```
+
+---
+
+# Date formatting 
+
+.code100[
+```{r echo=FALSE}
+print(problems(desserts), n=5)
+```
+]
+
+ISO8601 format: `2021-10-04`
+
+What we have: `17 August 2010`
+
+---
+
+# Adding `format` instructions
+
+.code100[
+```{r}
+desserts <- read_csv(
+  "https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv",
+    col_types = list(
+    technical = col_number(), 
+    uk_airdate = col_date(format = "%d %B %Y")   #<<
+  ) 
+)
+```
+]
+
+- Year: `"%Y"` (4 digits). `"%y"` (2 digits)
+
+- Month: `"%m"` (2 digits), `"%b"` (abbreviated name in current locale), `"%B"` (full name in current locale).
+
+- Day: `"%d"` (2 digits), `"%e"` (optional leading space)
+
+---
+
+# Looking for more `problems`
+
+List of potential problems parsing the file
+
+.code100[
+```{r}
+problems(desserts)
+```
+]
+
+---
+
+# Addressing missing values
+
+By default `na = c("", "NA")` are the recognized missing values
+
+.code108[
+```{r}
+desserts <- read_csv(
+  "https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv",
+  col_types = list(
+    technical = col_number(), 
+    uk_airdate = col_date(format = "%d %B %Y")
+  ),
+  na = c("", "NA", "N/A") #<<
+)
+```
+]
+
+--
+
+## No more `problems`
+
+```{r}
+problems(desserts)
+```
+
+
+---
+
+# The Dataset
+
+```{r echo=FALSE}
+desserts
+```
+
+---
+
+# Column casting functions
+
+.Large[
+Type .hidden[XXXXXX] | `dplyr::glimpse()` .hidden[XX] | `readr::col_*()`
+-----|----------|------------
+logical   | `<lgl>`            | `col_logical`
+numeric   | `<int>` or `<dbl>` | `col_number`
+character | `<chr>`            | `col_character`
+factor    | `<fct>`            | `col_factor`
+date      | `<date>`           | `col_date`
+]
+
+---
+
+# `?read_csv`
+
+```{r eval=FALSE}
+read_csv(file, 
+         col_names = TRUE,
+         col_types = NULL,
+         locale = default_locale(),
+         na = c("", "NA"), 
+         quoted_na = TRUE,
+         quote = "\"", 
+         comment = "",
+         trim_ws = TRUE,
+         skip = 0,
+         n_max = Inf,
+         guess_max = min(1000, n_max),
+         progress = show_progress())
+```
+
+---
+
+class: action
+
+#  Your turn `r (yt <- yt + 1)`
+
+Use the appropriate `read_<type>()` function to import the following data sets:
+
+- [`simple-1.dat`](https://deepbas.io/data/simple-1.dat)
+
+- [`mild-1.csv`](https://deepbas.io/data/mild-1.csv)
+
+- [`tricky-1.csv`](https://deepbas.io/data/tricky-1.csv)
+
+If you hit any errors/problems, be sure to explore them and identify the issue, even if you can't "fix" it.
+
+Remember, it might help to look at the data first!
+
+```{r, echo=FALSE}
+countdown::countdown(3)
+```
+
+---
+
+## More with forcats: `gss_cat`
+
+A sample of data from the General Social Survey, a long-running US survey conducted by NORC at the University of Chicago.
+
+.code100[
+```{r echo=FALSE}
+gss_cat
+```
+]
+
+---
+
+class: action
+
+# Your turn `r (yt <- yt + 1)`
+
+Use `gss_cat` to answer the following questions.
+
+1. Which religions watch the least TV?
+
+2. Do married people watch more or less TV than single people?
+
+```{r echo=FALSE}
+countdown(4)
+```
+
+
+---
+
+`r chunk_reveal("gss-religion-tv", font_size_code="70%", title = "## Which religions watch the least TV?")`
+
+```{r gss-religion-tv, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+gss_cat %>%
+  drop_na(tvhours) %>%
+  group_by(relig) %>%
+  summarize(tvhours = mean(tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+    geom_point()
+```
+
+
+---
+
+# Which one do you prefer?
+
+```{r gss-religion-oredering, fig.width = 8, fig.height = 3.5, out.width = "100%", echo=FALSE}
+p1 <- gss_cat %>%
+  drop_na(tvhours) %>%
+  group_by(relig) %>%
+  summarize(tvhours = mean(tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+    geom_point()
+
+p2 <- gss_cat %>%
+  drop_na(tvhours) %>%
+  group_by(relig) %>%
+  summarize(tvhours = mean(tvhours)) %>%
+  ggplot(aes(tvhours, fct_reorder(relig, tvhours))) +
+    geom_point() +
+  labs(y = "relig")
+
+p1 + p2
+```
+
+---
+
+
+## Why is the y-axis in this order?
+
+```{r echo=FALSE, fig.height = 3.25, fig.width = 4, fig.align='center', out.width = "60%"}
+p1
+```
+
+---
+
+## `levels()`
+
+Use `levels()` to access a factor’s levels
+
+```{r}
+gss_cat %>% pull(relig) %>% levels()
+```
+
+---
+class: middle 
+# Most useful factor skills
+
+
+## 1. **Reorder** the levels
+
+## 2. **Recode** the levels
+
+## 3. **Collapse** levels
+
+## 4. **Lump** levels
+
+---
+
+## `fct_reorder`
+
+.pull-left[
+- `.f` factor vector
+]
+.pull-right[
+```{r eval=FALSE}
+separate(
+  .f, #<<
+  .x, 
+  .fun = median,
+  ...,
+  .desc = FALSE
+  )
+```
+]
+
+---
+
+## `fct_reorder`
+
+.pull-left[
+- `.f` factor vector
+- `.x` variable to reorder by 
+(in conjunction with `.fun`)
+]
+.pull-right[
+```{r eval=FALSE}
+separate(
+  .f, 
+  .x, #<<
+  .fun = median,
+  ...,
+  .desc = FALSE
+  )
+```
+]
+
+---
+
+## `fct_reorder`
+
+.pull-left[
+- `.f` factor vector
+- `.x` variable to reorder by 
+(in conjunction with `.fun`)
+- `.fun` function to reorder by
+]
+.pull-right[
+```{r eval=FALSE}
+separate(
+  .f, 
+  .x, 
+  .fun = median, #<<
+  ...,
+  .desc = FALSE
+  )
+```
+]
+
+---
+
+## `fct_reorder`
+
+.pull-left[
+- `.f` factor vector
+- `.x` variable to reorder by 
+(in conjunction with `.fun`)
+- `.fun` function to reorder by
+- `.desc` put levels in descending order?
+]
+.pull-right[
+```{r eval=FALSE}
+separate(
+  .f, 
+  .x, 
+  .fun = median, 
+  ...,
+  .desc = FALSE #<<
+  )
+```
+]
+
+---
+
+`r chunk_reveal("reorder-tv-relig", break_type = "rotate", widths = c(1.2,1), title = "## Reorder relig by tvhours")`
+
+```{r reorder-tv-relig, echo=FALSE, eval=FALSE}
+gss_cat %>%
+  drop_na(tvhours) %>%
+  group_by(relig) %>%
+  summarize(tvhours = mean(tvhours)) %>%
+  ggplot(aes(
+    x = tvhours, 
+    y = relig  #ROTATE
+    y = fct_reorder(relig, tvhours)                 #ROTATE
+  )) +
+    geom_point()
+```
+
+---
+class: action
+
+#  Your turn `r (yt <- yt + 1)`
+
+Use `rincome_summary` to construct a dotplot of `rincome` against `age`.
+
+Reorder `rincome` by `age`
+
+```{r}
+rincome_summary <- gss_cat %>%
+  group_by(rincome) %>%
+  summarize(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n()
+  )
+```
+
+```{r echo=FALSE}
+countdown(1, 30)
+```
+
+
+---
+
+## Which political leaning watches more TV?
+
+.pull-left-40[
+<br>
+
+<br>
+
+How could we improve the `partyid` labels?
+]
+
+.pull-right-60[
+```{r echo=FALSE, fig.height = 3, fig.width = 4, out.width = "98%", fig.align='center'}
+gss_cat %>%
+   drop_na(tvhours) %>%
+   group_by(partyid) %>%
+   summarize(tvhours = mean(tvhours)) %>%
+   ggplot(aes(tvhours, fct_reorder(partyid, tvhours))) +
+     geom_point() +
+     labs(y = "partyid")
+```
+]
+
+---
+
+## `fct_recode`
+
+Changes values of levels
+
+.pull-left[
+- `.f` factor vector
+- `...` new level = old level pairs (as a named character vector)
+]
+.pull-right[
+```{r eval=FALSE}
+separate(.f, ...)
+```
+]
+
+---
+
+`r chunk_reveal("fct-recode-partyid", widths = c(60, 40), font_size_code="70%", title = "## Recoding partyid")`
+
+
+```{r fct-recode-partyid, echo=FALSE, eval=FALSE}
+gss_cat %>%
+  drop_na(tvhours) %>%
+  select(partyid, tvhours) %>%
+    mutate(partyid = fct_recode(partyid,
+    "Republican, strong"    = "Strong republican",
+    "Republican, weak"      = "Not str republican",
+    "Independent, near rep" = "Ind,near rep",
+    "Independent, near dem" = "Ind,near dem",
+    "Democrat, weak"        = "Not str democrat",
+    "Democrat, strong"      = "Strong democrat")) %>% 
+  group_by(partyid) %>%
+  summarize(tvhours = mean(tvhours)) %>%
+  ggplot(aes(tvhours, fct_reorder(partyid, tvhours))) +
+  geom_point() + 
+  labs(y = "partyid")
+```
+
+---
+
+`r chunk_reveal("fct-collapse-partyid", widths = c(60, 40), font_size_code="70%", title = "## Collapsing partyid: fct_collapse()")`
+
+
+```{r fct-collapse-partyid, eval=FALSE, echo=FALSE}
+gss_cat %>%
+  drop_na(tvhours) %>%
+  select(partyid, tvhours) %>%
+  mutate(
+    partyid = 
+      fct_collapse(
+        partyid,
+        conservative = c("Strong republican", 
+                         "Not str republican", 
+                         "Ind,near rep"),
+        liberal = c("Strong democrat", 
+                    "Not str democrat", 
+                    "Ind,near dem"))
+  ) %>% 
+  group_by(partyid) %>%
+  summarize(tvhours = mean(tvhours)) %>%
+  ggplot(aes(tvhours, fct_reorder(partyid, tvhours))) +
+  geom_point() + 
+  labs(y = "partyid")
+```
+
+```{r include=FALSE}
+gss_cat <- gss_cat %>%
+  drop_na(tvhours) %>%
+  mutate(
+    partyid = 
+      fct_collapse(
+        partyid,
+        conservative = c("Strong republican", 
+                         "Not str republican", 
+                         "Ind,near rep"),
+        liberal = c("Strong democrat", 
+                    "Not str democrat", 
+                    "Ind,near dem"))
+  )
+```
+
+---
+
+class: action
+# Your turn `r (yt <- yt + 1)`
+
+Collapse the `marital` variable to have levels `Married`, `not_married`, and `No answer`
+
+Include `"Never married"`, `"Divorced"`, and "`Widowed"` in `not_married`
+
+
+```{r echo=FALSE}
+countdown(2)
+```
+
+---
+
+```{r echo=FALSE, fig.height = 3, fig.width = 6}
+gss_cat %>%
+  ggplot(aes(x = fct_infreq(partyid))) +
+  geom_bar() +
+  labs(x = "partyid")
+```
+
+---
+
+## `fct_lump()`
+
+Collapses levels with fewest values into a single level. 
+
+By default collapses as many levels as possible such that the new level is still the smallest.
+
+.pull-left[
+- `f` factor vector
+- `n` preserve the most common n levels
+- `other_level = "Other"`
+]
+.pull-right[
+```{r eval=FALSE}
+separate(
+  f, 
+  n, 
+  other_level = "Other", 
+  ...
+)
+```
+]
+
+---
+
+`r chunk_reveal("fct-lump-partyid", widths = c(40, 60), font_size_code="40%", title = "## Lumping partyid", break_type = "rotate")`
+
+
+```{r fct-lump-partyid, eval=FALSE, echo=FALSE}
+gss_cat %>%
+  mutate(partyid = partyid) %>% #ROTATE
+  mutate(partyid = fct_lump(partyid, n = 2)) %>% #ROTATE
+  mutate(partyid = fct_lump(partyid, n = 2)) %>% #ROTATE
+  mutate(partyid = fct_lump(partyid, n = 3)) %>% #ROTATE
+  ggplot(aes(partyid)) + 
+  geom_bar() +
+  labs(x = "partyid")
+```
+
+---
+
+class: center, middle, inverse
+
+# Acknowledgements
+
+These slides were adapted from Adam Loy's instruction materials on data imports and manipulating factors and are licensed under the CC BY 4.0 Creative Commons.
+

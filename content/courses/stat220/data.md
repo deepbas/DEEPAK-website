@@ -1,6 +1,6 @@
 ---
 title: Link to datasets
-linktitle: datasets
+linktitle: Datasets
 lastmod: "2022-01-06"
 draft: false  
 toc: false  
