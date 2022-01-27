@@ -54,5 +54,5 @@ Please go over the group homework 3 and come to class with questions. I will als
 I will also detail our first paired mini-project for the quarter during class.
 
 {{% callout note %}}
-Please gently read [GW Chapter 14](https://r4ds.had.co.nz/data-import.html) on strings and regular expressions.{{% /callout %}}
+Please gently read [GW Chapter 14](https://r4ds.had.co.nz/strings.html) on strings and regular expressions.{{% /callout %}}
 
