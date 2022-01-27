@@ -55,7 +55,7 @@
 &lt;p&gt;I will also detail our first paired mini-project for the quarter during class.&lt;/p&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please gently read &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 24&lt;/a&gt; string parsing.
+    Please gently read &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 25&lt;/a&gt; string parsing.
   &lt;/div&gt;
 &lt;/div&gt;
 </description>
@@ -1263,7 +1263,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-756982413&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-129346758&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1273,7 +1273,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-756982413&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-129346758&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

@@ -54,5 +54,5 @@ Please go over the group homework 3 and come to class with questions. I will als
 I will also detail our first paired mini-project for the quarter during class.
 
 {{% callout note %}}
-Please gently read [Irizarry Case Studies 1 and 2 from chapter 24](https://rafalab.github.io/dsbook/string-processing.html) string parsing.{{% /callout %}}
+Please gently read [Irizarry Case Studies 1 and 2 from chapter 25](https://rafalab.github.io/dsbook/string-processing.html) string parsing.{{% /callout %}}
 
