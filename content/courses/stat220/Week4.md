@@ -45,3 +45,14 @@ Day 9 Slides ({{% staticref "pdf/Day9/Day9.pdf" "newtab" %}}pdf{{% /staticref %}
 - Link to [In Class Activity](https://github.com/stat220/08-data-imports) 
 
 
+<span style="color:orange">**Friday, 01/28**</span>
+
+### Before Class
+
+Please go over the group homework 3 and come to class with questions. I will also go over previous homeworks and will take any questions you may have on the homeworks. Come prepared! Homework solutions will be uploaded to the [github repo on class resources](https://github.com/stat220/ClassResources). Group homework solutions will be provided to the respective repos. 
+
+I will also detail our first paired mini-project for the quarter during class.
+
+{{% callout note %}}
+Please gently read [GW Chapter 14](https://r4ds.had.co.nz/data-import.html) on strings and regular expressions.{{% /callout %}}
+
