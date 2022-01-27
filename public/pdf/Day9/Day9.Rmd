@@ -115,7 +115,7 @@ $ pwd
 
 # Web Imports
 
-To your working folder:
+To your working environment:
 
 ```{r}
 url <- "https://raw.githubusercontent.com/deepbas/statdatasets/main/murders.csv"
@@ -124,11 +124,10 @@ dat <- read_csv(url)
 
 --
 
-To temporary folder:
+To download file to working folder:
 
 ```{r}
 download.file(url, "murders.csv")
-tempfile()
 ```
 
 --
@@ -136,11 +135,13 @@ tempfile()
 Download, store, and then remove:
 
 ```{r}
+tempfile()
 tmp_filename <- tempfile()
 download.file(url, tmp_filename)
 mydat <- read_csv(tmp_filename)
 file.remove(tmp_filename)
 ```
+
 
 ---
 

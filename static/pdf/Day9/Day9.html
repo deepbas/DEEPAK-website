@@ -70,7 +70,7 @@ $ pwd
 
 # Web Imports
 
-To your working folder:
+To your working environment:
 
 
 ```r
@@ -80,13 +80,11 @@ dat &lt;- read_csv(url)
 
 --
 
-To temporary folder:
+To download file to working folder:
 
 
 ```r
 download.file(url, "murders.csv")
-tempfile()
-[1] "/tmp/RtmpiYhaRT/file1d8344c6303"
 ```
 
 --
@@ -95,12 +93,15 @@ Download, store, and then remove:
 
 
 ```r
+tempfile()
+[1] "/tmp/RtmpDF46hw/file46ac414a1b2e"
 tmp_filename &lt;- tempfile()
 download.file(url, tmp_filename)
 mydat &lt;- read_csv(tmp_filename)
 file.remove(tmp_filename)
 [1] TRUE
 ```
+
 
 ---
 
@@ -213,7 +214,7 @@ Overview of data
 
 - Data set created by Alison Hill
 
-<div class="countdown" id="timer_61f1748b" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f1ea9a" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -479,7 +480,7 @@ If you hit any errors/problems, be sure to explore them and identify the issue, 
 
 Remember, it might help to look at the data first!
 
-<div class="countdown" id="timer_61f171f0" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f1eb80" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -521,7 +522,7 @@ Use `gss_cat` to answer the following questions.
 
 2. Do married people watch more or less TV than single people?
 
-<div class="countdown" id="timer_61f1758e" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f1ea72" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -965,7 +966,7 @@ rincome_summary &lt;- gss_cat %&gt;%
   )
 ```
 
-<div class="countdown" id="timer_61f174e0" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f1ec4d" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">01</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">30</span></code>
 </div>
 
@@ -1707,7 +1708,7 @@ Collapse the `marital` variable to have levels `Married`, `not_married`, and `No
 Include `"Never married"`, `"Divorced"`, and "`Widowed"` in `not_married`
 
 
-<div class="countdown" id="timer_61f17541" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f1ea63" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
