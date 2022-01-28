@@ -56,3 +56,12 @@ I will also detail our first paired mini-project for the quarter during class.
 {{% callout note %}}
 Please gently read [Irizarry Case Studies 1 and 2 from chapter 25](https://rafalab.github.io/dsbook/string-processing.html) string parsing.{{% /callout %}}
 
+### In Class
+
+- Mini project 1 overview
+- More on date/time 
+- Basic overview of `stringr`
+
+Day 10 Slides ({{% staticref "pdf/Day10/Day10.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day10/Day10.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/09-basic-string) 
