@@ -13,6 +13,21 @@
     </image>
     
     <item>
+      <title>Week 5</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week5/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week5/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 01/31&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/strings.html&#34;&gt;GW Chapter 14&lt;/a&gt; on strings and regular expressions. Continue reading &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 25&lt;/a&gt; on string parsing.
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 4</title>
       <link>https://deepbas.netlify.app/courses/stat220/week4/</link>
       <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
@@ -1273,7 +1288,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-896214573&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-471862395&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1283,7 +1298,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-896214573&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-471862395&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

@@ -60,11 +60,11 @@
   
     
   
-  <meta name="description" content="Monday, 01/17
-Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), and start working on individual HW2.   Also, it may be useful to go over this short video on the basics of dplyr before class." />
+  <meta name="description" content="Monday, 01/31
+Before Class  Please read GW Chapter 14 on strings and regular expressions. Continue reading Irizarry Case Studies 1 and 2 from chapter 25 on string parsing.   " />
 
   
-  <link rel="alternate" hreflang="en-us" href="https://deepbas.netlify.app/courses/stat220/week3/" />
+  <link rel="alternate" hreflang="en-us" href="https://deepbas.netlify.app/courses/stat220/week5/" />
 
   
   
@@ -277,7 +277,7 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
   <link rel="icon" type="image/png" href="/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_32x32_fill_lanczos_center_3.png" />
   <link rel="apple-touch-icon" type="image/png" href="/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_180x180_fill_lanczos_center_3.png" />
 
-  <link rel="canonical" href="https://deepbas.netlify.app/courses/stat220/week3/" />
+  <link rel="canonical" href="https://deepbas.netlify.app/courses/stat220/week5/" />
 
   
   
@@ -300,16 +300,16 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
   <meta property="twitter:card" content="summary" />
   
   <meta property="og:site_name" content="Deepak Bastola" />
-  <meta property="og:url" content="https://deepbas.netlify.app/courses/stat220/week3/" />
-  <meta property="og:title" content="Week 3 | Deepak Bastola" />
-  <meta property="og:description" content="Monday, 01/17
-Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), and start working on individual HW2.   Also, it may be useful to go over this short video on the basics of dplyr before class." /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
+  <meta property="og:url" content="https://deepbas.netlify.app/courses/stat220/week5/" />
+  <meta property="og:title" content="Week 5 | Deepak Bastola" />
+  <meta property="og:description" content="Monday, 01/31
+Before Class  Please read GW Chapter 14 on strings and regular expressions. Continue reading Irizarry Case Studies 1 and 2 from chapter 25 on string parsing.   " /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
     
-      <meta property="article:published_time" content="2022-01-16T00:00:00&#43;00:00" />
+      <meta property="article:published_time" content="2022-01-30T00:00:00&#43;00:00" />
     
-    <meta property="article:modified_time" content="2022-01-16T00:00:00&#43;00:00">
+    <meta property="article:modified_time" content="2022-01-30T00:00:00&#43;00:00">
   
 
   
@@ -326,11 +326,11 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
 
 
 
-  <title>Week 3 | Deepak Bastola</title>
+  <title>Week 5 | Deepak Bastola</title>
 </head>
 
 
-<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="d207397eed9dc38be3242c70a1ec0bb9" >
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="568c73761430176f46860cb3c68a4e66" >
 
   
   
@@ -704,7 +704,7 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
       
 
 
-  <li class=""><a href="/courses/stat220/week5/">Week 5</a></li>
+  <li class="active"><a href="/courses/stat220/week5/">Week 5</a></li>
 
 
 
@@ -712,7 +712,7 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
 
 
 
-  <li class="active"><a href="/courses/stat220/week3/">Week 3</a></li>
+  <li class=""><a href="/courses/stat220/week3/">Week 3</a></li>
 
 
 
@@ -810,7 +810,7 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
 
 
       <li class="breadcrumb-item active" aria-current="page">
-        Week 3
+        Week 5
       </li>
     </ol>
   </nav>
@@ -818,50 +818,14 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
 
           
 
-          <h1>Week 3</h1>
+          <h1>Week 5</h1>
 
           <div class="article-style">
-            <p><span style="color:orange"><strong>Monday, 01/17</strong></span></p>
+            <p><span style="color:orange"><strong>Monday, 01/31</strong></span></p>
 <h3 id="before-class">Before Class</h3>
 <div class="alert alert-note">
   <div>
-    Please read <a href="https://r4ds.had.co.nz/transform.html">GW Chapter 5</a>, <a href="https://rafalab.github.io/dsbook/tidyverse.html">Irizarry Sections 4.1-4.11</a>(optional), and start working on individual HW2.
-  </div>
-</div>
-<p>Also, it may be useful to go over this short video on the <a href="https://www.youtube.com/watch?v=BaFkbNOaof8" target="_blank" rel="noopener">basics of <code>dplyr</code></a> before class.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BaFkbNOaof8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<h3 id="in-class">In Class</h3>
-<ul>
-<li>Basic data wrangling</li>
-<li>Implementation of the five verbs</li>
-</ul>
-<p>Day 6 Slides (<a href="/pdf/Day6/Day6.pdf" target="_blank">pdf</a>/<a href="/pdf/Day6/Day6.html" target="_blank">html</a>)</p>
-<ul>
-<li>Link to <a href="https://github.com/stat220/05-Data-Wrangling" target="_blank" rel="noopener">In Class Activity</a></li>
-</ul>
-<p><span style="color:orange"><strong>Wednesday, 01/19</strong></span></p>
-<h3 id="before-class-1">Before Class</h3>
-<p>Finish Individual HW2 by 10 PM, and start working on Group HW2. The first midterm will be held in class on Friday, 01/22.</p>
-<div class="alert alert-note">
-  <div>
-    Please read <a href="https://style.tidyverse.org/">R Style Guide Chapters 2,4, and 5</a>,  <a href="https://rafalab.github.io/dsbook/joining-tables.html">Irizarry Chapter 23</a>, <a href="https://r4ds.had.co.nz/relational-data.html#introduction-7">GW Chapter 13</a>(optional)
-  </div>
-</div>
-<p>It would also be nice to go over this short video in <a href="https://www.youtube.com/watch?v=Yg-pNqzDuN4" target="_blank" rel="noopener">joining data with <code>dplyr</code></a>.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Yg-pNqzDuN4?start=10" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<h3 id="in-class-1">In Class</h3>
-<ul>
-<li>More data wrangling</li>
-<li>Basic data joins (two-table verbs)</li>
-</ul>
-<p>Day 7 Slides (<a href="/pdf/Day7/Day7.pdf" target="_blank">pdf</a>/<a href="/pdf/Day7/Day7.html" target="_blank">html</a>)</p>
-<ul>
-<li>Link to <a href="https://github.com/stat220/06-data-joins" target="_blank" rel="noopener">In Class Activity</a></li>
-</ul>
-<p><span style="color:orange"><strong>Friday, 01/21</strong></span></p>
-<div class="alert alert-note">
-  <div>
-    MIDTERM I
+    Please read <a href="https://r4ds.had.co.nz/strings.html">GW Chapter 14</a> on strings and regular expressions. Continue reading <a href="https://rafalab.github.io/dsbook/string-processing.html">Irizarry Case Studies 1 and 2 from chapter 25</a> on string parsing.
   </div>
 </div>
 
@@ -880,15 +844,8 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
   
   
   <div class="post-nav-item">
-    <div class="meta-nav">Previous</div>
-    <a href="/courses/stat220/week4/" rel="next">Week 4</a>
-  </div>
-  
-  
-  
-  <div class="post-nav-item">
     <div class="meta-nav">Next</div>
-    <a href="/courses/stat220/week2/" rel="prev">Week 2</a>
+    <a href="/courses/stat220/week4/" rel="prev">Week 4</a>
   </div>
   
 </div>
@@ -898,7 +855,7 @@ Before Class  Please read GW Chapter 5, Irizarry Sections 4.1-4.11(optional), an
         </div>
 
         <div class="body-footer">
-          <p>Last updated on Jan 16, 2022</p>
+          <p>Last updated on Jan 30, 2022</p>
 
           
 

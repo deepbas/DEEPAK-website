@@ -227,7 +227,7 @@ flights %>%
 
 
 
-`r chunk_reveal("demo2", widths = c(52, 48), font_size_code="70%", title = "## Duration using lubriate")`
+`r chunk_reveal("demo2", widths = c(52, 48), font_size_code="70%", title = "## Duration using lubridate")`
 
 
 ```{r, demo2, eval = FALSE, echo=FALSE}
