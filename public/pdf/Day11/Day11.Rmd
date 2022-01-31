@@ -1,0 +1,742 @@
+---
+title: "More Regular Expressions"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode #http://arm.rbind.io/slides/xaringan.html#77
+      highlightLines: true
+      highlightLanguage: r
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+      countdown: 60000
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+library(htmlwidgets)
+
+
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+library(rvest)
+library(forcats)
+library(patchwork)
+library(readr)
+library(stringr)
+library(gapminder) 
+library(icons)
+library(babynames)
+
+# set ggplot theme
+# theme_set(theme_bw(base_size = 24))
+
+yt <- 0
+
+# Some codes
+
+
+```
+
+
+```{r xaringan-themer, include = FALSE}
+# Use xaringan theme from first set
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Bastola</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[More Regular Expressions]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Quantifiers and Special Characters
+
+
+.pull-left[
+
+Preceding characters are matched
+.font120[
+- .yellow-h[`*`] = 0 or more
+- .yellow-h[`?`] = 0 or 1
+- .yellow-h[`+`] = 1 or more
+- .yellow-h[`{n}`] = exactly n times
+]
+]
+.pull-right[
+
+Matching character types 
+.font120[
+- .yellow-h[`\\\d`] = digit
+- .yellow-h[`\\\s`] = white space
+- .yellow-h[`\\\w`] = word
+- .yellow-h[`\\\t`] = tab
+- .yellow-h[`\\\n`] = newline
+]
+]
+---
+# Repitition using `?`
+
+```{r}
+aboutMe <- c("my SSN 536-76-9423 and my age is 55")
+```
+
+
+```{r, collapse=TRUE}
+str_view_all(aboutMe, "\\s\\d?") # space followed by 0 or 1 digit
+```
+
+---
+
+# Repitition using `+`
+
+
+```{r}
+aboutMe <- c("my SSN 536-76-9423 and my age is 55")
+```
+
+```{r, , collapse=TRUE}
+str_view_all(aboutMe, "\\s\\d+")  # space followed by 1 or more digits
+```
+
+
+---
+
+# Repitition using `*`
+
+```{r}
+aboutMe <- c("my SSN 536-76-9423 and my age is 55")
+```
+
+
+```{r, , collapse=TRUE}
+str_view_all(aboutMe, "\\s\\d*")  # space followed by 0 or more digits
+
+```
+
+---
+
+class: middle
+
+# More quantifiers
+
+.font120[
+> useful when you want to match a pattern a specific number of times
+]
+
+.fonr130[
+
+- .out-t[`{n, }`] = n or more times
+
+- .out-t[`{, m}`] =  at most m times
+
+- .out-t[`{n, m}`] = between n & m times
+]
+
+---
+class: middle
+
+# Alternatives
+
+.font130[
+> useful for matching patterns more flexibly
+]
+
+.font130[
+- .out-t[`[abc]`] = one of .bold[a], .bold[b], or .bold[c]
+
+- .out-t[`[e-z]`] = a letter from .bold[e] to .bold[z]
+
+- .out-t[`[^abc]`] = anything other than .bold[a], .bold[b], or .bold[c]
+]
+
+
+---
+
+# Recap: Extract Substrings
+
+.font120[Using  `str_sub()`]
+
+```{r}
+cc <- "Carleton College"
+str_sub(cc, start = 1, end = 8) 
+```
+
+--
+
+```{r}
+str_sub(cc, 10) # end defaults to the last character
+```
+
+--
+
+```{r}
+# match the elements of each vector for positions
+str_sub(cc, c(1, 10), c(8, 16))
+```
+
+
+---
+
+# Extract substrings
+
+.font120[Can also extract the end..]
+
+```{r}
+cc <- "Carleton College"
+str_sub(cc, -4)
+```
+
+--
+
+```{r}
+str_sub(cc, -10, -4)
+```
+
+
+---
+
+name: yourturn
+template: section
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.font120[Please git clone the repository on [advanced string manipulations](https://github.com/stat220/10-more-strings) to your local folder.]
+
+Make changes to the code to ...
+
+1. Isolate the last letter of every name
+2. Create a logical variable that displays whether the last letter is one of "a", "e", "i", "o", "u", or "y".
+3. Use a weighted mean to calculate the proportion of children whose name ends in a vowel by year (see `?weighted.mean`)
+4. and then display the results as a line plot.
+
+
+```{r echo=FALSE}
+countdown(4)
+```
+
+---
+
+# `str_count()`
+
+<!--  most useful for checking for unexpected duplications of values when cleaning data or for extracting data from unstructured text -->
+
+.font120[
+> Tells you how many times a pattern appears in each entry of a string/character vector
+]
+
+--
+
+.code120[
+```{r}
+days <- rep(c("Monday", "Tuesday", "Wednesday", 
+              "Thursday", "Friday", "Saturday", "Sunday"),2)
+```
+]
+
+--
+
+.code110[
+```{r}
+#number of times the letter "e" appears in each entry
+days %>% str_count("e") 
+```
+]
+
+
+--
+
+.code110[
+```{r}
+# number of times the letter "a" or "e" appears in each entry
+days %>% str_count("[ae]") 
+```
+]
+
+
+
+---
+
+name: yourturn
+template: section
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.fancy[.font120[Determine how many baby names in 2017 contain "ders".]]
+
+
+```{r}
+babynames %>% 
+  filter(year == 2017) %>%
+ head(4)
+```
+
+
+```{r echo=FALSE}
+countdown(2)
+```
+
+---
+
+# `str_extract()`
+
+.font120[
+> pull all set of values matching the specified pattern
+]
+
+.code120[
+```{r}
+name_phone <- c("Moly Robins: 250-999-8878", 
+                "Ali Duluth: 416-908-2044",
+                "Eli Mitchell: 204-192-9829", 
+                "May Flowers: 250-209-7047")
+```
+]
+
+--
+
+.code120[
+```{r}
+str_extract(name_phone, "[:alpha:]*") 
+```
+]
+
+--
+
+.code120[
+```{r}
+str_extract(name_phone, "[:digit:]{3}-[:digit:]{3}-[:digit:]{4}") 
+```
+]
+
+---
+
+# `str_extract_all()`
+
+.font120[
+> pull all set of values matching the specified pattern
+]
+
+.code120[
+```{r}
+name_phone <- c("Moly Robins: 250-999-8878", 
+                "Ali Duluth: 416-908-2044", 
+                "Eli Mitchell: 204-192-9829", 
+                "May Flowers: 250-209-7047")
+```
+]
+
+--
+
+.code120[
+```{r}
+str_extract_all(name_phone, "[:alpha:]{2,}", simplify = TRUE) 
+```
+]
+
+---
+name: yourturn
+template: section
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.font110[Consider the 2017 babynames data]
+
+
+.font120[
+>   - Fill in the code to determine how many baby names in 2017 began with a vowel.
+>   - Fill in the code to determine how many baby names in 2017 started or ended with a vowel.
+]
+
+
+```{r echo=FALSE}
+countdown(4)
+```
+
+---
+
+# Modify the case of a string
+
+.code120[
+```{r}
+str_to_lower("BEAUTY is in the EYE of the BEHOLDER")
+```
+]
+
+--
+
+.code120[
+```{r}
+str_to_upper("one small step for man, one giant leap for mankind")
+```
+]
+
+--
+
+.code120[
+```{r}
+str_to_title("Aspire to inspire before we expire")
+
+```
+]
+
+--
+
+.code120[
+```{r}
+str_to_sentence("everything you can imagine is real")
+```
+]
+
+---
+name: yourturn
+template: section
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.font110[Consider the 2017 babynames data]
+
+.font120[
+>  - how many baby names contain "illie`?
+>  - how many baby names start with "M"?
+]
+
+```{r echo=FALSE}
+countdown(4)
+```
+
+
+---
+
+
+# Visualizing matches
+
+.pull-left[
+
+```{r}
+str_view(name_phone, "[5-8]")
+```
+]
+.pull-right[
+```{r}
+str_view_all(name_phone, "[5-8]")
+```
+]
+
+---
+
+# Visualizing matches
+
+.pull-left[
+
+```{r}
+str_view(name_phone, "[5|8]")
+```
+]
+.pull-right[
+```{r}
+str_view_all(name_phone, "[5-8|a-e]")
+```
+]
+
+
+---
+
+# Extract using repitition
+
+```{r}
+str_view_all(name_phone, pattern = "[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}")
+```
+
+---
+
+# `str_locate()` 
+
+.font130[
+> tell you the character positions the pattern characters are found in
+]
+
+.code120[
+```{r}
+days %>% 
+  str_locate("day") %>% # start and end positions of the pattern "day"
+  head(n=7)
+```
+]
+
+
+---
+
+# `str_flatten()`
+
+.font130[
+> collapses a string vector into a single string (i.e. a character vector of length 1)
+]
+
+.code140[
+```{r}
+str_flatten(c("a_3", "d_54"), # vector to collapse
+            collapse =  " ") # insert in between 
+```
+]
+
+
+---
+
+# `str_glue()`
+
+.font120[
+> allows one to interpolate strings and values that have been assigned to names in R
+]
+
+
+.pull-left[
+.font110[
+```{r}
+y <- Sys.Date() # current date
+str_glue("today is {y}")
+```
+]
+]
+.pull-right[
+.font110[
+```{r}
+# base R equivalent
+paste0("today is ", y)
+```
+]
+]
+--
+
+.font120[
+```{r}
+nm <- "Alex"
+str_glue("Hi, my name is {nm}.")
+```
+]
+--
+.font120[
+```{r}
+a <- 5
+str_glue("a = {a}")
+```
+]
+---
+
+# Lengths of strings
+
+.font120[We can manage the lengths of strings using the following set of functions:]
+
+.font140[
+
+- `str_length()`
+
+- `str_pad()`
+
+- `str_trunc()`
+
+- `str_trim()`
+
+]
+
+---
+
+# `str_length()`
+
+.font120[
+> tells you how many characters are in each entry of a character vector
+]
+
+.code100[
+```{r}
+gapminder %>% names()
+```
+]
+
+
+.code120[
+```{r}
+# length of each column names 
+gapminder %>% names() %>% str_length()
+```
+
+]
+
+
+---
+
+# `str_pad()`
+
+.font120[
+> standardizes the length of strings in a character vector by padding it on the left or right ends with a specified character (by default, a space)
+]
+
+```{r}
+gapminder %>% names() %>%
+  str_pad(width = 9, # minimum width of the string to fill/pad positions up to
+          side = "both", # side to insert the extra characters on 
+          pad = "+")
+```
+
+
+---
+
+# `str_trunc()`
+
+.font120[
+> standardizes string lengths by controlling the maximum width and truncating strings longer than this
+]
+
+```{r}
+gapminder %>% names() %>%
+  str_trunc(width = 7, #the maximum width to allow for strings
+          side= "right", 
+          # entries which have been truncated will show this to indicate that
+          # something has been removed
+          ellipsis = "...") 
+```
+
+
+---
+
+# `str_trim()`
+
+.font120[
+>  removes empty spaces on the ends of a string
+]
+
+```{r}
+#add some whitespace
+padded_names <- gapminder %>% names() %>% str_pad(12, "both")
+padded_names
+```
+
+--
+
+```{r}
+#remove it
+str_trim(padded_names)
+```
+
+
+---
+
+# Disambiguate your regexps
+
+```{r}
+name_phone <- c("Moly Robins: 250-999-8878", 
+       "Ali Duluth: 416-908-2044", 
+       "Eli Mitchell: 204.192.9829", 
+       "May Flowers: 250.209.7047")
+```
+
+
+
+```{r}
+str_view_all(name_phone,
+             pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})")
+```
+
+---
+
+# Replacing strings
+
+```{r}
+str_replace_all(name_phone,
+pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})",
+replacement = "XXX-XXX-XXXX"
+)
+```
+
+
+---
+
+# Duplicating Groups
+
+Use escaped numbers (\\1, \\2, etc) to repeat a group based on position
+
+Which numbers have the same 1st and 3rd digits?
+
+```{r}
+phone_numbers <- c("515 111 2244", "310 549 6892", "474 234 7548")
+str_view(phone_numbers, "(\\d)\\d\\1")
+```
+
+
+---
+name: yourturn
+template: section
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+```{r}
+x <- c("scuttlebutt", "Stetson", "Scattter", "Scatter")
+str_detect(x, "^[Ss](.*)(t+)(.+)(t+)")
+```
+
+
+.font120[
+The regular expression `"^[Ss](.*)(t+)(.+)(t+)"` detects "scuttlebutt", "Stetson", and "Scattter", but not "Scatter." Why?
+]
+
+```{r echo=FALSE}
+countdown(5)
+```
+
+
+

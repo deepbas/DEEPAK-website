@@ -14,3 +14,12 @@ weight: 20
 
 {{% callout note %}}
 Please read [GW Chapter 14](https://r4ds.had.co.nz/strings.html) on strings and regular expressions. Continue reading [Irizarry Case Studies 1 and 2 from chapter 25](https://rafalab.github.io/dsbook/string-processing.html) on string parsing.{{% /callout %}}
+
+### In Class
+
+- More string manipulation tools 
+
+
+Day 11 Slides ({{% staticref "pdf/Day11/Day11.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day11/Day11.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/10-more-strings) 

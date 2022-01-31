@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>More Regular Expressions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/str_view/str_view.css" rel="stylesheet" />
+    <script src="libs/str_view-binding/str_view.js"></script>
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[More Regular Expressions]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+ January 31 2022
+
+---
+
+# Quantifiers and Special Characters
+
+
+.pull-left[
+
+Preceding characters are matched
+.font120[
+- .yellow-h[`*`] = 0 or more
+- .yellow-h[`?`] = 0 or 1
+- .yellow-h[`+`] = 1 or more
+- .yellow-h[`{n}`] = exactly n times
+]
+]
+.pull-right[
+
+Matching character types 
+.font120[
+- .yellow-h[`\\\d`] = digit
+- .yellow-h[`\\\s`] = white space
+- .yellow-h[`\\\w`] = word
+- .yellow-h[`\\\t`] = tab
+- .yellow-h[`\\\n`] = newline
+]
+]
+---
+# Repitition using `?`
+
+
+```r
+aboutMe &lt;- c("my SSN 536-76-9423 and my age is 55")
+```
+
+
+
+```r
+str_view_all(aboutMe, "\\s\\d?") # space followed by 0 or 1 digit
+```
+
+<div id="htmlwidget-dc714e0d69b4f251cb2f" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-dc714e0d69b4f251cb2f">{"x":{"html":"<ul>\n  <li>my<span class='match'> <\/span>SSN<span class='match'> 5<\/span>36-76-9423<span class='match'> <\/span>and<span class='match'> <\/span>my<span class='match'> <\/span>age<span class='match'> <\/span>is<span class='match'> 5<\/span>5<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Repitition using `+`
+
+
+
+```r
+aboutMe &lt;- c("my SSN 536-76-9423 and my age is 55")
+```
+
+
+```r
+str_view_all(aboutMe, "\\s\\d+")  # space followed by 1 or more digits
+```
+
+<div id="htmlwidget-ca6fcae61f815fb7438c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ca6fcae61f815fb7438c">{"x":{"html":"<ul>\n  <li>my SSN<span class='match'> 536<\/span>-76-9423 and my age is<span class='match'> 55<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Repitition using `*`
+
+
+```r
+aboutMe &lt;- c("my SSN 536-76-9423 and my age is 55")
+```
+
+
+
+```r
+str_view_all(aboutMe, "\\s\\d*")  # space followed by 0 or more digits
+```
+
+<div id="htmlwidget-79446c9b8eb7319d8195" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-79446c9b8eb7319d8195">{"x":{"html":"<ul>\n  <li>my<span class='match'> <\/span>SSN<span class='match'> 536<\/span>-76-9423<span class='match'> <\/span>and<span class='match'> <\/span>my<span class='match'> <\/span>age<span class='match'> <\/span>is<span class='match'> 55<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+class: middle
+
+# More quantifiers
+
+.font120[
+&gt; useful when you want to match a pattern a specific number of times
+]
+
+.fonr130[
+
+- .out-t[`{n, }`] = n or more times
+
+- .out-t[`{, m}`] =  at most m times
+
+- .out-t[`{n, m}`] = between n &amp; m times
+]
+
+---
+class: middle
+
+# Alternatives
+
+.font130[
+&gt; useful for matching patterns more flexibly
+]
+
+.font130[
+- .out-t[`[abc]`] = one of .bold[a], .bold[b], or .bold[c]
+
+- .out-t[`[e-z]`] = a letter from .bold[e] to .bold[z]
+
+- .out-t[`[^abc]`] = anything other than .bold[a], .bold[b], or .bold[c]
+]
+
+
+---
+
+# Recap: Extract Substrings
+
+.font120[Using  `str_sub()`]
+
+
+```r
+cc &lt;- "Carleton College"
+str_sub(cc, start = 1, end = 8) 
+[1] "Carleton"
+```
+
+--
+
+
+```r
+str_sub(cc, 10) # end defaults to the last character
+[1] "College"
+```
+
+--
+
+
+```r
+# match the elements of each vector for positions
+str_sub(cc, c(1, 10), c(8, 16))
+[1] "Carleton" "College" 
+```
+
+
+---
+
+# Extract substrings
+
+.font120[Can also extract the end..]
+
+
+```r
+cc &lt;- "Carleton College"
+str_sub(cc, -4)
+[1] "lege"
+```
+
+--
+
+
+```r
+str_sub(cc, -10, -4)
+[1] "on Coll"
+```
+
+
+---
+
+name: yourturn
+template: section
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.font120[Please git clone the repository on [advanced string manipulations](https://github.com/stat220/10-more-strings) to your local folder.]
+
+Make changes to the code to ...
+
+1. Isolate the last letter of every name
+2. Create a logical variable that displays whether the last letter is one of "a", "e", "i", "o", "u", or "y".
+3. Use a weighted mean to calculate the proportion of children whose name ends in a vowel by year (see `?weighted.mean`)
+4. and then display the results as a line plot.
+
+
+<div class="countdown" id="timer_61f7fbd6" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# `str_count()`
+
+&lt;!--  most useful for checking for unexpected duplications of values when cleaning data or for extracting data from unstructured text --&gt;
+
+.font120[
+&gt; Tells you how many times a pattern appears in each entry of a string/character vector
+]
+
+--
+
+.code120[
+
+```r
+days &lt;- rep(c("Monday", "Tuesday", "Wednesday", 
+              "Thursday", "Friday", "Saturday", "Sunday"),2)
+```
+]
+
+--
+
+.code110[
+
+```r
+#number of times the letter "e" appears in each entry
+days %&gt;% str_count("e") 
+ [1] 0 1 2 0 0 0 0 0 1 2 0 0 0 0
+```
+]
+
+
+--
+
+.code110[
+
+```r
+# number of times the letter "a" or "e" appears in each entry
+days %&gt;% str_count("[ae]") 
+ [1] 1 2 3 1 1 2 1 1 2 3 1 1 2 1
+```
+]
+
+
+
+---
+
+name: yourturn
+template: section
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+
+.fancy[.font120[Determine how many baby names in 2017 contain "ders".]]
+
+
+
+```r
+babynames %&gt;% 
+  filter(year == 2017) %&gt;%
+ head(4)
+# A tibble: 4 × 5
+   year sex   name         n    prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;    &lt;int&gt;   &lt;dbl&gt;
+1  2017 F     Emma     19738 0.0105 
+2  2017 F     Olivia   18632 0.00994
+3  2017 F     Ava      15902 0.00848
+4  2017 F     Isabella 15100 0.00805
+```
+
+
+<div class="countdown" id="timer_61f7fbf1" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# `str_extract()`
+
+.font120[
+&gt; pull all set of values matching the specified pattern
+]
+
+.code120[
+
+```r
+name_phone &lt;- c("Moly Robins: 250-999-8878", 
+                "Ali Duluth: 416-908-2044",
+                "Eli Mitchell: 204-192-9829", 
+                "May Flowers: 250-209-7047")
+```
+]
+
+--
+
+.code120[
+
+```r
+str_extract(name_phone, "[:alpha:]*") 
+[1] "Moly" "Ali"  "Eli"  "May" 
+```
+]
+
+--
+
+.code120[
+
+```r
+str_extract(name_phone, "[:digit:]{3}-[:digit:]{3}-[:digit:]{4}") 
+[1] "250-999-8878" "416-908-2044" "204-192-9829" "250-209-7047"
+```
+]
+
+---
+
+# `str_extract_all()`
+
+.font120[
+&gt; pull all set of values matching the specified pattern
+]
+
+.code120[
+
+```r
+name_phone &lt;- c("Moly Robins: 250-999-8878", 
+                "Ali Duluth: 416-908-2044", 
+                "Eli Mitchell: 204-192-9829", 
+                "May Flowers: 250-209-7047")
+```
+]
+
+--
+
+.code120[
+
+```r
+str_extract_all(name_phone, "[:alpha:]{2,}", simplify = TRUE) 
+     [,1]   [,2]      
+[1,] "Moly" "Robins"  
+[2,] "Ali"  "Duluth"  
+[3,] "Eli"  "Mitchell"
+[4,] "May"  "Flowers" 
+```
+]
+
+---
+name: yourturn
+template: section
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;3&lt;/i&gt;    
+
+.font110[Consider the 2017 babynames data]
+
+
+.font120[
+&gt;   - Fill in the code to determine how many baby names in 2017 began with a vowel.
+&gt;   - Fill in the code to determine how many baby names in 2017 started or ended with a vowel.
+]
+
+
+<div class="countdown" id="timer_61f7fd5d" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Modify the case of a string
+
+.code120[
+
+```r
+str_to_lower("BEAUTY is in the EYE of the BEHOLDER")
+[1] "beauty is in the eye of the beholder"
+```
+]
+
+--
+
+.code120[
+
+```r
+str_to_upper("one small step for man, one giant leap for mankind")
+[1] "ONE SMALL STEP FOR MAN, ONE GIANT LEAP FOR MANKIND"
+```
+]
+
+--
+
+.code120[
+
+```r
+str_to_title("Aspire to inspire before we expire")
+[1] "Aspire To Inspire Before We Expire"
+```
+]
+
+--
+
+.code120[
+
+```r
+str_to_sentence("everything you can imagine is real")
+[1] "Everything you can imagine is real"
+```
+]
+
+---
+name: yourturn
+template: section
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;4&lt;/i&gt;    
+
+.font110[Consider the 2017 babynames data]
+
+.font120[
+&gt;  - how many baby names contain "illie`?
+&gt;  - how many baby names start with "M"?
+]
+
+<div class="countdown" id="timer_61f7fbd5" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+
+# Visualizing matches
+
+.pull-left[
+
+
+```r
+str_view(name_phone, "[5-8]")
+```
+
+<div id="htmlwidget-cedd312a0caec98c92ad" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-cedd312a0caec98c92ad">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-8878<\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-908-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-7047<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+
+```r
+str_view_all(name_phone, "[5-8]")
+```
+
+<div id="htmlwidget-a671460c1822425145c9" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a671460c1822425145c9">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-<span class='match'>8<\/span><span class='match'>8<\/span><span class='match'>7<\/span><span class='match'>8<\/span><\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-<span class='match'>7<\/span>04<span class='match'>7<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+# Visualizing matches
+
+.pull-left[
+
+
+```r
+str_view(name_phone, "[5|8]")
+```
+
+<div id="htmlwidget-ee01cea932e14ff03f5c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ee01cea932e14ff03f5c">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-8878<\/li>\n  <li>Ali Duluth: 416-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-7047<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+
+```r
+str_view_all(name_phone, "[5-8|a-e]")
+```
+
+<div id="htmlwidget-c0fe7cdb1e009b4050e8" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c0fe7cdb1e009b4050e8">{"x":{"html":"<ul>\n  <li>Moly Ro<span class='match'>b<\/span>ins: 2<span class='match'>5<\/span>0-999-<span class='match'>8<\/span><span class='match'>8<\/span><span class='match'>7<\/span><span class='match'>8<\/span><\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mit<span class='match'>c<\/span>h<span class='match'>e<\/span>ll: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>M<span class='match'>a<\/span>y Flow<span class='match'>e<\/span>rs: 2<span class='match'>5<\/span>0-209-<span class='match'>7<\/span>04<span class='match'>7<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+
+---
+
+# Extract using repitition
+
+
+```r
+str_view_all(name_phone, pattern = "[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}")
+```
+
+<div id="htmlwidget-51df6eae67c07455c82a" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-51df6eae67c07455c82a">{"x":{"html":"<ul>\n  <li>Moly Robins: <span class='match'>250-999-8878<\/span><\/li>\n  <li>Ali Duluth: <span class='match'>416-908-2044<\/span><\/li>\n  <li>Eli Mitchell: <span class='match'>204-192-9829<\/span><\/li>\n  <li>May Flowers: <span class='match'>250-209-7047<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# `str_locate()` 
+
+.font130[
+&gt; tell you the character positions the pattern characters are found in
+]
+
+.code120[
+
+```r
+days %&gt;% 
+  str_locate("day") %&gt;% # start and end positions of the pattern "day"
+  head(n=7)
+     start end
+[1,]     4   6
+[2,]     5   7
+[3,]     7   9
+[4,]     6   8
+[5,]     4   6
+[6,]     6   8
+[7,]     4   6
+```
+]
+
+
+---
+
+# `str_flatten()`
+
+.font130[
+&gt; collapses a string vector into a single string (i.e. a character vector of length 1)
+]
+
+.code140[
+
+```r
+str_flatten(c("a_3", "d_54"), # vector to collapse
+            collapse =  " ") # insert in between 
+[1] "a_3 d_54"
+```
+]
+
+
+---
+
+# `str_glue()`
+
+.font120[
+&gt; allows one to interpolate strings and values that have been assigned to names in R
+]
+
+
+.pull-left[
+.font110[
+
+```r
+y &lt;- Sys.Date() # current date
+str_glue("today is {y}")
+today is 2022-01-31
+```
+]
+]
+.pull-right[
+.font110[
+
+```r
+# base R equivalent
+paste0("today is ", y)
+[1] "today is 2022-01-31"
+```
+]
+]
+--
+
+.font120[
+
+```r
+nm &lt;- "Alex"
+str_glue("Hi, my name is {nm}.")
+Hi, my name is Alex.
+```
+]
+--
+.font120[
+
+```r
+a &lt;- 5
+str_glue("a = {a}")
+a = 5
+```
+]
+---
+
+# Lengths of strings
+
+.font120[We can manage the lengths of strings using the following set of functions:]
+
+.font140[
+
+- `str_length()`
+
+- `str_pad()`
+
+- `str_trunc()`
+
+- `str_trim()`
+
+]
+
+---
+
+# `str_length()`
+
+.font120[
+&gt; tells you how many characters are in each entry of a character vector
+]
+
+.code100[
+
+```r
+gapminder %&gt;% names()
+[1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
+```
+]
+
+
+.code120[
+
+```r
+# length of each column names 
+gapminder %&gt;% names() %&gt;% str_length()
+[1] 7 9 4 7 3 9
+```
+
+]
+
+
+---
+
+# `str_pad()`
+
+.font120[
+&gt; standardizes the length of strings in a character vector by padding it on the left or right ends with a specified character (by default, a space)
+]
+
+
+```r
+gapminder %&gt;% names() %&gt;%
+  str_pad(width = 9, # minimum width of the string to fill/pad positions up to
+          side = "both", # side to insert the extra characters on 
+          pad = "+")
+[1] "+country+" "continent" "++year+++" "+lifeExp+" "+++pop+++" "gdpPercap"
+```
+
+
+---
+
+# `str_trunc()`
+
+.font120[
+&gt; standardizes string lengths by controlling the maximum width and truncating strings longer than this
+]
+
+
+```r
+gapminder %&gt;% names() %&gt;%
+  str_trunc(width = 7, #the maximum width to allow for strings
+          side= "right", 
+          # entries which have been truncated will show this to indicate that
+          # something has been removed
+          ellipsis = "...") 
+[1] "country" "cont..." "year"    "lifeExp" "pop"     "gdpP..."
+```
+
+
+---
+
+# `str_trim()`
+
+.font120[
+&gt;  removes empty spaces on the ends of a string
+]
+
+
+```r
+#add some whitespace
+padded_names &lt;- gapminder %&gt;% names() %&gt;% str_pad(12, "both")
+padded_names
+[1] "  country   " " continent  " "    year    " "  lifeExp   " "    pop     "
+[6] " gdpPercap  "
+```
+
+--
+
+
+```r
+#remove it
+str_trim(padded_names)
+[1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
+```
+
+
+---
+
+# Disambiguate your regexps
+
+
+```r
+name_phone &lt;- c("Moly Robins: 250-999-8878", 
+       "Ali Duluth: 416-908-2044", 
+       "Eli Mitchell: 204.192.9829", 
+       "May Flowers: 250.209.7047")
+```
+
+
+
+
+```r
+str_view_all(name_phone,
+             pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})")
+```
+
+<div id="htmlwidget-87c1a8a2456f6db21415" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-87c1a8a2456f6db21415">{"x":{"html":"<ul>\n  <li>Moly Robins: <span class='match'>250-999-8878<\/span><\/li>\n  <li>Ali Duluth: <span class='match'>416-908-2044<\/span><\/li>\n  <li>Eli Mitchell: <span class='match'>204.192.9829<\/span><\/li>\n  <li>May Flowers: <span class='match'>250.209.7047<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Replacing strings
+
+
+```r
+str_replace_all(name_phone,
+pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})",
+replacement = "XXX-XXX-XXXX"
+)
+[1] "Moly Robins: XXX-XXX-XXXX"  "Ali Duluth: XXX-XXX-XXXX"  
+[3] "Eli Mitchell: XXX-XXX-XXXX" "May Flowers: XXX-XXX-XXXX" 
+```
+
+
+---
+
+# Duplicating Groups
+
+Use escaped numbers (\\1, \\2, etc) to repeat a group based on position
+
+Which numbers have the same 1st and 3rd digits?
+
+
+```r
+phone_numbers &lt;- c("515 111 2244", "310 549 6892", "474 234 7548")
+str_view(phone_numbers, "(\\d)\\d\\1")
+```
+
+<div id="htmlwidget-804e02a81227562529b1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-804e02a81227562529b1">{"x":{"html":"<ul>\n  <li><span class='match'>515<\/span> 111 2244<\/li>\n  <li>310 549 6892<\/li>\n  <li><span class='match'>474<\/span> 234 7548<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+name: yourturn
+template: section
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;5&lt;/i&gt;    
+
+
+```r
+x &lt;- c("scuttlebutt", "Stetson", "Scattter", "Scatter")
+str_detect(x, "^[Ss](.*)(t+)(.+)(t+)")
+[1]  TRUE  TRUE  TRUE FALSE
+```
+
+
+.font120[
+The regular expression `"^[Ss](.*)(t+)(.+)(t+)"` detects "scuttlebutt", "Stetson", and "Scattter", but not "Scatter." Why?
+]
+
+<div class="countdown" id="timer_61f7fc7f" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": "r",
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(60000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

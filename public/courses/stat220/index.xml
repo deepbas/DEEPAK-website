@@ -24,6 +24,14 @@
     Please read &lt;a href=&#34;https://r4ds.had.co.nz/strings.html&#34;&gt;GW Chapter 14&lt;/a&gt; on strings and regular expressions. Continue reading &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 25&lt;/a&gt; on string parsing.
   &lt;/div&gt;
 &lt;/div&gt;
+&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;More string manipulation tools&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Day 11 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day11/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day11/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/10-more-strings&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Activity&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
@@ -70,7 +78,7 @@
 &lt;p&gt;I will also detail our first paired mini-project for the quarter during class.&lt;/p&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please gently read &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 25&lt;/a&gt; string parsing.
+    Please gently read &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 25&lt;/a&gt; on string parsing.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;h3 id=&#34;in-class-2&#34;&gt;In Class&lt;/h3&gt;
