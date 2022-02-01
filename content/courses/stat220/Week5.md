@@ -30,7 +30,7 @@ Day 11 Slides ({{% staticref "pdf/Day11/Day11.pdf" "newtab" %}}pdf{{% /staticref
 ### Before Class
 
 {{% callout note %}}
-Please gently read [IDS Chapter 27](https://rafalab.github.io/dsbook/text-mining.html#text-mining) on text mining.{{% /callout %}}
+Please gently read [IDS Chapter 27](https://rafalab.github.io/dsbook/text-mining.html#text-mining) on text mining. Also, read [this article](http://varianceexplained.org/r/trump-tweets/) by David Robinson.{{% /callout %}}
 
 
 
