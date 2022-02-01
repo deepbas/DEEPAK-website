@@ -192,11 +192,11 @@ class: middle
 
 # Alternatives
 
-.font130[
+.font120[
 > useful for matching patterns more flexibly
 ]
 
-.font130[
+.font120[
 - .out-t[`[abc]`] = one of .bold[a], .bold[b], or .bold[c]
 
 - .out-t[`[e-z]`] = a letter from .bold[e] to .bold[z]
@@ -251,6 +251,7 @@ str_sub(cc, -10, -4)
 ---
 
 name: yourturn
+class: action
 template: section
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
@@ -313,6 +314,7 @@ days %>% str_count("[ae]")
 
 name: yourturn
 template: section
+clas: action
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
 
@@ -392,6 +394,7 @@ str_extract_all(name_phone, "[:alpha:]{2,}", simplify = TRUE)
 ---
 name: yourturn
 template: section
+class: action
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
 
@@ -400,7 +403,7 @@ template: section
 
 .font120[
 >   - Fill in the code to determine how many baby names in 2017 began with a vowel.
->   - Fill in the code to determine how many baby names in 2017 started or ended with a vowel.
+>   - Fill in the code to determine how many baby names in 2017 started and/or ended with a vowel.
 ]
 
 
@@ -721,6 +724,7 @@ str_view(phone_numbers, "(\\d)\\d\\1")
 ---
 name: yourturn
 template: section
+class: action
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
 

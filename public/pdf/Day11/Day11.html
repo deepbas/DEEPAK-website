@@ -47,7 +47,7 @@ background-size: 160px, 100% 100%
 
 .large[Bastola]
 
- January 31 2022
+ February 01 2022
 
 ---
 
@@ -89,8 +89,8 @@ aboutMe &lt;- c("my SSN 536-76-9423 and my age is 55")
 str_view_all(aboutMe, "\\s\\d?") # space followed by 0 or 1 digit
 ```
 
-<div id="htmlwidget-dc714e0d69b4f251cb2f" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dc714e0d69b4f251cb2f">{"x":{"html":"<ul>\n  <li>my<span class='match'> <\/span>SSN<span class='match'> 5<\/span>36-76-9423<span class='match'> <\/span>and<span class='match'> <\/span>my<span class='match'> <\/span>age<span class='match'> <\/span>is<span class='match'> 5<\/span>5<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-68ecfe013c90763a812f" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-68ecfe013c90763a812f">{"x":{"html":"<ul>\n  <li>my<span class='match'> <\/span>SSN<span class='match'> 5<\/span>36-76-9423<span class='match'> <\/span>and<span class='match'> <\/span>my<span class='match'> <\/span>age<span class='match'> <\/span>is<span class='match'> 5<\/span>5<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -107,8 +107,8 @@ aboutMe &lt;- c("my SSN 536-76-9423 and my age is 55")
 str_view_all(aboutMe, "\\s\\d+")  # space followed by 1 or more digits
 ```
 
-<div id="htmlwidget-ca6fcae61f815fb7438c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ca6fcae61f815fb7438c">{"x":{"html":"<ul>\n  <li>my SSN<span class='match'> 536<\/span>-76-9423 and my age is<span class='match'> 55<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-09bba5b4d9a7a212f74c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-09bba5b4d9a7a212f74c">{"x":{"html":"<ul>\n  <li>my SSN<span class='match'> 536<\/span>-76-9423 and my age is<span class='match'> 55<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -126,8 +126,8 @@ aboutMe &lt;- c("my SSN 536-76-9423 and my age is 55")
 str_view_all(aboutMe, "\\s\\d*")  # space followed by 0 or more digits
 ```
 
-<div id="htmlwidget-79446c9b8eb7319d8195" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-79446c9b8eb7319d8195">{"x":{"html":"<ul>\n  <li>my<span class='match'> <\/span>SSN<span class='match'> 536<\/span>-76-9423<span class='match'> <\/span>and<span class='match'> <\/span>my<span class='match'> <\/span>age<span class='match'> <\/span>is<span class='match'> 55<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-29e64af8237e551b1330" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-29e64af8237e551b1330">{"x":{"html":"<ul>\n  <li>my<span class='match'> <\/span>SSN<span class='match'> 536<\/span>-76-9423<span class='match'> <\/span>and<span class='match'> <\/span>my<span class='match'> <\/span>age<span class='match'> <\/span>is<span class='match'> 55<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -153,11 +153,11 @@ class: middle
 
 # Alternatives
 
-.font130[
+.font120[
 &gt; useful for matching patterns more flexibly
 ]
 
-.font130[
+.font120[
 - .out-t[`[abc]`] = one of .bold[a], .bold[b], or .bold[c]
 
 - .out-t[`[e-z]`] = a letter from .bold[e] to .bold[z]
@@ -222,6 +222,7 @@ str_sub(cc, -10, -4)
 ---
 
 name: yourturn
+class: action
 template: section
 
 # &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
@@ -236,7 +237,7 @@ Make changes to the code to ...
 4. and then display the results as a line plot.
 
 
-<div class="countdown" id="timer_61f7fbd6" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f961c3" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -289,6 +290,7 @@ days %&gt;% str_count("[ae]")
 
 name: yourturn
 template: section
+clas: action
 
 # &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
 
@@ -311,7 +313,7 @@ babynames %&gt;%
 ```
 
 
-<div class="countdown" id="timer_61f7fbf1" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f96186" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">02</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -388,6 +390,7 @@ str_extract_all(name_phone, "[:alpha:]{2,}", simplify = TRUE)
 ---
 name: yourturn
 template: section
+class: action
 
 # &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;3&lt;/i&gt;    
 
@@ -396,11 +399,11 @@ template: section
 
 .font120[
 &gt;   - Fill in the code to determine how many baby names in 2017 began with a vowel.
-&gt;   - Fill in the code to determine how many baby names in 2017 started or ended with a vowel.
+&gt;   - Fill in the code to determine how many baby names in 2017 started and/or ended with a vowel.
 ]
 
 
-<div class="countdown" id="timer_61f7fd5d" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f964b6" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -459,7 +462,7 @@ template: section
 &gt;  - how many baby names start with "M"?
 ]
 
-<div class="countdown" id="timer_61f7fbd5" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f961db" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -476,8 +479,8 @@ template: section
 str_view(name_phone, "[5-8]")
 ```
 
-<div id="htmlwidget-cedd312a0caec98c92ad" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-cedd312a0caec98c92ad">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-8878<\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-908-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-7047<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bd003563a0daa6ff0d88" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bd003563a0daa6ff0d88">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-8878<\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-908-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-7047<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
 
@@ -485,8 +488,8 @@ str_view(name_phone, "[5-8]")
 str_view_all(name_phone, "[5-8]")
 ```
 
-<div id="htmlwidget-a671460c1822425145c9" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a671460c1822425145c9">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-<span class='match'>8<\/span><span class='match'>8<\/span><span class='match'>7<\/span><span class='match'>8<\/span><\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-<span class='match'>7<\/span>04<span class='match'>7<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-3d4f92d72c10ab93a9b7" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3d4f92d72c10ab93a9b7">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-<span class='match'>8<\/span><span class='match'>8<\/span><span class='match'>7<\/span><span class='match'>8<\/span><\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-<span class='match'>7<\/span>04<span class='match'>7<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 ]
 
 ---
@@ -500,8 +503,8 @@ str_view_all(name_phone, "[5-8]")
 str_view(name_phone, "[5|8]")
 ```
 
-<div id="htmlwidget-ee01cea932e14ff03f5c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ee01cea932e14ff03f5c">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-8878<\/li>\n  <li>Ali Duluth: 416-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-7047<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7e0bebfe59eae48d3c1f" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7e0bebfe59eae48d3c1f">{"x":{"html":"<ul>\n  <li>Moly Robins: 2<span class='match'>5<\/span>0-999-8878<\/li>\n  <li>Ali Duluth: 416-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mitchell: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>May Flowers: 2<span class='match'>5<\/span>0-209-7047<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
 
@@ -509,8 +512,8 @@ str_view(name_phone, "[5|8]")
 str_view_all(name_phone, "[5-8|a-e]")
 ```
 
-<div id="htmlwidget-c0fe7cdb1e009b4050e8" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c0fe7cdb1e009b4050e8">{"x":{"html":"<ul>\n  <li>Moly Ro<span class='match'>b<\/span>ins: 2<span class='match'>5<\/span>0-999-<span class='match'>8<\/span><span class='match'>8<\/span><span class='match'>7<\/span><span class='match'>8<\/span><\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mit<span class='match'>c<\/span>h<span class='match'>e<\/span>ll: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>M<span class='match'>a<\/span>y Flow<span class='match'>e<\/span>rs: 2<span class='match'>5<\/span>0-209-<span class='match'>7<\/span>04<span class='match'>7<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c5d3fddecbc65ef2ba94" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c5d3fddecbc65ef2ba94">{"x":{"html":"<ul>\n  <li>Moly Ro<span class='match'>b<\/span>ins: 2<span class='match'>5<\/span>0-999-<span class='match'>8<\/span><span class='match'>8<\/span><span class='match'>7<\/span><span class='match'>8<\/span><\/li>\n  <li>Ali Duluth: 41<span class='match'>6<\/span>-90<span class='match'>8<\/span>-2044<\/li>\n  <li>Eli Mit<span class='match'>c<\/span>h<span class='match'>e<\/span>ll: 204-192-9<span class='match'>8<\/span>29<\/li>\n  <li>M<span class='match'>a<\/span>y Flow<span class='match'>e<\/span>rs: 2<span class='match'>5<\/span>0-209-<span class='match'>7<\/span>04<span class='match'>7<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 ]
 
 
@@ -523,8 +526,8 @@ str_view_all(name_phone, "[5-8|a-e]")
 str_view_all(name_phone, pattern = "[2-9][0-9]{2}-[0-9]{3}-[0-9]{4}")
 ```
 
-<div id="htmlwidget-51df6eae67c07455c82a" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-51df6eae67c07455c82a">{"x":{"html":"<ul>\n  <li>Moly Robins: <span class='match'>250-999-8878<\/span><\/li>\n  <li>Ali Duluth: <span class='match'>416-908-2044<\/span><\/li>\n  <li>Eli Mitchell: <span class='match'>204-192-9829<\/span><\/li>\n  <li>May Flowers: <span class='match'>250-209-7047<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a1df65770f8e35e4d705" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a1df65770f8e35e4d705">{"x":{"html":"<ul>\n  <li>Moly Robins: <span class='match'>250-999-8878<\/span><\/li>\n  <li>Ali Duluth: <span class='match'>416-908-2044<\/span><\/li>\n  <li>Eli Mitchell: <span class='match'>204-192-9829<\/span><\/li>\n  <li>May Flowers: <span class='match'>250-209-7047<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -585,7 +588,7 @@ str_flatten(c("a_3", "d_54"), # vector to collapse
 ```r
 y &lt;- Sys.Date() # current date
 str_glue("today is {y}")
-today is 2022-01-31
+today is 2022-02-01
 ```
 ]
 ]
@@ -595,7 +598,7 @@ today is 2022-01-31
 ```r
 # base R equivalent
 paste0("today is ", y)
-[1] "today is 2022-01-31"
+[1] "today is 2022-02-01"
 ```
 ]
 ]
@@ -749,8 +752,8 @@ str_view_all(name_phone,
              pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})")
 ```
 
-<div id="htmlwidget-87c1a8a2456f6db21415" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-87c1a8a2456f6db21415">{"x":{"html":"<ul>\n  <li>Moly Robins: <span class='match'>250-999-8878<\/span><\/li>\n  <li>Ali Duluth: <span class='match'>416-908-2044<\/span><\/li>\n  <li>Eli Mitchell: <span class='match'>204.192.9829<\/span><\/li>\n  <li>May Flowers: <span class='match'>250.209.7047<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-79dc62e50efcba5d2d39" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-79dc62e50efcba5d2d39">{"x":{"html":"<ul>\n  <li>Moly Robins: <span class='match'>250-999-8878<\/span><\/li>\n  <li>Ali Duluth: <span class='match'>416-908-2044<\/span><\/li>\n  <li>Eli Mitchell: <span class='match'>204.192.9829<\/span><\/li>\n  <li>May Flowers: <span class='match'>250.209.7047<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -781,13 +784,14 @@ phone_numbers &lt;- c("515 111 2244", "310 549 6892", "474 234 7548")
 str_view(phone_numbers, "(\\d)\\d\\1")
 ```
 
-<div id="htmlwidget-804e02a81227562529b1" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-804e02a81227562529b1">{"x":{"html":"<ul>\n  <li><span class='match'>515<\/span> 111 2244<\/li>\n  <li>310 549 6892<\/li>\n  <li><span class='match'>474<\/span> 234 7548<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b10608d0fd09ef26207d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b10608d0fd09ef26207d">{"x":{"html":"<ul>\n  <li><span class='match'>515<\/span> 111 2244<\/li>\n  <li>310 549 6892<\/li>\n  <li><span class='match'>474<\/span> 234 7548<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 
 ---
 name: yourturn
 template: section
+class: action
 
 # &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;5&lt;/i&gt;    
 
@@ -803,7 +807,7 @@ str_detect(x, "^[Ss](.*)(t+)(.+)(t+)")
 The regular expression `"^[Ss](.*)(t+)(.+)(t+)"` detects "scuttlebutt", "Stetson", and "Scattter", but not "Scatter." Why?
 ]
 
-<div class="countdown" id="timer_61f7fc7f" style="right:0;bottom:0;" data-warnwhen="0">
+<div class="countdown" id="timer_61f964e6" style="right:0;bottom:0;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
