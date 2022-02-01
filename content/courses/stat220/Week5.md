@@ -23,3 +23,14 @@ Please read [GW Chapter 14](https://r4ds.had.co.nz/strings.html) on strings and 
 Day 11 Slides ({{% staticref "pdf/Day11/Day11.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day11/Day11.html" "newtab" %}}html{{% /staticref %}})
 
 - Link to [In Class Activity](https://github.com/stat220/10-more-strings) 
+
+
+<span style="color:orange">**Monday, 02/02**</span>
+
+### Before Class
+
+{{% callout note %}}
+Please gently read [IDS Chapter 27](https://rafalab.github.io/dsbook/text-mining.html#text-mining) on text mining.{{% /callout %}}
+
+
+
