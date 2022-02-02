@@ -14,3 +14,5 @@ weight: 30
 {{% staticref "cheatsheets/data-visualization.pdf" "newtab" %}}`ggplot2` Cheatsheet{{% /staticref %}}
 
 {{% staticref "cheatsheets/data-transformation.pdf" "newtab" %}}`dplyr` Cheatsheet{{% /staticref %}}
+
+{{% staticref "cheatsheets/strings.pdf" "newtab" %}}`stringr` Cheatsheet{{% /staticref %}}
