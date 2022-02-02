@@ -25,7 +25,7 @@ Day 11 Slides ({{% staticref "pdf/Day11/Day11.pdf" "newtab" %}}pdf{{% /staticref
 - Link to [In Class Activity](https://github.com/stat220/10-more-strings) 
 
 
-<span style="color:orange">**Monday, 02/02**</span>
+<span style="color:orange">**Wednesday, 02/02**</span>
 
 ### Before Class
 
