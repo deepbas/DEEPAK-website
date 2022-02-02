@@ -18,4 +18,3 @@ weight: 30
 {{% staticref "cheatsheets/lubridate.pdf" "newtab" %}}`lubridate` Cheatsheet{{% /staticref %}}
 
 {{% staticref "cheatsheets/strings.pdf" "newtab" %}}`stringr` Cheatsheet{{% /staticref %}}
-

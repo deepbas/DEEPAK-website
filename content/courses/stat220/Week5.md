@@ -32,5 +32,15 @@ Day 11 Slides ({{% staticref "pdf/Day11/Day11.pdf" "newtab" %}}pdf{{% /staticref
 {{% callout note %}}
 Please gently read [IDS Chapter 27](https://rafalab.github.io/dsbook/text-mining.html#text-mining) on text mining. Also, read [this article](http://varianceexplained.org/r/trump-tweets/) by David Robinson.{{% /callout %}}
 
+### In Class
+
+- advanced text mining
+- analyze tweets
+- brief overview of `tidytext`
+
+
+Day 12 Slides ({{% staticref "pdf/Day12/Day12.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day12/Day12.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/11-advanced-strings) 
 
 
