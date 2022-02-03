@@ -53,7 +53,7 @@
 &lt;h3 id=&#34;before-class-2&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please read &lt;a href=&#34;https://r4ds.had.co.nz/functions.html&#34;&gt;GW Chapter 19&lt;/a&gt; on writing functions in R. If you have no prior experience in functions the following video would give you a nice overview (using R).
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/functions.html&#34;&gt;GW Chapter 19&lt;/a&gt; on writing functions in R. If you have no prior experience in writing functions, the following video would give you a nice overview (using R).
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/p8tAQx7ijXE&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;

@@ -49,7 +49,7 @@ Day 12 Slides ({{% staticref "pdf/Day12/Day12.pdf" "newtab" %}}pdf{{% /staticref
 ### Before Class
 
 {{% callout note %}}
-Please read [GW Chapter 19](https://r4ds.had.co.nz/functions.html) on writing functions in R. If you have no prior experience in functions the following video would give you a nice overview (using R).{{% /callout %}}
+Please read [GW Chapter 19](https://r4ds.had.co.nz/functions.html) on writing functions in R. If you have no prior experience in writing functions, the following video would give you a nice overview (using R).{{% /callout %}}
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/p8tAQx7ijXE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
