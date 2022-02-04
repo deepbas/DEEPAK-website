@@ -399,7 +399,7 @@ $$\operatorname{Skew}(x)=\frac{\frac{1}{n-2}\left(\sum_{i=1}^{n}\left(x_{i}-\bar
 ]
 
 .fancy[
-where $x_i = (\sum_i^n x_i)/n$ is the sample mean.] HInt: Use `sum()`
+where $x_i = (\sum_i^n x_i)/n$ is the sample mean.] Hint: Use .bold[sum()]
 
 
 
