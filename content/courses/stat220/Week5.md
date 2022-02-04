@@ -53,4 +53,12 @@ Please read [GW Chapter 19](https://r4ds.had.co.nz/functions.html) on writing fu
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/p8tAQx7ijXE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+### In Class
+
+- Basic functions
+- Application to word cloud visualizations
+
+Day 13 Slides ({{% staticref "pdf/Day13/Day13.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day13/Day13.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/12-simple-functions) 
 

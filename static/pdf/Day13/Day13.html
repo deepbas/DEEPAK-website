@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Functions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Functions]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+ February 04 2022
+
+---
+
+# What are functions?
+
+.font120[
+&lt;blockquote&gt;
+A function is a type of object in R that can perform a specific task. 
+]
+
+.font120[
+- Functions take arguments as input and output some manipulated form of the input data.
+
+- A function is specified first with the object name, then parentheses with arguments inside.
+
+]
+
+--
+
+
+```r
+# a simple in-built function
+log(4)
+[1] 1.386294
+```
+
+---
+class: middle
+
+# When to write functions?
+
+.font120[
+
+- Using the same code more than once
+
+- Complicated operation
+
+- Vectorization
+
+]
+
+---
+class: middle
+
+# Function arguments
+
+.font120[
+- `x`, `y`, `z`: vectors.
+- `w`: a vector of weights.
+- `df`: a data frame.
+- `i`, `j`: numeric indices (typically rows and columns).
+- `n`: length, or number of rows.
+- `p`: number of columns.
+]
+
+---
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+*my_awesome_function &lt;- function(x,y) # Arguments broken up by commas
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y 
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+
+---
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+my_awesome_function &lt;- function(x,y) # Arguments broken up by commas 
+*{ # Brackets that house the code
+  # Some code to execute 
+  z = x*y 
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+---
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+my_awesome_function &lt;- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+* # Some code to execute
+  z = x*y 
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+---
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+my_awesome_function &lt;- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+* z = x*y
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+---
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+my_awesome_function &lt;- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+* return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+
+---
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+my_awesome_function &lt;- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+  return(z) # Return a data value  
+*} # Close the Brackets
+```
+]
+
+---
+
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+my_awesome_function &lt;- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+  return(z) # Return a data value  
+} # Close the Brackets   
+```
+]
+
+.fancy[.code120[
+
+```r
+*my_awesome_function(x=5,y=6)
+[1] 30
+```
+]
+]
+
+
+---
+
+# Writing Functions
+
+.code120[
+
+```r
+# Basic Set Up
+my_awesome_function &lt;- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+  return(z) # Return a data value  
+} # Close the Brackets   
+```
+]
+
+.fancy[.code120[
+
+```r
+my_awesome_function(x=5,y=6)
+[1] 30
+```
+]
+]
+
+
+.fancy[.code120[
+
+```r
+*my_awesome_function(x=7,y=8)
+[1] 56
+```
+]
+]
+
+
+---
+
+
+# More complicated functions
+
+.code110[
+
+```r
+Operation_Times &lt;- function(x, y, op){
+   first_op &lt;- switch(op,
+     plus = x + y,
+     minus = x - y,
+     times = x * y,
+     divide = x / y,
+     stop("Unknown op!")
+   )
+   
+   return(first_op * 2)
+}
+```
+]
+
+--
+
+.code110[
+
+```r
+*Operation_Times(x=5, y=6, op = "plus")
+[1] 22
+```
+]
+
+
+
+---
+
+# More complicated functions
+
+.code110[
+
+```r
+Operation_Times &lt;- function(x, y, op){
+   first_op &lt;- switch(op,
+     plus = x + y,
+     minus = x - y,
+     times = x * y,
+     divide = x / y,
+     stop("Unknown op!")
+   )
+   
+   return(first_op * 2)
+}
+```
+]
+
+
+
+.code110[
+
+```r
+Operation_Times(x=5, y=6, op = "plus") 
+[1] 22
+```
+]
+
+
+
+.code110[
+
+```r
+*Operation_Times(x=5, y=6, op = "minus")
+[1] -2
+```
+]
+
+---
+
+name: yourturn
+template: section
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+Please git clone the repository on [simple functions](https://github.com/stat220/12-simple-functions) to your local folder. Write functions to calculate the variance and skewness of `\(X = \{12, 45, 54, 34, 56, 30, 67, \text{NA}\}\)`.
+
+.font140[
+`$$\operatorname{Var}(x)=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}$$`
+
+`$$\operatorname{Skew}(x)=\frac{\frac{1}{n-2}\left(\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{3}\right)}{\operatorname{Var}(x)^{3 / 2}}$$`
+]
+
+.fancy[
+where `\(x_i = (\sum_i^n x_i)/n\)` is the sample mean.] HInt: Use `sum()`
+
+
+
+<div class="countdown" id="timer_61fd6c7b" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: middle
+
+
+# Conditional Execution
+
+.pull-left[
+
+Allows code to:
+
+- become more flexible 
+- adapt to the input arguments
+-  have certain “control flow” constructs 
+]
+.pull-right[
+&lt;img src="images/07_flowchart_homework_graphjam.jpg" width="75%" align="center" /&gt;
+]
+
+
+---
+
+
+
+# if - else
+
+
+```r
+if(TRUE){
+  print("Positive")
+}else{
+  print("Negative")
+}
+[1] "Positive"
+```
+
+--
+
+
+```r
+if(FALSE){
+  print("Positive")
+}else{
+  print("Negative")
+}
+[1] "Negative"
+```
+
+---
+
+# ifelse()
+
+- Same idea just vectorized
+
+
+```r
+ifelse(T,"Positive","Negative")
+[1] "Positive"
+```
+
+--
+
+
+```r
+ifelse(F,"Positive","Negative")
+[1] "Negative"
+```
+
+--
+
+
+```r
+x &lt;- 1:10
+ifelse( x&lt;5, "Positive","Negative")
+ [1] "Positive" "Positive" "Positive" "Positive" "Negative" "Negative"
+ [7] "Negative" "Negative" "Negative" "Negative"
+```
+
+
+---
+
+# if and ifelse
+
+
+```r
+x &lt;- c(3, 4, 6)
+y &lt;- c("5", "c", "9")
+```
+
+--
+
+
+```r
+# Use `if` for single condition tests
+cutoff_make0 &lt;- function(x, cutoff = 0){
+  if(is.numeric(x)){
+    ifelse(x &lt; cutoff, 0, x)
+  } else warning("The input provided is not a numeric vector")
+}
+```
+
+--
+
+
+```r
+cutoff_make0(x, cutoff = 4)
+[1] 0 4 6
+```
+
+--
+
+
+```r
+cutoff_make0(y, cutoff = 4)
+Warning in cutoff_make0(y, cutoff = 4): The input provided is not a numeric
+vector
+```
+
+---
+name: yourturn
+template: section
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+Write a function that turns (e.g.) a vector `\(X = \{“a”, “b”, “c”\}\)` into the string `\("a:b:c"\)`. Think carefully about what it should do if given a vector of length 0 or 1.
+
+.fancy[Try the function with these inputs:]
+
+
+```r
+x0 &lt;- c()
+x1 &lt;- c("a")
+x2 &lt;- c("a","b")
+x3 &lt;- c("a","b","c")
+```
+
+
+
+<div class="countdown" id="timer_61fd6a85" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# `gutenbergr` package
+
+.font120[
+- provides access to the public domain works from the [Project Gutenberg](https://www.gutenberg.org/) collection
+]
+
+
+```r
+gutenberg_metadata %&gt;%
+  filter(title == "Wuthering Heights")
+# A tibble: 1 × 8
+  gutenberg_id title    author gutenberg_autho… language gutenberg_books… rights
+         &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;             &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;            &lt;chr&gt; 
+1          768 Wutheri… Bront…              405 en       Gothic Fiction/… Publi…
+# … with 1 more variable: has_text &lt;lgl&gt;
+```
+
+--
+
+.scroll-box-10[
+
+```r
+gutenberg_download(768)
+# A tibble: 12,342 × 2
+   gutenberg_id text               
+          &lt;int&gt; &lt;chr&gt;              
+ 1          768 "Wuthering Heights"
+ 2          768 ""                 
+ 3          768 "by Emily Brontë"  
+ 4          768 ""                 
+ 5          768 ""                 
+ 6          768 ""                 
+ 7          768 ""                 
+ 8          768 "CHAPTER I"        
+ 9          768 ""                 
+10          768 ""                 
+# … with 12,332 more rows
+```
+]
+
+---
+
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+*alice
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 3,375 × 1
+   text                                  
+   &lt;chr&gt;                                 
+ 1 "Alice’s Adventures in Wonderland"    
+ 2 ""                                    
+ 3 "by Lewis Carroll"                    
+ 4 ""                                    
+ 5 "THE MILLENNIUM FULCRUM EDITION 3.0"  
+ 6 ""                                    
+ 7 "Contents"                            
+ 8 ""                                    
+ 9 " CHAPTER I.     Down the Rabbit-Hole"
+10 " CHAPTER II.    The Pool of Tears"   
+# … with 3,365 more rows
+```
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+* mutate(linenumber=row_number())
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 3,375 × 2
+   text                                   linenumber
+   &lt;chr&gt;                                       &lt;int&gt;
+ 1 "Alice’s Adventures in Wonderland"              1
+ 2 ""                                              2
+ 3 "by Lewis Carroll"                              3
+ 4 ""                                              4
+ 5 "THE MILLENNIUM FULCRUM EDITION 3.0"            5
+ 6 ""                                              6
+ 7 "Contents"                                      7
+ 8 ""                                              8
+ 9 " CHAPTER I.     Down the Rabbit-Hole"          9
+10 " CHAPTER II.    The Pool of Tears"            10
+# … with 3,365 more rows
+```
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+* unnest_tokens(word, text)
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 26,774 × 2
+   linenumber word      
+        &lt;int&gt; &lt;chr&gt;     
+ 1          1 alice’s   
+ 2          1 adventures
+ 3          1 in        
+ 4          1 wonderland
+ 5          3 by        
+ 6          3 lewis     
+ 7          3 carroll   
+ 8          5 the       
+ 9          5 millennium
+10          5 fulcrum   
+# … with 26,764 more rows
+```
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+* anti_join(stop_words)
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 8,437 × 2
+   linenumber word      
+        &lt;int&gt; &lt;chr&gt;     
+ 1          1 alice’s   
+ 2          1 adventures
+ 3          1 wonderland
+ 4          3 lewis     
+ 5          3 carroll   
+ 6          5 millennium
+ 7          5 fulcrum   
+ 8          5 edition   
+ 9          5 3.0       
+10          7 contents  
+# … with 8,427 more rows
+```
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+* count(word, sort=TRUE)
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 2,321 × 2
+   word        n
+   &lt;chr&gt;   &lt;int&gt;
+ 1 alice     386
+ 2 time       71
+ 3 queen      68
+ 4 king       61
+ 5 don’t      60
+ 6 it’s       57
+ 7 mock       57
+ 8 i’m        56
+ 9 turtle     56
+10 gryphon    55
+# … with 2,311 more rows
+```
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+* top_n(10)
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 11 × 2
+   word        n
+   &lt;chr&gt;   &lt;int&gt;
+ 1 alice     386
+ 2 time       71
+ 3 queen      68
+ 4 king       61
+ 5 don’t      60
+ 6 it’s       57
+ 7 mock       57
+ 8 i’m        56
+ 9 turtle     56
+10 gryphon    55
+11 hatter     55
+```
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+* ggplot(aes(word, n)) + theme_tufte()
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day13_files/figure-html/demo1_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  ggplot(aes(word, n)) + theme_tufte() +
+* geom_col(fill = "#773232")
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day13_files/figure-html/demo1_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  ggplot(aes(word, n)) + theme_tufte() +
+  geom_col(fill = "#773232") +
+* xlab(NULL)
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day13_files/figure-html/demo1_auto_09_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  ggplot(aes(word, n)) + theme_tufte() +
+  geom_col(fill = "#773232") +
+  xlab(NULL) +
+* coord_flip()
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day13_files/figure-html/demo1_auto_10_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  ggplot(aes(word, n)) + theme_tufte() +
+  geom_col(fill = "#773232") +
+  xlab(NULL) +
+  coord_flip() +
+* ggtitle("Top words in Alice's Adventures in Wonderland")
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day13_files/figure-html/demo1_auto_11_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  ggplot(aes(word, n)) + theme_tufte() +
+  geom_col(fill = "#773232") +
+  xlab(NULL) +
+  coord_flip() +
+  ggtitle("Top words in Alice's Adventures in Wonderland") +
+* theme(plot.title = element_text(hjust = 0.5, size = 8))
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day13_files/figure-html/demo1_auto_12_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Visualizing Word Counts in Alice's Adventures in Wonderland
+.panel1-demo1-auto[
+
+```r
+alice %&gt;%
+  mutate(linenumber=row_number()) %&gt;%
+  unnest_tokens(word, text) %&gt;%
+  anti_join(stop_words) %&gt;%
+  count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  ggplot(aes(word, n)) + theme_tufte() +
+  geom_col(fill = "#773232") +
+  xlab(NULL) +
+  coord_flip() +
+  ggtitle("Top words in Alice's Adventures in Wonderland") +
+  theme(plot.title = element_text(hjust = 0.5, size = 8))
+
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day13_files/figure-html/demo1_auto_13_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel2-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel3-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+# Let function do it!
+
+.code120[
+
+```r
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+*word_count &lt;- function(book_id) {
+    my_favorite_book &lt;- gutenberg_download(book_id) %&gt;% 
+    mutate(linenumber=row_number()) %&gt;% 
+    unnest_tokens(word, text) %&gt;% 
+    anti_join(stop_words) %&gt;%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+
+```r
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count &lt;- function(book_id) {
+*   my_favorite_book &lt;- gutenberg_download(book_id) %&gt;%
+    mutate(linenumber=row_number()) %&gt;% 
+    unnest_tokens(word, text) %&gt;% 
+    anti_join(stop_words) %&gt;%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+
+```r
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count &lt;- function(book_id) { 
+    my_favorite_book &lt;- gutenberg_download(book_id) %&gt;% 
+*   mutate(linenumber=row_number()) %&gt;%
+    unnest_tokens(word, text) %&gt;% 
+    anti_join(stop_words) %&gt;%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+
+```r
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count &lt;- function(book_id) { 
+    my_favorite_book &lt;- gutenberg_download(book_id) %&gt;% 
+    mutate(linenumber=row_number()) %&gt;% 
+*   unnest_tokens(word, text) %&gt;%
+    anti_join(stop_words) %&gt;%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+
+```r
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count &lt;- function(book_id) { 
+    my_favorite_book &lt;- gutenberg_download(book_id) %&gt;% 
+    mutate(linenumber=row_number()) %&gt;% 
+    unnest_tokens(word, text) %&gt;%  
+*   anti_join(stop_words) %&gt;%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+
+```r
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count &lt;- function(book_id) { 
+    my_favorite_book &lt;- gutenberg_download(book_id) %&gt;% 
+    mutate(linenumber=row_number()) %&gt;% 
+    unnest_tokens(word, text) %&gt;% 
+    anti_join(stop_words) %&gt;%
+*   count(word, sort=TRUE)
+my_favorite_book 
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+
+```r
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count &lt;- function(book_id) { 
+    my_favorite_book &lt;- gutenberg_download(book_id) %&gt;% 
+    mutate(linenumber=row_number()) %&gt;% 
+    unnest_tokens(word, text) %&gt;% 
+    anti_join(stop_words) %&gt;%
+    count(word, sort=TRUE) 
+*my_favorite_book
+}
+```
+]
+
+---
+
+# My favorite book!
+
+
+```r
+gutenberg_metadata %&gt;%
+  filter(title == "War and Peace")
+# A tibble: 1 × 8
+  gutenberg_id title    author gutenberg_autho… language gutenberg_books… rights
+         &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;             &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;            &lt;chr&gt; 
+1         2600 War and… Tolst…              136 en       Napoleonic(Book… Publi…
+# … with 1 more variable: has_text &lt;lgl&gt;
+```
+
+--
+
+.scroll-box-10[
+
+```r
+(mybook &lt;- word_count(book_id= 2600))
+# A tibble: 17,479 × 2
+   word         n
+   &lt;chr&gt;    &lt;int&gt;
+ 1 prince    1891
+ 2 pierre    1796
+ 3 natásha   1098
+ 4 andrew    1047
+ 5 time       929
+ 6 princess   916
+ 7 french     881
+ 8 eyes       827
+ 9 chapter    732
+10 rostóv     719
+# … with 17,469 more rows
+```
+]
+
+---
+
+# Word Cloud
+.code90[
+
+```r
+wordcloud(words= mybook$word,freq =  mybook$n, max.words = 20, random.order = FALSE)
+```
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="Day13_files/figure-html/unnamed-chunk-41-1.svg" alt="Words in War and Peace" width="55%" /&gt;
+&lt;p class="caption"&gt;Words in War and Peace&lt;/p&gt;
+&lt;/div&gt;
+]
+
+---
+name: yourturn
+template: section
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;3&lt;/i&gt;    
+
+.font110[
+a. Go to [Project Gutenberg](https://www.gutenberg.org/). Search the book ID of your favorite book and find the most used word in this book.
+
+b. Make a function that takes the resulting data tibble and the maximum number of words as arguments to plot a word cloud.
+
+c. Modify the `word_count()` function so that it outputs words starting with a particular alphabet. 
+]
+
+
+<div class="countdown" id="timer_61fd6b64" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": "r",
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(60000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

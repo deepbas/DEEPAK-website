@@ -1,0 +1,763 @@
+---
+title: "Functions"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode #http://arm.rbind.io/slides/xaringan.html#77
+      highlightLines: true
+      highlightLanguage: r
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+      countdown: 60000
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+library(htmlwidgets)
+library(wordcloud)
+
+
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+library(rvest)
+library(forcats)
+library(patchwork)
+library(readr)
+library(stringr)
+library(icons)
+library(gutenbergr)
+
+library(scales)
+library(tidytext)
+
+
+# set ggplot theme
+# theme_set(theme_bw(base_size = 24))
+
+yt <- 0
+
+aliceref <- gutenberg_works(title == "Alice's Adventures in Wonderland")
+alice <- gutenberg_download(aliceref$gutenberg_id) %>% gutenberg_strip()
+
+```
+
+
+```{r xaringan-themer, include = FALSE}
+# Use xaringan theme from first set
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Bastola</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Functions]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# What are functions?
+
+.font120[
+<blockquote>
+A function is a type of object in R that can perform a specific task. 
+]
+
+.font120[
+- Functions take arguments as input and output some manipulated form of the input data.
+
+- A function is specified first with the object name, then parentheses with arguments inside.
+
+]
+
+--
+
+```{r}
+# a simple in-built function
+log(4)
+```
+
+---
+class: middle
+
+# When to write functions?
+
+.font120[
+
+- Using the same code more than once
+
+- Complicated operation
+
+- Vectorization
+
+]
+
+---
+class: middle
+
+# Function arguments
+
+.font120[
+- `x`, `y`, `z`: vectors.
+- `w`: a vector of weights.
+- `df`: a data frame.
+- `i`, `j`: numeric indices (typically rows and columns).
+- `n`: length, or number of rows.
+- `p`: number of columns.
+]
+
+---
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas #<<
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y 
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+
+---
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code #<<
+  # Some code to execute 
+  z = x*y 
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+---
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute  #<<
+  z = x*y 
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+---
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  #<<
+  return(z) # Return a data value
+} # Close the Brackets 
+```
+]
+
+---
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+  return(z) # Return a data value #<<
+} # Close the Brackets 
+```
+]
+
+
+---
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+  return(z) # Return a data value  
+} # Close the Brackets   #<<
+```
+]
+
+---
+
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+  return(z) # Return a data value  
+} # Close the Brackets   
+```
+]
+
+.fancy[.code120[
+```{r}
+my_awesome_function(x=5,y=6) #<<
+```
+]
+]
+
+
+---
+
+# Writing Functions
+
+.code120[
+```{r}
+# Basic Set Up
+my_awesome_function <- function(x,y) # Arguments broken up by commas 
+{ # Brackets that house the code 
+  # Some code to execute 
+  z = x*y  
+  return(z) # Return a data value  
+} # Close the Brackets   
+```
+]
+
+.fancy[.code120[
+```{r}
+my_awesome_function(x=5,y=6)
+```
+]
+]
+
+
+.fancy[.code120[
+```{r}
+my_awesome_function(x=7,y=8) #<<
+```
+]
+]
+
+
+---
+
+
+# More complicated functions
+
+.code110[
+```{r}
+Operation_Times <- function(x, y, op){
+   first_op <- switch(op,
+     plus = x + y,
+     minus = x - y,
+     times = x * y,
+     divide = x / y,
+     stop("Unknown op!")
+   )
+   
+   return(first_op * 2)
+}
+```
+]
+
+--
+
+.code110[
+```{r}
+Operation_Times(x=5, y=6, op = "plus") #<<
+```
+]
+
+
+
+---
+
+# More complicated functions
+
+.code110[
+```{r}
+Operation_Times <- function(x, y, op){
+   first_op <- switch(op,
+     plus = x + y,
+     minus = x - y,
+     times = x * y,
+     divide = x / y,
+     stop("Unknown op!")
+   )
+   
+   return(first_op * 2)
+}
+```
+]
+
+
+
+.code110[
+```{r}
+Operation_Times(x=5, y=6, op = "plus") 
+```
+]
+
+
+
+.code110[
+```{r}
+Operation_Times(x=5, y=6, op = "minus") #<<
+```
+]
+
+---
+
+name: yourturn
+template: section
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+Please git clone the repository on [simple functions](https://github.com/stat220/12-simple-functions) to your local folder. Write functions to calculate the variance and skewness of $X = \{12, 45, 54, 34, 56, 30, 67, \text{NA}\}$.
+
+.font140[
+$$\operatorname{Var}(x)=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}$$
+
+$$\operatorname{Skew}(x)=\frac{\frac{1}{n-2}\left(\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{3}\right)}{\operatorname{Var}(x)^{3 / 2}}$$
+]
+
+.fancy[
+where $x_i = (\sum_i^n x_i)/n$ is the sample mean.] HInt: Use `sum()`
+
+
+
+```{r echo=FALSE}
+countdown(4)
+```
+
+---
+
+class: middle
+
+
+# Conditional Execution
+
+.pull-left[
+
+Allows code to:
+
+- become more flexible 
+- adapt to the input arguments
+-  have certain “control flow” constructs 
+]
+.pull-right[
+<img src="images/07_flowchart_homework_graphjam.jpg" width="75%" align="center" />
+]
+
+
+---
+
+
+
+# if - else
+
+```{r}
+if(TRUE){
+  print("Positive")
+}else{
+  print("Negative")
+}
+```
+
+--
+
+```{r}
+if(FALSE){
+  print("Positive")
+}else{
+  print("Negative")
+}
+```
+
+---
+
+# ifelse()
+
+- Same idea just vectorized
+
+```{r}
+ifelse(T,"Positive","Negative")
+```
+
+--
+
+```{r}
+ifelse(F,"Positive","Negative")
+
+```
+
+--
+
+```{r}
+x <- 1:10
+ifelse( x<5, "Positive","Negative")
+```
+
+
+---
+
+# if and ifelse
+
+```{r}
+x <- c(3, 4, 6)
+y <- c("5", "c", "9")
+```
+
+--
+
+```{r}
+# Use `if` for single condition tests
+cutoff_make0 <- function(x, cutoff = 0){
+  if(is.numeric(x)){
+    ifelse(x < cutoff, 0, x)
+  } else warning("The input provided is not a numeric vector")
+}
+```
+
+--
+
+```{r, warning=TRUE}
+cutoff_make0(x, cutoff = 4)
+```
+
+--
+
+```{r, warning=TRUE}
+cutoff_make0(y, cutoff = 4)
+```
+
+---
+name: yourturn
+template: section
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+Write a function that turns (e.g.) a vector $X = \{“a”, “b”, “c”\}$ into the string $"a:b:c"$. Think carefully about what it should do if given a vector of length 0 or 1.
+
+.fancy[Try the function with these inputs:]
+
+```{r}
+x0 <- c()
+x1 <- c("a")
+x2 <- c("a","b")
+x3 <- c("a","b","c")
+```
+
+
+
+```{r echo=FALSE}
+countdown(4)
+```
+
+---
+
+# `gutenbergr` package
+
+.font120[
+- provides access to the public domain works from the [Project Gutenberg](https://www.gutenberg.org/) collection
+]
+
+```{r}
+gutenberg_metadata %>%
+  filter(title == "Wuthering Heights")
+```
+
+--
+
+.scroll-box-10[
+```{r}
+gutenberg_download(768)
+```
+]
+
+---
+
+`r chunk_reveal("demo1", widths = c(40, 40), font_size_code="100%", title = "## Visualizing Word Counts in Alice's Adventures in Wonderland")`
+
+```{r,demo1, eval=FALSE, echo=FALSE }
+alice %>% 
+  mutate(linenumber=row_number()) %>% 
+  unnest_tokens(word, text) %>% 
+  anti_join(stop_words) %>%
+  count(word, sort=TRUE) %>% 
+  top_n(10) %>% 
+  ggplot(aes(word, n)) + theme_tufte() +
+  geom_col(fill = "#773232") + 
+  xlab(NULL) + 
+  coord_flip() + 
+  ggtitle("Top words in Alice's Adventures in Wonderland") +
+  theme(plot.title = element_text(hjust = 0.5, size = 8)) 
+  
+```
+
+
+---
+
+# Let function do it!
+
+.code120[
+```{r}
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count <- function(book_id) { #<<
+    my_favorite_book <- gutenberg_download(book_id) %>% 
+    mutate(linenumber=row_number()) %>% 
+    unnest_tokens(word, text) %>% 
+    anti_join(stop_words) %>%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+```{r}
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count <- function(book_id) {
+    my_favorite_book <- gutenberg_download(book_id) %>%  #<<
+    mutate(linenumber=row_number()) %>% 
+    unnest_tokens(word, text) %>% 
+    anti_join(stop_words) %>%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+```{r}
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count <- function(book_id) { 
+    my_favorite_book <- gutenberg_download(book_id) %>% 
+    mutate(linenumber=row_number()) %>%  #<<
+    unnest_tokens(word, text) %>% 
+    anti_join(stop_words) %>%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+```{r}
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count <- function(book_id) { 
+    my_favorite_book <- gutenberg_download(book_id) %>% 
+    mutate(linenumber=row_number()) %>% 
+    unnest_tokens(word, text) %>%  #<<
+    anti_join(stop_words) %>%
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+```{r}
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count <- function(book_id) { 
+    my_favorite_book <- gutenberg_download(book_id) %>% 
+    mutate(linenumber=row_number()) %>% 
+    unnest_tokens(word, text) %>%  
+    anti_join(stop_words) %>% #<<
+    count(word, sort=TRUE)
+my_favorite_book
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+```{r}
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count <- function(book_id) { 
+    my_favorite_book <- gutenberg_download(book_id) %>% 
+    mutate(linenumber=row_number()) %>% 
+    unnest_tokens(word, text) %>% 
+    anti_join(stop_words) %>%
+    count(word, sort=TRUE) #<<
+my_favorite_book 
+}
+```
+]
+
+---
+
+# Let function do it!
+
+.code120[
+```{r}
+# Function to take the book id of books from project Gutenberg 
+# Return a data tibble with smart words and their counts, sorted
+
+word_count <- function(book_id) { 
+    my_favorite_book <- gutenberg_download(book_id) %>% 
+    mutate(linenumber=row_number()) %>% 
+    unnest_tokens(word, text) %>% 
+    anti_join(stop_words) %>%
+    count(word, sort=TRUE) 
+my_favorite_book #<<
+}
+```
+]
+
+---
+
+# My favorite book!
+
+```{r}
+gutenberg_metadata %>%
+  filter(title == "War and Peace")
+```
+
+--
+
+.scroll-box-10[
+```{r}
+(mybook <- word_count(book_id= 2600))
+```
+]
+
+---
+
+# Word Cloud
+.code90[
+```{r, out.width='55%', fig.align='center', fig.cap="Words in War and Peace"}
+wordcloud(words= mybook$word,freq =  mybook$n, max.words = 20, random.order = FALSE)
+```
+]
+
+---
+name: yourturn
+template: section
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.font110[
+a. Go to [Project Gutenberg](https://www.gutenberg.org/). Search the book ID of your favorite book and find the most used word in this book.
+
+b. Make a function that takes the resulting data tibble and the maximum number of words as arguments to plot a word cloud.
+
+c. Modify the `word_count()` function so that it outputs words starting with a particular alphabet. 
+]
+
+
+```{r echo=FALSE}
+countdown(5)
+```
+
+
