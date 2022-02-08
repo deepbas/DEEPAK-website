@@ -13,6 +13,28 @@
     </image>
     
     <item>
+      <title>Week 6</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week6/</link>
+      <pubDate>Tue, 08 Feb 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week6/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 02/07&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Midterm Break!
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 02/09&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/iteration.html&#34;&gt;GW 21.1-21.5&lt;/a&gt; on iterations and functionals.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p style=&#34;background-color: #FFFF00&#34;&gt; There will be an in-class Midterm II on Monday, 04/14 next week! &lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 5</title>
       <link>https://deepbas.netlify.app/courses/stat220/week5/</link>
       <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
@@ -1332,7 +1354,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-617845923&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-172839654&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1342,7 +1364,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-617845923&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-172839654&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
