@@ -30,7 +30,7 @@
     Please read &lt;a href=&#34;https://r4ds.had.co.nz/iteration.html&#34;&gt;GW 21.1-21.5&lt;/a&gt; on iterations and functionals.
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;p style=&#34;background-color: #404040&#34;&gt; &lt;span style=&#34;color:red&#34;&gt;There will be an in-class Midterm II on Monday, 04/14 next week! &lt;/span&gt;  &lt;/p&gt;
+&lt;p style=&#34;background-color: #404040&#34;&gt; &lt;span style=&#34;color:red&#34;&gt;There will be an in-class Midterm II on Monday, 02/14 next week! &lt;/span&gt;  &lt;/p&gt;
 </description>
     </item>
     
@@ -1354,7 +1354,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-698712354&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-294368715&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1364,7 +1364,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-698712354&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-294368715&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
