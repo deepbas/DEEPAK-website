@@ -22,5 +22,5 @@ Midterm Break!{{% /callout %}}
 {{% callout note %}}
 Please read [GW 21.1-21.5](https://r4ds.had.co.nz/iteration.html) on iterations and functionals.{{% /callout %}}
 
-<p style="background-color: #404040"> There will be an in-class Midterm II on Monday, 04/14 next week! </p>
+<p style="background-color: #404040"> <span style="color:red">There will be an in-class Midterm II on Monday, 04/14 next week! </span>  </p>
 
