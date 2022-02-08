@@ -23,7 +23,7 @@
     Midterm Break!
   &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 02/09&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 02/09&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
@@ -1354,7 +1354,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-863579142&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-698712354&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1364,7 +1364,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-863579142&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-698712354&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

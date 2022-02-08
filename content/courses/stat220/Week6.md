@@ -15,7 +15,7 @@ weight: 20
 Midterm Break!{{% /callout %}}
 
 
-<span style="color:orange">**Monday, 02/09**</span>
+<span style="color:orange">**Wednesday, 02/09**</span>
 
 ### Before Class
 
