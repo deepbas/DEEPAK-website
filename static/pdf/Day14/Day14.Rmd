@@ -478,7 +478,7 @@ class: action
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
 
 .font120[
-Load the `palmerpenguins` package. Write a `for` loop that calculates the mean of the numeric variables in the
+Please git clone the github repository on [simple iterations](https://github.com/stat220/13-simple-iterations). Write a `for` loop that calculates the mean of the numeric variables in the
 `penguins` data set and stores the means in a named vector.]
 
 ```{r, echo=FALSE}
