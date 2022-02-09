@@ -24,3 +24,12 @@ Please read [GW 21.1-21.5](https://r4ds.had.co.nz/iteration.html) on iterations 
 
 <p style="background-color: #404040"> <span style="color:red">There will be an in-class Midterm II on Monday, 02/14 next week! </span>  </p>
 
+### In Class
+
+- Iterations and functionals
+
+Day 14 Slides ({{% staticref "pdf/Day14/Day14.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day14/Day14.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/13-simple-iterations) 
+
+

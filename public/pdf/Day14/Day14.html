@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Iterations</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Iterations and Functionals]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+ February 09 2022
+
+---
+
+# Why repeat ourselves?
+
+.pull-left[
+
+```r
+tinydata &lt;- tribble(
+  ~case, ~x, ~y, ~z, 
+  "a", 5, 3, -2,
+  "b", 7, 1, -5,
+  "c", 9, 12, -3
+)
+```
+
+
+```r
+tinydata
+# A tibble: 3 × 4
+  case      x     y     z
+  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 a         5     3    -2
+2 b         7     1    -5
+3 c         9    12    -3
+```
+]
+
+--
+
+.pull-right[
+
+.fancy[.bold[Find the mean of each columns]]
+
+
+```r
+mean(tinydata$x)
+[1] 7
+```
+
+
+```r
+mean(tinydata$y)
+[1] 5.333333
+```
+
+
+```r
+mean(tinydata$z)
+[1] -3.333333
+```
+
+]
+
+
+---
+
+# Iteration
+
+.font120[
+&gt; Iteration is the process of repeating the same action over and over again
+]
+
+.fot120[
+
+.fancy[Multiple ways to do in R]
+
+- .bold[loops] using `for`, `while`, etc
+
+- .bold[vectorized] functions that apply the same function to every element of a vector
+
+- .bold[functional] functions that apply the same function to elements in a vector, matrix, data frame, or list
+]
+
+---
+
+
+
+# for loops
+
+.font120[
+&gt; A way to iterate through a series of items stored as data object in R.
+]
+
+--
+
+
+```r
+items &lt;- c("grapes","bananas","chocolate","bread")
+for(i in items){
+  print(i)
+}
+[1] "grapes"
+[1] "bananas"
+[1] "chocolate"
+[1] "bread"
+```
+
+
+--
+
+.pull-left[
+
+```r
+i &lt;- items[1]
+print(i)
+[1] "grapes"
+```
+]
+
+.pull-right[
+
+
+```r
+i &lt;- items[2]
+print(i)
+[1] "bananas"
+```
+]
+
+---
+
+# for loop components
+
+.font120[
+&lt;blockquote&gt;
+the for() function which we use to specify
+
+  - what object we're drawing from and
+   
+  - what object we are writing to.
+
+]
+
+
+```
+for( i  in  items  )
+     ^        ^
+     |        |___ object we are drawing from
+     |
+obj. we write each item to
+
+```
+---
+
+# for loop components
+
+.font120[
+&lt;blockquote&gt;
+The brackets {}
+
+  - Inside the brackets we house the code that is going to happen each iteration.
+]
+
+
+```
+ for( i  in  items  ){
+    |~~~~~~~~~~~~~~~~|   
+    |~~~~~~~~~~~~~~~~|
+    |~~~~~~~~~~~~~~~~| code we need perform on each iteration.
+    |~~~~~~~~~~~~~~~~|
+    |~~~~~~~~~~~~~~~~|
+    }
+
+```
+
+
+---
+
+
+# for() loops and storing output
+
+
+```r
+letters
+ [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s"
+[20] "t" "u" "v" "w" "x" "y" "z"
+```
+
+--
+
+
+```r
+basket &lt;- rep(NA,10) # numeric vector of length 3
+basket
+ [1] NA NA NA NA NA NA NA NA NA NA
+```
+
+--
+
+
+```r
+# Each loop, we store the output of some code.
+for(i in 1:10){
+  basket[i] &lt;- str_glue(letters[i],letters[i+1])
+}
+basket
+ [1] "ab" "bc" "cd" "de" "ef" "fg" "gh" "hi" "ij" "jk"
+```
+
+
+---
+
+# For loops `tinydata`
+
+- Let’s iterate calculation of column means:
+
+
+```r
+my_means &lt;- rep(NA, 3) 
+my_means
+[1] NA NA NA
+```
+
+--
+
+
+```r
+for (i in 1:3) {  # three columns to get the mean for
+  my_means[i] &lt;- mean(tinydata[[i+1]])  # mean of col. i+1 (skip col. 1)
+}
+my_means
+[1]  7.000000  5.333333 -3.333333
+```
+
+
+---
+
+# For loops: preallocation output space
+.font120[
+- About 12 seconds without preallocation and less than a second with (elapsed time).
+]
+
+.pull-left[
+.brown[Without preallocation]
+
+```r
+system.time({
+  output &lt;- NULL
+  for (i in 1:100000) {
+    output &lt;- c(output, i)
+  }
+})
+   user  system elapsed 
+ 11.584   0.043  11.632 
+```
+
+]
+.pull-right[
+.brown[With preallocation]
+
+```r
+system.time({
+  output &lt;- rep(NA, 100000)
+  for (i in 1:100000) {
+    output[i] &lt;- i
+  }
+})
+   user  system elapsed 
+  0.008   0.000   0.009 
+```
+]
+
+
+---
+
+# For loops: index vector
+
+- seq_along(df) index based on columns of data frame
+
+
+```r
+seq_along(tinydata)
+[1] 1 2 3 4
+```
+
+- Another common way of indexing
+
+
+```r
+1:nrow(tinydata)
+[1] 1 2 3
+```
+
+- Along the columns
+
+
+```r
+1:ncol(tinydata)
+[1] 1 2 3 4
+```
+
+---
+
+# For loop with ifelse
+
+
+
+```r
+my_means &lt;- rep(NA, ncol(tinydata))  
+
+for (i in seq_along(tinydata)){  # iterate over all columns
+  my_means[i] &lt;- ifelse(is.numeric(tinydata[[i]]), mean(tinydata[[i]]), NA)
+}
+```
+
+
+```r
+my_means
+[1]        NA  7.000000  5.333333 -3.333333
+```
+
+
+---
+
+# Function for conditional evaluation
+
+- if x is numeric then standardize, else just return x
+
+
+```r
+standardize &lt;- function(x, ...){   # ... used for arbitrary number of arguments
+  if (is.numeric(x)){              # condition
+    (x - mean(x, ...))/sd(x, ...)  # if TRUE, standardize
+  } else{                          # else (FALSE)
+    x                              # return x unchanged
+  }
+}
+```
+
+--
+
+
+```r
+standardize(c(1,2,3,4))
+[1] -1.1618950 -0.3872983  0.3872983  1.1618950
+```
+
+--
+
+
+```r
+standardize(c("a", "b", "2", NA), na.rm = TRUE)
+[1] "a" "b" "2" NA 
+```
+
+---
+
+# Standardizing tinydata
+
+- Allocate storage in a new data frame:
+
+
+```r
+scaled_tinydata &lt;- tinydata %&gt;%
+  mutate(
+    x = NA, 
+    y = NA, 
+    z = NA
+  )
+```
+
+--
+
+
+```r
+scaled_tinydata
+# A tibble: 3 × 4
+  case  x     y     z    
+  &lt;chr&gt; &lt;lgl&gt; &lt;lgl&gt; &lt;lgl&gt;
+1 a     NA    NA    NA   
+2 b     NA    NA    NA   
+3 c     NA    NA    NA   
+```
+
+---
+
+# Standardizing tinydata
+
+- For loop for iteration:
+
+
+```r
+for (i in seq_along(tinydata)){ 
+    scaled_tinydata[, i] &lt;- standardize(tinydata[[i]])
+}
+```
+
+--
+
+
+```r
+scaled_tinydata
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+
+---
+
+class: middle
+
+# Vectorization 
+
+.font120[
+
+- A vectorized function will apply the same operation (function) to each element of a vector.
+
+  * avoid loops by applying operations to each element of a vector
+]
+---
+
+# Vectorization
+
+
+
+```r
+x &lt;- c(10,20,30,40)
+log10(x)   # log10 is a vectorized function
+[1] 1.000000 1.301030 1.477121 1.602060
+```
+
+--
+
+- The for loop version
+
+
+```r
+out &lt;- rep(NA, 4)
+for (i in 1:4)
+  { out[i] &lt;- log10(x[i]) }
+out
+[1] 1.000000 1.301030 1.477121 1.602060
+```
+
+
+---
+name: yourturn
+template: section
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.font120[
+Load the `palmerpenguins` package. Write a `for` loop that calculates the mean of the numeric variables in the
+`penguins` data set and stores the means in a named vector.]
+
+
+```
+Rows: 344
+Columns: 8
+$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…
+$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …
+$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…
+$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …
+$ sex               &lt;fct&gt; male, female, female, NA, female, male, female, male…
+$ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…
+```
+
+<div class="countdown" id="timer_6203f488" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">04</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+class: middle
+
+# Functionals
+
+.font120[
+- A .bold[functional] function will apply the same operation (function) to each element of a vector, matrix, data frame or list.]
+
+.pull-left[
+  - base-R: `apply` family of commands
+  
+  -`purrr` package: `map` family of commands
+]
+.pull-right[
+&lt;img src="images/purrr.png" width=300&gt;
+]
+
+---
+
+# `apply` family of commands
+
+- R has a family of commands that apply a function to different parts of a vector, matrix or data frame.
+
+&lt;blockquote&gt;
+&lt;p style="background-color: #404040"&gt; .bold[lapply(X, FUN)]:&lt;/p&gt; applies the `FUN` to each element in the vector/list `X`. Returns a list with length equal to that of the vector
+&lt;/blockquote&gt;
+
+&lt;br&gt;
+
+&lt;blockquote&gt;
+&lt;p style="background-color: #404040"&gt; .bold[sapply]:&lt;/p&gt; works like `lapply` but returns a vector (so `FUN` can only return one value)
+&lt;/blockquote&gt;
+&lt;br&gt;
+
+---
+
+# `apply` family of commands
+
+- R has a family of commands that apply a function to different parts of a vector, matrix or data frame.
+
+&lt;blockquote&gt;
+&lt;p style="background-color: #404040"&gt; .bold[apply(matrix, MARGIN, FUN)]:&lt;/p&gt; applies the function `FUN` to the matrix. `MARGIN` given (1=row, 2=column, c(1,2)=rows and cols). Returns an atomic .bold[vector] or .bold[matrix]
+&lt;/blockquote&gt;
+
+&lt;br&gt;
+
+&lt;blockquote&gt;
+&lt;p style="background-color: #404040"&gt; .bold[tapply(x,y,FUN))]:&lt;/p&gt;  applies `FUN` to atomic vector (variable) `x` for each group in categorical variable `y`. Returns an atomic .bold[vector] with a `dimnames` attribute
+&lt;/blockquote&gt;
+
+---
+
+# `purr` package
+
+&lt;blockquote&gt;
+powerful package for iteration with the same functionality as apply commands, but more readable (according to Hadley)
+
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;img src="images/map.png" width=700 class="center"&gt;
+
+
+- map(.x, .f) maps the function .f to elements in the vector/list .x
+
+---
+class: middle
+
+# `lapply` tiny example
+
+.pull-left[
+
+```r
+lapply(tinydata, FUN = mean)
+$case
+[1] NA
+
+$x
+[1] 7
+
+$y
+[1] 5.333333
+
+$z
+[1] -3.333333
+```
+
+- a 3x4 data frame is .bold[summarized] in a list of length 4.
+]
+
+--
+
+.pull-right[
+.font120[
+- R sees tinydata as a list whose elements are column vectors (variables)
+
+- the FUN is applied to each list element 
+
+- a list is returned
+
+- length is the number of variables in the data frame
+]
+]
+
+---
+
+# `map`
+
+&gt; In `purrr`, the `map` function is equivalent to `lapply`
+
+
+```r
+library(purrr)
+map(tinydata, .f = mean)
+$case
+[1] NA
+
+$x
+[1] 7
+
+$y
+[1] 5.333333
+
+$z
+[1] -3.333333
+```
+
+
+---
+
+# `sapply` tiny example
+
+&gt; Output is an atomic vector (`s`implify)
+
+
+```r
+sapply(tinydata, FUN = mean)
+     case         x         y         z 
+       NA  7.000000  5.333333 -3.333333 
+```
+
+- a 3x4 data frame is .bold[summarized] in a vector of length 4.
+
+
+---
+
+# `map_dbl`
+
+&gt; `map_dbl` is equivalent to `sapply`
+
+.code120[
+
+```r
+map_dbl(tinydata, .f = mean)
+     case         x         y         z 
+       NA  7.000000  5.333333 -3.333333 
+```
+]
+
+---
+
+# `map_df`
+
+&gt; `map_df` returns a data frame instead of a vector
+
+
+```r
+map_df(tinydata, .f = mean)
+# A tibble: 1 × 4
+   case     x     y     z
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1    NA     7  5.33 -3.33
+```
+
+- No equivalency in base-R `apply`!
+
+
+---
+
+# Iterate or dplyr?!
+
+- `summarize_all`, `summarize_if`, `summarize_at` are all options that apply  `.funs` to .bold[columns] of a data frame
+
+- `if` option needs a logical function that determines which .bold[columns] to apply the `.funs` to 
+
+
+
+```r
+tinydata %&gt;%
+* summarize_if(is.numeric, .funs = mean)
+# A tibble: 1 × 3
+      x     y     z
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     7  5.33 -3.33
+```
+
+---
+
+# functionals: single function that mutates
+
+&gt; `standardize` function gives us a list of standardized values
+
+
+```r
+lapply(tinydata, FUN = standardize)
+$case
+[1] "a" "b" "c"
+
+$x
+[1] -1  0  1
+
+$y
+[1] -0.3982161 -0.7395442  1.1377602
+
+$z
+[1]  0.8728716 -1.0910895  0.2182179
+```
+
+- a 3x4 data frame is .bold[mutated] to a list of 4 vectors of length 3 each
+
+---
+
+# `lapply` tiny example
+
+&gt; Using `dplyr::bind_cols` converts the list to a data frame with variables equal to list entries
+
+
+```r
+lapply(tinydata, FUN = standardize) %&gt;%
+* bind_cols()
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+
+
+---
+
+# map_df
+
+&gt; In `purrr`, the `map_df` is equal to `lapply` + `bind_cols`:
+
+
+
+```r
+map_df(tinydata, .f = standardize)
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+
+
+- a 3x4 data frame is mutated to .bold[standardized] 3x4 data frame
+
+
+---
+
+# Iterate or dplyr?!
+
+- `mutate_all`, `mutate_if`, `mutate_at` are all options that apply `.funs` to columns of a data frame
+
+- if option needs a logical function that determines which columns to apply the `.funs` to
+
+
+```r
+tinydata %&gt;%
+* mutate_if(is.numeric, .funs = standardize)
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+
+---
+
+# applying multiple functions
+
+- Let’s get the 0.1 and 0.9 quantile for variables in `tinydata`
+
+
+```r
+quantile(tinydata$x, probs = c(.1, .9))
+10% 90% 
+5.4 8.6 
+```
+
+
+```r
+quantile(tinydata$y, probs = c(.1, .9))
+ 10%  90% 
+ 1.4 10.2 
+```
+
+
+```r
+quantile(tinydata$z, probs = c(.1, .9))
+ 10%  90% 
+-4.6 -2.2 
+```
+
+--
+
+-  the function output is a vector of length 2 (same lengths as probs)
+
+---
+
+# `map_df`: getting quantiles
+
+
+
+```r
+tinydata %&gt;% 
+  select_if(is.numeric) %&gt;%   # only numeric columns
+  map_df(
+    .f = quantile,   # function to apply to cols
+    probs = c(.1, .9)) # extra function arguments
+# A tibble: 3 × 2
+  `10%` `90%`
+  &lt;dbl&gt; &lt;dbl&gt;
+1   5.4   8.6
+2   1.4  10.2
+3  -4.6  -2.2
+```
+
+---
+
+# map_df: getting quantiles
+
+&gt; Can use `.id` to record the variable names from tinydata:
+
+
+```r
+tinydata %&gt;% 
+  select_if(is.numeric) %&gt;% 
+  map_df(
+    .f = quantile, 
+    probs = c(.1, .9), 
+    .id = "variable")
+# A tibble: 3 × 3
+  variable `10%` `90%`
+  &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
+1 x          5.4   8.6
+2 y          1.4  10.2
+3 z         -4.6  -2.2
+```
+
+---
+
+class: middle
+
+# `map_df` options
+
+
+.font120[
+.fancy[There are two types of `map_df`]
+
+
+  - `map_dfr`: which row binds the list created by map
+    - entries in the list are rows in the data frame
+      
+  - `map_dfc`: which column binds the list created by map
+    - entries in the list are columns in the data frame
+]    
+
+
+---
+
+# Iterate or dplyr?!
+
+.font120[
+- `summarize_all`, `summarize_if`, `summarize_at` can work with functions like `quantile` that return multiple values.
+
+- the .bold[form] of the output is a transposed version of `map_df`
+]
+
+--
+
+
+```r
+tinydata %&gt;% 
+*   summarize_if(is.numeric, .funs = quantile, probs = c(.1, .9))
+# A tibble: 2 × 3
+      x     y     z
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1   5.4   1.4  -4.6
+2   8.6  10.2  -2.2
+```
+
+- .bold[rows] = 0.1 and 0.9 quantiles
+- .bold[cols] = variables
+
+
+---
+
+
+# Iterate or dplyr?!
+
+.font120[
+- We need to manually add a percentile variable to help us ID the value in each row
+]
+
+
+.code120[
+
+```r
+tinydata %&gt;% 
+    summarize_if(is.numeric, .funs = quantile, probs = c(.1, .9)) %&gt;%
+*   mutate(percentile = c(10,90))
+# A tibble: 2 × 4
+      x     y     z percentile
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+1   5.4   1.4  -4.6         10
+2   8.6  10.2  -2.2         90
+```
+]
+
+---
+
+# Example: Energy Data
+
+- Recall the wide version of the energy data:
+
+
+```r
+energy %&gt;% select(dayWeek, `Center_for_Mathematics_&amp;_Computing`) %&gt;% glimpse
+Rows: 35,129
+Columns: 2
+$ dayWeek                              &lt;fct&gt; Tues, Tues, Tues, Tues, Tues, Tue…
+$ `Center_for_Mathematics_&amp;_Computing` &lt;dbl&gt; 14.3750, 14.0625, 14.3750, 14.062…
+```
+
+---
+
+# Quantiles from wide data
+
+- Let’s get 0.1 and 0.9 quantiles for 3 buildings:
+
+
+```r
+energy_quant &lt;- energy %&gt;% 
+  select("Sayles-Hill" ,"Language_&amp;_Dining_Center", "Olin_Hall_of_Science") %&gt;% 
+  map_df(
+    .f = quantile, 
+    probs = c(.1, .9), 
+    na.rm = TRUE, 
+    .id = "building") 
+```
+
+--
+
+
+```
+# A tibble: 3 × 3
+  building                 `10%` `90%`
+  &lt;chr&gt;                    &lt;dbl&gt; &lt;dbl&gt;
+1 Sayles-Hill               8     19  
+2 Language_&amp;_Dining_Center  4.5   13.5
+3 Olin_Hall_of_Science      7.81  17.6
+```
+
+
+---
+
+# Quantiles from wide data
+
+- Let’s put quantiles in one column:
+
+
+```r
+energy_quant &lt;- energy_quant  %&gt;% 
+  pivot_longer(
+    names_to = "percentile", 
+    values_to = "value",
+    cols = 2:3)
+```
+
+--
+
+
+```
+# A tibble: 6 × 3
+  building                 percentile value
+  &lt;chr&gt;                    &lt;chr&gt;      &lt;dbl&gt;
+1 Sayles-Hill              10%         8   
+2 Sayles-Hill              90%        19   
+3 Language_&amp;_Dining_Center 10%         4.5 
+4 Language_&amp;_Dining_Center 90%        13.5 
+5 Olin_Hall_of_Science     10%         7.81
+6 Olin_Hall_of_Science     90%        17.6 
+```
+
+
+---
+
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+*energy_quant
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 6 × 3
+  building                 percentile value
+  &lt;chr&gt;                    &lt;chr&gt;      &lt;dbl&gt;
+1 Sayles-Hill              10%         8   
+2 Sayles-Hill              90%        19   
+3 Language_&amp;_Dining_Center 10%         4.5 
+4 Language_&amp;_Dining_Center 90%        13.5 
+5 Olin_Hall_of_Science     10%         7.81
+6 Olin_Hall_of_Science     90%        17.6 
+```
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+* mutate(percentile = parse_number(percentile))
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 6 × 3
+  building                 percentile value
+  &lt;chr&gt;                         &lt;dbl&gt; &lt;dbl&gt;
+1 Sayles-Hill                      10  8   
+2 Sayles-Hill                      90 19   
+3 Language_&amp;_Dining_Center         10  4.5 
+4 Language_&amp;_Dining_Center         90 13.5 
+5 Olin_Hall_of_Science             10  7.81
+6 Olin_Hall_of_Science             90 17.6 
+```
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+  mutate(percentile = parse_number(percentile)) %&gt;%
+* ggplot(aes(y = percentile, x = value, color=building))
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day14_files/figure-html/demo1_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+  mutate(percentile = parse_number(percentile)) %&gt;%
+  ggplot(aes(y = percentile, x = value, color=building)) +
+* geom_point()
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day14_files/figure-html/demo1_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+  mutate(percentile = parse_number(percentile)) %&gt;%
+  ggplot(aes(y = percentile, x = value, color=building)) +
+  geom_point() +
+* geom_line(aes(group=building))
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day14_files/figure-html/demo1_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+  mutate(percentile = parse_number(percentile)) %&gt;%
+  ggplot(aes(y = percentile, x = value, color=building)) +
+  geom_point() +
+  geom_line(aes(group=building)) +
+* labs(y="Percentile (%)",x="KWH")
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day14_files/figure-html/demo1_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+  mutate(percentile = parse_number(percentile)) %&gt;%
+  ggplot(aes(y = percentile, x = value, color=building)) +
+  geom_point() +
+  geom_line(aes(group=building)) +
+  labs(y="Percentile (%)",x="KWH") +
+* scale_y_continuous(breaks=seq(10,90,by=10))
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day14_files/figure-html/demo1_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+  mutate(percentile = parse_number(percentile)) %&gt;%
+  ggplot(aes(y = percentile, x = value, color=building)) +
+  geom_point() +
+  geom_line(aes(group=building)) +
+  labs(y="Percentile (%)",x="KWH") +
+  scale_y_continuous(breaks=seq(10,90,by=10)) +
+* theme(legend.position="bottom",
+*       legend.text = element_text(size=5),
+*       legend.title=element_text(size=8))
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day14_files/figure-html/demo1_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Plot of Quantiles
+.panel1-demo1-auto[
+
+```r
+energy_quant   %&gt;%
+  mutate(percentile = parse_number(percentile)) %&gt;%
+  ggplot(aes(y = percentile, x = value, color=building)) +
+  geom_point() +
+  geom_line(aes(group=building)) +
+  labs(y="Percentile (%)",x="KWH") +
+  scale_y_continuous(breaks=seq(10,90,by=10)) +
+  theme(legend.position="bottom",
+        legend.text = element_text(size=5),
+        legend.title=element_text(size=8))
+
+```
+]
+ 
+.panel2-demo1-auto[
+&lt;img src="Day14_files/figure-html/demo1_auto_09_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel2-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel3-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Quantiles from wide data
+
+- create a vector of quantile probs:
+
+
+```r
+p &lt;- seq(0.05,0.95, by = .05)  # every 5th quantile
+energy_quant &lt;- energy %&gt;% 
+  select("Sayles-Hill" ,"Language_&amp;_Dining_Center", "Olin_Hall_of_Science") %&gt;% 
+  map_df(
+    .f = quantile, 
+    probs = p, 
+    na.rm = TRUE, 
+    .id = "building") %&gt;% 
+  pivot_longer(
+    names_to = "percentile", 
+    values_to = "value",
+    cols = 1 + 1:length(p), # quantiles start in col 2
+  )
+```
+
+
+---
+
+# Quantiles from wide data
+.scroll-box-20[
+
+```r
+energy_quant
+# A tibble: 57 × 3
+   building    percentile value
+   &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;
+ 1 Sayles-Hill 5%             7
+ 2 Sayles-Hill 10%            8
+ 3 Sayles-Hill 15%            9
+ 4 Sayles-Hill 20%            9
+ 5 Sayles-Hill 25%            9
+ 6 Sayles-Hill 30%           10
+ 7 Sayles-Hill 35%           11
+ 8 Sayles-Hill 40%           11
+ 9 Sayles-Hill 45%           12
+10 Sayles-Hill 50%           13
+# … with 47 more rows
+```
+]
+
+---
+class: center
+
+# Quantiles from wide data
+
+
+&lt;img src="Day14_files/figure-html/unnamed-chunk-56-1.svg" width="50%" /&gt;
+
+---
+
+#  Quantiles from long data
+
+- What if we have the long version of this data?
+
+
+```r
+energy_long &lt;- energy %&gt;% 
+  pivot_longer(
+    names_to = "building", 
+    values_to = "energyKWH",
+    cols = 9:90) %&gt;%
+  filter(building %in% c("Sayles-Hill" ,
+                         "Language_&amp;_Dining_Center", 
+                         "Olin_Hall_of_Science") )
+```
+
+---
+class: middle
+
+# Quantiles from long data
+
+.font130[
+.bold[Goal:] get quantiles for every `building` and `dayWeek`
+]
+.font120[
+- We don’t have many columns of measurements to apply a function to
+
+- We have groups (building and month) that we need to summarize with quantile (more than one output value)
+]
+---
+
+# Quantiles from long data
+
+- Let’s get quantiles for every building and day of the week:
+
+
+```r
+energy_long_quant &lt;- energy_long %&gt;% 
+  group_by(building, dayWeek) %&gt;%
+  summarize(value = quantile(energyKWH, probs = c(.1, .9), na.rm = TRUE)) 
+```
+
+--
+
+.scroll-box-10[
+
+```
+# A tibble: 42 × 3
+# Groups:   building, dayWeek [21]
+   building                 dayWeek value
+   &lt;chr&gt;                    &lt;fct&gt;   &lt;dbl&gt;
+ 1 Language_&amp;_Dining_Center Mon      4.88
+ 2 Language_&amp;_Dining_Center Mon     14.1 
+ 3 Language_&amp;_Dining_Center Tues     4.5 
+ 4 Language_&amp;_Dining_Center Tues    13.9 
+ 5 Language_&amp;_Dining_Center Wed      4.5 
+ 6 Language_&amp;_Dining_Center Wed     14.2 
+ 7 Language_&amp;_Dining_Center Thurs    4.69
+ 8 Language_&amp;_Dining_Center Thurs   13.7 
+ 9 Language_&amp;_Dining_Center Fri      4.5 
+10 Language_&amp;_Dining_Center Fri     13.7 
+# … with 32 more rows
+```
+]
+
+---
+
+# Quantiles from long data
+
+- Need to add a percentile 
+
+
+```r
+energy_long_quant &lt;- energy_long_quant %&gt;%
+* mutate(percentile = c(10,90))
+```
+
+--
+
+.scroll-box-10[
+
+```r
+energy_long_quant
+# A tibble: 42 × 4
+# Groups:   building, dayWeek [21]
+   building                 dayWeek value percentile
+   &lt;chr&gt;                    &lt;fct&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Language_&amp;_Dining_Center Mon      4.88         10
+ 2 Language_&amp;_Dining_Center Mon     14.1          90
+ 3 Language_&amp;_Dining_Center Tues     4.5          10
+ 4 Language_&amp;_Dining_Center Tues    13.9          90
+ 5 Language_&amp;_Dining_Center Wed      4.5          10
+ 6 Language_&amp;_Dining_Center Wed     14.2          90
+ 7 Language_&amp;_Dining_Center Thurs    4.69         10
+ 8 Language_&amp;_Dining_Center Thurs   13.7          90
+ 9 Language_&amp;_Dining_Center Fri      4.5          10
+10 Language_&amp;_Dining_Center Fri     13.7          90
+# … with 32 more rows
+```
+]
+
+---
+
+# Quantiles from long data
+
+For all quantiles in .out-t[p &lt;- seq(0.05,0.95, by = 0.05))]
+
+
+```r
+energy_long_quant &lt;- energy_long %&gt;% 
+  group_by(building, dayWeek) %&gt;%
+  summarize(value = quantile(energyKWH, probs = p, na.rm = TRUE))  %&gt;%
+  mutate(percentile = 100*p)
+```
+.scroll-box-10[
+
+```
+# A tibble: 399 × 4
+# Groups:   building, dayWeek [21]
+   building                 dayWeek value percentile
+   &lt;chr&gt;                    &lt;fct&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Language_&amp;_Dining_Center Mon      4.31          5
+ 2 Language_&amp;_Dining_Center Mon      4.88         10
+ 3 Language_&amp;_Dining_Center Mon      5.25         15
+ 4 Language_&amp;_Dining_Center Mon      5.63         20
+ 5 Language_&amp;_Dining_Center Mon      6            25
+ 6 Language_&amp;_Dining_Center Mon      6.19         30
+ 7 Language_&amp;_Dining_Center Mon      6.38         35
+ 8 Language_&amp;_Dining_Center Mon      6.93         40
+ 9 Language_&amp;_Dining_Center Mon      7.5          45
+10 Language_&amp;_Dining_Center Mon      8.43         50
+# … with 389 more rows
+```
+]
+
+
+---
+class: middle
+
+# Quantiles from long data
+
+.code120[
+
+```r
+energy_long_quant %&gt;%
+  ggplot(aes(y = percentile, x = value, color=building)) +
+  geom_point() + 
+  geom_line(aes(group=building)) + 
+  labs(y="Percentile (%)",x="KWH") +
+  scale_y_continuous(breaks=seq(10,90,by=10)) + 
+  facet_wrap(~dayWeek)
+```
+]
+
+---
+
+# Quantiles from long data
+
+&lt;img src="Day14_files/figure-html/unnamed-chunk-65-1.svg" width="100%" /&gt;
+
+---
+name: yourturn
+template: section
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+.pull-left[
+&lt;img src="Day14_files/figure-html/unnamed-chunk-66-1.svg" width="85%" /&gt;
+]
+.pull-right[
+.fancy[.font110[
+Follow the prompts to plot the quantiles of energy consumption for the buildings `Sayles-Hill`, `Language_&amp;_Dining_Center`, `Olin_Hall_of_Science`.]]
+]
+
+
+<div class="countdown" id="timer_6203f59c" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": "r",
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(60000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
