@@ -40,3 +40,6 @@ Day 14 Slides ({{% staticref "pdf/Day14/Day14.pdf" "newtab" %}}pdf{{% /staticref
 {{% callout note %}}
 Please read [Irizarry Chapter 24](https://rafalab.github.io/dsbook/web-scraping.html) on web scraping.{{% /callout %}}
 
+Also, it may be useful to go over this short video on the [simple demonstration of web scraping](https://youtu.be/v8Yh_4oE-Fs) before class. We will go over this in detail in class.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v8Yh_4oE-Fs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
