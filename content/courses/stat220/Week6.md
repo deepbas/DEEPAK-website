@@ -33,7 +33,7 @@ Day 14 Slides ({{% staticref "pdf/Day14/Day14.pdf" "newtab" %}}pdf{{% /staticref
 - Link to [In Class Activity](https://github.com/stat220/13-simple-iterations) 
 
 
-<span style="color:orange">**Wednesday, 02/11**</span>
+<span style="color:orange">**Friday, 02/11**</span>
 
 ### Before Class
 
