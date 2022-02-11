@@ -46,3 +46,13 @@ Please read [Irizarry Chapter 24](https://rafalab.github.io/dsbook/web-scraping.
 Also, it may be useful to go over this short video on the [simple demonstration of web scraping](https://youtu.be/v8Yh_4oE-Fs) before class. We will go over this in detail in class.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/v8Yh_4oE-Fs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+### In Class
+
+- Web Scraping Basics
+
+Day 15 Slides ({{% staticref "pdf/Day15/Day15.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day15/Day15.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Activity](https://github.com/stat220/14-web-scraping) 
+
