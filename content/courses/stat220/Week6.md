@@ -26,7 +26,6 @@ Midterm Break!{{% /callout %}}
 Please read [GW 21.1-21.5](https://r4ds.had.co.nz/iteration.html) on iterations and functionals.{{% /callout %}}
 
 
-
 ### In Class
 
 - Iterations and functionals
