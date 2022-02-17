@@ -35,7 +35,11 @@ Day 16 Slides ({{% staticref "pdf/Day16/Day16.pdf" "newtab" %}}pdf{{% /staticref
 ### Before Class
 
 {{% callout note %}}
-Read through [basic intro to Shiny app](https://mastering-shiny.org/basic-app.html) and watch [Shiny tutorial videos by Garrett Grolemund (approx. 47 min)](https://carleton.hosted.panopto.com/Panopto/Pages/Viewer.aspx?pid=0361538c-7dee-42e1-aeb8-add3002157a8){{% /callout %}}
+Read through [basic intro to Shiny app](https://mastering-shiny.org/basic-app.html) and watch through a simple [video](https://youtu.be/Fg-Ha44i1IM) on building a Shiny App below {{% /callout %}}
+
+It would be great if you could go through all of the video, but please go through until the 15 min mark. Here's the video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Fg-Ha44i1IM?start=36" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 

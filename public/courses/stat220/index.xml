@@ -43,9 +43,11 @@
 &lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Read through &lt;a href=&#34;https://mastering-shiny.org/basic-app.html&#34;&gt;basic intro to Shiny app&lt;/a&gt; and watch &lt;a href=&#34;https://carleton.hosted.panopto.com/Panopto/Pages/Viewer.aspx?pid=0361538c-7dee-42e1-aeb8-add3002157a8&#34;&gt;Shiny tutorial videos by Garrett Grolemund (approx. 47 min)&lt;/a&gt;
+    Read through &lt;a href=&#34;https://mastering-shiny.org/basic-app.html&#34;&gt;basic intro to Shiny app&lt;/a&gt; and watch through a simple &lt;a href=&#34;https://youtu.be/Fg-Ha44i1IM&#34;&gt;video&lt;/a&gt; on building a Shiny App below
   &lt;/div&gt;
 &lt;/div&gt;
+&lt;p&gt;It would be great if you could go through all of the video, but please go through until the 15 min mark. Here&amp;rsquo;s the video:&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/Fg-Ha44i1IM?start=36&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
 </description>
     </item>
     
