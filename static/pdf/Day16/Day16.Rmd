@@ -400,7 +400,8 @@ df <- data.frame()
 
 for (i in seq_along(idx)) {
   new_webpage <- read_html(str_glue(all_url, {idx[i]}))
-  table_new <- html_table(new_webpage)[[1]] %>% as_tibble(.name_repair = "unique") 
+  table_new <- html_table(new_webpage)[[1]] %>% 
+    as_tibble(.name_repair = "unique") 
   df <- rbind(df, table_new) #<<
 }
 ```
