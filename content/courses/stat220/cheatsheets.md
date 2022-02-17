@@ -19,4 +19,8 @@ weight: 30
 
 {{% staticref "cheatsheets/strings.pdf" "newtab" %}}`stringr` Cheatsheet{{% /staticref %}}
 
+{{% staticref "cheatsheets/regex.pdf" "newtab" %}}`regex` Cheatsheet{{% /staticref %}}
+
 {{% staticref "cheatsheets/shiny.pdf" "newtab" %}}`shiny` Cheatsheet{{% /staticref %}}
+
+{{% staticref "cheatsheets/caret.pdf" "newtab" %}}`caret` Cheatsheet{{% /staticref %}}
