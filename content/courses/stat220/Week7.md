@@ -43,7 +43,7 @@ It would be great if you could go through all of the video, but please go throug
 
 ### In Class
 
-Today's class will be more of like a lab session, where we will see someimplementations of basic Shiny App and practice some more towards the end. Please come prepared!! 
+Today's class will be more like a lab session, where we will see some basic Shiny App implementations. We will practice some more towards the end, so please come prepared to do some hands-on activities!! 
 
 - Link to [Shiny Tutorial](https://github.com/stat220/Day17-In-Class-Activity-Shiny) 
 
