@@ -48,6 +48,11 @@
 &lt;/div&gt;
 &lt;p&gt;It would be great if you could go through all of the video, but please go through until the 15 min mark. Here&amp;rsquo;s the video:&lt;/p&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/Fg-Ha44i1IM?start=36&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;h3 id=&#34;in-class-1&#34;&gt;In Class&lt;/h3&gt;
+&lt;p&gt;Today&amp;rsquo;s class will be more of like a lab session, where we will see someimplementations of basic Shiny App and practice some more towards the end. Please come prepared!!&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/Day17-In-Class-Activity-Shiny&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Shiny Tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
@@ -1421,7 +1426,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-635248917&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-598163724&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1431,7 +1436,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-635248917&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-598163724&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

@@ -41,5 +41,12 @@ It would be great if you could go through all of the video, but please go throug
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Fg-Ha44i1IM?start=36" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+### In Class
+
+Today's class will be more of like a lab session, where we will see someimplementations of basic Shiny App and practice some more towards the end. Please come prepared!! 
+
+- Link to [Shiny Tutorial](https://github.com/stat220/Day17-In-Class-Activity-Shiny) 
+
+
 
 
