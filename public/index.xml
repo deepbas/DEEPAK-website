@@ -21,7 +21,7 @@
 &lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please go over the solution of the tutorial from last Friday and practice further using the resources provided there. Read through &lt;a href=&#34;https://mastering-shiny.org/basic-intro.html&#34;&gt;Mastering Shiny Chapter 2-4&lt;/a&gt;. Please watch through a video](&lt;a href=&#34;https://youtu.be/Fg-Ha44i1IM&#34;&gt;https://youtu.be/Fg-Ha44i1IM&lt;/a&gt;) on a simple demonstration of building a Shiny App below if you are still disoriented about how Shiny actually works.
+    Please go over the solution of the tutorial from last Friday and practice further using the resources provided there. Read through &lt;a href=&#34;https://mastering-shiny.org/basic-intro.html&#34;&gt;Mastering Shiny Chapter 2-4&lt;/a&gt;. Please watch through a &lt;a href=&#34;https://youtu.be/ak_NJCVrJXY&#34;&gt;video&lt;/a&gt; on a simple demonstration of building a Shiny app below if you are still disoriented about how Shiny actually works.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/ak_NJCVrJXY&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
@@ -1444,7 +1444,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-287396514&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-458296137&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1454,7 +1454,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-287396514&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-458296137&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

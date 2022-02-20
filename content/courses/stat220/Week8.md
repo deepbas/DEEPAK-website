@@ -14,7 +14,7 @@ weight: 20
 ### Before Class
 
 {{% callout note %}}
-Please go over the solution of the tutorial from last Friday and practice further using the resources provided there. Read through [Mastering Shiny Chapter 2-4](https://mastering-shiny.org/basic-intro.html). Please watch through a video](https://youtu.be/Fg-Ha44i1IM) on a simple demonstration of building a Shiny App below if you are still disoriented about how Shiny actually works. {{% /callout %}}
+Please go over the solution of the tutorial from last Friday and practice further using the resources provided there. Read through [Mastering Shiny Chapter 2-4](https://mastering-shiny.org/basic-intro.html). Please watch through a [video](https://youtu.be/ak_NJCVrJXY) on a simple demonstration of building a Shiny app below if you are still disoriented about how Shiny actually works.{{% /callout %}}
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ak_NJCVrJXY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
