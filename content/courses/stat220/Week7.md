@@ -48,5 +48,3 @@ Today's class will be more like a lab session, where we will see some basic Shin
 - Link to [Shiny Tutorial](https://github.com/stat220/Day17-In-Class-Activity-Shiny) 
 
 
-
-
