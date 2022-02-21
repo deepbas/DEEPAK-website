@@ -24,4 +24,4 @@ We will again do some more hands-on activity to build Shiny apps. We will also s
 
 Day 18 Slides ({{% staticref "pdf/Day16/Day18.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day18/Day18.html" "newtab" %}}html{{% /staticref %}})
 
-- Link to [In Class Tutotial](https://github.com/stat220/17-interactive-shiny-examples) 
+- Link to [In Class Tutorial](https://github.com/stat220/17-interactive-shiny-examples) 
