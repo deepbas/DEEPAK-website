@@ -8,7 +8,6 @@ type: book
 weight: 20
 ---
 
-
 <span style="color:orange">**Monday, 02/21**</span>
 
 ### Before Class
@@ -22,3 +21,7 @@ Please go over the solution of the tutorial from last Friday and practice furthe
 
 We will again do some more hands-on activity to build Shiny apps. We will also see how to integrate interactive maps like `leaflet` in Shiny.
 
+
+Day 18 Slides ({{% staticref "pdf/Day16/Day18.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day18/Day18.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Tutotial](https://github.com/stat220/17-interactive-shiny-examples) 

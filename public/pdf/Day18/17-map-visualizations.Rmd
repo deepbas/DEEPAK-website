@@ -1,0 +1,349 @@
+---
+title: "Interactive Visualizations with Shiny"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      #dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+library(tidyverse)
+library(shiny)
+library(janitor)
+library(purrr)
+library(lubridate)
+library(plotly)
+library(DT)
+library(ggthemes)
+library(leaflet)
+library(maptools)
+library(maps)     
+library(sp)       
+library(maptools) 
+library(mapdata)
+library(polite)
+library(rvest)
+library(ggiraph)
+library(RColorBrewer)
+library(viridis)
+```
+
+In this tutorial activity, let's look at some more examples on Shiny implementations.
+
+### 1. Trump tweets: changing variable choice
+
+Consider the following histogram and density curve that shows the distribution of the character counts of Trump tweets:
+
+```{r}
+tweets <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/TrumpTweetData.csv")
+ggplot(tweets, aes(x = charCount)) + theme_economist_white() +
+    geom_histogram(aes(y = ..density..), bins = 50) +
+    geom_density(color = "lightgreen", adjust = 2.5)
+```
+
+### 1. Histrogram of Trump tweets
+
+Construct the `ui` and `server` objects that render and display the histogram above. Then run `shinyApp(ui, server)` to verify that your app works.
+
+```{r}
+ui <- fluidPage(
+  radioButtons(inputId = "n_bins", 
+               label = "Number of histogram bins", 
+               choices = seq(25, 125, by = 25), 
+               selected = 50),
+  sliderInput(inputId = "bw_adjust", 
+             label = "Density smoother bandwidth adjustment", 
+             min = 0.1, max = 2, value = 1, step = .1),
+  varSelectInput(inputId = "x", 
+              label = "Pick a Variable", 
+              data = select(tweets, charCount, nWords,nRealWords)),
+  plotOutput("hist")
+)
+
+server <- function(input, output){
+  output$hist <- renderPlot({
+    ggplot(tweets, aes(x = !!input$x)) +    # the !! (bang bang) unquotes
+    geom_histogram(aes(y = ..density..), bins = input$n_bins) +
+    geom_density(color = "lightgreen", adjust = input$bw_adjust) +
+    theme_economist_white() 
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+```
+
+\newpage
+
+### 2. Trump tweets: adding a check box to change geometry
+
+```{r}
+ui <- fluidPage(
+  sliderInput("bw_adjust", label = "Density smoother bandwidth adjustment:",
+              min = 0.1, max = 2, value = 1, step = 0.1),
+  selectInput("x", label = "Variable:", 
+             choices = c("Character count" = "charCount",
+                         "Number of words" = "nWords",
+                         "Number of real words" = "nRealWords")),
+  checkboxInput("boxplot","Boxplot?", value=FALSE),
+  plotOutput("hist")
+)
+
+
+server <- function(input, output){
+  output$hist <-renderPlot({
+  if (input$boxplot) { 
+        ggplot(tweets, aes_string(y = input$x, x="source")) +
+          geom_boxplot() + coord_flip()  +
+          theme(axis.text=element_text(size=16)) }
+  else { 
+        ggplot(tweets, aes_string(x = input$x, color="source")) +
+          geom_density(adjust = input$bw_adjust, size=1.5) +
+          theme(axis.text=element_text(size=16), 
+              legend.text=element_text(size=16),
+              legend.title=element_text(size=16))  }
+})
+}
+
+shinyApp(ui = ui, server = server)
+
+```
+
+
+### 3. Gapminder: scatterplot hovering 
+
+
+```{r}
+gapminder <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/gapminder2018.csv")
+
+ui <- fluidPage(
+    titlePanel("Tracking Covid in Minnesota"),
+    sidebarLayout(
+        sidebarPanel(
+          # data widget: selecting the variables 
+          selectInput("x", label = "x-axis Variable:",
+             choices = c("Income" ="income",
+                         "Life expectancy" = "life_expectancy",
+                         "Population" = "population"), 
+             selected="income"),
+          selectInput("y", label = "y-axis Variable:",
+             choices = c("Income" ="income",
+                         "Life expectancy" = "life_expectancy",
+                         "Population" = "population"), 
+             selected="life_expectancy")
+    ),
+        mainPanel(
+            plotOutput("gap_plot", hover="hover_coord"), br(),
+            DT::dataTableOutput("hover_data")
+        )
+    )
+)
+
+
+server <- function(input, output) {
+   output$gap_plot <- renderPlot({
+   ggplot(gapminder, aes_string(x = input$x, y = input$y)) + 
+    geom_point() + 
+    theme(axis.text=element_text(size=16),
+          axis.title=element_text(size=16) )
+})
+
+   output$hover_data <- renderDataTable({
+   nearPoints(gapminder, input$hover_coord)[,1:6]
+  })
+        
+}
+
+shinyApp(ui = ui, server = server)
+
+```
+
+
+### 4. Interactive graphs with `ggriaph`
+
+```{r}
+# Scrape the webpage for tables
+table_usafacts <- bow(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/") %>% scrape() %>% html_elements(css = "table") %>% html_table()
+
+# Extract the right table
+covid <- table_usafacts[[2]]
+
+# Clean the data
+covid_clean <- covid %>% janitor::clean_names() %>%
+  mutate_at(4:6, parse_number) %>% mutate(state = str_to_lower(state))
+
+# Store the geographical coordinates and grouping information
+states <- map_data("state")
+
+# Joint the state-wise data for plotting
+covid_data <- left_join(states, covid_clean, by = c("region" = "state"))
+
+
+map1 <- ggplot(covid_data, aes(long, lat, group = group)) + coord_map() + theme_map() +
+  geom_polygon_interactive(aes(fill = x7_day_avg_cases, 
+                               tooltip = x7_day_avg_cases, 
+                               data_id = cases
+                               )) + 
+  guides(fill=guide_legend(title="7 day average cases")) + scale_fill_fermenter(type = "div", palette = "Spectral") + theme(legend.position = "right") 
+  
+ggiraph(code = print(map1), hover_css = "fill:lightgreen;r:10pt;")
+```
+
+
+
+```{r}
+covid_data$tooltip <- str_c("State = ", str_to_upper(covid_data$region), "\n Cases =", covid_data$cases)
+
+map2 <- ggplot(covid_data, aes(long, lat)) + coord_map() + theme_map() +
+  geom_polygon_interactive(aes(fill = cases, group = group,
+                               tooltip = tooltip, data_id = cases)) +
+  guides(fill=guide_legend(title="Total Cases")) + scale_fill_fermenter(type = "div", palette = "Spectral") + 
+  theme(legend.position = "right") 
+  
+ggiraph(code = print(map2))
+```
+
+
+## Your Turn 1
+
+Interactive App using `ggiraph` to Shiny
+
+```{r}
+ui <- fluidPage(
+  titlePanel("Tracking Covid in USA"),
+  sidebarLayout(
+    sidebarPanel(
+      radioButtons("variable", "What to project?",
+                  choices = colnames(covid_data)[7:12],
+                  selected = colnames(covid_data)[7])),
+    mainPanel(girafeOutput("plot"))
+  )
+)
+
+server <- function(input, output) {
+    output$plot <- renderGirafe({
+        covid_data$tooltip <- c(paste0("State = ", str_to_upper(covid_data$region), "\n Cases =", covid_data[[input$variable]]))
+
+        gg_blah <- ggplot(covid_data, aes(long, lat)) + coord_map() + theme_map() +
+  geom_polygon_interactive(aes(fill = covid_data[[input$variable]], group = group,
+                               tooltip = tooltip)) +
+  guides(fill=guide_legend(title="Cases")) + scale_fill_fermenter(type = "div", palette = "Spectral")
+         girafe(ggobj = gg_blah )
+      })
+}    
+
+app1 <- shinyApp(ui = ui, server = server)
+app1
+```
+
+
+### 5. Simple demo with `leaflet`
+
+```{r}
+table_usafacts <- bow(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/state/minnesota") %>% scrape() %>% html_elements(css = "table") %>% html_table()
+
+covidMN <- table_usafacts[[2]]
+
+# tidy it up
+covidMN_final <- covidMN %>% janitor::clean_names() %>%
+  mutate(cases = as.numeric(str_remove(cases, ","))) %>%
+  mutate(county = str_remove(county, " County"))
+
+# leaflet
+MNcounty <- map("county","Minnesota", plot=FALSE, fill=TRUE)
+MNmap <- map2SpatialPolygons(MNcounty, IDs = MNcounty$names)
+
+map <- SpatialPolygonsDataFrame(MNmap, covidMN_final, match.ID = FALSE)
+
+#pal <- colorNumeric(palette = "viridis", alpha = TRUE, domain = map$cases)
+
+bins <- c(0, 1000, 5000, 10000, 100000, Inf)
+pal <- colorBin("viridis", domain = map$cases, bins = bins)
+
+labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", map$county, map$cases) %>%
+  lapply(htmltools::HTML)
+
+
+l <- leaflet(map) %>% addTiles() %>% setView(lng = -93.1616, lat = 44.4583, zoom = 5) 
+
+l %>% addPolygons(color = "grey", weight = 1,
+                  fillColor = ~pal(cases), fillOpacity = 0.7,
+                  highlightOptions = highlightOptions(weight = 5),
+                  label = labels) %>%
+                  addLegend(pal = pal, values = ~cases, opacity = 0.5, 
+                            title = "Observed Cases", 
+                            position = "bottomright")
+
+library(htmlwidgets)
+saveWidget(n, file="Minnesota.html")
+
+```
+
+
+### 6. More with `leaflet`
+
+```{r}
+
+# United States
+l <- leaflet() %>% addTiles() %>% setView(-96, 37.8, 4) 
+
+reg <- "(?=:).+"
+str_remove("sdf:df", reg)
+
+table_usafacts <- bow(url = "https://usafacts.org/visualizations/covid-vaccine-tracker-states/state/minnesota") %>%
+  scrape() %>% html_elements(css = "table") %>% html_table()
+
+covid <- table_usafacts[[3]]
+
+# Clean the data
+
+covid_final <- covid %>% janitor::clean_names() %>%
+  mutate_at(2:4, parse_number) %>% mutate(state = str_to_lower(state))%>%
+  filter(state %in% c("minnesota", "wisconsin", "iowa", "michigan", "illinois", "indiana"))
+
+USA <- maps::map("state", regions = c("minnesota", "wisconsin", "iowa", "michigan", "illinois","indiana"), plot = FALSE, fill=TRUE)
+
+USA$names <- str_remove(USA$names, reg)
+Regionmap <- map2SpatialPolygons(USA, IDs = USA$names)
+map <- SpatialPolygonsDataFrame(Regionmap, covid_final, match.ID = FALSE)
+
+bins <- seq(min(map$percent_fully_vaccinated), max(map$percent_fully_vaccinated),length.out = 6)
+pal <- colorBin("viridis", domain = map$percent_fully_vaccinated, bins = bins)
+
+labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", str_to_upper(map$state), map$percent_fully_vaccinated) %>%
+  lapply(htmltools::HTML)
+
+
+m <- leaflet(map) %>% addTiles() %>% setView(lng = -93.1616, lat = 44.4583, zoom = 4)
+
+n <- m %>% addPolygons(color = "grey", weight = 1,
+                  fillColor = ~pal(percent_fully_vaccinated), fillOpacity = 0.7,
+                  highlightOptions = highlightOptions(weight = 5),
+                  label = labels) %>%
+                  addLegend(pal = pal, values = ~percent_fully_vaccinated, opacity = 0.5, 
+                            title = "Percent Vaccn.", 
+                            position = "bottomright")
+
+
+library(htmlwidgets)
+saveWidget(n, file="USA.html")
+```
+
+
+# Your Turn 2
+
+
+
+
