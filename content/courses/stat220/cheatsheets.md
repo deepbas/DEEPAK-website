@@ -24,3 +24,6 @@ weight: 30
 {{% staticref "cheatsheets/shiny.pdf" "newtab" %}}`shiny` Cheatsheet{{% /staticref %}}
 
 {{% staticref "cheatsheets/caret.pdf" "newtab" %}}`caret` Cheatsheet{{% /staticref %}}
+
+{{% staticref "cheatsheets/leaflet.pdf" "newtab" %}}`leaflet` Cheatsheet{{% /staticref %}}
+
