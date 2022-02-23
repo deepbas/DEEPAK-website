@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Sentiment Analysis and Shiny Integration</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Sentiment Analysis and Shiny Integration]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+ February 23 2022
+
+---
+
+# Shiny Reactivity
+
+&gt;  An alert system that lets Shiny know exactly which expressions need to be re-run
+
+&lt;br&gt;
+
+- R usually works in a linear fashion
+
+- When writing a Shiny app, we need to tell Shiny which chunks of your code should be reactive to events such as users changing the input values in the control widgets.
+
+- Events are monitored and when they occur, the code reacts to those events.
+
+---
+
+# Reactive Expressions
+
+.font120[
+&lt;blockquote&gt;
+A reactive expression is defined as one that transforms the reactive inputs to reactive outputs
+&lt;/blockquote&gt;
+]
+
+&lt;br&gt;
+
+.font120[
+
+Reactive expressions can be useful for caching the results of any procedure that happens in response to user input, including:
+
+- accessing a database
+- reading data from a file
+- downloading data over the network
+- performing an expensive computation
+]
+
+---
+
+# Covid Example Recap
+
+
+```r
+# Example of a Shiny server function
+
+server &lt;- function(input, output) {
+*   filtered_data &lt;- reactive({
+        subset(MNdata,
+               Counties %in% input$dv &amp;
+               month &gt;= input$monthInput[1] &amp; 
+                 month &lt;= input$monthInput[2] &amp;
+                 year == input$yearInput)})
+
+    output$plot &lt;- renderPlot({
+        ggplot(filtered_data(), aes(x=dates, y=cases, color="Counties")) +
+        theme_economist_white() +
+        geom_point(alpha=0.5, color = "blue") + 
+        theme(legend.position = "none") +
+        ylab("Number of Cases") + 
+        xlab("Date")})
+
+    output$table &lt;- DT::renderDataTable({
+        filtered_data()})
+        
+}
+
+```
+
+---
+
+# Covid Example Recap
+
+
+```r
+# Example of a Shiny server function
+
+server &lt;- function(input, output) {
+    filtered_data &lt;- reactive({ 
+        subset(MNdata,
+               Counties %in% input$dv &amp;
+               month &gt;= input$monthInput[1] &amp; 
+                 month &lt;= input$monthInput[2] &amp;
+                 year == input$yearInput)})
+
+    output$plot &lt;- renderPlot({
+*       ggplot(filtered_data(), aes(x=dates, y=cases, color="Counties")) +
+        theme_economist_white() +
+        geom_point(alpha=0.5, color = "blue") + 
+        theme(legend.position = "none") +
+        ylab("Number of Cases") + 
+        xlab("Date")})
+
+    output$table &lt;- DT::renderDataTable({
+        filtered_data()})
+        
+}
+
+```
+
+---
+
+# Covid Example Recap
+
+
+```r
+# Example of a Shiny server function
+
+server &lt;- function(input, output) {
+    filtered_data &lt;- reactive({ 
+        subset(MNdata,
+               Counties %in% input$dv &amp;
+               month &gt;= input$monthInput[1] &amp; 
+                 month &lt;= input$monthInput[2] &amp;
+                 year == input$yearInput)})
+
+    output$plot &lt;- renderPlot({
+        ggplot(filtered_data(), aes(x=dates, y=cases, color="Counties")) +
+        theme_economist_white() +
+        geom_point(alpha=0.5, color = "blue") + 
+        theme(legend.position = "none") +
+        ylab("Number of Cases") + 
+        xlab("Date")})
+
+    output$table &lt;- DT::renderDataTable({
+*       filtered_data()})
+        
+}
+
+```
+
+---
+
+# Reactive Values
+
+.font120[
+&lt;blockquote&gt;
+Reactive values contain values that can be read by other reactive objects. 
+&lt;/blockquote&gt;
+]
+
+.font120[
+- The input object is a ReactiveValues object, which looks something like a list, and it contains many individual reactive values. 
+- The values in input are set by input from the web browser.
+]
+
+--
+
+&lt;br&gt;
+
+
+```r
+# Example of a Shiny server function
+
+server &lt;- function(input, output) {
+  output$distPlot &lt;- renderPlot({
+    hist(rnorm(input$obs))
+  })
+}
+```
+
+---
+
+# Observers
+
+.font120[
+&lt;blockquote&gt;
+Observers can access reactive values and reactive expressions. 
+&lt;/blockquote&gt;
+]
+
+- Observers do not return any values, and therefore do not cache their return values. 
+- Instead of returning values, they have side effects, which typically involves sending data to the web browser.
+
+--
+
+
+```r
+ui &lt;- fluidPage(
+  mainPanel(
+    actionButton("button1","Button 1"),
+    actionButton("button2","Button 2")
+  )
+)
+server &lt;- function(input, output) {
+  # observe button 1 press.
+  observe({
+    input$button1
+    input$button2  
+    showModal(modalDialog(
+      title = "Button pressed", "You pressed one of the buttons!"
+    ))
+  })
+}
+```
+
+---
+
+class: middle
+
+# Twitter Sentiment Analysis
+
+.font120[
+
+- `rtweet` allows us to connect to twitter and fetch the data with handy functions like `search_tweets`
+
+-  Perform sentiment analysis using the Bing lexicon and `get_sentiments` function from the `tidytext` package
+
+- The `tidytext` package also has word-to-emotion evaluation repositories
+]
+
+---
+
+count: false
+ 
+# Download Tweets
+.panel1-demo1-auto[
+
+```r
+*num_tweets_to_download &lt;- 200
+```
+]
+ 
+.panel2-demo1-auto[
+
+]
+
+---
+count: false
+ 
+# Download Tweets
+.panel1-demo1-auto[
+
+```r
+num_tweets_to_download &lt;- 200
+*hashtag_to_search &lt;- "#Biden"
+```
+]
+ 
+.panel2-demo1-auto[
+
+]
+
+---
+count: false
+ 
+# Download Tweets
+.panel1-demo1-auto[
+
+```r
+num_tweets_to_download &lt;- 200
+hashtag_to_search &lt;- "#Biden"
+
+*tweet_df &lt;- search_tweets(hashtag_to_search,
+*                         n = num_tweets_to_download,
+*                         include_rts = FALSE)
+```
+]
+ 
+.panel2-demo1-auto[
+
+]
+
+---
+count: false
+ 
+# Download Tweets
+.panel1-demo1-auto[
+
+```r
+num_tweets_to_download &lt;- 200
+hashtag_to_search &lt;- "#Biden"
+
+tweet_df &lt;- search_tweets(hashtag_to_search,
+                          n = num_tweets_to_download,
+                          include_rts = FALSE)
+
+*tweets_twitterdata = tweet_df
+```
+]
+ 
+.panel2-demo1-auto[
+
+]
+
+---
+count: false
+ 
+# Download Tweets
+.panel1-demo1-auto[
+
+```r
+num_tweets_to_download &lt;- 200
+hashtag_to_search &lt;- "#Biden"
+
+tweet_df &lt;- search_tweets(hashtag_to_search,
+                          n = num_tweets_to_download,
+                          include_rts = FALSE)
+
+tweets_twitterdata = tweet_df %&gt;%
+* select(screen_name, text)
+```
+]
+ 
+.panel2-demo1-auto[
+
+]
+
+---
+count: false
+ 
+# Download Tweets
+.panel1-demo1-auto[
+
+```r
+num_tweets_to_download &lt;- 200
+hashtag_to_search &lt;- "#Biden"
+
+tweet_df &lt;- search_tweets(hashtag_to_search,
+                          n = num_tweets_to_download,
+                          include_rts = FALSE)
+
+tweets_twitterdata = tweet_df %&gt;%
+  select(screen_name, text)
+*tweets_twitterdata
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 195 × 2
+   screen_name     text                                                         
+   &lt;chr&gt;           &lt;chr&gt;                                                        
+ 1 one4ethanol     "@SarahBCalif yes-- take a step back to see #Biden exploitin…
+ 2 Soamras         "Thank you #Biden https://t.co/4QGYXAK2oc"                   
+ 3 OsintUpdates    "Trump:🚨 \"Putin playing Biden like a drum\"\n\n#Ukraina #U…
+ 4 affiliatesnews  "@V_Feuerstein Ohne Kommentar #Biden #Potus \nhttps://t.co/O…
+ 5 melly_katze     "@tgsBAD @easyrider_27 Ja eben\n#Biden nicht - dafür hat er …
+ 6 RMTonkavich     "Biden’s First Salvo of Russia Sanctions Hits With Thud, Not…
+ 7 ShaneGrochala   "#Breaking #BreakingNews #Putin #Ukraine #NATO #Russia #Euro…
+ 8 LindaMasseyFL   "#ThanksJoeBiden\n#Biden https://t.co/1Uw4Uhgfpo"            
+ 9 MichaelLettsUSA "Op-Ed: Always Remember Anti-Cop Cori Bush Told Us She Needs…
+10 DrWho427        "Has #Biden lost any more of Europe today"                   
+# … with 185 more rows
+```
+]
+
+&lt;style&gt;
+.panel1-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel2-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel3-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+&lt;/style&gt;
+
+
+
+.code100[
+
+]
+
+---
+
+count: false
+ 
+# Tidy into Words 
+.panel1-demo2-auto[
+
+```r
+*replace_reg &lt;- "https?://[^\\s]+|&amp;amp;|&amp;lt;|&amp;gt;|\bRT\\b"
+```
+]
+ 
+.panel2-demo2-auto[
+
+]
+
+---
+count: false
+ 
+# Tidy into Words 
+.panel1-demo2-auto[
+
+```r
+replace_reg &lt;- "https?://[^\\s]+|&amp;amp;|&amp;lt;|&amp;gt;|\bRT\\b"
+
+# separate into words
+*tweets_twitterdata
+```
+]
+ 
+.panel2-demo2-auto[
+
+```
+# A tibble: 194 × 2
+   screen_name     text                                                         
+   &lt;chr&gt;           &lt;chr&gt;                                                        
+ 1 Soamras         "Thank you #Biden https://t.co/4QGYXAK2oc"                   
+ 2 OsintUpdates    "Trump:🚨 \"Putin playing Biden like a drum\"\n\n#Ukraina #U…
+ 3 affiliatesnews  "@V_Feuerstein Ohne Kommentar #Biden #Potus \nhttps://t.co/O…
+ 4 melly_katze     "@tgsBAD @easyrider_27 Ja eben\n#Biden nicht - dafür hat er …
+ 5 RMTonkavich     "Biden’s First Salvo of Russia Sanctions Hits With Thud, Not…
+ 6 ShaneGrochala   "#Breaking #BreakingNews #Putin #Ukraine #NATO #Russia #Euro…
+ 7 LindaMasseyFL   "#ThanksJoeBiden\n#Biden https://t.co/1Uw4Uhgfpo"            
+ 8 MichaelLettsUSA "Op-Ed: Always Remember Anti-Cop Cori Bush Told Us She Needs…
+ 9 DrWho427        "Has #Biden lost any more of Europe today"                   
+10 A1_Children     "🇺🇦🆚️🇷🇺\n#روسيا_اوكرانيا\n#NATO #America\n#الحرب_العالميه_ال…
+# … with 184 more rows
+```
+]
+
+---
+count: false
+ 
+# Tidy into Words 
+.panel1-demo2-auto[
+
+```r
+replace_reg &lt;- "https?://[^\\s]+|&amp;amp;|&amp;lt;|&amp;gt;|\bRT\\b"
+
+# separate into words
+tweets_twitterdata %&gt;%
+* mutate(text = str_replace_all(text, replace_reg, ""))
+```
+]
+ 
+.panel2-demo2-auto[
+
+```
+# A tibble: 194 × 2
+   screen_name     text                                                         
+   &lt;chr&gt;           &lt;chr&gt;                                                        
+ 1 Soamras         "Thank you #Biden "                                          
+ 2 OsintUpdates    "Trump:🚨 \"Putin playing Biden like a drum\"\n\n#Ukraina #U…
+ 3 affiliatesnews  "@V_Feuerstein Ohne Kommentar #Biden #Potus \n"              
+ 4 melly_katze     "@tgsBAD @easyrider_27 Ja eben\n#Biden nicht - dafür hat er …
+ 5 RMTonkavich     "Biden’s First Salvo of Russia Sanctions Hits With Thud, Not…
+ 6 ShaneGrochala   "#Breaking #BreakingNews #Putin #Ukraine #NATO #Russia #Euro…
+ 7 LindaMasseyFL   "#ThanksJoeBiden\n#Biden "                                   
+ 8 MichaelLettsUSA "Op-Ed: Always Remember Anti-Cop Cori Bush Told Us She Needs…
+ 9 DrWho427        "Has #Biden lost any more of Europe today"                   
+10 A1_Children     "🇺🇦🆚️🇷🇺\n#روسيا_اوكرانيا\n#NATO #America\n#الحرب_العالميه_ال…
+# … with 184 more rows
+```
+]
+
+---
+count: false
+ 
+# Tidy into Words 
+.panel1-demo2-auto[
+
+```r
+replace_reg &lt;- "https?://[^\\s]+|&amp;amp;|&amp;lt;|&amp;gt;|\bRT\\b"
+
+# separate into words
+tweets_twitterdata %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+* unnest_tokens(word, text, token = "words")
+```
+]
+ 
+.panel2-demo2-auto[
+
+```
+# A tibble: 4,487 × 2
+   screen_name  word   
+   &lt;chr&gt;        &lt;chr&gt;  
+ 1 Soamras      thank  
+ 2 Soamras      you    
+ 3 Soamras      biden  
+ 4 OsintUpdates trump  
+ 5 OsintUpdates putin  
+ 6 OsintUpdates playing
+ 7 OsintUpdates biden  
+ 8 OsintUpdates like   
+ 9 OsintUpdates a      
+10 OsintUpdates drum   
+# … with 4,477 more rows
+```
+]
+
+---
+count: false
+ 
+# Tidy into Words 
+.panel1-demo2-auto[
+
+```r
+replace_reg &lt;- "https?://[^\\s]+|&amp;amp;|&amp;lt;|&amp;gt;|\bRT\\b"
+
+# separate into words
+tweets_twitterdata %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+  unnest_tokens(word, text, token = "words") %&gt;%
+* anti_join(stop_words, by = "word")
+```
+]
+ 
+.panel2-demo2-auto[
+
+```
+# A tibble: 3,001 × 2
+   screen_name  word               
+   &lt;chr&gt;        &lt;chr&gt;              
+ 1 Soamras      biden              
+ 2 OsintUpdates trump              
+ 3 OsintUpdates putin              
+ 4 OsintUpdates playing            
+ 5 OsintUpdates biden              
+ 6 OsintUpdates drum               
+ 7 OsintUpdates ukraina            
+ 8 OsintUpdates ukrainerussiacrisis
+ 9 OsintUpdates putin              
+10 OsintUpdates russiaukrainecrisis
+# … with 2,991 more rows
+```
+]
+
+---
+count: false
+ 
+# Tidy into Words 
+.panel1-demo2-auto[
+
+```r
+replace_reg &lt;- "https?://[^\\s]+|&amp;amp;|&amp;lt;|&amp;gt;|\bRT\\b"
+
+# separate into words
+tweets_twitterdata %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+  unnest_tokens(word, text, token = "words") %&gt;%
+  anti_join(stop_words, by = "word") %&gt;%
+* filter(str_detect(word, "[a-z]")) -&gt; words
+```
+]
+ 
+.panel2-demo2-auto[
+
+]
+
+&lt;style&gt;
+.panel1-demo2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel2-demo2-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel3-demo2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+*words %&gt;% count(word, sort=TRUE)
+```
+]
+ 
+.panel2-demo3-auto[
+
+```
+# A tibble: 1,643 × 2
+   word                    n
+   &lt;chr&gt;               &lt;int&gt;
+ 1 biden                 207
+ 2 putin                  71
+ 3 russia                 56
+ 4 ukraine                53
+ 5 trump                  36
+ 6 de                     22
+ 7 la                     19
+ 8 sanctions              19
+ 9 nato                   18
+10 ukrainerussiacrisis    18
+# … with 1,633 more rows
+```
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+* top_n(10)
+```
+]
+ 
+.panel2-demo3-auto[
+
+```
+# A tibble: 10 × 2
+   word                    n
+   &lt;chr&gt;               &lt;int&gt;
+ 1 biden                 207
+ 2 putin                  71
+ 3 russia                 56
+ 4 ukraine                53
+ 5 trump                  36
+ 6 de                     22
+ 7 la                     19
+ 8 sanctions              19
+ 9 nato                   18
+10 ukrainerussiacrisis    18
+```
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+* mutate(word = reorder(word, n))
+```
+]
+ 
+.panel2-demo3-auto[
+
+```
+# A tibble: 10 × 2
+   word                    n
+   &lt;fct&gt;               &lt;int&gt;
+ 1 biden                 207
+ 2 putin                  71
+ 3 russia                 56
+ 4 ukraine                53
+ 5 trump                  36
+ 6 de                     22
+ 7 la                     19
+ 8 sanctions              19
+ 9 nato                   18
+10 ukrainerussiacrisis    18
+```
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+* ggplot(aes(x = word, y = n))
+```
+]
+ 
+.panel2-demo3-auto[
+&lt;img src="Day19_files/figure-html/demo3_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(x = word, y = n)) +
+* geom_col(fill ="#773232")
+```
+]
+ 
+.panel2-demo3-auto[
+&lt;img src="Day19_files/figure-html/demo3_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(x = word, y = n)) +
+  geom_col(fill ="#773232") +
+* xlab(NULL)
+```
+]
+ 
+.panel2-demo3-auto[
+&lt;img src="Day19_files/figure-html/demo3_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(x = word, y = n)) +
+  geom_col(fill ="#773232") +
+  xlab(NULL) +
+* coord_flip()
+```
+]
+ 
+.panel2-demo3-auto[
+&lt;img src="Day19_files/figure-html/demo3_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(x = word, y = n)) +
+  geom_col(fill ="#773232") +
+  xlab(NULL) +
+  coord_flip() +
+* theme_tufte()
+```
+]
+ 
+.panel2-demo3-auto[
+&lt;img src="Day19_files/figure-html/demo3_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Plot the top words 
+.panel1-demo3-auto[
+
+```r
+# Plot of top 10 words
+words %&gt;% count(word, sort=TRUE) %&gt;%
+  top_n(10) %&gt;%
+  mutate(word = reorder(word, n)) %&gt;%
+  ggplot(aes(x = word, y = n)) +
+  geom_col(fill ="#773232") +
+  xlab(NULL) +
+  coord_flip() +
+  theme_tufte() +
+* labs(x = "Frequency",
+*      y = "Common Words",
+*      title = "Top 10 Used Words in #Biden Tweets")
+```
+]
+ 
+.panel2-demo3-auto[
+&lt;img src="Day19_files/figure-html/demo3_auto_09_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-demo3-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel2-demo3-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel3-demo3-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Sentiment Bing
+
+
+```r
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing &lt;- function(tweet){
+  tweet_tbl &lt;- tibble(text = tweet) %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+  unnest_tokens(word, text, token = "words") %&gt;%
+  anti_join(stop_words, by = "word") %&gt;%
+  filter(str_detect(word, "[a-z]")) %&gt;%
+* inner_join(get_sentiments("bing")) %&gt;%
+  count(word, sentiment, sort = TRUE) %&gt;%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)&gt;0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)&gt;0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+---
+
+# Sentiment Bing
+
+
+```r
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing &lt;- function(tweet){
+  tweet_tbl &lt;- tibble(text = tweet) %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+  unnest_tokens(word, text, token = "words") %&gt;%
+  anti_join(stop_words, by = "word") %&gt;%
+  filter(str_detect(word, "[a-z]")) %&gt;%
+  inner_join(get_sentiments("bing")) %&gt;%  
+  count(word, sentiment, sort = TRUE) %&gt;%
+* mutate(score = case_when(
+*       sentiment == 'negative'~n*(-1),
+*       sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)&gt;0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)&gt;0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+
+---
+
+# Sentiment Bing
+
+
+```r
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing &lt;- function(tweet){
+  tweet_tbl &lt;- tibble(text = tweet) %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+  unnest_tokens(word, text, token = "words") %&gt;%
+  anti_join(stop_words, by = "word") %&gt;%
+  filter(str_detect(word, "[a-z]")) %&gt;%
+  inner_join(get_sentiments("bing")) %&gt;%  
+  count(word, sentiment, sort = TRUE) %&gt;%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+* sentiment_score = case_when(
+*   nrow(tweet_tbl)==0~0,
+*   nrow(tweet_tbl)&gt;0~sum(tweet_tbl$score)
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)&gt;0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+---
+
+# Sentiment Bing
+
+
+```r
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing &lt;- function(tweet){
+  tweet_tbl &lt;- tibble(text = tweet) %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+  unnest_tokens(word, text, token = "words") %&gt;%
+  anti_join(stop_words, by = "word") %&gt;%
+  filter(str_detect(word, "[a-z]")) %&gt;%
+  inner_join(get_sentiments("bing")) %&gt;%  
+  count(word, sentiment, sort = TRUE) %&gt;%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)&gt;0~sum(tweet_tbl$score) 
+  )
+  
+* zero_type = case_when(
+*   nrow(tweet_tbl)==0~"Zero",
+*   nrow(tweet_tbl)&gt;0~"NoZero"
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+---
+
+# Sentiment Bing
+
+
+```r
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing &lt;- function(tweet){
+  tweet_tbl &lt;- tibble(text = tweet) %&gt;%
+  mutate(text = str_replace_all(text, replace_reg, "")) %&gt;%
+  unnest_tokens(word, text, token = "words") %&gt;%
+  anti_join(stop_words, by = "word") %&gt;%
+  filter(str_detect(word, "[a-z]")) %&gt;%
+  inner_join(get_sentiments("bing")) %&gt;%  
+  count(word, sentiment, sort = TRUE) %&gt;%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)&gt;0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)&gt;0~"NoZero" 
+  )
+*list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+---
+
+# Run the function
+
+
+```r
+sentiment_bing(tweets_twitterdata$text)
+$score
+[1] -78
+
+$type
+[1] "NoZero"
+
+$tweet_tbl
+# A tibble: 159 × 4
+   word          sentiment     n score
+   &lt;chr&gt;         &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;
+ 1 trump         positive     36    36
+ 2 die           negative      8    -8
+ 3 aggression    negative      6    -6
+ 4 traitor       negative      6    -6
+ 5 breaking      negative      5    -5
+ 6 authoritarian negative      3    -3
+ 7 destroy       negative      3    -3
+ 8 threat        negative      3    -3
+ 9 weak          negative      3    -3
+10 attack        negative      2    -2
+# … with 149 more rows
+```
+
+---
+
+# Data preparation using `lapply` amd `map`
+
+
+```r
+twitterdata_sent = lapply(tweets_twitterdata$text[1:10], function(x) sentiment_bing(x))
+
+twitter_sentiment = bind_rows(
+  tibble(
+    name = hashtag_to_search,
+    score = unlist(purrr::map(twitterdata_sent, 'score')),
+    type = unlist(purrr::map(twitterdata_sent, 'type'))
+  )
+)
+
+twitter_sentiment
+# A tibble: 10 × 3
+   name   score type  
+   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt; 
+ 1 #Biden     0 Zero  
+ 2 #Biden     1 NoZero
+ 3 #Biden     0 Zero  
+ 4 #Biden    -4 NoZero
+ 5 #Biden     0 Zero  
+ 6 #Biden    -2 NoZero
+ 7 #Biden     0 Zero  
+ 8 #Biden     0 NoZero
+ 9 #Biden    -1 NoZero
+10 #Biden     0 Zero  
+```
+
+---
+class: middle
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Work&amp;nbsp;1&lt;/i&gt;    
+
+.font120[
+Please clone the repository on [twitter sentiments and Shiny](https://github.com/stat220/18-twitter-sentiments-shiny) to your local folder. For the remainder of the class, let's work through the example in the .Rmd file to build a Shiny app that 
+
+1. Does a sentiment of analysis of limited tweets for a hashtag of user's choice and plots the distribution of the sentiments
+
+2. Does a word frequency analysis and produces an informative plot
+
+3. Has substantial reactive components that runs the code only after users action.
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(60000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

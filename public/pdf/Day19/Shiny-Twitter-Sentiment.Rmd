@@ -1,0 +1,73 @@
+---
+title: "Shiny Sentiment Analysis"
+author: "Bastola"
+date: "2/22/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(rtweet)
+library(reactable)
+library(glue)
+library(stringr)
+library(httpuv)
+library(purrr)
+library(shiny)
+```
+
+
+
+```{r}
+
+num_tweets_to_download <- 500
+hashtag_to_search <- "#ukraine"
+
+tweet_df <- search_tweets(hashtag_to_search, n = num_tweets_to_download, include_rts = FALSE)
+
+tweet_table_data <- tweet_df %>%
+  select(user_id, status_id, created_at, screen_name, text, favorite_count, retweet_count, urls_expanded_url) %>%
+  mutate(
+    Tweet = str_glue("{text} <a href='https://twitter.com/{screen_name}/status/{status_id}'>>> </a>") 
+  )%>%
+  select(DateTime = created_at, User = screen_name, Tweet, Likes = favorite_count, RTs = retweet_count, URLs = urls_expanded_url)
+
+```
+
+Any variable that changes based on user input needs to be a reactive value, not a conventional R object. I have to create and otherwise handle them in slightly different ways than a conventional variable, but happily, the tweaks are minor.
+
+
+```{r}
+# Shiny App
+
+ui <- fluidPage(
+  titlePanel("Twitter Sentiment"),
+  sidebarLayout(
+    sidebarPanel(
+        numericInput("num_tweets_to_download",
+            "Number of tweets to download:",
+            min = 100,
+            max = 18000,
+            value = 200,
+            step = 100), # <- Don’t forget comma here
+        textInput("hashtag_to_search",
+            "Hashtag to search:",
+            value = "#canada"),
+        dateRangeInput("date_picker", label = "Select dates:", start = "2020-01-27", end = "2020-01-30"),
+        actionButton("get_data", "Get data", class = "btn-primary")
+    ),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel("Sentiment Analysis", withLoader(plotOutput("plotSent"), type="image", loader="https://cdn.dribbble.com/users/908372/screenshots/4812323/loading2.gif")),
+        tabPanel("Frequency", withLoader(plotOutput("plotFreq"), type="image", loader="https://thumbs.gfycat.com/YellowishElementaryHind-max-1mb.gif")))
+      )
+  )
+)      
+    
+ui
+
+```
+
+

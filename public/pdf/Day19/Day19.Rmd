@@ -1,0 +1,652 @@
+---
+title: "Sentiment Analysis and Shiny Integration"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+      countdown: 60000
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(tidyverse)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+library(htmlwidgets)
+library(lubridate)
+library(icons)
+
+
+library(kableExtra)
+library(fontawesome)
+library(rvest)
+library(forcats)
+library(patchwork)
+library(polite)
+library(DT)
+library(polite)
+library(purrr)
+library(leaflet)
+library(maptools)
+library(maps)     
+library(sp)       
+library(maptools) 
+library(mapdata)
+library(ggiraph)
+library(rtweet)
+library(reactable)
+library(glue)
+library(stringr)
+library(httpuv)
+library(purrr)
+library(shiny)
+library(tidytext)
+library(shinycustomloader)
+library(ggthemes)
+
+
+yt <- 0
+
+num_tweets_to_download <- 200
+hashtag_to_search <- "#Biden"
+
+tweet_df <- search_tweets(hashtag_to_search, n = num_tweets_to_download, include_rts = FALSE)
+
+tweets_twitterdata = tweet_df %>%
+ select(screen_name, text)
+
+
+# remove html elements and unwanted characters
+
+replace_reg <- "https?://[^\\s]+|&amp;|&lt;|&gt;|\bRT\\b"
+
+# separate into words
+words <- tweets_twitterdata %>% 
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]"))
+
+# Plot of top 10 words
+words %>% count(word, sort=TRUE) %>%
+  top_n(10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col(fill ="#773232") +
+  xlab(NULL) +
+  coord_flip() +
+  theme_tufte() +
+  labs(x = "Frequency",
+       y = "Common Words",
+       title = "Top 10 Used Words in #Biden Tweets")
+
+# Get sentiments
+sentiments <- words %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>% 
+  mutate(
+      score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1)
+      ) 
+
+# Calculate total sentiment score
+sentiment_score = case_when(
+    nrow(sentiments)==0~0, #if no words then score is 0
+    nrow(sentiments)>0~sum(sentiments$score) #sum the pos and neg
+  )
+
+#keep track of tweets with no words
+zero_type = case_when(
+    nrow(sentiments)==0~"NoZero", #no words at all
+    nrow(sentiments)>0~"Zero" #sum of words is 0
+  )
+
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing <- function(tweet){
+  tweet_tbl <- tibble(text = tweet) %>%
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]")) %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)>0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)>0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+  
+
+
+```
+
+
+```{r xaringan-themer, include = FALSE}
+# Use xaringan theme from first set
+```
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Bastola</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Sentiment Analysis and Shiny Integration]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Shiny Reactivity
+
+>  An alert system that lets Shiny know exactly which expressions need to be re-run
+
+<br>
+
+- R usually works in a linear fashion
+
+- When writing a Shiny app, we need to tell Shiny which chunks of your code should be reactive to events such as users changing the input values in the control widgets.
+
+- Events are monitored and when they occur, the code reacts to those events.
+
+---
+
+# Reactive Expressions
+
+.font120[
+<blockquote>
+A reactive expression is defined as one that transforms the reactive inputs to reactive outputs
+</blockquote>
+]
+
+<br>
+
+.font120[
+
+Reactive expressions can be useful for caching the results of any procedure that happens in response to user input, including:
+
+- accessing a database
+- reading data from a file
+- downloading data over the network
+- performing an expensive computation
+]
+
+---
+
+# Covid Example Recap
+
+```{r, eval=FALSE}
+# Example of a Shiny server function
+
+server <- function(input, output) {
+    filtered_data <- reactive({ #<<
+        subset(MNdata,
+               Counties %in% input$dv &
+               month >= input$monthInput[1] & 
+                 month <= input$monthInput[2] &
+                 year == input$yearInput)})
+
+    output$plot <- renderPlot({
+        ggplot(filtered_data(), aes(x=dates, y=cases, color="Counties")) +
+        theme_economist_white() +
+        geom_point(alpha=0.5, color = "blue") + 
+        theme(legend.position = "none") +
+        ylab("Number of Cases") + 
+        xlab("Date")})
+
+    output$table <- DT::renderDataTable({
+        filtered_data()})
+        
+}
+
+```
+
+---
+
+# Covid Example Recap
+
+```{r, eval=FALSE}
+# Example of a Shiny server function
+
+server <- function(input, output) {
+    filtered_data <- reactive({ 
+        subset(MNdata,
+               Counties %in% input$dv &
+               month >= input$monthInput[1] & 
+                 month <= input$monthInput[2] &
+                 year == input$yearInput)})
+
+    output$plot <- renderPlot({
+        ggplot(filtered_data(), aes(x=dates, y=cases, color="Counties")) + #<<
+        theme_economist_white() +
+        geom_point(alpha=0.5, color = "blue") + 
+        theme(legend.position = "none") +
+        ylab("Number of Cases") + 
+        xlab("Date")})
+
+    output$table <- DT::renderDataTable({
+        filtered_data()})
+        
+}
+
+```
+
+---
+
+# Covid Example Recap
+
+```{r, eval=FALSE}
+# Example of a Shiny server function
+
+server <- function(input, output) {
+    filtered_data <- reactive({ 
+        subset(MNdata,
+               Counties %in% input$dv &
+               month >= input$monthInput[1] & 
+                 month <= input$monthInput[2] &
+                 year == input$yearInput)})
+
+    output$plot <- renderPlot({
+        ggplot(filtered_data(), aes(x=dates, y=cases, color="Counties")) +
+        theme_economist_white() +
+        geom_point(alpha=0.5, color = "blue") + 
+        theme(legend.position = "none") +
+        ylab("Number of Cases") + 
+        xlab("Date")})
+
+    output$table <- DT::renderDataTable({
+        filtered_data()}) #<<
+        
+}
+
+```
+
+---
+
+# Reactive Values
+
+.font120[
+<blockquote>
+Reactive values contain values that can be read by other reactive objects. 
+</blockquote>
+]
+
+.font120[
+- The input object is a ReactiveValues object, which looks something like a list, and it contains many individual reactive values. 
+- The values in input are set by input from the web browser.
+]
+
+--
+
+<br>
+
+```{r, eval=FALSE}
+# Example of a Shiny server function
+
+server <- function(input, output) {
+  output$distPlot <- renderPlot({
+    hist(rnorm(input$obs))
+  })
+}
+```
+
+---
+
+# Observers
+
+.font120[
+<blockquote>
+Observers can access reactive values and reactive expressions. 
+</blockquote>
+]
+
+- Observers do not return any values, and therefore do not cache their return values. 
+- Instead of returning values, they have side effects, which typically involves sending data to the web browser.
+
+--
+
+```{r, eval=FALSE}
+ui <- fluidPage(
+  mainPanel(
+    actionButton("button1","Button 1"),
+    actionButton("button2","Button 2")
+  )
+)
+server <- function(input, output) {
+  # observe button 1 press.
+  observe({
+    input$button1
+    input$button2  
+    showModal(modalDialog(
+      title = "Button pressed", "You pressed one of the buttons!"
+    ))
+  })
+}
+```
+
+---
+
+class: middle
+
+# Twitter Sentiment Analysis
+
+.font120[
+
+- `rtweet` allows us to connect to twitter and fetch the data with handy functions like `search_tweets`
+
+-  Perform sentiment analysis using the Bing lexicon and `get_sentiments` function from the `tidytext` package
+
+- The `tidytext` package also has word-to-emotion evaluation repositories
+]
+
+---
+
+`r chunk_reveal("demo1", widths = c(60, 60), font_size_code="100%", title = "# Download Tweets", display_type = c("code", "output"))`
+
+.code100[
+```{r, demo1, eval=FALSE, echo=FALSE}
+num_tweets_to_download <- 200
+hashtag_to_search <- "#Biden"
+
+tweet_df <- search_tweets(hashtag_to_search, 
+                          n = num_tweets_to_download, 
+                          include_rts = FALSE)
+
+tweets_twitterdata = tweet_df %>%
+  select(screen_name, text)
+tweets_twitterdata
+```
+]
+
+---
+
+`r chunk_reveal("demo2", widths = c(60, 60), font_size_code="100%", title = "# Tidy into Words ", display_type = c("code", "output"))`
+
+```{r, demo2, eval=FALSE, echo=FALSE}
+replace_reg <- "https?://[^\\s]+|&amp;|&lt;|&gt;|\bRT\\b"
+
+# separate into words
+tweets_twitterdata %>% 
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]")) -> words
+```
+
+---
+
+`r chunk_reveal("demo3", widths = c(60, 60), font_size_code="100%", title = "# Plot the top words ", display_type = c("code", "output"))`
+
+```{r, demo3, eval=FALSE, echo=FALSE}
+# Plot of top 10 words
+words %>% count(word, sort=TRUE) %>%
+  top_n(10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(x = word, y = n)) +
+  geom_col(fill ="#773232") +
+  xlab(NULL) +
+  coord_flip() +
+  theme_tufte() +
+  labs(x = "Frequency",
+       y = "Common Words",
+       title = "Top 10 Used Words in #Biden Tweets")
+```
+
+---
+
+# Sentiment Bing
+
+```{r}
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing <- function(tweet){
+  tweet_tbl <- tibble(text = tweet) %>%
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]")) %>%
+  inner_join(get_sentiments("bing")) %>%  #<<
+  count(word, sentiment, sort = TRUE) %>%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)>0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)>0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+---
+
+# Sentiment Bing
+
+```{r}
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing <- function(tweet){
+  tweet_tbl <- tibble(text = tweet) %>%
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]")) %>%
+  inner_join(get_sentiments("bing")) %>%  
+  count(word, sentiment, sort = TRUE) %>%
+  mutate(score = case_when(   #<<
+        sentiment == 'negative'~n*(-1), #<<
+        sentiment == 'positive'~n*1)) #<<
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)>0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)>0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+
+---
+
+# Sentiment Bing
+
+```{r}
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing <- function(tweet){
+  tweet_tbl <- tibble(text = tweet) %>%
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]")) %>%
+  inner_join(get_sentiments("bing")) %>%  
+  count(word, sentiment, sort = TRUE) %>%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(   #<<
+    nrow(tweet_tbl)==0~0,    #<<
+    nrow(tweet_tbl)>0~sum(tweet_tbl$score)  #<<
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)>0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+---
+
+# Sentiment Bing
+
+```{r}
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing <- function(tweet){
+  tweet_tbl <- tibble(text = tweet) %>%
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]")) %>%
+  inner_join(get_sentiments("bing")) %>%  
+  count(word, sentiment, sort = TRUE) %>%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)>0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(    #<<
+    nrow(tweet_tbl)==0~"Zero", #<<
+    nrow(tweet_tbl)>0~"NoZero" #<<
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)
+}
+```
+
+---
+
+# Sentiment Bing
+
+```{r}
+# Function to take in tweet and return clean words with sentiment scores
+sentiment_bing <- function(tweet){
+  tweet_tbl <- tibble(text = tweet) %>%
+  mutate(text = str_replace_all(text, replace_reg, "")) %>%
+  unnest_tokens(word, text, token = "words") %>%
+  anti_join(stop_words, by = "word") %>%
+  filter(str_detect(word, "[a-z]")) %>%
+  inner_join(get_sentiments("bing")) %>%  
+  count(word, sentiment, sort = TRUE) %>%
+  mutate(score = case_when(
+        sentiment == 'negative'~n*(-1),
+        sentiment == 'positive'~n*1))
+  
+  sentiment_score = case_when(
+    nrow(tweet_tbl)==0~0, 
+    nrow(tweet_tbl)>0~sum(tweet_tbl$score) 
+  )
+  
+  zero_type = case_when(
+    nrow(tweet_tbl)==0~"Zero", 
+    nrow(tweet_tbl)>0~"NoZero" 
+  )
+list(score = sentiment_score, type = zero_type, tweet_tbl = tweet_tbl)  #<<
+}
+```
+
+---
+
+# Run the function
+
+```{r}
+sentiment_bing(tweets_twitterdata$text)
+```
+
+---
+
+# Data preparation using `lapply` amd `map`
+
+```{r}
+twitterdata_sent = lapply(tweets_twitterdata$text[1:10], function(x) sentiment_bing(x))
+
+twitter_sentiment = bind_rows(
+  tibble(
+    name = hashtag_to_search,
+    score = unlist(purrr::map(twitterdata_sent, 'score')),
+    type = unlist(purrr::map(twitterdata_sent, 'type'))
+  )
+)
+
+twitter_sentiment
+
+```
+
+---
+class: middle
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Work&nbsp;`r (yt <- yt + 1)`</i>    
+
+.font120[
+Please clone the repository on [twitter sentiments and Shiny](https://github.com/stat220/18-twitter-sentiments-shiny) to your local folder. For the remainder of the class, let's work through the example in the .Rmd file to build a Shiny app that 
+
+1. Does a sentiment of analysis of limited tweets for a hashtag of user's choice and plots the distribution of the sentiments
+
+2. Does a word frequency analysis and produces an informative plot
+
+3. Has substantial reactive components that runs the code only after users action.
+]
+

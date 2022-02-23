@@ -27,7 +27,7 @@
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/ak_NJCVrJXY&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
 &lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
 &lt;p&gt;We will again do some more hands-on activity to build Shiny apps. We will also see how to integrate interactive maps like &lt;code&gt;leaflet&lt;/code&gt; in Shiny.&lt;/p&gt;
-&lt;p&gt;Day 18 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day16/Day18.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day18/Day18.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 18 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day18/Day18.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day18/Day18.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/17-interactive-shiny-examples&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Tutorial&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -39,6 +39,12 @@
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;We will go over some more Shiny app examples and will also integrate text analysis with Shiny using Twitter sentiment analysis. If you don&amp;rsquo;t have a twitter account yet, please open a twitter account before class and have it verified.&lt;/p&gt;
+&lt;h3 id=&#34;in-class-1&#34;&gt;In Class&lt;/h3&gt;
+&lt;p&gt;We will once more do some more hands-on activity to build Shiny apps in the context of twitter sentiment analysis.&lt;/p&gt;
+&lt;p&gt;Day 19 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day19/Day19.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day19/Day19.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Link to &lt;a href=&#34;https://github.com/stat220/18-twitter-sentiments-shiny&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;In Class Tutorial&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
