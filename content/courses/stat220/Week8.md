@@ -39,8 +39,14 @@ We will go over some more Shiny app examples and will also integrate text analys
 
 We will once more do some more hands-on activity to build Shiny apps in the context of twitter sentiment analysis.
 
-
 Day 19 Slides ({{% staticref "pdf/Day19/Day19.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day19/Day19.html" "newtab" %}}html{{% /staticref %}})
 
 - Link to [In Class Tutorial](https://github.com/stat220/18-twitter-sentiments-shiny) 
+
+<span style="color:orange">**Friday, 02/25**</span>
+
+### Before Class
+
+{{% callout note %}}
+Skim [sections 5.1-5.4 of Data Science: A First Introduction](https://datasciencebook.ca/classification.html#exploring-a-data-set){{% /callout %}}
 
