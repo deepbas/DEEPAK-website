@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Intro to Classification</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Introduction to Classification]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+ February 25 2022
+
+---
+
+class: inverse
+
+## Classification
+
+&lt;br&gt;
+
+&lt;br&gt;
+
+.blockquote[
+Predicting what category a (future) observation falls into
+]
+
+
+---
+
+class: inverse
+
+# Binary Classification
+
+&lt;br&gt;
+
+&lt;br&gt;
+
+.blockquote[
+We focus on the setting of binary classification where only two classes are involved (e.g., a diagnosis of either healthy or diseased)
+]
+
+---
+
+class: middle
+class: inverse
+
+
+# Netflix example
+
+&lt;br&gt;
+
+&lt;br&gt;
+
+&lt;blockquote&gt;
+Just today, Netflix emailed subscribers notifying them of a price increase for more great entertainment
+&lt;/blockquote&gt;
+
+--
+
+Will customers cancel their accounts?
+
+
+---
+
+## Netflix example
+
+Possible predictor variables (a.k.a. features, attributes, inputs, independent variables)
+
+.fancy[
+.pull-left[
+- job status&lt;br&gt;
+
+- age of account&lt;br&gt;
+
+- age&lt;br&gt;
+
+- payment method&lt;br&gt;
+
+- location&lt;br&gt;
+
+- content ratings&lt;br&gt;
+]
+
+.pull-right[
+- viewing habits/history&lt;br&gt;
+
+- platforms used (e.g. smartphone, Smart TV, ipad, etc.)&lt;br&gt;
+
+- competition&lt;br&gt;
+
+- `#CancelNetflix` movement
+
+- ...and more...
+]   
+]
+
+---
+
+# More classification examples
+
+- .bold[Astronomy:] Whether an exoplanet is habitable (or not)
+
+- .bold[Filtering:] Identify spam emails
+
+- .bold[Medicine:] Use lab results to determine who has a disease (or not)
+
+- .bold[Product preference:] make product recommendations based on past purchases
+
+- [Social services:](https://www.nytimes.com/2018/01/02/magazine/can-an-algorithm-tell-when-kids-are-in-danger.html) Identify which Child Welfare calls to screen in for further investigation
+
+- [Recidivism:](http://advances.sciencemag.org/content/4/1/eaao5580.full) Predict which defendants or paroles will commit another violent crime. 
+
+---
+
+class: middle
+
+# Let's talk about forest fires
+
+&gt; It would be nice to predict where the next forest fire will occur
+
+- Dataset contains a culmination of forest fire observations 
+
+- Based on two regions of Algeria: the Bejaia region and the Sidi Bel-Abbes region. 
+
+- Timeline is from June 2012 to September 2012
+
+
+.footnote[Clice [here](https://archive.ics.uci.edu/ml/datasets/Algerian+Forest+Fires+Dataset++#) to learn more about the dataset]
+
+---
+
+Variable | Description
+-------- | -------------
+`Date` | (DD/MM/YYYY) Day, month, year (2012)
+`Temp` | Noon temperature in Celsius degrees: 22 to 42
+`RH` | Relative Humidity in percentage: 21 to 90
+`Ws` | Wind speed in km/h: 6 to 29
+`Rain` | Daily total rain in mm: 0 to 16.8
+`Fine Fuel Moisture Code (FFMC) index` | 28.6 to 92.5
+`Duff Moisture Code (DMC) index` | 1.1 to 65.9
+`Drought Code (DC) index` | 7 to 220.4
+`Initial Spread Index (ISI) index` | 0 to 18.5
+`Buildup Index (BUI) index` | 1.1 to 68
+`Fire Weather Index (FWI) index` | 0 to 31.1
+`Classes` | Two classes, namely .bold[fire] and .bold[not fire]
+
+---
+
+# Glimpse of the data 
+
+.code90[
+
+```r
+glimpse(fire)
+Rows: 243
+Columns: 14
+$ day         &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,…
+$ month       &lt;dbl&gt; 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6…
+$ year        &lt;dbl&gt; 2012, 2012, 2012, 2012, 2012, 2012, 2012, 2012, 2012, 2012…
+$ temperature &lt;dbl&gt; 29, 29, 26, 25, 27, 31, 33, 30, 25, 28, 31, 26, 27, 30, 28…
+$ rh          &lt;dbl&gt; 57, 61, 82, 89, 77, 67, 54, 73, 88, 79, 65, 81, 84, 78, 80…
+$ ws          &lt;dbl&gt; 18, 13, 22, 13, 16, 14, 13, 15, 13, 12, 14, 19, 21, 20, 17…
+$ rain        &lt;dbl&gt; 0.0, 1.3, 13.1, 2.5, 0.0, 0.0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.…
+$ ffmc        &lt;dbl&gt; 65.7, 64.4, 47.1, 28.6, 64.8, 82.6, 88.2, 86.6, 52.9, 73.2…
+$ dmc         &lt;dbl&gt; 3.4, 4.1, 2.5, 1.3, 3.0, 5.8, 9.9, 12.1, 7.9, 9.5, 12.5, 1…
+$ dc          &lt;dbl&gt; 7.6, 7.6, 7.1, 6.9, 14.2, 22.2, 30.5, 38.3, 38.8, 46.3, 54…
+$ isi         &lt;dbl&gt; 1.3, 1.0, 0.3, 0.0, 1.2, 3.1, 6.4, 5.6, 0.4, 1.3, 4.0, 4.8…
+$ bui         &lt;dbl&gt; 3.4, 3.9, 2.7, 1.7, 3.9, 7.0, 10.9, 13.5, 10.5, 12.6, 15.8…
+$ fwi         &lt;dbl&gt; 0.5, 0.4, 0.1, 0.0, 0.5, 2.5, 7.2, 7.1, 0.3, 0.9, 5.6, 7.1…
+$ classes     &lt;chr&gt; "not fire", "not fire", "not fire", "not fire", "not fire"…
+```
+]
+
+---
+
+# Scatterplot
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# How can we classify a new observation?
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-3-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+
+background-image: url(images/distance-metrics.png)
+background-position: left bottom
+background-size: 45%
+
+## Calculating distance
+
+--
+
+.pull-right[
+
+
+.bold[Euclidean distance:] the straight line distance between two points on the x-y plane with coordinates  
+`\((x_a, y_a)\)` and  `\((x_b,y_b)\)`
+
+`$${\rm Distance} = \sqrt{\left(x_a - x_b \right)^2 + \left( y_a - y_b \right)^2}$$`
+
+
+.bold[Manhattan distance:] the "taxi-cab" distance between two points on the x-y plane
+
+`$${\rm Distance} = \left|x_a - x_b \right| + \left| y_a - y_b \right|$$`
+
+]
+
+---
+
+# Looking at Euclidean distance
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-5-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# 1-Nearest Neighbor (NN)
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-6-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# 10-NN
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-7-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+--
+
+.center[.bold[.purple[Wait, something is not quite right..]]]
+
+
+---
+class: middle
+
+# Need to standardize data
+
+
+```r
+standardize &lt;- function(x, na.rm = FALSE) {
+  (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
+}
+```
+
+.fancy[
+- Predictors with larger variation will have larger influence on which cases are “nearest” neighbors
+
+- Methods relying on distance can be sensitive (i.e. not invariant) to the scale of the predictors
+
+- Standardizing only shifts and rescales the variable, it doesn't change the shape of the distribution
+]
+
+---
+background-image: url(images/horst_dplyr_across.png)
+background-size: cover
+
+---
+
+# Standardized data
+
+.code60[
+
+```r
+*fire1 &lt;- fire %&gt;% mutate(across(where(is.numeric), standardize))
+fire1 %&gt;% summary()
+      day               month              year      temperature      
+ Min.   :-1.66935   Min.   :-1.3474   Min.   : NA   Min.   :-2.79828  
+ 1st Qu.:-0.87772   1st Qu.:-0.4504   1st Qu.: NA   1st Qu.:-0.59323  
+ Median : 0.02699   Median : 0.4467   Median : NA   Median :-0.04197  
+ Mean   : 0.00000   Mean   : 0.0000   Mean   :NaN   Mean   : 0.00000  
+ 3rd Qu.: 0.81862   3rd Qu.: 0.4467   3rd Qu.: NA   3rd Qu.: 0.78492  
+ Max.   : 1.72334   Max.   : 1.3437   Max.   : NA   Max.   : 2.71434  
+                                      NA's   :243                     
+       rh                 ws               rain              ffmc        
+ Min.   :-2.76778   Min.   :-3.3769   Min.   :-0.3809   Min.   :-3.4316  
+ 1st Qu.:-0.64345   1st Qu.:-0.5313   1st Qu.:-0.3809   1st Qu.:-0.4176  
+ Median : 0.06466   Median :-0.1757   Median :-0.3809   Median : 0.3803  
+ Mean   : 0.00000   Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000  
+ 3rd Qu.: 0.77278   3rd Qu.: 0.5357   3rd Qu.:-0.1313   3rd Qu.: 0.7288  
+ Max.   : 1.88552   Max.   : 4.8041   Max.   : 8.0057   Max.   : 1.2654  
+                                                                         
+      dmc                dc               isi               bui         
+ Min.   :-1.1281   Min.   :-0.8923   Min.   :-1.1416   Min.   :-1.0957  
+ 1st Qu.:-0.7166   1st Qu.:-0.7779   1st Qu.:-0.8046   1st Qu.:-0.7514  
+ Median :-0.2728   Median :-0.3426   Median :-0.2991   Median :-0.3015  
+ Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000  
+ 3rd Qu.: 0.4938   3rd Qu.: 0.4126   3rd Qu.: 0.6036   3rd Qu.: 0.4188  
+ Max.   : 4.1329   Max.   : 3.5868   Max.   : 3.4321   Max.   : 3.6061  
+                                                                        
+      fwi            classes         
+ Min.   :-0.9455   Length:243        
+ 1st Qu.:-0.8515   Class :character  
+ Median :-0.3811   Mode  :character  
+ Mean   : 0.0000                     
+ 3rd Qu.: 0.5933                     
+ Max.   : 3.2342                     
+                                     
+```
+]
+
+---
+background-image: url(images/corplot.png)
+background-size: 85%
+
+
+
+
+
+---
+
+
+
+# 1-NN again
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-12-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# 10-NN again
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-13-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# 50-NN again
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-14-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+
+# .purple[Visualizing the decision boundary]
+
+.font110[.fancy[
+
+- We can map out the region in feature-space where the classifier would predict 'fire', and the kinds where it would predict 'not fire'
+
+- There is some boundary between the two, where points on one side of
+the boundary will be classified 'fire' and points on the other side will be
+classified 'not fire'
+
+- This boundary is called .bold[decision boundary]
+]
+]
+
+
+---
+
+# Visualizing the decision boundary
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-15-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## 1-NN decision boundary
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-16-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## 25-NN decision boundary
+
+&lt;img src="Day20old_files/figure-html/unnamed-chunk-17-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+background-image: url("images/tidymodels.png")
+background-position: left
+background-size: 50%
+class: clear, middle
+
+.pull-right[
+##   a collection of packages for modeling and machine learning using tidyverse principles
+]
+
+---
+
+
+# 1. Load data and convert types
+.code80[
+
+```r
+fire_raw &lt;- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Algeriafires.csv") %&gt;% 
+  clean_names() %&gt;% na.omit() %&gt;% 
+  mutate(classes = as_factor(classes)) %&gt;%
+  mutate_at(c(10,13), as.numeric) %&gt;%
+  select(temperature, ffmc, classes)
+```
+]
+
+
+
+```r
+head(fire_raw)
+# A tibble: 6 × 3
+  temperature  ffmc classes 
+        &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;   
+1          29  65.7 not fire
+2          29  64.4 not fire
+3          26  47.1 not fire
+4          25  28.6 not fire
+5          27  64.8 not fire
+6          31  82.6 fire    
+```
+
+---
+
+class: middle
+
+
+# 2. Create a recipe for data preprocessing
+
+
+```r
+fire_recipe &lt;- recipe(classes ~ ., data = fire_raw) %&gt;%
+ step_scale(all_predictors()) %&gt;%
+ step_center(all_predictors()) %&gt;%
+ prep()
+```
+
+---
+
+class: inverse
+class: middle
+
+
+# 3. Apply the recipe to the data set
+
+
+```r
+fire_scaled &lt;- bake(fire_recipe, fire_raw)
+```
+
+
+```
+# A tibble: 243 × 3
+   temperature   ffmc classes 
+         &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;   
+ 1      -0.869 -0.846 not fire
+ 2      -0.869 -0.937 not fire
+ 3      -1.70  -2.14  not fire
+ 4      -1.97  -3.43  not fire
+ 5      -1.42  -0.909 not fire
+ 6      -0.318  0.332 fire    
+ 7       0.234  0.722 fire    
+ 8      -0.593  0.610 fire    
+ 9      -1.97  -1.74  not fire
+10      -1.14  -0.324 not fire
+# … with 233 more rows
+```
+
+---
+
+class: middle
+
+# 4. Create a model specification
+
+
+```r
+knn_spec &lt;- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5) 
+```
+
+
+---
+
+class: middle
+
+# 5. Fit the model on the preprocessed data
+
+
+```r
+knn_fit &lt;- knn_spec %&gt;%
+ fit(classes ~ ., data = fire_scaled)
+```
+
+
+---
+class: middle
+
+
+# 6. Classify
+
+
+Suppose we get two new observations, use predict to classify the observations
+
+
+```r
+# Data frame/tibble of new observations
+new_observations &lt;- tibble(temperature = c(1, 2), ffmc = c(-1, 1))
+```
+
+
+```r
+# Making classifications (i.e. predictions)
+predict(knn_fit, new_data = new_observations)
+# A tibble: 2 × 1
+  .pred_class
+  &lt;fct&gt;      
+1 not fire   
+2 fire       
+```
+
+---
+
+# Further Practice: Pima Indians Diabetes 
+
+Owned by the National Institute of Diabetes and Digestive and Kidney Diseases
+
+- A data frame with 768 observations on 9 variables.
+
+- We have the lab results of 158 patients, including whether they have CKD
+
+- Response variable: `diabetes` =	`pos`, `neg`
+
+- Predictor variables: _pregnant, glucose, pressure, triceps, insulin, mass,  pedigree, age_
+
+.footnote[Click here for [source](https://archive.ics.uci.edu/ml/index.php)]
+
+---
+
+# Variables
+
+.large[
+Variable | Description
+-------- | -------------
+`pregnant`| Number of times pregnant
+`glucose` | Plasma glucose concentration (glucose tolerance test)
+`pressure` | Diastolic blood pressure (mm Hg)
+`triceps` | Triceps skinfold thickness (mm)
+`insulin` | 2-Hour serum insulin (mu U/ml)
+`mass` | Body mass index (weight in kg/(height in m)\²)
+`pedigree` | Diabetes pedigree function
+`age` | Age (years)
+`diabetes` | diabetes case (pos/neg)
+]
+
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+Please clone the repository on [classification intro](https://github.com/stat220/19-classification-knn) to your local folder.
+
+
+```r
+library(mlbench)
+data(PimaIndiansDiabetes2)
+```
+
+a. Tidy the data to make it ready for analysis
+
+b. Make a correlation plot of the numerical variables in the dataset
+
+c. Which pair of variables in the dataset have the largest correlation?
+
+d. Using `parsnip` package, perform all the steps involved in classifying whether a patient with certain glucose and insulin would have diabetes or not.
+  
+
+<div class="countdown" id="timer_621916fa" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+(function(time) {
+  var d2 = function(number) {
+    return ('0' + number).slice(-2); // left-pad 0 to minutes/seconds
+  },
+
+  time_format = function(total) {
+    var secs = Math.abs(total) / 1000;
+    var h = Math.floor(secs / 3600);
+    var m = Math.floor(secs % 3600 / 60);
+    var s = Math.round(secs % 60);
+    var res = d2(m) + ':' + d2(s);
+    if (h > 0) res = h + ':' + res;
+    return res;  // [hh:]mm:ss
+  },
+
+  slide_number_div = function(i) {
+    return document.getElementsByClassName('remark-slide-number').item(i);
+  },
+
+  current_page_number = function(i) {
+    return slide_number_div(i).firstChild.textContent;  // text "i / N"
+  };
+
+  var timer = document.createElement('span'); timer.id = 'slide-time-left';
+  var time_left = time, k = slideshow.getCurrentSlideIndex(),
+      last_page_number = current_page_number(k);
+
+  setInterval(function() {
+    time_left = time_left - 1000;
+    timer.innerHTML = ' ' + time_format(time_left);
+    if (time_left < 0) timer.style.color = 'red';
+  }, 1000);
+
+  slide_number_div(k).appendChild(timer);
+
+  slideshow.on('showSlide', function(slide) {
+    var i = slide.getSlideIndex(), n = current_page_number(i);
+    // reset timer when a new slide is shown and the page number is changed
+    if (last_page_number !== n) {
+      time_left = time; last_page_number = n;
+      timer.innerHTML = ' ' + time_format(time); timer.style.color = null;
+    }
+    slide_number_div(i).appendChild(timer);
+  });
+})(60000);
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

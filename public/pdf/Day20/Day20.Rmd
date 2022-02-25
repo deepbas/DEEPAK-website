@@ -1,0 +1,698 @@
+---
+title: "Intro to Classification"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+      countdown: 60000
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+library(htmlwidgets)
+library(lubridate)
+library(palmerpenguins)
+library(fontawesome)
+library(caret)
+library(class)
+library(patchwork)
+library(tidymodels)
+library(mlbench)     # for PimaIndiansDiabetes2 dataset
+library(janitor)
+library(parsnip)
+library(kknn)
+library(paletteer)
+library(corrr)
+library(scico)
+
+yt <- 0
+
+
+fire <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Algeriafires.csv")
+fire <- fire %>% clean_names() %>% na.omit() %>% mutate_at(c(10,13), as.numeric)
+
+#data(PimaIndiansDiabetes2)
+#db <- PimaIndiansDiabetes2
+```
+
+
+```{r xaringan-themer, include = FALSE}
+# Use xaringan theme from first set
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Bastola</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Introduction to Classification]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+class: inverse
+
+## Classification
+
+<br>
+
+<br>
+
+.blockquote[
+Predicting what category a (future) observation falls into
+]
+
+
+---
+
+class: inverse
+
+# Binary Classification
+
+<br>
+
+<br>
+
+.blockquote[
+We focus on the setting of binary classification where only two classes are involved (e.g., a diagnosis of either healthy or diseased)
+]
+
+---
+
+class: middle
+class: inverse
+
+
+# Netflix example
+
+<br>
+
+<br>
+
+<blockquote>
+Just today, Netflix emailed subscribers notifying them of a price increase for more great entertainment
+</blockquote>
+
+--
+
+Will customers cancel their accounts?
+
+---
+
+## Netflix example
+
+Possible predictor variables (a.k.a. features, attributes, inputs, independent variables)
+
+.fancy[
+.pull-left[
+- job status<br>
+
+- age of account<br>
+
+- age<br>
+
+- payment method<br>
+
+- location<br>
+
+- content ratings<br>
+]
+
+.pull-right[
+- viewing habits/history<br>
+
+- platforms used (e.g. smartphone, Smart TV, ipad, etc.)<br>
+
+- competition<br>
+
+- `#CancelNetflix` movement
+
+- ...and more...
+]   
+]
+
+---
+
+# More classification examples
+
+- .bold[Astronomy:] Whether an exoplanet is habitable (or not)
+
+- .bold[Filtering:] Identify spam emails
+
+- .bold[Medicine:] Use lab results to determine who has a disease (or not)
+
+- .bold[Product preference:] make product recommendations based on past purchases
+
+- [Social services:](https://www.nytimes.com/2018/01/02/magazine/can-an-algorithm-tell-when-kids-are-in-danger.html) Identify which Child Welfare calls to screen in for further investigation
+
+- [Recidivism:](http://advances.sciencemag.org/content/4/1/eaao5580.full) Predict which defendants or paroles will commit another violent crime. 
+
+---
+
+class: middle
+
+# Let's talk about forest fires
+
+> It would be nice to predict where the next forest fire will occur
+
+- Dataset contains a culmination of forest fire observations 
+
+- Based on two regions of Algeria: the Bejaia region and the Sidi Bel-Abbes region. 
+
+- Timeline is from June 2012 to September 2012
+
+
+.footnote[Clice [here](https://archive.ics.uci.edu/ml/datasets/Algerian+Forest+Fires+Dataset++#) to learn more about the dataset]
+
+---
+
+Variable | Description
+-------- | -------------
+`Date` | (DD/MM/YYYY) Day, month, year (2012)
+`Temp` | Noon temperature in Celsius degrees: 22 to 42
+`RH` | Relative Humidity in percentage: 21 to 90
+`Ws` | Wind speed in km/h: 6 to 29
+`Rain` | Daily total rain in mm: 0 to 16.8
+`Fine Fuel Moisture Code (FFMC) index` | 28.6 to 92.5
+`Duff Moisture Code (DMC) index` | 1.1 to 65.9
+`Drought Code (DC) index` | 7 to 220.4
+`Initial Spread Index (ISI) index` | 0 to 18.5
+`Buildup Index (BUI) index` | 1.1 to 68
+`Fire Weather Index (FWI) index` | 0 to 31.1
+`Classes` | Two classes, namely .bold[fire] and .bold[not fire]
+
+---
+
+# Glimpse of the data 
+
+.code90[
+```{r}
+glimpse(fire)
+```
+]
+
+---
+
+# Scatterplot
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+# How can we classify a new observation?
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(aes(x = 37, y = 83), color = "green", pch = 4) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+```{r, echo=FALSE}
+fire_foo <- fire %>%
+  select(temperature, ffmc, classes) %>%
+  bind_rows(., tibble(temperature = 37, ffmc = 83, classes = "unknown"))
+
+distances <- as.matrix(dist(fire_foo[,-3], method = "euclidian"))
+
+fire_foo <- fire_foo %>% 
+  mutate(dist = distances[244,]) %>%
+  filter(dist > 0)
+```
+
+background-image: url(images/distance-metrics.png)
+background-position: left bottom
+background-size: 45%
+
+## Calculating distance
+
+--
+
+.pull-right[
+
+
+.bold[Euclidean distance:] the straight line distance between two points on the x-y plane with coordinates  
+$(x_a, y_a)$ and  $(x_b,y_b)$
+
+$${\rm Distance} = \sqrt{\left(x_a - x_b \right)^2 + \left( y_a - y_b \right)^2}$$
+
+
+.bold[Manhattan distance:] the "taxi-cab" distance between two points on the x-y plane
+
+$${\rm Distance} = \left|x_a - x_b \right| + \left| y_a - y_b \right|$$
+
+]
+
+---
+
+# Looking at Euclidean distance
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(aes(x = 37, y = 83), color = "green", pch = 4) +
+  geom_segment(aes(xend=37, yend=83), alpha = 0.2) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+# 1-Nearest Neighbor (NN)
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(aes(x = 37, y = 83), color = "green", pch = 4) +
+  geom_segment(data = top_n(fire_foo, n = -1, dist), aes(xend=37, yend=83), alpha = 0.8) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+# 10-NN
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(aes(x = 37, y = 83), color = "green", pch = 4) +
+  geom_segment(data = top_n(fire_foo, n = -10, dist), aes(xend=37, yend=83), alpha = 0.8) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+--
+
+.center[.bold[.purple[Wait, something is not quite right..]]]
+
+
+---
+class: middle
+
+# Need to standardize data
+
+```{r}
+standardize <- function(x, na.rm = FALSE) {
+  (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
+}
+```
+
+.fancy[
+- Predictors with larger variation will have larger influence on which cases are “nearest” neighbors
+
+- Methods relying on distance can be sensitive (i.e. not invariant) to the scale of the predictors
+
+- Standardizing only shifts and rescales the variable, it doesn't change the shape of the distribution
+]
+
+---
+background-image: url(images/horst_dplyr_across.png)
+background-size: cover
+
+---
+
+# Standardized data
+
+.code60[
+```{r}
+fire1 <- fire %>% mutate(across(where(is.numeric), standardize)) #<<
+fire1 %>% summary()
+```
+]
+
+---
+background-image: url(images/corplot.png)
+background-size: 85%
+
+
+```{r, eval=FALSE, echo=FALSE}
+
+```
+
+
+---
+
+```{r, echo=FALSE}
+x_std <- (37 - mean(fire$temperature, na.rm = TRUE)) / sd(fire$temperature, na.rm = TRUE)
+y_std <- (83 - mean(fire$ffmc, na.rm = TRUE)) / sd(fire$ffmc, na.rm = TRUE)
+
+fire_bar <- fire1 %>%
+  select(temperature, ffmc, classes) %>%
+  bind_rows(., tibble(temperature = x_std, ffmc = y_std, classes = "unknown"))
+
+distances <- as.matrix(dist(fire_bar[,-3], method = "euclidian"))
+
+fire_bar <- fire_bar %>% 
+  mutate(dist = distances[244,]) %>%
+  filter(dist > 0)
+```
+
+# 1-NN again
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire1, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(aes(x = x_std, y = y_std), color = "green", pch = 4) +
+  geom_segment(data = top_n(fire_bar, n = -1, dist), aes(xend=x_std, yend=y_std), alpha = 0.8) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+# 10-NN again
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire1, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(aes(x = x_std, y = y_std), color = "green", pch = 4) +
+  geom_segment(data = top_n(fire_bar, n = -10, dist), aes(xend=x_std, yend=y_std), alpha = 0.8) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+# 50-NN again
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+ggplot(data = fire1, aes(x = temperature, y = ffmc , fill = classes)) +
+  geom_point(aes(x = x_std, y = y_std), color = "green", pch = 4) +
+  geom_segment(data = top_n(fire_bar, n = -50, dist), aes(xend=x_std, yend=y_std), alpha = 0.8) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+class: middle
+
+# .purple[Visualizing the decision boundary]
+
+.font110[.fancy[
+
+- We can map out the region in feature-space where the classifier would predict 'fire', and the kinds where it would predict 'not fire'
+
+- There is some boundary between the two, where points on one side of
+the boundary will be classified 'fire' and points on the other side will be
+classified 'not fire'
+
+- This boundary is called .bold[decision boundary]
+]
+]
+
+
+---
+
+# Visualizing the decision boundary
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+grid_pts <- expand.grid(temperature = seq(min(fire1$temperature), max(fire1$temperature), length.out = 50), 
+                        ffmc = seq(min(fire1$ffmc), max(fire1$ffmc), length.out = 50))
+
+ggplot(data = fire1) +
+  geom_point(data = grid_pts, aes(x = temperature, y = ffmc), alpha = 0.1) +
+  geom_point(aes(x = temperature, y = ffmc, fill = classes), color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+## 1-NN decision boundary
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+# Illustrating the decision boundary
+knn_preds <- knn(train = fire1[, c("temperature", "ffmc")], test = grid_pts, cl = fire1[["classes"]], k = 1)
+
+knn_df <- data.frame(grid_pts, classes = knn_preds)
+
+ggplot(data = fire1) +
+  geom_point(data = knn_df, aes(x = temperature, y = ffmc, color = classes), alpha = 0.3) +
+  geom_point(aes(x = temperature, y = ffmc, fill = classes), color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_color_brewer(palette = "Spectral") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+---
+
+## 25-NN decision boundary
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+# Illustrating the decision boundary
+knn_preds <- knn(train = fire1[, c("temperature", "ffmc")], test = grid_pts, cl = fire1[["classes"]], k = 25)
+
+knn_df <- data.frame(grid_pts, classes = knn_preds)
+
+ggplot(data = fire1) +
+  geom_point(data = knn_df, aes(x = temperature, y = ffmc, color = classes), alpha = 0.3) +
+  geom_point(aes(x = temperature, y = ffmc, fill = classes), color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Fine Fuel Moisture Code (FFMC)") +
+  scale_color_brewer(palette = "Spectral") +
+  scale_fill_brewer(palette = "Spectral") +
+  theme_tufte()
+```
+
+
+---
+background-image: url("images/tidymodels.png")
+background-position: left
+background-size: 50%
+class: clear, middle
+
+.pull-right[
+##   a collection of packages for modeling and machine learning using tidyverse principles
+]
+
+---
+
+
+# 1. Load data and convert types
+.code80[
+```{r}
+fire_raw <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Algeriafires.csv") %>% 
+  clean_names() %>% na.omit() %>% 
+  mutate(classes = as_factor(classes)) %>%
+  mutate_at(c(10,13), as.numeric) %>%
+  select(temperature, ffmc, classes)
+```
+]
+
+
+```{r}
+head(fire_raw)
+```
+
+---
+
+class: middle
+
+
+# 2. Create a recipe for data preprocessing
+
+```{r}
+fire_recipe <- recipe(classes ~ ., data = fire_raw) %>%
+ step_scale(all_predictors()) %>%
+ step_center(all_predictors()) %>%
+ prep()
+
+```
+
+---
+
+class: inverse
+class: middle
+
+
+# 3. Apply the recipe to the data set
+
+```{r}
+fire_scaled <- bake(fire_recipe, fire_raw)
+```
+
+```{r, echo=FALSE}
+fire_scaled
+```
+
+---
+
+class: middle
+
+# 4. Create a model specification
+
+```{r}
+knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5) 
+```
+
+
+---
+
+class: middle
+
+# 5. Fit the model on the preprocessed data
+
+```{r}
+knn_fit <- knn_spec %>%
+ fit(classes ~ ., data = fire_scaled)
+```
+
+
+---
+class: middle
+
+
+# 6. Classify
+
+
+Suppose we get two new observations, use predict to classify the observations
+
+```{r}
+# Data frame/tibble of new observations
+new_observations <- tibble(temperature = c(1, 2), ffmc = c(-1, 1))
+```
+
+```{r}
+# Making classifications (i.e. predictions)
+predict(knn_fit, new_data = new_observations)
+```
+
+---
+
+# Further Practice: Pima Indians Diabetes 
+
+Owned by the National Institute of Diabetes and Digestive and Kidney Diseases
+
+- A data frame with 768 observations on 9 variables.
+
+- We have the lab results of 158 patients, including whether they have CKD
+
+- Response variable: `diabetes` =	`pos`, `neg`
+
+- Predictor variables: _pregnant, glucose, pressure, triceps, insulin, mass,  pedigree, age_
+
+.footnote[Click here for [source](https://archive.ics.uci.edu/ml/index.php)]
+
+---
+
+# Variables
+
+.large[
+Variable | Description
+-------- | -------------
+`pregnant`| Number of times pregnant
+`glucose` | Plasma glucose concentration (glucose tolerance test)
+`pressure` | Diastolic blood pressure (mm Hg)
+`triceps` | Triceps skinfold thickness (mm)
+`insulin` | 2-Hour serum insulin (mu U/ml)
+`mass` | Body mass index (weight in kg/(height in m)\²)
+`pedigree` | Diabetes pedigree function
+`age` | Age (years)
+`diabetes` | diabetes case (pos/neg)
+]
+
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+Please clone the repository on [classification intro](https://github.com/stat220/19-classification-knn) to your local folder.
+
+```{r}
+library(mlbench)
+data(PimaIndiansDiabetes2)
+```
+
+a. Tidy the data to make it ready for analysis
+
+b. Make a correlation plot of the numerical variables in the dataset
+
+c. Which pair of variables in the dataset have the largest correlation?
+
+d. Using `parsnip` package, perform all the steps involved in classifying whether a patient with certain glucose and insulin would have diabetes or not.
+  
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
