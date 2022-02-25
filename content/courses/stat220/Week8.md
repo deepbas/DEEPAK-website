@@ -50,3 +50,11 @@ Day 19 Slides ({{% staticref "pdf/Day19/Day19.pdf" "newtab" %}}pdf{{% /staticref
 {{% callout note %}}
 Skim [sections 5.1-5.6 of Data Science: A First Introduction](https://datasciencebook.ca/classification.html#k-nearest-neighbors-with-tidymodels){{% /callout %}}
 
+### In Class
+
+We will start basic classification and learn the basics of k-nearest-neighbors (kNN).
+
+Day 20 Slides ({{% staticref "pdf/Day20/Day20.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day20/Day20.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Tutorial](https://github.com/stat220/19-classification-knn) 
+
