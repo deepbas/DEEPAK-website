@@ -13,6 +13,21 @@
     </image>
     
     <item>
+      <title>Week 9</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week9/</link>
+      <pubDate>Sun, 27 Feb 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week9/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 02/28&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Read &lt;a href=&#34;https://datasciencebook.ca/classification.html#puttingittogetherworkflow&#34;&gt;sections 5.7-5.8 and sections 6.3-6.7 of Data Science: A First Introduction&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 8</title>
       <link>https://deepbas.netlify.app/courses/stat220/week8/</link>
       <pubDate>Sun, 20 Feb 2022 00:00:00 +0000</pubDate>
@@ -1476,7 +1491,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-962871453&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-968352174&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1486,7 +1501,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-962871453&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-968352174&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
