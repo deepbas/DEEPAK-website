@@ -215,7 +215,7 @@ Best k: 5
 
 class: middle
 
-# Evaluate the model on test dataset
+# Evaluate the model on the test dataset
 
 
 ```r
@@ -260,7 +260,7 @@ class: action
 
 Please clone the repository on [classification evaluation](https://github.com/stat220/20-classification-evaluation) to your local folder.
 
-a. Set aside 20% of the cases using the following code.
+a. Split the data into training and testing dataset by 80-20 proportion.
 
 
 ```r
@@ -277,7 +277,7 @@ db_test &lt;- db_split %&gt;%
 
 Using this split, complete the set of questionnaires.
 
-<div class="countdown" id="timer_621d10a5" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<div class="countdown" id="timer_621d560f" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -493,7 +493,7 @@ spec(fire_results, truth = classes,
 
 ## Kappa
 
-&gt; Cohen Kappa gives information on how much better a model over the random classifier. Kappa can range from −1 to +1
+&gt; Cohen Kappa gives information on how much better a model over the random classifier. Kappa can range from −1 to +1.
 
 --
 
@@ -571,7 +571,7 @@ class: your-turn
 
 # &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;  
 
-Here is the confusion matrix fora hypothetical two-class 7-NN penguin classifier
+Here is the confusion matrix for a hypothetical two-class 7-NN fire classifier.
 
 
 ```
@@ -583,7 +583,7 @@ Prediction fire not fire
 
 Calculate the accuracy, sensitivity, specificity, and PPV of this classifier.
 
-<div class="countdown" id="timer_621d1049" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<div class="countdown" id="timer_621d57b4" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -608,7 +608,7 @@ metrics &lt;- metrics %&gt;% select(-.estimator)
 
 class: middle
 
-## Tabulate the metrics
+## Tabulate the metrics (K=1)
 
 
 ```r
@@ -656,7 +656,7 @@ Usually a trial-and-error process by which you
 
 ---
 
-## Why not to use single (training) test set
+## Why not to use single (training) test set?
 
 &lt;img src="Day21_files/figure-html/unnamed-chunk-37-1.svg" width="90%" /&gt;
 
@@ -699,7 +699,7 @@ background-size: 70%
 --
 
 .font80[
-- Based on accuracy, `\(k=1\)` appears best
+- Based on accuracy, `\(k=4\)` appears best
 - Can look at other metrics
 - Accuracy doesn't always decrease with `\(k\)`
 ]
@@ -780,12 +780,12 @@ cv_metrics %&gt;% head(6)
 # A tibble: 6 × 7
   neighbors .metric     .estimator  mean     n std_err .config              
       &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
-1         1 accuracy    binary     0.967     5  0.0243 Preprocessor1_Model01
-2         1 kap         binary     0.932     5  0.0493 Preprocessor1_Model01
-3         1 mcc         binary     0.934     5  0.0487 Preprocessor1_Model01
-4         1 ppv         binary     0.985     5  0.0154 Preprocessor1_Model01
-5         1 sensitivity binary     0.957     5  0.0286 Preprocessor1_Model01
-6         1 specificity binary     0.98      5  0.02   Preprocessor1_Model01
+1         1 accuracy    binary     0.992     5 0.00833 Preprocessor1_Model01
+2         1 kap         binary     0.983     5 0.0169  Preprocessor1_Model01
+3         1 mcc         binary     0.984     5 0.0162  Preprocessor1_Model01
+4         1 ppv         binary     1         5 0       Preprocessor1_Model01
+5         1 sensitivity binary     0.986     5 0.0143  Preprocessor1_Model01
+6         1 specificity binary     1         5 0       Preprocessor1_Model01
 ```
 
 ---
@@ -797,21 +797,21 @@ cv_metrics %&gt;% head(6)
 cv_metrics %&gt;%
   group_by(.metric) %&gt;%
   slice_max(mean) 
-# A tibble: 30 × 7
+# A tibble: 38 × 7
 # Groups:   .metric [6]
    neighbors .metric  .estimator  mean     n std_err .config              
        &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
- 1         3 accuracy binary     0.983     5  0.0167 Preprocessor1_Model03
- 2         4 accuracy binary     0.983     5  0.0167 Preprocessor1_Model04
- 3         3 kap      binary     0.967     5  0.0333 Preprocessor1_Model03
- 4         4 kap      binary     0.967     5  0.0333 Preprocessor1_Model04
- 5         3 mcc      binary     0.969     5  0.0310 Preprocessor1_Model03
- 6         4 mcc      binary     0.969     5  0.0310 Preprocessor1_Model04
- 7         3 ppv      binary     1         5  0      Preprocessor1_Model03
- 8         4 ppv      binary     1         5  0      Preprocessor1_Model04
- 9         7 ppv      binary     1         5  0      Preprocessor1_Model07
-10         8 ppv      binary     1         5  0      Preprocessor1_Model08
-# … with 20 more rows
+ 1         1 accuracy binary     0.992     5 0.00833 Preprocessor1_Model01
+ 2         2 accuracy binary     0.992     5 0.00833 Preprocessor1_Model02
+ 3         3 accuracy binary     0.992     5 0.00833 Preprocessor1_Model03
+ 4         4 accuracy binary     0.992     5 0.00833 Preprocessor1_Model04
+ 5         1 kap      binary     0.983     5 0.0169  Preprocessor1_Model01
+ 6         2 kap      binary     0.983     5 0.0169  Preprocessor1_Model02
+ 7         3 kap      binary     0.983     5 0.0169  Preprocessor1_Model03
+ 8         4 kap      binary     0.983     5 0.0169  Preprocessor1_Model04
+ 9         1 mcc      binary     0.984     5 0.0162  Preprocessor1_Model01
+10         2 mcc      binary     0.984     5 0.0162  Preprocessor1_Model02
+# … with 28 more rows
 ```
 
 ---
@@ -847,7 +847,7 @@ db_recipe &lt;- recipe(
   step_center(all_predictors())
 ```
 
-<div class="countdown" id="timer_621d11b2" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<div class="countdown" id="timer_621d580f" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
