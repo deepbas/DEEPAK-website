@@ -1,0 +1,29 @@
+---
+title: "Themer"
+author: "Bastola"
+date: "2/26/2022"
+output: html_document
+---
+
+```{r}
+library(xaringanthemer)
+
+xaringan_themer_css <- tempfile("xaringan-themer-", fileext = ".css")
+
+
+#xaringanthemer_font_default(font_arg)
+
+style_xaringan(
+  text_color = "#002b3",
+  inverse_background_color = "#31b09e",
+  inverse_text_color = "#002b3",
+  outfile = xaringan_themer_css # omit in your slides to write the
+                                # styles to xaringan-themer.css
+)
+#> Warning: Colors that will be used by `theme_xaringan()` need to be in hexadecimal format: text_color, inverse_text_color
+
+# View the CSS:
+file.edit(xaringan_themer_css)
+
+```
+
