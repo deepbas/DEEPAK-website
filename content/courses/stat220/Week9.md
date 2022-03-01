@@ -23,3 +23,13 @@ Read [sections 5.7-5.8 and sections 6.3-6.7 of Data Science: A First Introductio
 Day 21 Slides ({{% staticref "pdf/Day21/Day21.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day21/Day21.html" "newtab" %}}html{{% /staticref %}})
 
 - Link to [In Class Tutorial](https://github.com/stat220/20-classification-evaluation) 
+
+
+<span style="color:orange">**Wednesday, 03/02**</span>
+
+### Before Class
+
+{{% callout note %}}
+Continue reading  [section 6.3-6.7 of Data Science: A First Introduction](https://datasciencebook.ca/classification.html#puttingittogetherworkflow). Also skim through [section 4.3 (page 133-139) of An Introduction to Statistical Learning](https://www.statlearning.com/). You need to download the book!
+{{% /callout %}}
+

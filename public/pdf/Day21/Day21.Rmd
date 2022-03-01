@@ -290,7 +290,7 @@ fire_fit
 
 class: middle
 
-# Evaluate the model on test dataset
+# Evaluate the model on the test dataset
 
 ```{r}
 test_features <- fire_test %>% select(temperature, isi) %>% data.frame()
@@ -356,7 +356,7 @@ class: action
 
 Please clone the repository on [classification evaluation](https://github.com/stat220/20-classification-evaluation) to your local folder.
 
-a. Set aside 20% of the cases using the following code.
+a. Split the data into training and testing dataset by 80-20 proportion.
 
 ```{r}
 set.seed(1234)
@@ -692,7 +692,7 @@ spec(fire_results, truth = classes,
 
 ## Kappa
 
-> Cohen Kappa gives information on how much better a model over the random classifier. Kappa can range from −1 to +1
+> Cohen Kappa gives information on how much better a model over the random classifier. Kappa can range from −1 to +1.
 
 --
 
@@ -751,7 +751,7 @@ class: your-turn
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>  
 
-Here is the confusion matrix fora hypothetical two-class 7-NN penguin classifier
+Here is the confusion matrix for a hypothetical two-class 7-NN fire classifier.
 
 ```{r echo=FALSE}
 set.seed(234)
@@ -810,7 +810,7 @@ metrics <- metrics %>% select(-.estimator)
 
 class: middle
 
-## Tabulate the metrics
+## Tabulate the metrics (K=1)
 
 ```{r}
 metrics
@@ -894,7 +894,7 @@ Usually a trial-and-error process by which you
 
 ---
 
-## Why not to use single (training) test set
+## Why not to use single (training) test set?
 
 ```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.5}
 ts1 <- ggplot(data = fire_train) +
@@ -1002,6 +1002,8 @@ background-size: 70%
 ```{r echo=FALSE, out.width = "75%", fig.width = 5, fig.height = 3, fig.align='center'}
 #rm(accuracy, ppv)
 #detach(package:caret)
+
+set.seed(12344)
 train_complete <- fire_raw
 
 fire_recipe <- recipe(
@@ -1018,7 +1020,7 @@ knn_spec <- nearest_neighbor(
   set_engine("kknn") %>%
   set_mode("classification")
 
-set.seed(1234)
+set.seed(12344)
 
 fire_vfold <- vfold_cv(fire_raw, v = 5, strata = classes)
 
@@ -1047,7 +1049,7 @@ ggplot(cv_metrics %>% filter(.metric == "accuracy"), aes(x = neighbors, y = mean
 --
 
 .font80[
-- Based on accuracy, $k=1$ appears best
+- Based on accuracy, $k=4$ appears best
 - Can look at other metrics
 - Accuracy doesn't always decrease with $k$
 ]
