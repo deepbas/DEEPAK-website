@@ -278,7 +278,7 @@ class: middle
 
 
 > Predicting a continuous response with a set of $p$ predictors.
-predioc
+
 $$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_k X_k $$
 
 - $\beta_i$'s are the coefficients of the model and $X_i$'s are the predictors.
@@ -352,7 +352,6 @@ db_recipe <- recipe(glucose ~ ., data = db_train) %>%
   step_center(all_predictors()) %>% prep()
 ```
 
---
 .code90[
 ```{r}
 db_recipe
