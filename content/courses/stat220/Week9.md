@@ -33,3 +33,12 @@ Day 21 Slides ({{% staticref "pdf/Day21/Day21.pdf" "newtab" %}}pdf{{% /staticref
 Continue reading  [section 6.3-6.7 of Data Science: A First Introduction](https://datasciencebook.ca/classification.html#puttingittogetherworkflow). Also, skim through [section 4.3 (page 133-139) of An Introduction to Statistical Learning](https://www.statlearning.com/). You need to download the book!
 {{% /callout %}}
 
+### In Class
+
+- More on resampling and logistic regression
+
+Day 22 Slides ({{% staticref "pdf/Day22/Day22.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day22/Day22.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Tutorial](https://github.com/stat220/21-logistic-regression) 
+
+

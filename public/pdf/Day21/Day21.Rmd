@@ -1065,7 +1065,8 @@ fire_recipe <- recipe(
   data = train_complete
 ) %>%
   step_scale(all_predictors()) %>%
-  step_center(all_predictors())
+  step_center(all_predictors())%>%
+  prep()
 ```
 
 ---
@@ -1176,7 +1177,8 @@ db_recipe <- recipe(
   data = db_raw
 ) %>%
   step_scale(all_predictors()) %>%
-  step_center(all_predictors())
+  step_center(all_predictors()) %>%
+  prep()
 ```
 
 `r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
