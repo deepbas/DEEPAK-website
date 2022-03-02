@@ -521,7 +521,7 @@ lm_fit &lt;- lm_spec %&gt;%
 lm_fit
 parsnip model object
 
-Fit time:  3ms 
+Fit time:  4ms 
 
 Call:
 stats::lm(formula = glucose ~ insulin, data = data)
@@ -665,7 +665,7 @@ class: middle
 
 
 &gt; Predicting a continuous response with a set of `\(p\)` predictors.
-
+predioc
 $$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_k X_k $$
 
 - `\(\beta_i\)`'s are the coefficients of the model and `\(X_i\)`'s are the predictors.
@@ -784,6 +784,7 @@ db_recipe &lt;- recipe(glucose ~ ., data = db_train) %&gt;%
   step_center(all_predictors()) %&gt;% prep()
 ```
 
+--
 .code90[
 
 ```r
@@ -981,6 +982,7 @@ lm_wflow_eval$.extracts[[1]][[1]]
 
 `$$\text{Odds} = \frac{P(Y = 1 )}{1 - P(Y = 1 )} = e^{\beta_0 + \beta_1 + \cdots + \beta_pX_p}$$`
 `$$\text{Log Odds} = \beta_0 + \beta_1 + \cdots + \beta_pX_p$$`
+
 ---
 
 # Logistic regression with just one predictor
@@ -997,7 +999,7 @@ lm_wflow_eval$.extracts[[1]][[1]]
 ```r
 # Create data split for train and test
 set.seed(1234)
-db_single &lt;- db %&gt;% select(diabetes, glucose)
+db_single &lt;- db %&gt;% select(diabetes, glucose) 
 db_split &lt;- initial_split(db_single, prop = 0.80, strata = diabetes)
 ```
 
@@ -1028,6 +1030,7 @@ class: middle
 class: middle
 
 
+
 ```r
 fitted_logistic_model &lt;- logistic_reg() %&gt;% # Call the model function
         # Set the engine/family of the model
@@ -1050,8 +1053,8 @@ tidy(fitted_logistic_model)
 # A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)   6.26     0.718        8.72 2.90e-18
-2 glucose      -0.0439   0.00545     -8.04 8.81e-16
+1 (Intercept)  -6.26     0.718       -8.72 2.90e-18
+2 glucose       0.0439   0.00545      8.04 8.81e-16
 ```
 
 ---
@@ -1066,8 +1069,8 @@ tidy(fitted_logistic_model, exponentiate = TRUE)
 # A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)  523.      0.718        8.72 2.90e-18
-2 glucose        0.957   0.00545     -8.04 8.81e-16
+1 (Intercept)  0.00191   0.718       -8.72 2.90e-18
+2 glucose      1.04      0.00545      8.04 8.81e-16
 ```
 
 ---
@@ -1089,9 +1092,9 @@ Please clone the repository on [logistic regression](https://github.com/stat220/
 
 - Verify that the glucose value of 142.31 gives the probability of having diabetes as 1/2. 
 
-- What value of glucose gives us have a probability threshold (of having diabetes) of 0.75?
+- What value of glucose gives us a probability threshold (of having diabetes) of 0.75?
 
-<div class="countdown" id="timer_621fa62f" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<div class="countdown" id="timer_621ffb27" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -1139,8 +1142,9 @@ pred_prob &lt;- predict(fitted_logistic_model,
 ```r
 db_results &lt;- db_test %&gt;%
   bind_cols(pred_prob) %&gt;%
-  mutate(.pred_class = make_two_class_pred(.pred_pos, levels(diabetes), 
+  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), 
                                            threshold = .75)) %&gt;%
+
   select(diabetes, glucose, contains(".pred"))
 ```
 ]
@@ -1154,19 +1158,19 @@ db_results &lt;- db_test %&gt;%
 
 ```r
 head(db_results,12)
-   diabetes glucose  .pred_pos  .pred_neg .pred_class
-4       neg      89 0.08650244 0.91349756         neg
-5       pos     137 0.43727088 0.56272912         neg
-9       pos     197 0.91519888 0.08480112         pos
-20      pos     115 0.22846937 0.77153063         neg
-25      pos     143 0.50271555 0.49728445         neg
-26      pos     125 0.31465164 0.68534836         neg
-29      neg     145 0.52462130 0.47537870         neg
-40      pos     111 0.19902817 0.80097183         neg
-44      pos     171 0.77533744 0.22466256         pos
-58      neg     100 0.13299378 0.86700622         neg
-69      neg      95 0.10968133 0.89031867         neg
-89      pos     136 0.42651192 0.57348808         neg
+   diabetes glucose  .pred_neg  .pred_pos .pred_class
+4       neg      89 0.91349756 0.08650244         neg
+5       pos     137 0.56272912 0.43727088         pos
+9       pos     197 0.08480112 0.91519888         pos
+20      pos     115 0.77153063 0.22846937         neg
+25      pos     143 0.49728445 0.50271555         pos
+26      pos     125 0.68534836 0.31465164         pos
+29      neg     145 0.47537870 0.52462130         pos
+40      pos     111 0.80097183 0.19902817         neg
+44      pos     171 0.22466256 0.77533744         pos
+58      neg     100 0.86700622 0.13299378         neg
+69      neg      95 0.89031867 0.10968133         neg
+89      pos     136 0.57348808 0.42651192         pos
 ```
 ]
 ]
@@ -1188,10 +1192,10 @@ custom_metrics(db_results,
 # A tibble: 4 × 3
   .metric  .estimator .estimate
   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
-1 accuracy binary         0.759
-2 sens     binary         0.346
-3 spec     binary         0.962
-4 ppv      binary         0.818
+1 accuracy binary         0.671
+2 sens     binary         0.604
+3 spec     binary         0.808
+4 ppv      binary         0.865
 ```
 
 ---
@@ -1205,7 +1209,7 @@ custom_metrics(db_results,
 
 
 ```r
-db_results %&gt;% roc_auc(truth = diabetes, .pred_pos)
+db_results %&gt;% roc_auc(truth = diabetes, .pred_neg)
 # A tibble: 1 × 3
   .metric .estimator .estimate
   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
@@ -1229,7 +1233,7 @@ db_results %&gt;% roc_auc(truth = diabetes, .pred_pos)
 
 ```r
 db_results %&gt;%
-  roc_curve(truth = diabetes, .pred_pos) %&gt;%
+  roc_curve(truth = diabetes, .pred_neg) %&gt;%
   autoplot()
 ```
 
@@ -1325,7 +1329,6 @@ class: middle
 ## Fit, tune, and evaluate
 
 
-
 ```r
 log_res_2 &lt;- 
   log_wflow %&gt;% 
@@ -1352,21 +1355,22 @@ log_res_2$.extracts[[1]][[1]]
 # A tibble: 9 × 5
   term        estimate std.error statistic      p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
-1 (Intercept)    1.05      0.188     5.58  0.0000000242
-2 pregnant      -0.379     0.237    -1.60  0.110       
-3 glucose       -1.30      0.239    -5.42  0.0000000580
-4 pressure       0.102     0.182     0.560 0.576       
-5 triceps       -0.326     0.225    -1.45  0.147       
-6 insulin        0.225     0.198     1.14  0.255       
-7 mass          -0.461     0.238    -1.94  0.0530      
-8 pedigree      -0.422     0.184    -2.29  0.0219      
-9 age           -0.367     0.241    -1.52  0.128       
+1 (Intercept)   -1.05      0.188    -5.58  0.0000000242
+2 pregnant       0.379     0.237     1.60  0.110       
+3 glucose        1.30      0.239     5.42  0.0000000580
+4 pressure      -0.102     0.182    -0.560 0.576       
+5 triceps        0.326     0.225     1.45  0.147       
+6 insulin       -0.225     0.198    -1.14  0.255       
+7 mass           0.461     0.238     1.94  0.0530      
+8 pedigree       0.422     0.184     2.29  0.0219      
+9 age            0.367     0.241     1.52  0.128       
 ```
 
 ---
+
 class: middle
 
-## Collect eh metrics
+## Collect the metrics
 
 
 ```r
@@ -1376,11 +1380,11 @@ log_res_2 %&gt;%  collect_metrics(summarize = TRUE)
   &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
 1 accuracy  binary     0.783     5  0.0159 Preprocessor1_Model1
 2 kap       binary     0.480     5  0.0405 Preprocessor1_Model1
-3 precision binary     0.726     5  0.0313 Preprocessor1_Model1
-4 recall    binary     0.558     5  0.0381 Preprocessor1_Model1
+3 precision binary     0.803     5  0.0139 Preprocessor1_Model1
+4 recall    binary     0.895     5  0.0141 Preprocessor1_Model1
 5 roc_auc   binary     0.851     5  0.0234 Preprocessor1_Model1
-6 sens      binary     0.558     5  0.0381 Preprocessor1_Model1
-7 spec      binary     0.895     5  0.0141 Preprocessor1_Model1
+6 sens      binary     0.895     5  0.0141 Preprocessor1_Model1
+7 spec      binary     0.558     5  0.0381 Preprocessor1_Model1
 ```
 
 ---

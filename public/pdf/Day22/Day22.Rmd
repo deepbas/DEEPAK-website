@@ -81,7 +81,8 @@ yt <- 0
 
 data(PimaIndiansDiabetes2)
 db <- PimaIndiansDiabetes2
-db <- db %>% na.omit() %>% mutate(diabetes = fct_rev(factor(diabetes))) 
+db <- db %>% na.omit() 
+
 ```
 
 
@@ -278,7 +279,7 @@ class: middle
 
 
 > Predicting a continuous response with a set of $p$ predictors.
-
+predioc
 $$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \cdots + \beta_k X_k $$
 
 - $\beta_i$'s are the coefficients of the model and $X_i$'s are the predictors.
@@ -352,6 +353,7 @@ db_recipe <- recipe(glucose ~ ., data = db_train) %>%
   step_center(all_predictors()) %>% prep()
 ```
 
+--
 .code90[
 ```{r}
 db_recipe
@@ -491,6 +493,7 @@ $$P(Y = 1 ) = \frac{e^{\beta_0 + \beta_1 + \cdots + \beta_pX_p}}{1 + e^{\beta_0 
 
 $$\text{Odds} = \frac{P(Y = 1 )}{1 - P(Y = 1 )} = e^{\beta_0 + \beta_1 + \cdots + \beta_pX_p}$$
 $$\text{Log Odds} = \beta_0 + \beta_1 + \cdots + \beta_pX_p$$
+
 ---
 
 # Logistic regression with just one predictor
@@ -514,7 +517,7 @@ ggplot(db_plot, aes(x=glucose, y=y)) +
 ```{r}
 # Create data split for train and test
 set.seed(1234)
-db_single <- db %>% select(diabetes, glucose)
+db_single <- db %>% select(diabetes, glucose) 
 db_split <- initial_split(db_single, prop = 0.80, strata = diabetes)
 ```
 
@@ -542,6 +545,7 @@ class: middle
 
 ---
 class: middle
+
 
 ```{r}
 fitted_logistic_model <- logistic_reg() %>% # Call the model function
@@ -579,7 +583,7 @@ tidy(fitted_logistic_model, exponentiate = TRUE)
 
 ```{r, echo= FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
 t <- 0.5
-x.thres<- (log(t/(1-t))-fitted_logistic_model$fit$coefficients[1])/fitted_logistic_model$fit$coefficients[2]
+x.thres <- (log(t/(1-t))-fitted_logistic_model$fit$coefficients[1])/fitted_logistic_model$fit$coefficients[2]
 
 db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
 
@@ -587,9 +591,9 @@ ggplot(db_plot, aes(x=glucose, y=y)) +
   geom_jitter(aes(color=diabetes, shape =diabetes), height = 0.01) + 
   geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE) + 
   labs(y="Probability of diabetes", title = "Probability of diabetes given glucose") + 
-  geom_segment(aes(x=x.thres, xend=180,y=0.52,yend=0.52), linetype = "dashed", col = "firebrick") + 
+  geom_segment(aes(x=x.thres, xend=180,y=0.50,yend=0.50), linetype = "dashed", col = "firebrick") + 
   geom_segment(aes(x=x.thres, xend=x.thres,y=1,yend=0), linetype = "dashed") +
-  geom_text(x=181, y=.50, label = "threshold = 142.31", color="blue",family="Times") + 
+  geom_text(x=181, y=.51, label = "threshold = 142.31", color="blue",family="Times") + 
   annotate(geom = "rect", xmin = x.thres, xmax = 200, ymin = -.05, ymax = .05, fill = "blue", alpha = 0.1) + 
   geom_text(x=170, y = .15,label = "diabetes", color="blue",family="Times")+
   theme_tufte() + 
@@ -610,7 +614,7 @@ $$P(Y = 1 ) = \frac{e^{\beta_0 + \beta_1X}}{1 + e^{\beta_0 + \beta_1X}}$$
 
 - Verify that the glucose value of 142.31 gives the probability of having diabetes as 1/2. 
 
-- What value of glucose gives us have a probability threshold (of having diabetes) of 0.75?
+- What value of glucose gives us a probability threshold (of having diabetes) of 0.75?
 
 `r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
@@ -653,8 +657,9 @@ pred_prob <- predict(fitted_logistic_model,
 ```{r}
 db_results <- db_test %>%
   bind_cols(pred_prob) %>%
-  mutate(.pred_class = make_two_class_pred(.pred_pos, levels(diabetes), 
+  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), 
                                            threshold = .75)) %>%
+
   select(diabetes, glucose, contains(".pred"))
 ```
 ]
@@ -700,7 +705,7 @@ custom_metrics(db_results,
 
 
 ```{r}
-db_results %>% roc_auc(truth = diabetes, .pred_pos)
+db_results %>% roc_auc(truth = diabetes, .pred_neg)
 ```
 
 - ROC_AUC tells how much the model is capable of distinguishing between classes.
@@ -719,7 +724,7 @@ db_results %>% roc_auc(truth = diabetes, .pred_pos)
 
 ```{r, fig.width=6, eval=FALSE, fig.height=4.5, fig.align='center', out.width = "60%"}
 db_results %>%
-  roc_curve(truth = diabetes, .pred_pos) %>%
+  roc_curve(truth = diabetes, .pred_neg) %>%
   autoplot()
 ```
 
@@ -729,7 +734,7 @@ db_results %>%
 
 ```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
 db_results %>%
-  roc_curve(truth = diabetes, .pred_pos) %>%
+  roc_curve(truth = diabetes, .pred_neg) %>%
   autoplot()
 ```
 
@@ -854,7 +859,6 @@ class: middle
 
 ## Fit, tune, and evaluate
 
-
 ```{r}
 log_res_2 <- 
   log_wflow %>% 
@@ -879,9 +883,10 @@ log_res_2$.extracts[[1]][[1]]
 ```
 
 ---
+
 class: middle
 
-## Collect eh metrics
+## Collect the metrics
 
 ```{r}
 log_res_2 %>%  collect_metrics(summarize = TRUE)
@@ -905,7 +910,7 @@ log_pred %>%
 ```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
 log_pred %>% 
   group_by(id) %>% # id contains our folds
-  roc_curve(diabetes, .pred_pos) %>% 
+  roc_curve(diabetes, .pred_neg) %>% 
   autoplot() + 
   theme_minimal()
 ```
@@ -917,10 +922,10 @@ log_pred %>%
 ```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
 log_pred %>% 
   ggplot() +
-  geom_density(aes(x = .pred_pos, 
+  geom_density(aes(x = .pred_neg, 
                    fill = diabetes), 
                alpha = 0.5)+
-  theme_tufte()+
+  theme_tufte() +
   scale_fill_wsj()
 ```
 
