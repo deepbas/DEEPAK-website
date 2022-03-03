@@ -47,5 +47,5 @@ Day 22 Slides ({{% staticref "pdf/Day22/Day22.pdf" "newtab" %}}pdf{{% /staticref
 ### Before Class
 
 {{% callout note %}}
-Read [Chapter 9 of Data Science: A First Introduction](https://datasciencebook.ca/clustering.html). Also, skim through [section 12.4.2 (page 521-526) of An Introduction to Statistical Learning](https://www.statlearning.com/). on hierarchical clustering.
+Read [Chapter 9 of Data Science: A First Introduction](https://datasciencebook.ca/clustering.html). Also, skim through [section 12.4.2 (page 521-526) of An Introduction to Statistical Learning](https://www.statlearning.com/) on hierarchical clustering.
 {{% /callout %}}
