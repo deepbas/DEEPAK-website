@@ -486,7 +486,6 @@ fire_test <- fire_split %>%
 
 ```
 
-
 .pull-left[
 ```{r echo=FALSE, fig.asp=1, fig.height = 3, fig.width = 3.5, fig.align='center', out.width = "90%"}
 ggplot(data = fire_train, aes(x = temperature, y = isi , fill = classes)) +

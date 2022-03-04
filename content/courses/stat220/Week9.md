@@ -49,3 +49,12 @@ Day 22 Slides ({{% staticref "pdf/Day22/Day22.pdf" "newtab" %}}pdf{{% /staticref
 {{% callout note %}}
 Read [Chapter 9 of Data Science: A First Introduction](https://datasciencebook.ca/clustering.html). Also, skim through [section 12.4.2 (page 521-526) of An Introduction to Statistical Learning](https://www.statlearning.com/) on hierarchical clustering.
 {{% /callout %}}
+
+### In Class
+
+- K-means Clustering
+
+Day 23 Slides ({{% staticref "pdf/Day23/Day23.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day23/Day23.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Tutorial](https://github.com/stat220/22-clustering) 
+

@@ -1,0 +1,771 @@
+---
+title: "Regression"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+      countdown: 60000
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+library(htmlwidgets)
+library(palmerpenguins)
+library(fontawesome)
+library(patchwork)
+library(tidymodels)
+library(mlbench)     
+library(janitor)
+library(parsnip)
+library(kknn)
+library(paletteer)
+library(corrr)
+library(scico)
+library(yardstick)
+library(probably)
+library(extrafont)
+library(cluster)    # clustering algorithms
+library(factoextra) # clustering algorithms & visualization
+library(broom)
+library(purrr)
+library(dendextend) # for comparing two dendrograms
+
+
+yt <- 0
+
+USAData <- as_tibble(USArrests, rownames = "state") %>% na.omit() %>%
+  column_to_rownames("state")
+
+
+standardize <- function(x, na.rm = FALSE) {
+  (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
+}
+
+set.seed(233)
+
+clus_df <- tibble(
+  x1 = rnorm(n = 150, mean = rep(c(5,7,8), each = 50)),
+  x2 = rnorm(n = 150, mean = rep(c(2, 5, 1), each = 50)),
+  y = unlist(lapply(1:3, function(x) rep(as.character(x),50)))
+)
+
+
+my_df <- tibble(
+  X1 = rnorm(n = 50, mean = rep(c(1, 3), each = 25)),
+  X2 = rnorm(n = 50, mean = rep(c(1.3, 1), each = 25))
+)
+
+multi_kmeans <- tibble(k = 1:10) %>%
+  mutate(
+    model = purrr::map(k, ~ kmeans(my_df, centers = .x, nstart = 25)),
+    tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss)
+  )
+
+d2 <- dist(my_df, method = "euclidean")
+hc2 <- hclust(d2)
+
+
+```
+
+
+```{r xaringan-themer, include = FALSE}
+# Use xaringan theme from first set
+```
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Bastola</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Intro to Clustering]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Supervised to unsupervised
+
+.pull-left[
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width="100%"}
+ggplot(clus_df, aes(x = x1, y = x2, color = y, shape = y)) + 
+  geom_point() +
+  coord_fixed() +
+  scale_color_fivethirtyeight() +
+  theme_tufte() +
+  theme(legend.position = "none")
+```
+
+]
+.pull-right[
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width="100%"}
+clus_df <- clus_df %>% select(-y)
+ggplot(clus_df, aes(x = x1, y = x2)) + 
+  geom_point() +
+  coord_fixed() +
+  theme_tufte()
+```
+
+]
+
+
+---
+
+class: middle
+
+# K-means Basics
+
+- Algorithm to group data into K clusters
+
+- Starts with an initial clustering of data
+
+- Iteratively improves the cluster assignments 
+
+- Stops until the assignments cannot be improved further
+
+---
+
+class: middle
+
+# Algorithm
+
+1. Randomly assign a number, from 1 to K, to each of the observations
+
+2. Compute the centroid of each of the K clusters
+
+3. Assign each point to the nearest centroid and redefine the cluster
+
+4. Repeat steps 2 and 3 until no point change clusters
+
+---
+
+# Main Idea
+
+> To minimize the total within cluster variation
+
+The total within-cluster variation is the sum of squared Euclidean distances between items and the corresponding centroid:
+
+$$W = \sum_{k=1}^K W(C_k) = \sum_{k=1}^K \sum_{x_i \in C_k}(x_i - \mu_k)^2$$
+where:
+
+- $x_i$ is a data point in the cluster $C_k$
+
+- $\mu_k$ is the mean value of the points assigned to the cluster $C_k$
+
+---
+
+.bold[Randomly assign a number, from 1 to *K* , to each of the observations]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+set.seed(77)
+clus_df <- clus_df %>% 
+  mutate(cluster_assign = as.character(sample(as.character(1:3), 150, replace=TRUE)))
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() + 
+  scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") + 
+  theme_tufte()
+  
+```
+
+
+---
+
+.bold[Compute the centroid of each cluster]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+centroids <- clus_df %>% 
+  group_by(cluster_assign) %>%
+  summarize_all(mean)
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign), pch="X", size=4, show.legend=FALSE) + 
+  scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") + 
+  theme_tufte()
+```
+
+
+---
+
+.bold[Re-assign each observation to the cluster whose centroid is closest]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
+distance <- distance[4:153,1:3]
+min_dist <- as.vector(apply(distance,1,min))
+new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
+clus_df <- clus_df %>% mutate(cluster_assign =as.character(new_cluster))
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign), pch="X", size=4, show.legend=FALSE)+ 
+  scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+---
+
+.bold[Re-compute the centroid of each cluster]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+centroids <- clus_df %>% 
+  group_by(cluster_assign) %>%
+  summarize_all(mean)
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
+ scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+
+---
+
+.bold[Re-assign each observation to the cluster whose centroid is closest]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
+distance <- distance[4:153,1:3]
+min_dist <- as.vector(apply(distance,1,min))
+new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
+clus_df <- clus_df %>% mutate( cluster_assign =as.character(new_cluster))
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
+  scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+
+---
+
+.bold[Re-compute the centroid of each cluster]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+centroids <- clus_df %>% 
+  group_by(cluster_assign) %>%
+  summarize_all(mean)
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
+ scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+
+---
+
+.bold[Re-assign each observation to the cluster whose centroid is closest]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
+distance <- distance[4:153,1:3]
+min_dist <- as.vector(apply(distance,1,min))
+new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
+clus_df <- clus_df %>% mutate( cluster_assign =as.character(new_cluster))
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
+  scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+
+---
+
+.bold[Re-compute the centroid of each cluster]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+centroids <- clus_df %>% 
+  group_by(cluster_assign) %>%
+  summarize_all(mean)
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
+ scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+
+---
+
+.bold[Re-assign each observation to the cluster whose centroid is closest]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
+distance <- distance[4:153,1:3]
+min_dist <- as.vector(apply(distance,1,min))
+new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
+clus_df <- clus_df %>% mutate( cluster_assign =as.character(new_cluster))
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
+  scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+
+---
+
+.bold[Re-compute the centroid of each cluster]
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+centroids <- clus_df %>% 
+  group_by(cluster_assign) %>%
+  summarize_all(mean)
+ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
+  geom_point()+
+  coord_fixed() +
+  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
+ scale_color_fivethirtyeight("cluster") +
+  scale_shape_discrete("cluster") +
+  theme_tufte()
+```
+
+---
+
+# `USArrests`
+
+```{r}
+USAData <- as_tibble(USArrests, rownames = "state") %>% na.omit() %>%
+  column_to_rownames("state") %>%
+  select(Murder, UrbanPop)
+```
+
+```{r}
+head(USAData, 10)
+```
+
+---
+
+# Means and standard deviations
+
+```{r}
+USAData %>%
+  map_dfr(mean)
+```
+
+--
+
+```{r}
+USAData %>%
+  map_dfr(sd)
+```
+
+---
+
+# Standardize the data
+
+<!-- Don't want the clustering algorithm to depend to an arbitrary variable unit -->
+
+```{r}
+USAData <- USAData %>% mutate(across(where(is.numeric), standardize))
+```
+
+```{r}
+head(USAData,10)
+```
+
+
+---
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "60%", fig.cap="Euclidean Distances"}
+distance <- get_dist(USAData)
+fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+```
+
+
+---
+
+class: inverse, middle
+
+# So, how do we fit all of this in R?
+
+---
+
+class: middle
+
+# `kmeans()`
+
+- `kmeans()` function takes a matrix or data-frame or tibble and the number of centers/clusters we want to find.
+
+- We also set `nstart = 20-25` to have multiple initial starting positions in the hope of finding global optimal solution instead of local optimal solution
+
+- Use `set.seed()` for reproducibility
+---
+
+class: middle
+
+# Within Cluster Sum of Squared Errors (WSS)
+
+- Calculate WSS for different values of K.
+
+- Choose K for which WSS first starts to diminish.
+
+- Visually deciphered with an .bold[elbow graph].
+
+- The number of clusters is taken at the elbow joint point.
+
+---
+
+class: middle
+
+# K-means
+
+```{r}
+set.seed(1234)
+k.means <- kmeans(USAData, centers = 2, nstart = 25)
+```
+
+---
+
+class: middle
+
+```{r}
+k.means %>% tidy()
+```
+
+---
+
+class: middle
+
+```{r}
+glance(k.means)
+```
+
+---
+
+# `augment` from `broom` package
+
+```{r}
+augment(k.means, data = USAData)
+```
+
+---
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "70%" }
+set.seed(1234)
+USAData %>%
+  mutate(cluster = k.means$cluster,
+         state = row.names(USAData)) %>%
+  ggplot(aes(y = UrbanPop, x = Murder, color = factor(cluster), label = state)) +
+  ggrepel::geom_text_repel() + scale_color_discrete(name="cluster") 
+```
+
+---
+
+# In-built function for visuals
+
+.code80[
+```{r, fig.width=8, fig.height=6, fig.align='center', out.width = "55%"}
+library(factoextra)
+fviz_cluster(k.means, data = USAData, repel = TRUE)
+```
+]
+
+---
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%"}
+k.means1 <- k.means
+k.means2 <- kmeans(USAData, centers = 3, nstart = 25)
+k.means3 <- kmeans(USAData, centers = 4, nstart = 25)
+k.means4 <- kmeans(USAData, centers = 5, nstart = 25)
+
+# plots to compare
+p1 <- fviz_cluster(k.means1, geom = "point", data = USAData) + ggtitle("k = 2")
+p2 <- fviz_cluster(k.means2, geom = "point",  data = USAData) + ggtitle("k = 3")
+p3 <- fviz_cluster(k.means3, geom = "point",  data = USAData) + ggtitle("k = 4")
+p4 <- fviz_cluster(k.means4, geom = "point",  data = USAData) + ggtitle("k = 5")
+
+library(gridExtra)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+```
+
+
+---
+
+class: middle
+
+# Visuals do not tell all the story
+
+> Visuals tell us where the true delineations occur, but do not tell us what the optimal number of clusters is.
+
+---
+
+# Determine the optimal number of clusters
+
+.code80[
+```{r}
+set.seed(1234)
+multi_kmeans <- tibble(k = 1:10) %>%
+  mutate(
+    model = purrr::map(k, ~ kmeans(USAData, centers = .x, nstart = 25)),
+    tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss)
+  )
+
+multi_kmeans
+```
+]
+
+---
+
+```{r, echo=FALSE, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%"}
+multi_kmeans %>%
+  ggplot(aes(k, tot.withinss)) +
+  geom_point() +
+  geom_line() +
+  annotate("text", x = multi_kmeans$k[4] + 1, 
+           y = multi_kmeans$tot.withinss[4] + 15, 
+           label = "Elbow", size = 5) +
+  
+  annotate("segment", x = multi_kmeans$k[4] + 0.5, y = multi_kmeans$tot.withinss[4] + 15, 
+                 xend = multi_kmeans$k[4], yend = multi_kmeans$tot.withinss[4], colour = "blue", size = 1, arrow = arrow(length = unit(.4,"cm"))) +
+  theme_light()+
+  xlab("K") +
+  ylab("Total within-cluster sum of squares")+
+  scale_x_continuous(breaks = 1:15) +
+  theme(panel.grid.minor.x = element_blank())
+```
+
+---
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%"}
+set.seed(1234)
+kmeans.final <- kmeans(USAData, 4, nstart = 25)
+fviz_cluster(kmeans.final, data = USAData, repel = TRUE)
+```
+
+---
+
+# Extract 
+
+```{r}
+USAData %>%
+  mutate(Cluster = kmeans.final$cluster) %>%
+  group_by(Cluster) %>%
+  summarise_all("mean")
+```
+
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+Please clone the repository on [clustering](https://github.com/stat220/22-clustering) to your local folder.
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "45%"}
+multi_kmeans %>%
+  ggplot(aes(k, tot.withinss)) +
+  geom_point() +
+  geom_line()+
+  scale_x_continuous(breaks = 1:15) +
+  theme_minimal()+
+  labs(x = "K")
+
+```
+
+Complete the questionnaires to find the optimal number of clusters using the total within sum of squares criteria.
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+class: middle
+
+# Hierarchical clustering
+
+- A method used to group objects based on similarity
+
+- Focus on agglomerative hierarchical clustering (bottom-up approach)
+
+- To form an attractive tree-based representation of the observations called .bold[dendogram]
+
+- Flexible cut-off choice for the number of clusters 
+
+---
+
+class: middle
+
+# Algorithm
+
+1. Starts by calculating the distance between every pair of observation points and store it in a distance matrix.
+2. Puts every point in its own cluster.
+3. Starts merging the closest pairs of points based on the distances from the distance matrix and as a result the amount of clusters goes down by 1.
+4. Recomputes the distance between the new cluster and the old ones and stores them in a new distance matrix.
+5. Repeats steps 2 and 3 until all the clusters are merged into one single cluster.
+
+
+---
+
+# Dissimilarity values
+
+```{r}
+d <- dist(USAData, method = "euclidean")
+```
+
+--
+
+# Agglomeration method
+
+```{r}
+# Hierarchical clustering
+hc1 <- hclust(d)
+```
+
+--
+
+# Plot the dendogram
+
+```{r, eval=FALSE}
+# Plot the obtained dendrogram
+plot(hc1, cex = 0.6, hang = -1)
+```
+
+---
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%"}
+plot(hc1, cex = 0.6, hang = -1)
+```
+
+---
+
+class: middle
+
+```{r}
+# Cut tree into 4 groups
+sub_grp <- cutree(hc1, k = 4)
+```
+
+```{r}
+# Number of members in each cluster
+table(sub_grp)
+```
+
+---
+
+class: middle
+
+```{r}
+USAData %>%
+  mutate(cluster = sub_grp) %>%
+  head()
+```
+
+
+---
+.code70[
+```{r, eval=FALSE}
+plot(hc1, cex = 0.6)
+rect.hclust(hc1, k = 4, border = 2:5)   # Number of clusters
+```
+]
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "65%"}
+plot(hc1, cex = 0.6)
+rect.hclust(hc1, k = 4, border = 2:5)
+```
+
+---
+
+.code70[
+```{r, eval=FALSE}
+plot(hc1, cex = 0.6)
+rect.hclust(hc1, h = 2, border = 2:5)   # Height of branch
+```
+]
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "65%"}
+plot(hc1, cex = 0.6)
+rect.hclust(hc1, h = 2, border = 2:5)
+```
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "55%"}
+plot(hc2, cex = 0.6)
+rect.hclust(hc2, k = 3, border = 2:5)   # Number of clusters
+```
+
+Explore further about hierarchical clustering using the instructions provided to produce the dendogram above.
+
+`r countdown(minutes = 3, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
