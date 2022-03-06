@@ -13,6 +13,21 @@
     </image>
     
     <item>
+      <title>Week 10</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week10/</link>
+      <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week10/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 03/07&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Skim through &lt;a href=&#34;https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/tree-based-methods.html&#34;&gt;tree-based methods&lt;/a&gt; from ISLR labs. We will gently go over classification trees and random forest models only.
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 9</title>
       <link>https://deepbas.netlify.app/courses/stat220/week9/</link>
       <pubDate>Sun, 27 Feb 2022 00:00:00 +0000</pubDate>
