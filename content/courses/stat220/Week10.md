@@ -17,5 +17,14 @@ Skim through [tree-based methods](https://emilhvitfeldt.github.io/ISLR-tidymodel
 {{% /callout %}}
 
 
+### In Class
+
+- Basic decision tree and random forest
+- Final project description
+- Midterm 3 review
+
+Day 24 Slides ({{% staticref "pdf/Day24/Day24.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day24/Day24.html" "newtab" %}}html{{% /staticref %}})
+
+- Link to [In Class Tutorial](https://github.com/stat220/23-random-forest) 
 
 

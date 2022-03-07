@@ -1,0 +1,471 @@
+---
+title: "Random Forest"
+subtitle: "<br/> STAT 220"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+      countdown: 60000
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+library(htmlwidgets)
+library(lubridate)
+library(palmerpenguins)
+library(fontawesome)
+library(caret)
+library(class)
+library(patchwork)
+library(tidymodels)
+library(mlbench)     # for PimaIndiansDiabetes2 dataset
+library(janitor)
+library(parsnip)
+library(kknn)
+library(paletteer)
+library(corrr)
+library(scico)
+library(skimr)
+library(janitor)
+library(vip)
+library(rpart.plot)
+library(ranger)
+library(palmerpenguins)
+library(ISLR2)
+
+yt <- 0
+
+```
+
+
+```{r xaringan-themer, include = FALSE}
+# Use xaringan theme from first set
+```
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Bastola</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Decision Trees and Random Forest]
+
+### .fancy[Stat 220]
+
+.large[Bastola]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+class: inverse
+
+## Decision Tree
+
+.blockquote[
+- a type of supervised algorithm 
+]
+
+---
+
+```{r}
+data("Carseats")
+
+carseats <- as_tibble(Carseats) %>%
+  mutate(High = factor(if_else(Sales > 8, "Yes", "No"))) %>%
+  mutate(High = fct_relevel(High, "Yes")) %>%
+  select(-Sales)
+```
+
+---
+
+```{r}
+glimpse(carseats)
+```
+
+---
+
+class: middle
+
+```{r}
+set.seed(314) 
+carseats_split <- initial_split(carseats, prop = 0.80, 
+                             strata = High)
+carseats_train <- carseats_split %>% training()
+carseats_test <- carseats_split %>% testing()
+
+```
+
+---
+
+```{r}
+carseats_recipe <- recipe(High ~ ., data = carseats_train) %>%
+ step_normalize(all_numeric(), -all_outcomes()) %>% 
+ step_dummy(all_nominal(), -all_outcomes()) %>%
+ prep()
+```
+
+
+---
+
+.code90[
+```{r}
+carseats_recipe %>% 
+  bake(new_data = carseats_train)
+```
+]
+
+---
+
+class: middle
+
+# Model Specification
+
+- cost_complexity: The cost complexity parameter (a.k.a. Cp or λ)
+- tree_depth: The maximum depth of a tree
+- min_n: The minimum number of data points in a node that are required for the node to be split further.
+
+
+```{r}
+tree_model <- decision_tree(cost_complexity = tune(),
+                            tree_depth = tune(),
+                            min_n = tune()) %>% 
+              set_engine('rpart') %>% 
+              set_mode('classification')
+```
+
+---
+
+```{r}
+# Combine the model and recipe into a workflow to easily manage the model-building process.
+tree_workflow <- workflow() %>% 
+                 add_model(tree_model) %>% 
+                 add_recipe(carseats_recipe)
+```
+
+---
+
+# Hyperparameter tuning
+
+```{r}
+# Create folds for cross validation on the training data set
+carseats_folds <- vfold_cv(carseats_train, v = 5, strata = High)
+```
+
+--
+
+```{r}
+## Create a grid of hyperparameter values to test
+tree_grid <- grid_regular(cost_complexity(),
+                          tree_depth(),
+                          min_n(), 
+                          levels = 2)
+```
+
+---
+
+# View grid
+
+```{r}
+tree_grid
+```
+
+
+---
+
+# Tuning Hyperparameters with `tune_grid()`
+
+```{r}
+## Tune decision tree workflow
+set.seed(314)
+
+tree_tuning <- tree_workflow %>% 
+               tune_grid(resamples = carseats_folds,
+                         grid = tree_grid)
+```
+
+---
+
+# Best model
+
+```{r}
+## Select best model based on roc_auc
+best_tree <- tree_tuning %>% 
+             select_best(metric = 'roc_auc')
+
+# View the best tree parameters
+best_tree
+```
+
+---
+
+# Finalize workflow
+
+```{r}
+final_tree_workflow <- tree_workflow %>% 
+                       finalize_workflow(best_tree)
+```
+
+---
+
+# Visualize
+
+```{r}
+tree_wf_fit <- final_tree_workflow %>% 
+               fit(data = carseats_train)
+```
+
+---
+
+# Visualize 
+
+```{r}
+tree_fit <- tree_wf_fit %>% 
+            extract_fit_parsnip()
+```
+
+---
+
+```{r, echo=TRUE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+vip(tree_fit)
+```
+
+---
+
+```{r, echo=TRUE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+rpart.plot(tree_fit$fit, roundint = FALSE)
+```
+
+---
+
+# Train and Evaluate With `last_fit()`
+
+```{r}
+tree_last_fit <- final_tree_workflow %>% 
+                 last_fit(carseats_split)
+```
+
+---
+
+```{r}
+tree_last_fit %>% collect_metrics()
+
+```
+
+---
+
+# Confusion matrix
+
+```{r}
+tree_predictions <- tree_last_fit %>% collect_predictions()
+conf_mat(tree_predictions, truth = High, estimate = .pred_class)
+```
+
+---
+
+```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+tree_last_fit %>% collect_predictions() %>% 
+                  roc_curve(truth  = High, estimate = .pred_Yes) %>% 
+                  autoplot()
+```
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+Please clone the repository on [classification intro](https://github.com/stat220/19-classification-knn) to your local folder.
+
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+# Random Forest
+
+> Random forests take decision trees and construct more powerful models in terms of prediction accuracy.
+
+- The main mechanism that powers this algorithm is repeated sampling (with replacement) of the training data to produce a sequence of decision tree models. 
+
+- These models are then averaged to obtain a single prediction for a given value in the predictor space.
+
+- The random forest model selects a random subset of predictor variables for splitting the predictor space in the tree building process. This is done for every iteration of the algorithm, typically 100 to 2,000 times.
+
+
+---
+
+# Model Specification
+
+- .bold[mtry:] The number of predictors that will be randomly sampled at each split when creating the tree models
+
+- .bold[trees:] The number of decision trees to fit and ultimately average
+
+- .bold[min_n:] The minimum number of data points in a node that are required for the node to be split further
+
+---
+
+# Model Specification
+
+```{r}
+rf_model <- rand_forest(mtry = tune(),
+                        trees = tune(),
+                        min_n = tune()) %>% 
+            set_engine('ranger', importance = "impurity") %>% 
+            set_mode('classification')
+```
+
+---
+
+# Workflow
+
+```{r}
+rf_workflow <- workflow() %>% 
+               add_model(rf_model) %>% 
+               add_recipe(carseats_recipe)
+```
+
+---
+
+# Hyperparameter Tuning
+
+```{r}
+## Create a grid of hyperparameter values to test
+set.seed(314)
+rf_grid <- grid_random(mtry() %>% range_set(c(1, 20)),
+                       trees(),
+                       min_n(),
+                       size = 10)
+```
+
+---
+
+# View Grid
+
+```{r}
+rf_grid
+```
+
+---
+
+# Tuning Hyperparameters with tune_grid()
+
+
+```{r}
+## Tune random forest workflow
+set.seed(314)
+
+rf_tuning <- rf_workflow %>% 
+             tune_grid(resamples = carseats_folds,
+                       grid = rf_grid)
+```
+
+---
+
+# Show best
+
+
+```{r}
+## Show the top 5 best models based on roc_auc metric
+rf_tuning %>% show_best('roc_auc')
+```
+
+---
+
+# Select best
+
+```{r}
+## Select best model based on roc_auc
+best_rf <- rf_tuning %>% 
+           select_best(metric = 'roc_auc')
+
+# View the best parameters
+best_rf
+```
+
+---
+
+# Finalize workflow
+
+```{r}
+final_rf_workflow <- rf_workflow %>% 
+                     finalize_workflow(best_rf)
+```
+
+---
+
+# Variable Importance
+
+```{r}
+rf_wf_fit <- final_rf_workflow %>% 
+             fit(data = carseats_train)
+
+rf_fit <- rf_wf_fit %>% 
+          extract_fit_parsnip()
+
+```
+
+---
+
+# Variable Importance
+
+```{r}
+vip(rf_fit)
+```
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
