@@ -27,4 +27,9 @@ Day 24 Slides ({{% staticref "pdf/Day24/Day24.pdf" "newtab" %}}pdf{{% /staticref
 
 - Link to [In Class Tutorial](https://github.com/stat220/23-random-forest) 
 
+<span style="color:orange">**Wednesday, 03/09**</span>
+
+{{% callout note %}}
+Midterm III
+{{% /callout %}}
 
