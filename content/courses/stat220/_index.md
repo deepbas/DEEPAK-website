@@ -40,7 +40,7 @@ If you took Stat 120, 230, or 250 at Carleton, then you are in good shape. It is
 2)  Individual assignments (20%)
 3)	Paired projects (10%)
 4)	Midterm Exams (45%)
-5)	Final Project (25%)
+5)	Final Project (20%)
 
 
 {{% staticref "pdf/STAT_220_Syllabus.pdf" "newtab" %}}VIEW THE SYLLABUS{{% /staticref %}}
