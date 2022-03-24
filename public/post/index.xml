@@ -23,9 +23,14 @@
 
 &lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can use asterisk mark to provide emphasis, such as &lt;em&gt;italics&lt;/em&gt; or &lt;strong&gt;bold&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;You can create lists with a dash:&lt;/p&gt;
+&lt;p&gt;This is a R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can use asterisk mark to provide emphasis, such as &lt;code&gt;*italics* or **bold**&lt;/code&gt; to produce &lt;em&gt;italics&lt;/em&gt; or &lt;strong&gt;bold&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;You can create lists with a combination of dash, plus, or asterisk :&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;- Item 1
+- Item 2
+- Item 3
+  + Subitem 1
+* Item 4&lt;/code&gt;&lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;Item 1&lt;/li&gt;
 &lt;li&gt;Item 2&lt;/li&gt;
@@ -38,7 +43,7 @@
 &lt;p&gt;You can embed Latex equations in-line, &lt;span class=&#34;math inline&#34;&gt;\(\frac{1}{n} \sum_{i=1}^{n} x_{i}\)&lt;/span&gt; or in a new line as&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]&lt;/span&gt;
 ## Embed an R code chunk:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Use back ticks to 
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Use back ticks to 
 create a block of code&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
@@ -69,20 +74,153 @@ pie(
   init.angle = -50, border = NA
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;288&#34; /&gt;
+&lt;img src=&#34;https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: A fancy pie chart.
 &lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;div id=&#34;read-in-excel-formatted-data-files&#34; class=&#34;section level2&#34;&gt;
-&lt;h2&gt;Read in excel formatted data files&lt;/h2&gt;
+&lt;div id=&#34;read-in-data-files&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Read in data files&lt;/h2&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;simple_data &amp;lt;- read.csv(&amp;quot;https://deepbas.io/data/simple-1.dat&amp;quot;, )
-head(simple_data)
-##   initials state age time
-## 1      vib    MA  61 6:01
-## 2      adc    TX  45 5:45
-## 3      kme    CT  50 4:19&lt;/code&gt;&lt;/pre&gt;
+summary(simple_data) 
+##    initials            state                age           time          
+##  Length:3           Length:3           Min.   :45.0   Length:3          
+##  Class :character   Class :character   1st Qu.:47.5   Class :character  
+##  Mode  :character   Mode  :character   Median :50.0   Mode  :character  
+##                                        Mean   :52.0                     
+##                                        3rd Qu.:55.5                     
+##                                        Max.   :61.0&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;knitr::kable(simple_data, format = &amp;quot;html&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+initials
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+state
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+age
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+time
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+vib
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+MA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+61
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+6:01
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+adc
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TX
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+45
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+5:45
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+kme
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+CT
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+50
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+4:19
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div id=&#34;hide-the-code&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Hide the code&lt;/h2&gt;
+&lt;p&gt;Entering &lt;code&gt;echo = FALSE&lt;/code&gt; option in the R chunk prevents the R code from being printed to your document and you just see the results/outputs.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;knitr::kable(simple_data, format = &amp;quot;html&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+initials
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+state
+&lt;/th&gt;
+&lt;th style=&#34;text-align:right;&#34;&gt;
+age
+&lt;/th&gt;
+&lt;th style=&#34;text-align:left;&#34;&gt;
+time
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+vib
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+MA
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+61
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+6:01
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+adc
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+TX
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+45
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+5:45
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+kme
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+CT
+&lt;/td&gt;
+&lt;td style=&#34;text-align:right;&#34;&gt;
+50
+&lt;/td&gt;
+&lt;td style=&#34;text-align:left;&#34;&gt;
+4:19
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 </description>
@@ -116,7 +254,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-275641983&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-186279534&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -126,7 +264,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-275641983&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-186279534&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

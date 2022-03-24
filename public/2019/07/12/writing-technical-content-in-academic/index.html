@@ -796,7 +796,7 @@ data.head()
 <p>Demo:</p>
 
 
-<div id="chart-275641983" class="chart"></div>
+<div id="chart-186279534" class="chart"></div>
 <script>
   (function() {
     let a = setInterval( function() {
@@ -806,7 +806,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json("./line-chart.json", function(chart) {
-        Plotly.plot('chart-275641983', chart.data, chart.layout, {responsive: true});
+        Plotly.plot('chart-186279534', chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
@@ -1453,6 +1453,28 @@ You found me!
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 
+
+
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    
 
 
 </body>

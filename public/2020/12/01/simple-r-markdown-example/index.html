@@ -60,7 +60,7 @@
   
     
   
-  <meta name="description" content="R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown." />
+  <meta name="description" content="R Markdown This is a R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown." />
 
   
   <link rel="alternate" hreflang="en-us" href="https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/" />
@@ -301,7 +301,7 @@
   <meta property="og:site_name" content="Deepak Bastola" />
   <meta property="og:url" content="https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/" />
   <meta property="og:title" content="Simple R Markdown Example | Deepak Bastola" />
-  <meta property="og:description" content="R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown." /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
+  <meta property="og:description" content="R Markdown This is a R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown." /><meta property="og:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
     
@@ -354,7 +354,7 @@
       "url": "https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_192x192_fill_lanczos_center_3.png"
     }
   },
-  "description": "R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown."
+  "description": "R Markdown This is a R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown."
 }
 </script>
 
@@ -762,9 +762,14 @@
 
 <div id="r-markdown" class="section level1">
 <h1>R Markdown</h1>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>You can use asterisk mark to provide emphasis, such as <em>italics</em> or <strong>bold</strong>.</p>
-<p>You can create lists with a dash:</p>
+<p>This is a R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<p>You can use asterisk mark to provide emphasis, such as <code>*italics* or **bold**</code> to produce <em>italics</em> or <strong>bold</strong>.</p>
+<p>You can create lists with a combination of dash, plus, or asterisk :</p>
+<pre class="r"><code>- Item 1
+- Item 2
+- Item 3
+  + Subitem 1
+* Item 4</code></pre>
 <ul>
 <li>Item 1</li>
 <li>Item 2</li>
@@ -777,7 +782,7 @@
 <p>You can embed Latex equations in-line, <span class="math inline">\(\frac{1}{n} \sum_{i=1}^{n} x_{i}\)</span> or in a new line as</p>
 <p><span class="math display">\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]</span>
 ## Embed an R code chunk:</p>
-<pre><code>Use back ticks to 
+<pre class="r"><code>Use back ticks to 
 create a block of code</code></pre>
 <p>You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:</p>
 <pre class="r"><code>summary(cars)
@@ -808,20 +813,153 @@ pie(
   init.angle = -50, border = NA
 )</code></pre>
 <div class="figure"><span style="display:block;" id="fig:pie"></span>
-<img src="https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/figure-html/pie-1.png" alt="A fancy pie chart." width="288" />
+<img src="https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
 <p class="caption">
 Figure 1: A fancy pie chart.
 </p>
 </div>
 </div>
-<div id="read-in-excel-formatted-data-files" class="section level2">
-<h2>Read in excel formatted data files</h2>
+<div id="read-in-data-files" class="section level2">
+<h2>Read in data files</h2>
 <pre class="r"><code>simple_data &lt;- read.csv(&quot;https://deepbas.io/data/simple-1.dat&quot;, )
-head(simple_data)
-##   initials state age time
-## 1      vib    MA  61 6:01
-## 2      adc    TX  45 5:45
-## 3      kme    CT  50 4:19</code></pre>
+summary(simple_data) 
+##    initials            state                age           time          
+##  Length:3           Length:3           Min.   :45.0   Length:3          
+##  Class :character   Class :character   1st Qu.:47.5   Class :character  
+##  Mode  :character   Mode  :character   Median :50.0   Mode  :character  
+##                                        Mean   :52.0                     
+##                                        3rd Qu.:55.5                     
+##                                        Max.   :61.0</code></pre>
+<pre class="r"><code>knitr::kable(simple_data, format = &quot;html&quot;)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+initials
+</th>
+<th style="text-align:left;">
+state
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+vib
+</td>
+<td style="text-align:left;">
+MA
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:left;">
+6:01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adc
+</td>
+<td style="text-align:left;">
+TX
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:left;">
+5:45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+kme
+</td>
+<td style="text-align:left;">
+CT
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:left;">
+4:19
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="hide-the-code" class="section level2">
+<h2>Hide the code</h2>
+<p>Entering <code>echo = FALSE</code> option in the R chunk prevents the R code from being printed to your document and you just see the results/outputs.</p>
+<pre class="r"><code>knitr::kable(simple_data, format = &quot;html&quot;)</code></pre>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+initials
+</th>
+<th style="text-align:left;">
+state
+</th>
+<th style="text-align:right;">
+age
+</th>
+<th style="text-align:left;">
+time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+vib
+</td>
+<td style="text-align:left;">
+MA
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:left;">
+6:01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+adc
+</td>
+<td style="text-align:left;">
+TX
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:left;">
+5:45
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+kme
+</td>
+<td style="text-align:left;">
+CT
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:left;">
+4:19
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -1250,6 +1388,28 @@ head(simple_data)
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 
+
+
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    
 
 
 </body>
