@@ -18,7 +18,7 @@ You can use asterisk mark to provide emphasis, such as `*italics* or **bold**`.
 
 You can create lists with a dash:
 
-```
+```r
 - Item 1
 - Item 2
 - Item 3

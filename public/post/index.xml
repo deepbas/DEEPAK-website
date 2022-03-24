@@ -13,18 +13,34 @@
     </image>
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>https://deepbas.netlify.app/2020/12/01/hello-r-markdown/</link>
+      <title>Simple R Markdown Example</title>
+      <link>https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
-      <guid>https://deepbas.netlify.app/2020/12/01/hello-r-markdown/</guid>
+      <guid>https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/</guid>
       <description>
-&lt;script src=&#34;https://deepbas.netlify.app/2020/12/01/hello-r-markdown/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;R Markdown&lt;/h1&gt;
 &lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can embed an R code chunk like this:&lt;/p&gt;
+&lt;p&gt;You can use asterisk mark to provide emphasis, such as &lt;em&gt;italics&lt;/em&gt; or &lt;strong&gt;bold&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;You can create lists with a dash:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Item 1&lt;/li&gt;
+&lt;li&gt;Item 2&lt;/li&gt;
+&lt;li&gt;Item 3
+&lt;ul&gt;
+&lt;li&gt;Subitem 1&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Item 4&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can embed Latex equations in-line, &lt;span class=&#34;math inline&#34;&gt;\(\frac{1}{n} \sum_{i=1}^{n} x_{i}\)&lt;/span&gt; or in a new line as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]&lt;/span&gt;
+## Embed an R code chunk:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Use back ticks to 
+create a block of code&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
 ##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
@@ -42,9 +58,8 @@ fit
 ## Coefficients:
 ## (Intercept)        speed  
 ##     -17.579        3.932&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;including-plots&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Including Plots&lt;/h1&gt;
+&lt;div id=&#34;including-plots&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Including Plots&lt;/h2&gt;
 &lt;p&gt;You can also embed plots. See Figure &lt;a href=&#34;#fig:pie&#34;&gt;1&lt;/a&gt; for example:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 1, 0, 1))
 pie(
@@ -54,10 +69,20 @@ pie(
   init.angle = -50, border = NA
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;https://deepbas.netlify.app/2020/12/01/hello-r-markdown/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
+&lt;img src=&#34;https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;288&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: A fancy pie chart.
 &lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;read-in-excel-formatted-data-files&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Read in excel formatted data files&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;simple_data &amp;lt;- read.csv(&amp;quot;https://deepbas.io/data/simple-1.dat&amp;quot;, )
+head(simple_data)
+##   initials state age time
+## 1      vib    MA  61 6:01
+## 2      adc    TX  45 5:45
+## 3      kme    CT  50 4:19&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 </description>
@@ -91,7 +116,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-239764185&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-653291478&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -101,7 +126,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-239764185&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-653291478&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
