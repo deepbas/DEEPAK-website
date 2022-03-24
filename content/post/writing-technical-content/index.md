@@ -26,6 +26,10 @@ Academic supports a Markdown extension for highlighting code syntax. You can ena
     data = pd.read_csv("data.csv")
     data.head()
     ```
+    
+    ```r
+    glimpse(data)
+    ```
 
 renders as
 

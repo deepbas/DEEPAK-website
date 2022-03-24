@@ -784,6 +784,10 @@ import pandas as pd
 data = pd.read_csv(&quot;data.csv&quot;)
 data.head()
 ```
+
+```r
+glimpse(data)
+```
 </code></pre>
 <p>renders as</p>
 <pre><code class="language-python">import pandas as pd
@@ -796,7 +800,7 @@ data.head()
 <p>Demo:</p>
 
 
-<div id="chart-186279534" class="chart"></div>
+<div id="chart-925863714" class="chart"></div>
 <script>
   (function() {
     let a = setInterval( function() {
@@ -806,7 +810,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json("./line-chart.json", function(chart) {
-        Plotly.plot('chart-186279534', chart.data, chart.layout, {responsive: true});
+        Plotly.plot('chart-925863714', chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();

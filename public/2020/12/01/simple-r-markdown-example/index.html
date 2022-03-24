@@ -779,9 +779,10 @@
 </ul></li>
 <li>Item 4</li>
 </ul>
-<p>You can embed Latex equations in-line, <span class="math inline">\(\frac{1}{n} \sum_{i=1}^{n} x_{i}\)</span> or in a new line as</p>
-<p><span class="math display">\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]</span>
-## Embed an R code chunk:</p>
+<p>You can embed Latex equations in-line as <code>$\frac{1}{n} \sum_{i=1}^{n} x_{i}$</code> to produce <span class="math inline">\(\frac{1}{n} \sum_{i=1}^{n} x_{i}\)</span> or in a new line as <code>$$\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 $$</code> to produce</p>
+<p><span class="math display">\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]</span></p>
+<div id="embed-an-r-code-chunk" class="section level2">
+<h2>Embed an R code chunk:</h2>
 <pre class="r"><code>Use back ticks to 
 create a block of code</code></pre>
 <p>You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:</p>
@@ -802,6 +803,7 @@ fit
 ## Coefficients:
 ## (Intercept)        speed  
 ##     -17.579        3.932</code></pre>
+</div>
 <div id="including-plots" class="section level2">
 <h2>Including Plots</h2>
 <p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
@@ -897,7 +899,6 @@ CT
 <div id="hide-the-code" class="section level2">
 <h2>Hide the code</h2>
 <p>Entering <code>echo = FALSE</code> option in the R chunk prevents the R code from being printed to your document and you just see the results/outputs.</p>
-<pre class="r"><code>knitr::kable(simple_data, format = &quot;html&quot;)</code></pre>
 <table>
 <thead>
 <tr>
