@@ -41,10 +41,10 @@ $$\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 $$
 ## Embed an R code chunk:
 
   
-  ```r
-  Use back ticks to 
-  create a block of code
-  ```
+    ```r
+    Use back ticks to 
+    create a block of code
+    ```
 
 
 You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:
@@ -86,6 +86,9 @@ knitr::kable(simple_data, format = "html")
 
 Entering `echo = FALSE` option in the R chunk prevents the R code from being printed to your document and you just see the results/outputs.
 
+    ```r pretty_table2, echo=FALSE
+    knitr::kable(simple_data, format = "html")
+    ```
 
 ```{r pretty_table2, echo=FALSE}
 knitr::kable(simple_data, format = "html")

@@ -44,8 +44,10 @@
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]&lt;/span&gt;&lt;/p&gt;
 &lt;div id=&#34;embed-an-r-code-chunk&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Embed an R code chunk:&lt;/h2&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Use back ticks to 
-create a block of code&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;```r
+Use back ticks to 
+create a block of code
+```&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
 ##      speed           dist       

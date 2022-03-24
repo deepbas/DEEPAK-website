@@ -1513,8 +1513,10 @@ install LaTeX. Below are the recommended installers for Windows and Mac:&lt;/p&g
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]&lt;/span&gt;&lt;/p&gt;
 &lt;div id=&#34;embed-an-r-code-chunk&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Embed an R code chunk:&lt;/h2&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Use back ticks to 
-create a block of code&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;```r
+Use back ticks to 
+create a block of code
+```&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
 ##      speed           dist       
@@ -1728,7 +1730,7 @@ data.head()
 &lt;p&gt;Demo:&lt;/p&gt;
 
 
-&lt;div id=&#34;chart-925863714&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
+&lt;div id=&#34;chart-624398157&#34; class=&#34;chart&#34;&gt;&lt;/div&gt;
 &lt;script&gt;
   (function() {
     let a = setInterval( function() {
@@ -1738,7 +1740,7 @@ data.head()
       clearInterval( a );
 
       Plotly.d3.json(&#34;./line-chart.json&#34;, function(chart) {
-        Plotly.plot(&#39;chart-925863714&#39;, chart.data, chart.layout, {responsive: true});
+        Plotly.plot(&#39;chart-624398157&#39;, chart.data, chart.layout, {responsive: true});
       });
     }, 500 );
   })();
