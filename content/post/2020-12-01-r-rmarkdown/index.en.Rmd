@@ -12,11 +12,19 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 # R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This is a R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-You can use asterisk mark to provide emphasis, such as *italics* or **bold**.
+You can use asterisk mark to provide emphasis, such as `*italics* or **bold**`.
 
 You can create lists with a dash:
+
+```
+- Item 1
+- Item 2
+- Item 3
+  + Subitem 1
+* Item 4
+```
 
 - Item 1
 - Item 2
@@ -48,7 +56,7 @@ fit
 
 You can also embed plots. See Figure \@ref(fig:pie) for example:
 
-```{r pie, fig.cap='A fancy pie chart.', fig.height=4, fig.width=3}
+```{r pie, fig.cap='A fancy pie chart.', fig.height=7, fig.width=7}
 par(mar = c(0, 1, 0, 1))
 pie(
   c(280, 60, 20),
@@ -58,12 +66,13 @@ pie(
 )
 ```
 
-## Read in excel formatted data files
+## Read in data files
 
 ```{r read_data}
 simple_data <- read.csv("https://deepbas.io/data/simple-1.dat", )
 glimpse(simple_data) 
 ```
+
 
 ```{r pretty_table}
 knitr::kable(simple_data, format = "html")
@@ -74,6 +83,7 @@ knitr::kable(simple_data, format = "html")
 If we enter the `echo = FALSE` option in the R chunk (see the .Rmd file). This prevents the R code from being printed to your document; you just see the results.
 
 ```
+
 ```{r pretty_table, echo=FALSE}
 knitr::kable(simple_data, format = "html")
 ```
