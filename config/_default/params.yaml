@@ -63,7 +63,7 @@ highlight_languages:
   - python
   - latex
 math: true
-diagram: false
+diagram: true
 privacy_pack: false
 edit_page:
   repo_url: ''
