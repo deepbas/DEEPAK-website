@@ -6,8 +6,8 @@ title: "\U0001F4CA STAT 230: Applied Regression Analysis"
 type: book
 ---
 
-
-
 ## Meet your instructor
 
 {{< mention "admin" >}}
+
+

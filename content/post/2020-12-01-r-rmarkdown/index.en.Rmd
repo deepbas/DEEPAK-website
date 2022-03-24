@@ -1,5 +1,5 @@
 ---
-title: "Hello R Markdown"
+title: "Simple R Markdown Example"
 author: "Deepak Bastola"
 date: 2020-12-01T21:13:14-05:00
 categories: ["R"]
@@ -14,7 +14,28 @@ knitr::opts_chunk$set(collapse = TRUE)
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-You can embed an R code chunk like this:
+You can use asterisk mark to provide emphasis, such as *italics* or **bold**.
+
+You can create lists with a dash:
+
+- Item 1
+- Item 2
+- Item 3
+  + Subitem 1
+* Item 4
+
+
+You can embed Latex equations in-line, $\frac{1}{n} \sum_{i=1}^{n} x_{i}$ or in a new line as
+
+$$\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 $$
+## Embed an R code chunk:
+
+```
+Use back ticks to 
+create a block of code
+```
+
+You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:
 
 ```{r cars}
 summary(cars)
@@ -22,11 +43,12 @@ fit <- lm(dist ~ speed, data = cars)
 fit
 ```
 
-# Including Plots
+
+## Including Plots
 
 You can also embed plots. See Figure \@ref(fig:pie) for example:
 
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
+```{r pie, fig.cap='A fancy pie chart.', fig.height=4, fig.width=3}
 par(mar = c(0, 1, 0, 1))
 pie(
   c(280, 60, 20),
@@ -35,3 +57,29 @@ pie(
   init.angle = -50, border = NA
 )
 ```
+
+## Read in excel formatted data files
+
+```{r read_data}
+simple_data <- read.csv("https://deepbas.io/data/simple-1.dat", )
+glimpse(simple_data) 
+```
+
+```{r pretty_table}
+knitr::kable(simple_data, format = "html")
+```
+
+## Hide the code
+
+If we enter the `echo = FALSE` option in the R chunk (see the .Rmd file). This prevents the R code from being printed to your document; you just see the results.
+
+```
+```{r pretty_table, echo=FALSE}
+knitr::kable(simple_data, format = "html")
+```
+```
+
+```{r pretty_table}
+knitr::kable(simple_data, format = "html")
+```
+

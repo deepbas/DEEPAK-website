@@ -1,5 +1,5 @@
 ---
-title: "Hello R Markdown"
+title: "Simple R Markdown Example"
 author: "Deepak Bastola"
 date: 2020-12-01T21:13:14-05:00
 categories: ["R"]
@@ -12,7 +12,23 @@ tags: ["R Markdown"]
 <div id="r-markdown" class="section level1">
 <h1>R Markdown</h1>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>You can embed an R code chunk like this:</p>
+<p>You can use asterisk mark to provide emphasis, such as <em>italics</em> or <strong>bold</strong>.</p>
+<p>You can create lists with a dash:</p>
+<ul>
+<li>Item 1</li>
+<li>Item 2</li>
+<li>Item 3
+<ul>
+<li>Subitem 1</li>
+</ul></li>
+<li>Item 4</li>
+</ul>
+<p>You can embed Latex equations in-line, <span class="math inline">\(\frac{1}{n} \sum_{i=1}^{n} x_{i}\)</span> or in a new line as</p>
+<p><span class="math display">\[\text{Var}(X) = \frac{1}{n-1}\sum_{i-1}^{n} (x_{i} - \bar{x})^2 \]</span>
+## Embed an R code chunk:</p>
+<pre><code>Use back ticks to 
+create a block of code</code></pre>
+<p>You can also evaluate and display the results of R code. Each tasks can be accomplished in a suitably labeled chunk like the following:</p>
 <pre class="r"><code>summary(cars)
 ##      speed           dist       
 ##  Min.   : 4.0   Min.   :  2.00  
@@ -30,9 +46,8 @@ fit
 ## Coefficients:
 ## (Intercept)        speed  
 ##     -17.579        3.932</code></pre>
-</div>
-<div id="including-plots" class="section level1">
-<h1>Including Plots</h1>
+<div id="including-plots" class="section level2">
+<h2>Including Plots</h2>
 <p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
 <pre class="r"><code>par(mar = c(0, 1, 0, 1))
 pie(
@@ -42,9 +57,19 @@ pie(
   init.angle = -50, border = NA
 )</code></pre>
 <div class="figure"><span style="display:block;" id="fig:pie"></span>
-<img src="{{< blogdown/postref >}}index.en_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/pie-1.png" alt="A fancy pie chart." width="288" />
 <p class="caption">
 Figure 1: A fancy pie chart.
 </p>
+</div>
+</div>
+<div id="read-in-excel-formatted-data-files" class="section level2">
+<h2>Read in excel formatted data files</h2>
+<pre class="r"><code>simple_data &lt;- read.csv(&quot;https://deepbas.io/data/simple-1.dat&quot;, )
+head(simple_data)
+##   initials state age time
+## 1      vib    MA  61 6:01
+## 2      adc    TX  45 5:45
+## 3      kme    CT  50 4:19</code></pre>
 </div>
 </div>
