@@ -41,6 +41,8 @@ Image(&#39;https://www.python.org/static/community_logos/python-logo-master-v3-T
     &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./index_1_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
   &lt;/div&gt;&lt;/figure&gt;
 &lt;/p&gt;
+&lt;p&gt;It would be nice to predict the number of positive covid cases depending on the past trend of the cases growth. Regression models based on recurrent neural models (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions.&lt;/p&gt;
+&lt;p&gt;The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Import various libraries and routines needed for computation
 import math 
 import pandas as pd
@@ -59,15 +61,18 @@ from keras.layers import Dense, Dropout, LSTM
 from keras.callbacks import EarlyStopping
 from datetime import date, timedelta, datetime 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;df = pd.read_csv(&#39;covid_final.csv&#39;)  
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Read in the data file that has relevant features 
+df = pd.read_csv(&#39;covid_final.csv&#39;)  
 dataset = df.set_index([&#39;date&#39;])
+# Drop the last 10 row as they are incomplete
 dataset.drop(dataset.tail(10).index,
         inplace = True)
 values = dataset.values
+# Store the indexes (i.e., dates)
+date_index = dataset.index
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;date_index = dataset.index
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;data_clean = dataset.copy()
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Clean up the dataset more for predictions and inverse transformations (Re-scaling)
+data_clean = dataset.copy()
 data_clean_ext = dataset.copy()
 data_clean_ext[&#39;new_cases_predictions&#39;] = data_clean_ext[&#39;new_cases_smoothed&#39;]
 data_clean.tail()
@@ -166,6 +171,7 @@ data_clean.tail()
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# number of rows in the data
 nrows = data_clean.shape[0]
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The day-to-day case counts can be regarded as a time series and the data needs to be prepared before training a supervised learning model. For LSTM, the data is composed of inputs and outputs, and the inputs can be seen as a moving window blocks consisting of the feature values to predict the outcome. The size of the window are free parameter that the user must optimize.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Convert the data to numpy values
 np_data_unscaled = np.array(data_clean)
 np_data = np.reshape(np_data_unscaled, (nrows, -1))
@@ -182,8 +188,9 @@ scaler_pred = MinMaxScaler()
 df_cases = pd.DataFrame(data_clean_ext[&#39;new_cases_smoothed&#39;])
 np_cases_scaled = scaler_pred.fit_transform(df_cases)
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In LSTM methodology, it is required to reshape the input to be a 3D tensor of samples, time steps, and features. This is more important when we are fitting the model later. LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Set the sequence length - this is the timeframe used to make a single prediction
-sequence_length = 31
+sequence_length = 31  # rolling window size
 
 # Prediction Index
 index_cases = dataset.columns.get_loc(&amp;quot;new_cases_smoothed&amp;quot;)
@@ -221,11 +228,13 @@ n_neurons = x_train.shape[1] * x_train.shape[2]
 model.add(LSTM(n_neurons, return_sequences=False, input_shape=(x_train.shape[1], x_train.shape[2])))
 model.add(Dense(1))
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Check-points and early stopping parameters make our modeling easier
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 # Compiling the LSTM
 model.compile(optimizer = &#39;adam&#39;, loss = &#39;mean_squared_error&#39;)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;checkpoint_path = &#39;my_best_model.hdf5&#39;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Specfy the file and file path for the best model
+checkpoint_path = &#39;my_best_model.hdf5&#39;
 checkpoint = ModelCheckpoint(filepath=checkpoint_path, 
                              monitor=&#39;val_loss&#39;,
                              verbose=1, 
@@ -245,7 +254,8 @@ history = model.fit(x_train, y_train,
                      callbacks = callbacks,
                      verbose = 0)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from tensorflow.keras.models import load_model
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Load the best model
+from tensorflow.keras.models import load_model
 model_from_saved_checkpoint = load_model(checkpoint_path)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Plot training &amp;amp; validation loss values
@@ -282,7 +292,8 @@ y_pred_scaled = model_from_saved_checkpoint.predict(x_test)
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Unscale the predicted values
 y_pred = scaler_pred.inverse_transform(y_pred_scaled)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;y_test_unscaled = scaler_pred.inverse_transform(y_test.reshape(-1, 1))
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# reshape 
+y_test_unscaled = scaler_pred.inverse_transform(y_test.reshape(-1, 1))
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Mean Absolute Error (MAE)
 MAE = mean_absolute_error(y_test_unscaled, y_pred)
@@ -296,11 +307,12 @@ print(f&#39;Mean Absolute Percentage Error (MAPE): {np.round(MAPE, 2)} %&#39;)
 MDAPE = np.median((np.abs(np.subtract(y_test_unscaled, y_pred)/ y_test_unscaled)) ) * 100
 print(f&#39;Median Absolute Percentage Error (MDAPE): {np.round(MDAPE, 2)} %&#39;)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;plt.plot(y_test_unscaled, label=&#39;True&#39;)
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Plot of the true and predicted case counts
+plt.plot(y_test_unscaled, label=&#39;True&#39;)
 plt.plot(y_pred, label=&#39;LSTM&#39;)
 plt.title(&amp;quot;LSTM&#39;s_Prediction&amp;quot;)
-plt.xlabel(&#39;Observation&#39;)
-plt.ylabel(&#39;Cases Prediction&#39;)
+plt.xlabel(&#39;Time steps&#39;)
+plt.ylabel(&#39;Cases&#39;)
 plt.legend()
 plt.show()
 &lt;/code&gt;&lt;/pre&gt;
@@ -325,10 +337,12 @@ plt.show()
     &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./covid_analysis_21_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
   &lt;/div&gt;&lt;/figure&gt;
 &lt;/p&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;new_df = data_clean[-sequence_length:]
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# New data frame for predicting the next day count
+new_df = data_clean[-sequence_length:] # gets the last N days
 N = sequence_length
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Get the last N day closing price values and scale the data to be values between 0 and 1
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Get the values of the last N day closing price values 
+# scale the data to be values between 0 and 1
 last_N_days = new_df[-sequence_length:].values
 last_N_days_scaled = scaler.transform(last_N_days)
 &lt;/code&gt;&lt;/pre&gt;
@@ -340,16 +354,13 @@ X_test_new.append(last_N_days_scaled)
 pred_cases_scaled = model_from_saved_checkpoint.predict(np.array(X_test_new))
 pred_cases_unscaled = scaler_pred.inverse_transform(pred_cases_scaled.reshape(-1, 1))
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Print last price and predicted price for the next day
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Print last price, predicted price, and change percent for the next day
 cases_today = np.round(new_df[&#39;new_cases_smoothed&#39;][-1])
 predicted_cases = np.round(pred_cases_unscaled.ravel()[0])
 change_percent = np.round(100 - (cases_today * 100)/predicted_cases)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;plus = &#39;+&#39;; minus = &#39;&#39;
-print(f&#39;The close covid cases count today is  {cases_today}&#39;)
-print(f&#39;The predicted case count for the next day is {predicted_cases} ({plus if change_percent &amp;gt; 0 else minus}{change_percent}%)&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;!jupyter nbconvert covid_analysis.ipynb --to markdown --NbConvertApp.output_files_dir=.
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Code used to produce this article in jupyter notebook in hugo academic blog post
+!jupyter nbconvert covid_analysis.ipynb --to markdown --NbConvertApp.output_files_dir=.
 !cat covid_analysis.md | tee -a index.md
 !rm covid_analysis.md
 &lt;/code&gt;&lt;/pre&gt;
