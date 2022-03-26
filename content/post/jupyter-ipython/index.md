@@ -11,7 +11,7 @@ projects: []
 subtitle: Learn how to blog in Academic using Jupyter notebooks
 summary: Learn how to blog in Academic using Jupyter notebooks
 tags: []
-title: Display Jupyter Notebooks with Academic
+title: Jupyter Notebooks with Academic
 ---
 
 ```python
@@ -20,16 +20,6 @@ Image('https://www.python.org/static/community_logos/python-logo-master-v3-TM-fl
 ```
 
 ![png](./index_1_0.png)
-
-
-
-
-```python
-print("Welcome to Academic!")
-```
-
-    Welcome to Academic!
-
 
 ## Install Python and JupyterLab
 
