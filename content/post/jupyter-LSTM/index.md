@@ -294,7 +294,7 @@ plt.legend()
 plt.show()
 ```
 
-![png](./covid_analysis_16_0.png)
+![png](./covid_analysis_17_0.png)
 
 
 ```python
@@ -341,7 +341,7 @@ plt.legend()
 plt.show()
 ```
 
-![png](./covid_analysis_21_0.png)
+![png](./covid_analysis_22_0.png)
 
 
 ```python
