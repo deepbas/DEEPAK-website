@@ -344,7 +344,7 @@ N = sequence_length
 
 
 ```python
-# Get the values of the last N day closing price values 
+# Get the values of the last N day cases counts 
 # scale the data to be values between 0 and 1
 last_N_days = new_df[-sequence_length:].values
 last_N_days_scaled = scaler.transform(last_N_days)
