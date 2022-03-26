@@ -19,7 +19,10 @@ from IPython.core.display import Image
 Image('https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png')
 ```
 
-![png](./index_1_0.png)---
+![png](./index_1_0.png)
+
+
+---
 title: "Predicting covid cases with LSTM Machine Learning Model"
 date: 2020-03-20
 tags: ["data science", "machine learning", "hugo"]
@@ -240,7 +243,6 @@ x_test, y_test = partition_dataset(sequence_length, test_data)
 
 
 ```python
-
 # Configure the neural network model
 model = Sequential()
 # Model with n_neurons = inputshape Timestamps, each with x_train.shape[2] variables
@@ -283,368 +285,6 @@ history = model.fit(x_train, y_train,
 ```
 
     
-    Epoch 00001: val_loss improved from inf to 0.03988, saving model to my_best_model.hdf5
-    
-    Epoch 00002: val_loss improved from 0.03988 to 0.03568, saving model to my_best_model.hdf5
-    
-    Epoch 00003: val_loss did not improve from 0.03568
-    
-    Epoch 00004: val_loss did not improve from 0.03568
-    
-    Epoch 00005: val_loss did not improve from 0.03568
-    
-    Epoch 00006: val_loss did not improve from 0.03568
-    
-    Epoch 00007: val_loss did not improve from 0.03568
-    
-    Epoch 00008: val_loss did not improve from 0.03568
-    
-    Epoch 00009: val_loss did not improve from 0.03568
-    
-    Epoch 00010: val_loss did not improve from 0.03568
-    
-    Epoch 00011: val_loss did not improve from 0.03568
-    
-    Epoch 00012: val_loss did not improve from 0.03568
-    
-    Epoch 00013: val_loss did not improve from 0.03568
-    
-    Epoch 00014: val_loss did not improve from 0.03568
-    
-    Epoch 00015: val_loss did not improve from 0.03568
-    
-    Epoch 00016: val_loss did not improve from 0.03568
-    
-    Epoch 00017: val_loss did not improve from 0.03568
-    
-    Epoch 00018: val_loss did not improve from 0.03568
-    
-    Epoch 00019: val_loss did not improve from 0.03568
-    
-    Epoch 00020: val_loss did not improve from 0.03568
-    
-    Epoch 00021: val_loss did not improve from 0.03568
-    
-    Epoch 00022: val_loss did not improve from 0.03568
-    
-    Epoch 00023: val_loss did not improve from 0.03568
-    
-    Epoch 00024: val_loss did not improve from 0.03568
-    
-    Epoch 00025: val_loss did not improve from 0.03568
-    
-    Epoch 00026: val_loss did not improve from 0.03568
-    
-    Epoch 00027: val_loss did not improve from 0.03568
-    
-    Epoch 00028: val_loss did not improve from 0.03568
-    
-    Epoch 00029: val_loss did not improve from 0.03568
-    
-    Epoch 00030: val_loss did not improve from 0.03568
-    
-    Epoch 00031: val_loss did not improve from 0.03568
-    
-    Epoch 00032: val_loss did not improve from 0.03568
-    
-    Epoch 00033: val_loss did not improve from 0.03568
-    
-    Epoch 00034: val_loss did not improve from 0.03568
-    
-    Epoch 00035: val_loss did not improve from 0.03568
-    
-    Epoch 00036: val_loss did not improve from 0.03568
-    
-    Epoch 00037: val_loss did not improve from 0.03568
-    
-    Epoch 00038: val_loss did not improve from 0.03568
-    
-    Epoch 00039: val_loss did not improve from 0.03568
-    
-    Epoch 00040: val_loss did not improve from 0.03568
-    
-    Epoch 00041: val_loss improved from 0.03568 to 0.03540, saving model to my_best_model.hdf5
-    
-    Epoch 00042: val_loss improved from 0.03540 to 0.03177, saving model to my_best_model.hdf5
-    
-    Epoch 00043: val_loss improved from 0.03177 to 0.02654, saving model to my_best_model.hdf5
-    
-    Epoch 00044: val_loss did not improve from 0.02654
-    
-    Epoch 00045: val_loss did not improve from 0.02654
-    
-    Epoch 00046: val_loss improved from 0.02654 to 0.02444, saving model to my_best_model.hdf5
-    
-    Epoch 00047: val_loss did not improve from 0.02444
-    
-    Epoch 00048: val_loss improved from 0.02444 to 0.02441, saving model to my_best_model.hdf5
-    
-    Epoch 00049: val_loss improved from 0.02441 to 0.02097, saving model to my_best_model.hdf5
-    
-    Epoch 00050: val_loss did not improve from 0.02097
-    
-    Epoch 00051: val_loss did not improve from 0.02097
-    
-    Epoch 00052: val_loss did not improve from 0.02097
-    
-    Epoch 00053: val_loss did not improve from 0.02097
-    
-    Epoch 00054: val_loss did not improve from 0.02097
-    
-    Epoch 00055: val_loss did not improve from 0.02097
-    
-    Epoch 00056: val_loss improved from 0.02097 to 0.02015, saving model to my_best_model.hdf5
-    
-    Epoch 00057: val_loss did not improve from 0.02015
-    
-    Epoch 00058: val_loss did not improve from 0.02015
-    
-    Epoch 00059: val_loss did not improve from 0.02015
-    
-    Epoch 00060: val_loss improved from 0.02015 to 0.01943, saving model to my_best_model.hdf5
-    
-    Epoch 00061: val_loss improved from 0.01943 to 0.01820, saving model to my_best_model.hdf5
-    
-    Epoch 00062: val_loss improved from 0.01820 to 0.01687, saving model to my_best_model.hdf5
-    
-    Epoch 00063: val_loss improved from 0.01687 to 0.01529, saving model to my_best_model.hdf5
-    
-    Epoch 00064: val_loss did not improve from 0.01529
-    
-    Epoch 00065: val_loss did not improve from 0.01529
-    
-    Epoch 00066: val_loss did not improve from 0.01529
-    
-    Epoch 00067: val_loss did not improve from 0.01529
-    
-    Epoch 00068: val_loss did not improve from 0.01529
-    
-    Epoch 00069: val_loss did not improve from 0.01529
-    
-    Epoch 00070: val_loss improved from 0.01529 to 0.01523, saving model to my_best_model.hdf5
-    
-    Epoch 00071: val_loss improved from 0.01523 to 0.01438, saving model to my_best_model.hdf5
-    
-    Epoch 00072: val_loss improved from 0.01438 to 0.01253, saving model to my_best_model.hdf5
-    
-    Epoch 00073: val_loss did not improve from 0.01253
-    
-    Epoch 00074: val_loss did not improve from 0.01253
-    
-    Epoch 00075: val_loss did not improve from 0.01253
-    
-    Epoch 00076: val_loss did not improve from 0.01253
-    
-    Epoch 00077: val_loss did not improve from 0.01253
-    
-    Epoch 00078: val_loss did not improve from 0.01253
-    
-    Epoch 00079: val_loss improved from 0.01253 to 0.00920, saving model to my_best_model.hdf5
-    
-    Epoch 00080: val_loss did not improve from 0.00920
-    
-    Epoch 00081: val_loss did not improve from 0.00920
-    
-    Epoch 00082: val_loss did not improve from 0.00920
-    
-    Epoch 00083: val_loss did not improve from 0.00920
-    
-    Epoch 00084: val_loss did not improve from 0.00920
-    
-    Epoch 00085: val_loss did not improve from 0.00920
-    
-    Epoch 00086: val_loss did not improve from 0.00920
-    
-    Epoch 00087: val_loss did not improve from 0.00920
-    
-    Epoch 00088: val_loss did not improve from 0.00920
-    
-    Epoch 00089: val_loss improved from 0.00920 to 0.00801, saving model to my_best_model.hdf5
-    
-    Epoch 00090: val_loss did not improve from 0.00801
-    
-    Epoch 00091: val_loss did not improve from 0.00801
-    
-    Epoch 00092: val_loss did not improve from 0.00801
-    
-    Epoch 00093: val_loss did not improve from 0.00801
-    
-    Epoch 00094: val_loss did not improve from 0.00801
-    
-    Epoch 00095: val_loss did not improve from 0.00801
-    
-    Epoch 00096: val_loss did not improve from 0.00801
-    
-    Epoch 00097: val_loss did not improve from 0.00801
-    
-    Epoch 00098: val_loss did not improve from 0.00801
-    
-    Epoch 00099: val_loss did not improve from 0.00801
-    
-    Epoch 00100: val_loss did not improve from 0.00801
-    
-    Epoch 00101: val_loss did not improve from 0.00801
-    
-    Epoch 00102: val_loss did not improve from 0.00801
-    
-    Epoch 00103: val_loss improved from 0.00801 to 0.00780, saving model to my_best_model.hdf5
-    
-    Epoch 00104: val_loss did not improve from 0.00780
-    
-    Epoch 00105: val_loss did not improve from 0.00780
-    
-    Epoch 00106: val_loss did not improve from 0.00780
-    
-    Epoch 00107: val_loss did not improve from 0.00780
-    
-    Epoch 00108: val_loss did not improve from 0.00780
-    
-    Epoch 00109: val_loss did not improve from 0.00780
-    
-    Epoch 00110: val_loss improved from 0.00780 to 0.00678, saving model to my_best_model.hdf5
-    
-    Epoch 00111: val_loss did not improve from 0.00678
-    
-    Epoch 00112: val_loss did not improve from 0.00678
-    
-    Epoch 00113: val_loss did not improve from 0.00678
-    
-    Epoch 00114: val_loss did not improve from 0.00678
-    
-    Epoch 00115: val_loss did not improve from 0.00678
-    
-    Epoch 00116: val_loss did not improve from 0.00678
-    
-    Epoch 00117: val_loss did not improve from 0.00678
-    
-    Epoch 00118: val_loss improved from 0.00678 to 0.00657, saving model to my_best_model.hdf5
-    
-    Epoch 00119: val_loss did not improve from 0.00657
-    
-    Epoch 00120: val_loss did not improve from 0.00657
-    
-    Epoch 00121: val_loss did not improve from 0.00657
-    
-    Epoch 00122: val_loss did not improve from 0.00657
-    
-    Epoch 00123: val_loss did not improve from 0.00657
-    
-    Epoch 00124: val_loss did not improve from 0.00657
-    
-    Epoch 00125: val_loss improved from 0.00657 to 0.00530, saving model to my_best_model.hdf5
-    
-    Epoch 00126: val_loss did not improve from 0.00530
-    
-    Epoch 00127: val_loss did not improve from 0.00530
-    
-    Epoch 00128: val_loss did not improve from 0.00530
-    
-    Epoch 00129: val_loss did not improve from 0.00530
-    
-    Epoch 00130: val_loss did not improve from 0.00530
-    
-    Epoch 00131: val_loss did not improve from 0.00530
-    
-    Epoch 00132: val_loss did not improve from 0.00530
-    
-    Epoch 00133: val_loss did not improve from 0.00530
-    
-    Epoch 00134: val_loss did not improve from 0.00530
-    
-    Epoch 00135: val_loss did not improve from 0.00530
-    
-    Epoch 00136: val_loss did not improve from 0.00530
-    
-    Epoch 00137: val_loss did not improve from 0.00530
-    
-    Epoch 00138: val_loss did not improve from 0.00530
-    
-    Epoch 00139: val_loss did not improve from 0.00530
-    
-    Epoch 00140: val_loss did not improve from 0.00530
-    
-    Epoch 00141: val_loss did not improve from 0.00530
-    
-    Epoch 00142: val_loss did not improve from 0.00530
-    
-    Epoch 00143: val_loss did not improve from 0.00530
-    
-    Epoch 00144: val_loss improved from 0.00530 to 0.00444, saving model to my_best_model.hdf5
-    
-    Epoch 00145: val_loss did not improve from 0.00444
-    
-    Epoch 00146: val_loss did not improve from 0.00444
-    
-    Epoch 00147: val_loss did not improve from 0.00444
-    
-    Epoch 00148: val_loss did not improve from 0.00444
-    
-    Epoch 00149: val_loss did not improve from 0.00444
-    
-    Epoch 00150: val_loss did not improve from 0.00444
-    
-    Epoch 00151: val_loss did not improve from 0.00444
-    
-    Epoch 00152: val_loss did not improve from 0.00444
-    
-    Epoch 00153: val_loss did not improve from 0.00444
-    
-    Epoch 00154: val_loss did not improve from 0.00444
-    
-    Epoch 00155: val_loss did not improve from 0.00444
-    
-    Epoch 00156: val_loss did not improve from 0.00444
-    
-    Epoch 00157: val_loss did not improve from 0.00444
-    
-    Epoch 00158: val_loss did not improve from 0.00444
-    
-    Epoch 00159: val_loss did not improve from 0.00444
-    
-    Epoch 00160: val_loss did not improve from 0.00444
-    
-    Epoch 00161: val_loss improved from 0.00444 to 0.00436, saving model to my_best_model.hdf5
-    
-    Epoch 00162: val_loss did not improve from 0.00436
-    
-    Epoch 00163: val_loss did not improve from 0.00436
-    
-    Epoch 00164: val_loss did not improve from 0.00436
-    
-    Epoch 00165: val_loss improved from 0.00436 to 0.00359, saving model to my_best_model.hdf5
-    
-    Epoch 00166: val_loss did not improve from 0.00359
-    
-    Epoch 00167: val_loss did not improve from 0.00359
-    
-    Epoch 00168: val_loss did not improve from 0.00359
-    
-    Epoch 00169: val_loss did not improve from 0.00359
-    
-    Epoch 00170: val_loss did not improve from 0.00359
-    
-    Epoch 00171: val_loss did not improve from 0.00359
-    
-    Epoch 00172: val_loss did not improve from 0.00359
-    
-    Epoch 00173: val_loss did not improve from 0.00359
-    
-    Epoch 00174: val_loss did not improve from 0.00359
-    
-    Epoch 00175: val_loss improved from 0.00359 to 0.00298, saving model to my_best_model.hdf5
-    
-    Epoch 00176: val_loss did not improve from 0.00298
-    
-    Epoch 00177: val_loss did not improve from 0.00298
-    
-    Epoch 00178: val_loss did not improve from 0.00298
-    
-    Epoch 00179: val_loss did not improve from 0.00298
-    
-    Epoch 00180: val_loss did not improve from 0.00298
-
-
-
 ```python
 from tensorflow.keras.models import load_model
 model_from_saved_checkpoint = load_model(checkpoint_path)
@@ -659,6 +299,8 @@ plt.plot(history.history['val_loss'], label='test')
 plt.legend()
 plt.show()
 ```
+
+![png](./covid_analysis_16_0.png)
 
 
 ```python
@@ -702,6 +344,8 @@ plt.ylabel('Cases Prediction')
 plt.legend()
 plt.show()
 ```
+
+![png](./covid_analysis_21_0.png)
 
 
 ```python

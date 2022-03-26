@@ -42,11 +42,21 @@
   <url>
     <loc>https://deepbas.netlify.app/authors/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
   <url>
+    <loc>https://deepbas.netlify.app/categories/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/category/data-science/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+  <url>
     <loc>https://deepbas.netlify.app/author/deepak-bastola/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>https://deepbas.netlify.app/2022/03/23/display-jupyter-notebooks-with-academic/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+    <loc>https://deepbas.netlify.app/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/2022/03/23/jupyter-notebooks-with-academic/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/category/machine-learning/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/post/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>https://deepbas.netlify.app/category/prediction/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/courses/</loc><lastmod>2022-03-06T00:00:00+00:00</lastmod></url>
   <url>
@@ -57,8 +67,6 @@
     <loc>https://deepbas.netlify.app/courses/stat120/</loc><lastmod>2021-03-24T00:00:00+00:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/courses/stat220/</loc><lastmod>2021-01-24T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>https://deepbas.netlify.app/categories/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
     <loc>https://deepbas.netlify.app/category/r/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
