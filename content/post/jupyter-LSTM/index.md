@@ -15,7 +15,7 @@ title: How to predict covid case counts using machine learning models?
 css: "/css/custom.css"
 ---
 
-It would be nice to predict the number of positive covid cases depending on the past trend of the cases growth. Regression models based on recurrent neural models (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions.
+It would be nice to predict the number of positive covid cases depending on the past trend of the cases growth. Regression models based on recurrent neural networks (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions.
 
 LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.
 
