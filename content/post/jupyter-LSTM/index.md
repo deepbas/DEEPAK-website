@@ -25,6 +25,8 @@ Image('https://www.python.org/static/community_logos/python-logo-master-v3-TM-fl
 
 It would be nice to predict the number of positive covid cases depending on the past trend of the cases growth. Regression models based on recurrent neural models (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions.
 
+LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.
+
 The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.
 
 ```python
@@ -194,7 +196,7 @@ df_cases = pd.DataFrame(data_clean_ext['new_cases_smoothed'])
 np_cases_scaled = scaler_pred.fit_transform(df_cases)
 ```
 
-In LSTM methodology, it is required to reshape the input to be a 3D tensor of samples, time steps, and features. This is more important when we are fitting the model later. LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.
+In LSTM methodology, it is required to reshape the input to be a 3D tensor of samples, time steps, and features. This is more important when we are fitting the model later. 
 
 
 ```python
