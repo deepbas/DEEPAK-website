@@ -8,20 +8,12 @@ image:
   focal_point: ""
 lastMod: "2022-03-23T00:00:00Z"
 projects: []
-subtitle: Learn how to make a research blog with hugo blogdown
-summary: Learn more about Python and Jupyter labs
+subtitle: Predicting covid cases in the United States
+summary: 
 tags: []
 title: How to predict covid case counts using machine learning models?
 css: "/css/custom.css"
 ---
-
-```python
-from IPython.core.display import Image
-Image('https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png')
-```
-
-![png](./index_1_0.png)
-
 
 It would be nice to predict the number of positive covid cases depending on the past trend of the cases growth. Regression models based on recurrent neural models (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions.
 
@@ -168,7 +160,7 @@ data_clean.tail()
 nrows = data_clean.shape[0]
 ```
 
-The day-to-day case counts can be regarded as a time series and the data needs to be prepared before training a supervised learning model. For LSTM, the data is composed of inputs and outputs, and the inputs can be seen as a moving window blocks consisting of the feature values to predict the outcome. The size of the window are free parameter that the user must optimize.
+The day-to-day case counts can be regarded as a time series and the data needs to be prepared before training a supervised learning model. For LSTM, the data is composed of inputs and outputs, and the inputs can be seen as a moving window blocks consisting of the feature values to predict the outcome. The size of the window is a free parameter that the user must optimize.
 
 ```python
 # Convert the data to numpy values

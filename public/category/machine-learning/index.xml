@@ -17,31 +17,7 @@
       <link>https://deepbas.netlify.app/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</link>
       <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</guid>
-      <description>&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from IPython.core.display import Image
-Image(&#39;https://www.python.org/static/community_logos/python-logo-master-v3-TM-flattened.png&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-&lt;figure  &gt;
-  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
-    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./index_1_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
-  &lt;/div&gt;&lt;/figure&gt;
-&lt;/p&gt;
-&lt;p&gt;It would be nice to predict the number of positive covid cases depending on the past trend of the cases growth. Regression models based on recurrent neural models (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions.&lt;/p&gt;
+      <description>&lt;p&gt;It would be nice to predict the number of positive covid cases depending on the past trend of the cases growth. Regression models based on recurrent neural models (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions.&lt;/p&gt;
 &lt;p&gt;LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.&lt;/p&gt;
 &lt;p&gt;The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Import various libraries and routines needed for computation
@@ -172,7 +148,7 @@ data_clean.tail()
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# number of rows in the data
 nrows = data_clean.shape[0]
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The day-to-day case counts can be regarded as a time series and the data needs to be prepared before training a supervised learning model. For LSTM, the data is composed of inputs and outputs, and the inputs can be seen as a moving window blocks consisting of the feature values to predict the outcome. The size of the window are free parameter that the user must optimize.&lt;/p&gt;
+&lt;p&gt;The day-to-day case counts can be regarded as a time series and the data needs to be prepared before training a supervised learning model. For LSTM, the data is composed of inputs and outputs, and the inputs can be seen as a moving window blocks consisting of the feature values to predict the outcome. The size of the window is a free parameter that the user must optimize.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Convert the data to numpy values
 np_data_unscaled = np.array(data_clean)
 np_data = np.reshape(np_data_unscaled, (nrows, -1))
