@@ -12,6 +12,7 @@ subtitle: Learn how to make a research blog with hugo blogdown
 summary: Learn more about Python and Jupyter labs
 tags: []
 title: How to predict covid case counts using machine learning models?
+css: "/css/custom.css"
 ---
 
 ```python
