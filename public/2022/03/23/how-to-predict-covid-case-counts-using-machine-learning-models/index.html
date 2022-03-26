@@ -800,19 +800,16 @@ import math
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-%matplotlib inline
 import matplotlib.pyplot as plt
+import keras.backend as K
 from math import sqrt
 from numpy import concatenate
 from matplotlib import pyplot
-from pandas import read_csv
-from pandas import DataFrame
+from pandas import read_csv, DataFrame
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from keras.models import Sequential
-from keras.layers import Dense, Dropout
-import keras.backend as K
-from keras.layers import LSTM
+from keras.layers import Dense, Dropout, LSTM
 from keras.callbacks import EarlyStopping
 from datetime import date, timedelta, datetime 
 </code></pre>
@@ -1556,6 +1553,7 @@ print(f'The predicted case count for the next day is {predicted_cases} ({plus if
     });
     </script>
     
+    <link rel = "stylesheet" href = "/css/main.css">
 
 
 </body>
