@@ -1,0 +1,673 @@
+---
+title: "Introduction to Regression"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+
+# load necessary packages
+library(Sleuth3)   
+library(tidyverse)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE 
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+
+# set ggplot theme
+theme_set(theme_minimal(base_size = 10))
+
+
+yt <- 0
+
+set.seed(123)
+
+sim_slr = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data = sim_slr(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Introduction to Regression]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Something about me
+
+.pull-left[
+.blockquote[
+- First year at Carleton
+- Originally from Nepal
+- PhD in Applied Statistics from
+UC-Riverside
+- Diverse education background
+- Avid learner and traveler
+]
+
+]
+.pull-right[
+<center>
+<img src="images/Deepak.jpg" width="75%" height="75%"><br>
+<a href="https://deepbas.io/">Link to my webpage</a>
+</center>
+]
+
+---
+
+class: middle
+
+# COVID-19 related policies
+
+.blockquote-list[
+- Stay home when sick. (Even if you don’t have COVID-19, you should
+stay home if you aren’t feeling well.)
+- Follow [CDC](https://www.cdc.gov/coronavirus/2019-ncov/vaccines/stay-up-to-date.html) on testing, quarantine, and isolation.
+- Follow the College mask-wearing policy
+]
+
+
+---
+
+class: middle
+
+## What will you learn?
+
+.blockquote-list[
+- Expressing and interpreting basic models
+
+- Fit and visualize regression models in R
+
+- Assess the model fit with the data
+
+- Understand various modeling goals
+]
+
+---
+
+# What will a typical day/week look like?
+
+Before Class:
+
+.blockquote[
+1. Some reading/video to introduce some topics
+2. Will be updated in the weekly planner
+]
+
+During Class:
+
+.blockquote[
+1. Mini-lectures
+2. Hands-on group activities
+]
+---
+
+# How to do well in class?
+.font80[
+.blockquote-list[
+Be up to date with the class materials
+  - read the assigned chapters
+  - watch posted videos
+]
+.blockquote-list[
+Follow the in-class activity diligently
+  - Try to learn the most here in class
+  - Do not leave the class with more confusion
+]
+.blockquote-list[
+Ask questions
+  - Do not hesitate to ask questions
+  - I may assume that you understood, if no one ask questions!
+]
+]
+
+
+---
+
+# Your introduction
+
+.pull-left[
+.blockquote-list[
+- Your name?
+- What gender pronouns do
+you use?
+- Favourite Mathematician/Scientist/Person?
+- Recent fun memories?
+]
+]
+.pull-right[
+<center>
+<img src="images/indexcard.jpg" width="95%" height="85%"><br>
+<a>Please fill in!</a>
+</center>
+]
+
+---
+
+
+# Linear Regression
+
+>  To describe (model) the relationship between a response variable and a predictor variable.
+
+.pull-left[
+
+<br>
+
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="70%"}
+ggplot(sim_data,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+  
+```
+]
+
+.pull-right[
+<br>
+
+.font90[
+.blockquote-list[
+Many ways to refer
+- .bold[x-variable:] Predictors, covariates, explanatory variable
+- .bold[y-variable:] Response, outcome variable
+]
+]
+]
+
+---
+
+.panelset[
+
+```{r lemur-weight, panelset=TRUE, fig.height=3, out.width="60%", fig.align='center'}
+ggplot(sim_data) +
+  aes(x = predictor, y = response) +
+  geom_point() +
+  labs(
+    x = "Predictor Variable",
+    y = "Response",
+    title = "A Scatter Plot"
+  ) +
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+```
+
+.panel[
+.panel-name[Regression]
+
+```{r echo=FALSE, fig.height=3, out.width="60%", fig.align='center'}
+last_plot() + geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Predictor Variable",
+    y = "Response",
+    title = "A Linear Model"
+  ) 
+```
+]
+
+]
+
+---
+
+class: middle
+
+## Real-life example: `cars` dataset
+
+.pull-left[
+.blockquote-list[
+- Contains information on speed of cars and the distances taken to stop
+- Recorded in the 1920s and contains 50 observations on 2 variables
+]
+]
+.pull-right[
+.code90[
+.scroll-box-20[
+
+```{r, echo=FALSE}
+datatable(cars, fillContainer = FALSE, options = list(pageLength=5), height = 30)
+```
+
+]
+]
+]
+
+---
+
+# Relationship between stopping distance and speed
+
+.panelset.sideways[
+.panel[.panel-name[Background]
+
+
+<blockquote>
+- We have pairs of data $(x_i,y_i)$ for $i = 1,2,...,n$ 
+- Here $i$ is an index for each of the $n$ observations
+- We use $x_i$ as the predictor (explanatory) variable
+- The predictor variable is used to help predict or explain the response (outcome)
+</blockquote>
+<br>
+
+> In our current example, the predictor is the speed and the response is the stopping distance
+
+]
+
+.panel[.panel-name[Scatterplot]
+```{r, echo=FALSE, out.width="100%", fig.height=5, fig.width=6, fig.align='center'}
+#create regression plot with customized style
+ggplot(cars,aes(speed, dist)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x='Speed (in Miles Per Hour)', y='Stopping Distance (in Feet)', title='Stopping Distance vs Speed') +
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+```
+]
+
+
+.panel[.panel-name[Model]
+Y is linearly related to X within a certain range of error accounted by $\epsilon$ 
+$$Y = \beta_0 + \beta_1 X + \epsilon$$
+.blockquote[
+- Response = Prediction + Error
+- Response = Signal + Noise
+- Response = Model + Unexplained
+- Response = Deterministic + Random
+- Response = Explainable + Unexplainable
+]
+
+]
+
+.panel[.panel-name[Model Fit]
+
+```{r, echo=FALSE, out.width="100%", fig.height=5, fig.width=6, fig.align='center'}
+#create regression plot with customized style
+ggplot(cars,aes(speed, dist)) +
+  geom_point() +
+  geom_smooth(method = "lm")+
+  theme_minimal() +
+  labs(x='Speed (in Miles Per Hour)', y='Stopping Distance (in Feet)', title='Stopping Distance vs Speed') +
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+```
+]
+
+.panel[.panel-name[Explanation]
+
+.blockquote[
+
+Which of the linear model most accurately reflect the "average" stopping distance a car in 1920 traversed for varying speeds?
+
+]
+
+- We are not just trying to find the relationship in this particular dataset, but in the whole population
+- There are infinite number of lines and we try to find the one with "small errors"
+
+]
+
+
+.panel[.panel-name[Code]
+
+```{r, eval=FALSE, out.width="100%", fig.height=5, fig.width=6, fig.align='center'}
+ggplot(cars, aes(speed, dist)) +
+  geom_point() +
+  geom_smooth(method = "lm")+
+  theme_minimal() +
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Stopping Distance (in Feet)', 
+       title='Stopping Distance vs Speed') +
+  theme(plot.title = element_text(hjust=0.5, 
+                                  size=20, 
+                                  face='bold')) 
+```
+]
+
+]
+
+---
+
+# Why not just model with a horizontal line?
+
+.panelset.sideways[
+
+.panel[.panel-name[Plot]
+
+```{r, echo=FALSE, out.width="100%", fig.height=5, fig.width=5, fig.align='center'}
+ggplot(cars, aes(speed, dist)) +
+  geom_point() +
+  geom_hline(yintercept=mean(cars$dist), col = 'turquoise')+
+  theme_minimal() +
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Stopping Distance (in Feet)', 
+       title='Stopping Distance vs Speed') +
+  theme(plot.title = element_text(hjust=0.5, 
+                                  size=20, 
+                                  face='bold')) 
+```
+
+]
+
+
+.panel[.panel-name[Explanation]
+
+> We could model $Y$ such that it does not depend on the value of $X$.
+
+
+$$Y = \bar{y} = constant$$
+
+- But this model does not explain most of the variability in $Y$ and underfits the data
+- We should make $Y$ a linear function of $X$!
+
+]
+]
+
+---
+
+# Statistical Modeling
+
+.pull-left[
+Build a model (Theory)
+
+.blockquote-list[
+- model a population's mean response to explanatory variable(s)
+
+- model the error (variation) of the response around the mean at each $X$
+
+]
+]
+
+--
+
+.pull-right[
+Fit a model to data (Computation)
+
+.blockquote-list[
+- Using statistical software like R
+- Interactive platform like RStudio
+]
+]
+
+---
+
+# R and RStudio
+
+.pull-left[
+R is a free statistical software
+.blockquote-list[
+Widespread use among research statisticians, consultants, and others who use lots of stats in their research
+]
+]
+.pull-right[
+RStudio is an interface with R
+.blockquote-list[
+- Offers same functionality as R but in a nicer user interface
+- Plus has some useful additional features
+]
+]
+
+<br>
+
+.center.green[R is like a car engine and RStudio is like a car dashboard]
+
+---
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.blockquote[
+- Your turn features are regularly used in this class
+- This is your time to gauge your learning 
+- Think of these as lab time under my supervision
+- Feel free to sit with your group members next time
+]
+
+Please download the class activity RMarkdown (.Rmd) file from [moodle](https://moodle.carleton.edu/) and go over to [maize R server](https://maize.mathcs.carleton.edu/). Today, we will briefly go over some basic R codes!!
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+# Basic commands from R console
+
+.code90[
+```r
+log(2^2) # basic arithmetic (log is ln)
+```
+```r
+1:5 # vectors of numbers 1 thru 5
+```
+```r
+c(3,1,2) # c = concatenate
+```
+```r
+x <- 10:1 # assignment
+```
+```r
+x^2 # arithmetic on vectors
+```
+```r
+x[c(2,4)] # subsetting
+```
+]
+
+---
+
+
+# Command outputs
+
+```{r}
+log(2^2) # basic arithmetic (log is ln)
+```
+
+--
+
+```{r}
+1:5 # vectors of numbers 1 thru 5
+```
+
+--
+
+```{r}
+c(3,1,2) # c = concatenate
+```
+
+---
+
+# Command outputs
+
+```{r}
+x <- 10:1 # assignment
+```
+
+--
+
+```{r}
+x^2 # arithmetic on vectors
+```
+
+--
+
+```{r}
+x[c(2,4)] # subsetting
+```
+
+---
+
+# R Objects
+
+> Objects are created by many actions in R (assignment, loading data, running certain commands)
+
+> Type `ls()` or look in the Environment tab to see objects
+
+R has a number of basic data types
+
+```{r}
+str(x) # reveals the structure
+```
+
+Common types: `numeric, int, factor, character, data.frame, lm, logical`
+
+---
+
+## R Workspace (WS) and Working Directory (WD)
+
+.bold[Workspace]
+
+> All objects created in R are stored in the workspace (Environment tab).
+
+--
+
+.bold[Working Directory]
+
+.blockquote[
+- Folder where R looks for a WS, R files, and saves files
+- Check your location with `getwd()`
+]
+
+--
+
+```{r}
+getwd()  # my working directory
+```
+
+---
+
+# Make your work Reproducible
+
+
+.blockquote[It is desirable to make our work reproducible so that anyone with access to our data can easily reproduce the results]
+
+--
+
+.blockquote[Making our work reproducible also means that we can conveniently reuse or modify previous works!]
+
+--
+
+<br><br>
+
+.center.font130.green[R Markdown helps us make our work reproducible]
+
+
+---
+
+# R Markdown
+
+> A R Markdown (.Rmd) file contains the commands and written analysis used to complete a data analysis for an assignment or report.
+
+- The .Rmd file is compiled ("knit") to generate an HTML, PDF, or Word document with .bold[written analysis, R commands and output.]
+
+
+--
+
+> You can write-up homework and reports as Markdown docs
+
+- Work with simple .Rmd templates, add more complexity to it and knit often!
+
+
+---
+
+# .Rmd file
+
+A typical .Rmd file needs 3 elements:
+
+.blockquote[
+- .bold[Header:] info like the title, author, and output type preferences
+- .bold[Written analysis:] You can create formatted test elements like bold words, lists, section labels, latex equations, etc. on your final pdf/word/html document.
+- .bold[R chunks:] R commands that you want evaluated.
+]
+
+--
+
+<br>
+
+> After knitting the file, a pdf/html/Word file will be created in the same folder as the .Rmd file
+
+---
+
+# Practical Tips
+
+> When you knit a .Rmd file, Rstudio basically starts a completely new R session behind the scenes with a working directory in the same location as the .Rmd file.
+
+--
+
+.blockquote[
+You must have all commands in your .Rmd for your file to knit correctly. Make sure your .Rmd has:
+- a data loading command
+- any package loading library commands
+]
+
+--
+
+> Knit your .Rmd doc often to catch small errors as they occur
+
+
