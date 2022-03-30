@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Simple Linear Regression</title>
+    <title>Review of Statistical Inference</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -9,6 +9,14 @@
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
     <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -26,9 +34,11 @@
 
 
 
+
+
 layout: true
   
-&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Stat 230&lt;/span&gt;&lt;/div&gt; --&gt;
 &lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
 
 ---
@@ -38,40 +48,644 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Simple Linear Regression]
+# .fancy[Review of Statistical Inference]
 
 ### .fancy[Stat 230]
 
- March 24 2022
+ March 30 2022
 
 ---
 
-
-
----
 class: action
 
 # &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
 
-Please clone the repository on [clustering](https://github.com/stat220/22-clustering) to your local folder.
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+.blockquote[
+- Look for your group association in [moodle](https://moodle.carleton.edu/)
+- Find your group mates, say hi and try to seat together
+- Go to this [google form](https://forms.gle/6vfEakUXxSzr8MMS7)
+- Discuss your answer to the question posed in the next 4 slides, one by one.
+- One member from a group enter the answer to questions 
+]
+]
+
+<div class="countdown" id="timer_624473e7" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: middle
+
+## Question 1
+
+&gt; What is the difference between a population and a sample? 
+&gt; What is the difference between a parameter and a statistic?
+
+- Give an example of a parameter and a statistic, using "common" notation for each.
+
+---
+
+class: middle
+
+## Question 2
+
+&gt; Suppose you are told a `\(95\%\)` confidence interval for the proportion of registered voters for Trump just before the 2020 election is 0.38 to 0.44.
+
+- What does this mean?
+
+- What is the margin of error for this CI?
+
+- What does "95% confidence" mean?
+
+---
+
+class: middle
+
+## Question 3
+
+&gt; A study found that participants who spent money on others instead of themselves had significantly lower blood pressure (two-sided p-value=0.012).
+
+- What are the hypotheses for this test?
+
+- What does the p-value mean?
+
+---
+
+class: middle
+
+## Question 4
+
+&gt; Inference methods rely on understanding the .bold[sampling distribution] of the statistic that we used to estimate our unknown parameter.
+
+- What does the sampling distribution of the sample mean look like?
+
+- What does the standard error of the sample mean measure?
+
+- How is the sampling distribution used in a hypothesis test?
+
+- How is it used with confidence intervals?
+
+---
+
+class: middle
+
+# Data Analysis Plan
+
+.blockquote[
+1. Data: load and clean/manipulate (if needed)
+2. EDA: exploratory data analysis
+3. Inference: run tests/CIs and check assumptions!
+4. Conclusion: interpret results, avoid lots of stats jargon!
+]
+
+
+---
+
+# Real-life Data: `agstrat`
+.font90[
+&gt; Data from a stratified random sample of size 300 from the U.S. 1992 Census of Agriculture.
+]
+
+&lt;br&gt;
+
+Type | Variable Description
+-------- | -------------
+`Sampling` | counties
+`Strata` | region (North Central, Northeast, South, West)
+`response` | number of farms in 1992 (farms92)
+
+--
+
+&lt;br&gt;
+&lt;center&gt;
+&lt;a style="background-color:orange;font-size:28px"&gt; Do the average number of farms per county differ in the western and north central regions in 1992? &lt;/a&gt;
+&lt;/center&gt;
+
+.footnote[Data available in the `SDaA` package]
+
+---
+
+# Read and inspect the data
+
+.code80[
+
+```r
+agstrat &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+```
+]
+
+--
+.code90[
+
+```r
+names(agstrat)
+ [1] "county"   "state"    "acres92"  "acres87"  "acres82"  "farms92" 
+ [7] "farms87"  "farms82"  "largef92" "largef87" "largef82" "smallf92"
+[13] "smallf87" "smallf82" "region"   "rn"       "weight"  
+```
+]
+
+--
+
+.code90[
+
+```r
+table(agstrat$region)
+
+ NC  NE   S   W 
+103  21 135  41 
+```
+]
+
+---
+
+# Data Wrangling
+
+&gt; The filter command from the `dplyr` package selects rows (e.g. only rows from the W or NC regions)
 
 
 
-<div class="countdown" id="timer_623d0a65" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+```r
+agstrat2 &lt;- filter(agstrat, region %in% c("W", "NC"))
+table(agstrat2$region)
+
+ NC   W 
+103  41 
+```
+
+---
+
+count: false
+ 
+## Comparing the distributions
+.panel1-ag-boxplots-auto[
+
+```r
+*ggplot(agstrat2,
+*      aes(y=farms92,
+*          group=region))
+```
+]
+ 
+.panel2-ag-boxplots-auto[
+&lt;img src="Day2_files/figure-html/ag-boxplots_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Comparing the distributions
+.panel1-ag-boxplots-auto[
+
+```r
+ggplot(agstrat2,
+       aes(y=farms92,
+           group=region)) +
+* geom_boxplot(aes(color=region))
+```
+]
+ 
+.panel2-ag-boxplots-auto[
+&lt;img src="Day2_files/figure-html/ag-boxplots_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Comparing the distributions
+.panel1-ag-boxplots-auto[
+
+```r
+ggplot(agstrat2,
+       aes(y=farms92,
+           group=region)) +
+  geom_boxplot(aes(color=region)) +
+* labs(x = "region",
+*      y = "# of farms per county in 1992")
+```
+]
+ 
+.panel2-ag-boxplots-auto[
+&lt;img src="Day2_files/figure-html/ag-boxplots_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Comparing the distributions
+.panel1-ag-boxplots-auto[
+
+```r
+ggplot(agstrat2,
+       aes(y=farms92,
+           group=region)) +
+  geom_boxplot(aes(color=region)) +
+  labs(x = "region",
+       y = "# of farms per county in 1992") +
+* theme(axis.text.x=element_blank(),
+*       axis.ticks.x=element_blank())
+```
+]
+ 
+.panel2-ag-boxplots-auto[
+&lt;img src="Day2_files/figure-html/ag-boxplots_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ag-boxplots-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-ag-boxplots-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-ag-boxplots-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Faceted Histograms
+.panel1-ag-histograms-auto[
+
+```r
+*library(ggthemes)
+```
+]
+ 
+.panel2-ag-histograms-auto[
+
+]
+
+---
+count: false
+ 
+## Faceted Histograms
+.panel1-ag-histograms-auto[
+
+```r
+library(ggthemes)
+*ggplot(agstrat2,
+*      aes(x = farms92,
+*          group= region))
+```
+]
+ 
+.panel2-ag-histograms-auto[
+&lt;img src="Day2_files/figure-html/ag-histograms_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Faceted Histograms
+.panel1-ag-histograms-auto[
+
+```r
+library(ggthemes)
+ggplot(agstrat2,
+       aes(x = farms92,
+           group= region)) +
+* geom_histogram(aes(fill = region))
+```
+]
+ 
+.panel2-ag-histograms-auto[
+&lt;img src="Day2_files/figure-html/ag-histograms_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Faceted Histograms
+.panel1-ag-histograms-auto[
+
+```r
+library(ggthemes)
+ggplot(agstrat2,
+       aes(x = farms92,
+           group= region)) +
+  geom_histogram(aes(fill = region)) +
+* facet_wrap(~region)
+```
+]
+ 
+.panel2-ag-histograms-auto[
+&lt;img src="Day2_files/figure-html/ag-histograms_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Faceted Histograms
+.panel1-ag-histograms-auto[
+
+```r
+library(ggthemes)
+ggplot(agstrat2,
+       aes(x = farms92,
+           group= region)) +
+  geom_histogram(aes(fill = region)) +
+  facet_wrap(~region) +
+* labs(title = "Number of farms by region",
+*      x = "# of farms per county in 1992")
+```
+]
+ 
+.panel2-ag-histograms-auto[
+&lt;img src="Day2_files/figure-html/ag-histograms_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Faceted Histograms
+.panel1-ag-histograms-auto[
+
+```r
+library(ggthemes)
+ggplot(agstrat2,
+       aes(x = farms92,
+           group= region)) +
+  geom_histogram(aes(fill = region)) +
+  facet_wrap(~region) +
+  labs(title = "Number of farms by region",
+       x = "# of farms per county in 1992") +
+* scale_fill_wsj()  # color ans fill scales
+```
+]
+ 
+.panel2-ag-histograms-auto[
+&lt;img src="Day2_files/figure-html/ag-histograms_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-ag-histograms-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-ag-histograms-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-ag-histograms-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+
+# Summary stats by region
+
+
+```r
+# 5-number summary + mean
+tapply(agstrat2$farms92, agstrat2$region, summary) 
+$NC
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   58.0   489.5   738.0   750.7   968.5  1669.0 
+
+$W
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   16.0   257.0   495.0   602.3   733.0  3157.0 
+```
+
+--
+
+
+```r
+# std. deviation
+tapply(agstrat2$farms92, agstrat2$region, sd) 
+      NC        W 
+358.0873 558.1294 
+```
+
+
+---
+
+# Summary stats by region
+
+&gt; We can also pipe (%&gt;%) together `dplyr` commands to get the mean and sd of `farms92` grouped by `region`
+
+&gt; .out-t[%&gt;%] passes result on left into first argument of function on right
+
+
+```r
+agstrat2 %&gt;% 
+  group_by(region) %&gt;%
+  summarize(mean(farms92), sd(farms92))
+# A tibble: 2 × 3
+  region `mean(farms92)` `sd(farms92)`
+  &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;
+1 NC                751.          358.
+2 W                 602.          558.
+```
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+Please download the class activity 2 .Rmd file from [moodle](https://moodle.carleton.edu/) and save it into your course project folder. Work in a group to answer the following questions.
+
+&gt; Filter the  West and  North Central data
+
+&gt; Make a boxplot and faceted histograms as you were shown in the previous slides.
+
+<div class="countdown" id="timer_6244735c" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 
 ---
 
-class: action
+class: action, middle
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;3&lt;/i&gt;    
+
+Discuss how would you answer these questions with your group.
+
+.blockquote[
+- What county has the unusually high number of farms in the western region? 
+- How many farms do they have? 
+- Any ideas why it is so large? 
+- How do the summary stats change when this county is omitted?
+]
+
+<div class="countdown" id="timer_624473ba" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Outlier
 
 
+```r
+which(agstrat2$farms92 &gt; 3000)
+[1] 118
+```
+
+--
 
 
-<div class="countdown" id="timer_623d078c" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+```r
+agstrat2[118,]  # see row 118
+           county state acres92 acres87 acres82 farms92 farms87 farms82
+118 HAWAII COUNTY    HI  926607 1007287 1172448    3157    2810    2539
+    largef92 largef87 largef82 smallf92 smallf87 smallf82 region  rn   weight
+118       55       60       58     1960     1602     1468      W 142 10.29268
+```
+
+--
+
+
+```r
+slice(agstrat2, 118) # another way to see row 118
+         county state acres92 acres87 acres82 farms92 farms87 farms82 largef92
+1 HAWAII COUNTY    HI  926607 1007287 1172448    3157    2810    2539       55
+  largef87 largef82 smallf92 smallf87 smallf82 region  rn   weight
+1       60       58     1960     1602     1468      W 142 10.29268
+```
+
+---
+
+# Redo without outlier
+
+
+```r
+agstrat2_noOutlier  &lt;- agstrat2 %&gt;% 
+  slice(-118) # remove row 118
+```
+
+--
+
+
+```r
+agstrat2_noOutlier  %&gt;%    
+  group_by(region) %&gt;%  # group by region
+  summarize(mean(farms92), sd(farms92), median(farms92), IQR(farms92)) 
+# A tibble: 2 × 5
+  region `mean(farms92)` `sd(farms92)` `median(farms92)` `IQR(farms92)`
+  &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;          &lt;dbl&gt;
+1 NC                751.          358.              738             479
+2 W                 538.          385.              492.            464
+```
+
+---
+
+class: middle
+
+# Statistical Inference
+
+&gt; After understanding the dataset better, we would like to infer useful information from the data using .bold[statistical tests].
+
+&lt;br&gt;
+
+- Use a relatively small sample of data to infer about the population
+- May have to do extensive data cleaning and outlier detection and removal on a case-by-case basis
+
+&lt;!--   inferential data analysis uses data from a sample to make its best guess as to what the answer would be in the population if we were able to measure every individual.   --&gt;
+
+---
+
+# Statistical Inference: `t-test`
+
+
+```r
+t.test(farms92 ~ region, data = agstrat2) 
+
+	Welch Two Sample t-test
+
+data:  farms92 by region
+t = 1.5775, df = 53.618, p-value = 0.1206
+alternative hypothesis: true difference in means between group NC and group W is not equal to 0
+95 percent confidence interval:
+ -40.22256 336.89885
+sample estimates:
+mean in group NC  mean in group W 
+        750.6796         602.3415 
+```
+
+---
+
+# Statistical Inference
+
+
+```r
+t.test(farms92 ~ region, data = agstrat2_noOutlier) 
+
+	Welch Two Sample t-test
+
+data:  farms92 by region
+t = 3.0179, df = 66.775, p-value = 0.003601
+alternative hypothesis: true difference in means between group NC and group W is not equal to 0
+95 percent confidence interval:
+  71.8464 352.5628
+sample estimates:
+mean in group NC  mean in group W 
+        750.6796         538.4750 
+```
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;4&lt;/i&gt;    
+
+
+&gt;  Run the t-test with and without the outlier and answer the given questions
+
+
+&gt;  Do the average number of farms per county differ in the western and north central regions in 1992?
+
+<div class="countdown" id="timer_624472c0" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 

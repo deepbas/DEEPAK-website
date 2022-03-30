@@ -19,7 +19,6 @@
  
 @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
- 
 /* josefin-sans-regular - latin */
 @font-face {
   font-family: 'Josefin Sans';
@@ -95,10 +94,10 @@ h1, h2, h3 {
   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
 }
 .remark-code {
-  font-size: 22px;
+  font-size: 12px;
 }
 .remark-inline-code {
-  font-size: 1.2em;
+  font-size: 1em;
   color:  #3A6185;
 
 }
@@ -182,7 +181,7 @@ blockquote, .blockquote-list {
   border-top: solid 2px #1c5253;
   border-bottom: solid 2px #1c5253;
   border-right: solid 2px #1c5253;
-  box-shadow: 0 0 3px rgba(0,0,0,0.5);
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
   background-color: white; 
   color: #8F0053;
   padding: 0.5em;
@@ -192,8 +191,8 @@ blockquote, .blockquote-list {
 
 blockquote, .blockquote {
   display: block;
-  margin-top: 0.02em;
-  margin-bottom: 0.02em;
+  margin-top: 0.05em;
+  margin-bottom: 0.05em;
   margin-left: 5px;
   margin-right: 5px;
   border-left: solid 5px #1c5253;
@@ -202,7 +201,7 @@ blockquote, .blockquote {
   border-right: solid 2px #1c5253;
   box-shadow: 0 0 6px rgba(0,0,0,0.5);
   background-color: white; 
-  color: purple;
+  color: #8F0053;
   padding: 0.5em;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -257,7 +256,6 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   color: #386247 !important;
 }
-
 
 @page { margin: 0; }
 @media print {

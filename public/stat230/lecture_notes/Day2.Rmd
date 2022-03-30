@@ -1,5 +1,5 @@
 ---
-title: "Simple Linear Regression"
+title: "Review of Statistical Inference"
 subtitle: "<br/> STAT 230"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -41,84 +41,52 @@ knitr::opts_chunk$set(echo = TRUE,
                       )
 
 
+
 # load necessary packages
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-library(countdown)
-library(ggthemes)
+library(Sleuth3)   # Data-set for Sleuth
 library(tidyverse)
-library(stringr)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
 library(xaringanExtra)
+library(forcats)
+library(NHSRtheme)
 xaringanExtra::use_panelset()
 xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
 library(flipbookr)
-library(htmlwidgets)
-library(palmerpenguins)
-library(fontawesome)
 library(patchwork)
-library(tidymodels)
-library(mlbench)     
-library(janitor)
-library(parsnip)
-library(kknn)
-library(paletteer)
-library(corrr)
-library(scico)
-library(yardstick)
-library(probably)
-library(extrafont)
-library(cluster)    # clustering algorithms
-library(factoextra) # clustering algorithms & visualization
-library(broom)
-library(purrr)
-library(dendextend) # for comparing two dendrograms
 
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
 
 yt <- 0
 
-USAData <- as_tibble(USArrests, rownames = "state") %>% na.omit() %>%
-  column_to_rownames("state")
-
-
-standardize <- function(x, na.rm = FALSE) {
-  (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
-}
-
-set.seed(233)
-
-clus_df <- tibble(
-  x1 = rnorm(n = 150, mean = rep(c(5,7,8), each = 50)),
-  x2 = rnorm(n = 150, mean = rep(c(2, 5, 1), each = 50)),
-  y = unlist(lapply(1:3, function(x) rep(as.character(x),50)))
-)
-
-
-my_df <- tibble(
-  X1 = rnorm(n = 50, mean = rep(c(1, 3), each = 25)),
-  X2 = rnorm(n = 50, mean = rep(c(1.3, 1), each = 25))
-)
-
-multi_kmeans <- tibble(k = 1:10) %>%
-  mutate(
-    model = purrr::map(k, ~ kmeans(my_df, centers = .x, nstart = 25)),
-    tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss)
-  )
-
-d2 <- dist(my_df, method = "euclidean")
-hc2 <- hclust(d2)
-
-
 ```
 
 
-```{r xaringan-themer, include = FALSE}
-# Use xaringan theme from first set
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
 ```
+
 
 layout: true
   
-<!-- <div class="my-footer"><span>Bastola</span></div> -->
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
 <!-- this adds the link footer to all slides, depends on my-footer class in css-->
 
 ---
@@ -128,7 +96,7 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Simple Linear Regression]
+# .fancy[Review of Statistical Inference]
 
 ### .fancy[Stat 230]
 
@@ -136,28 +104,331 @@ background-size: 160px, 100% 100%
 
 ---
 
-
-
----
 class: action
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
 
-Please clone the repository on [clustering](https://github.com/stat220/22-clustering) to your local folder.
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+.blockquote[
+- Look for your group association in [moodle](https://moodle.carleton.edu/)
+- Find your group mates, say hi and try to seat together
+- Go to this [google form](https://forms.gle/6vfEakUXxSzr8MMS7)
+- Discuss your answer to the question posed in the next 4 slides, one by one.
+- One member from a group enter the answer to questions 
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+class: middle
+
+## Question 1
+
+> What is the difference between a population and a sample? 
+> What is the difference between a parameter and a statistic?
+
+- Give an example of a parameter and a statistic, using "common" notation for each.
+
+---
+
+class: middle
+
+## Question 2
+
+> Suppose you are told a $95\%$ confidence interval for the proportion of registered voters for Trump just before the 2020 election is 0.38 to 0.44.
+
+- What does this mean?
+
+- What is the margin of error for this CI?
+
+- What does "95% confidence" mean?
+
+---
+
+class: middle
+
+## Question 3
+
+> A study found that participants who spent money on others instead of themselves had significantly lower blood pressure (two-sided p-value=0.012).
+
+- What are the hypotheses for this test?
+
+- What does the p-value mean?
+
+---
+
+class: middle
+
+## Question 4
+
+> Inference methods rely on understanding the .bold[sampling distribution] of the statistic that we used to estimate our unknown parameter.
+
+- What does the sampling distribution of the sample mean look like?
+
+- What does the standard error of the sample mean measure?
+
+- How is the sampling distribution used in a hypothesis test?
+
+- How is it used with confidence intervals?
+
+---
+
+class: middle
+
+# Data Analysis Plan
+
+.blockquote[
+1. Data: load and clean/manipulate (if needed)
+2. EDA: exploratory data analysis
+3. Inference: run tests/CIs and check assumptions!
+4. Conclusion: interpret results, avoid lots of stats jargon!
+]
 
 
+---
+
+# Real-life Data: `agstrat`
+.font90[
+> Data from a stratified random sample of size 300 from the U.S. 1992 Census of Agriculture.
+]
+
+<br>
+
+Type | Variable Description
+-------- | -------------
+`Sampling` | counties
+`Strata` | region (North Central, Northeast, South, West)
+`response` | number of farms in 1992 (farms92)
+
+--
+
+<br>
+<center>
+<a style="background-color:orange;font-size:28px"> Do the average number of farms per county differ in the western and north central regions in 1992? </a>
+</center>
+
+.footnote[Data available in the `SDaA` package]
+
+---
+
+# Read and inspect the data
+
+.code80[
+```{r}
+agstrat <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+]
+
+--
+.code90[
+```{r}
+names(agstrat)
+```
+]
+
+--
+
+.code90[
+```{r}
+table(agstrat$region)
+```
+]
+
+---
+
+# Data Wrangling
+
+> The filter command from the `dplyr` package selects rows (e.g. only rows from the W or NC regions)
+
+
+```{r}
+agstrat2 <- filter(agstrat, region %in% c("W", "NC"))
+table(agstrat2$region)
+```
+
+---
+
+`r chunk_reveal("ag-boxplots", font_size_code="70%", title = "## Comparing the distributions")`
+
+```{r ag-boxplots, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(agstrat2, 
+       aes(y=farms92, 
+           group=region)) + 
+  geom_boxplot(aes(color=region)) +
+  labs(x = "region",
+       y = "# of farms per county in 1992") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+---
+
+`r chunk_reveal("ag-histograms", font_size_code="70%", title = "## Faceted Histograms")`
+
+```{r ag-histograms, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+library(ggthemes)
+ggplot(agstrat2, 
+       aes(x = farms92, 
+           group= region)) +  
+  geom_histogram(aes(fill = region)) +
+  facet_wrap(~region) +
+  labs(title = "Number of farms by region",
+       x = "# of farms per county in 1992") +
+  scale_fill_wsj() # color ans fill scales
+```
+
+---
+
+
+# Summary stats by region
+
+```{r}
+# 5-number summary + mean
+tapply(agstrat2$farms92, agstrat2$region, summary) 
+```
+
+--
+
+```{r}
+# std. deviation
+tapply(agstrat2$farms92, agstrat2$region, sd) 
+
+```
+
+
+---
+
+# Summary stats by region
+
+> We can also pipe (%>%) together `dplyr` commands to get the mean and sd of `farms92` grouped by `region`
+
+> .out-t[%>%] passes result on left into first argument of function on right
+
+```{r}
+agstrat2 %>% 
+  group_by(region) %>%
+  summarize(mean(farms92), sd(farms92))
+```
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+Please download the class activity 2 .Rmd file from [moodle](https://moodle.carleton.edu/) and save it into your course project folder. Work in a group to answer the following questions.
+
+> Filter the  West and  North Central data
+
+> Make a boxplot and faceted histograms as you were shown in the previous slides.
 
 `r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 ---
 
-class: action
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+Discuss how would you answer these questions with your group.
+
+.blockquote[
+- What county has the unusually high number of farms in the western region? 
+- How many farms do they have? 
+- Any ideas why it is so large? 
+- How do the summary stats change when this county is omitted?
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+# Outlier
+
+```{r}
+which(agstrat2$farms92 > 3000)
+```
+
+--
+
+```{r}
+agstrat2[118,]  # see row 118
+```
+
+--
+
+```{r}
+slice(agstrat2, 118) # another way to see row 118
+
+```
+
+---
+
+# Redo without outlier
+
+```{r}
+agstrat2_noOutlier  <- agstrat2 %>% 
+  slice(-118) # remove row 118
+```
+
+--
+
+```{r}
+agstrat2_noOutlier  %>%    
+  group_by(region) %>%  # group by region
+  summarize(mean(farms92), sd(farms92), median(farms92), IQR(farms92)) 
+```
+
+---
+
+class: middle
+
+# Statistical Inference
+
+> After understanding the dataset better, we would like to infer useful information from the data using .bold[statistical tests].
+
+<br>
+
+- Use a relatively small sample of data to infer about the population
+- May have to do extensive data cleaning and outlier detection and removal on a case-by-case basis
+
+<!--   inferential data analysis uses data from a sample to make its best guess as to what the answer would be in the population if we were able to measure every individual.   -->
+
+---
+
+# Statistical Inference: `t-test`
+
+```{r}
+t.test(farms92 ~ region, data = agstrat2) 
+```
+
+---
+
+# Statistical Inference
+
+```{r}
+t.test(farms92 ~ region, data = agstrat2_noOutlier) 
+```
+
+---
+
+class: action, middle
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
 
 
+>  Run the t-test with and without the outlier and answer the given questions
 
+
+>  Do the average number of farms per county differ in the western and north central regions in 1992?
 
 `r countdown(minutes = 3, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
