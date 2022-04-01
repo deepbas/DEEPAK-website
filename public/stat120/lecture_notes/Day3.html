@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Simple Linear Regression</title>
+    <title>Observations and Experiments</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -9,8 +9,14 @@
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
     <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
-    <link href="libs/countdown/countdown.css" rel="stylesheet" />
-    <script src="libs/countdown/countdown.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
 
     <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
@@ -26,9 +32,11 @@
 
 
 
+
+
 layout: true
   
-&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Stat 230&lt;/span&gt;&lt;/div&gt; --&gt;
 &lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
 
 ---
@@ -38,43 +46,441 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Simple Linear Regression]
+# .fancy[ Experiments and Observational Studies]
 
-### .fancy[Stat 230]
+### .fancy[Stat 120]
 
- March 28 2022
-
----
-
-
+ April 01 2022
 
 ---
-class: action
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+class: middle
 
-Please clone the repository on [clustering](https://github.com/stat220/22-clustering) to your local folder.
+# Explanatory and Response
 
+.blockquote[
+If we are using one variable to help us understand or predict values
+of another variable, we call the former the .bold[explanatory variable] and
+the latter the .bold[response variable]
+]
 
-
-<div class="countdown" id="timer_6241d300" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
 
 
 ---
 
-class: action
-
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+# Association and Causation
 
 
+.blockquote[Two variables are .bold[associated] if values of one variable tends to
+be related to values of the other variable
+- e.g. .yellow-h[Families with many cars tend to own many television sets]
+]
+
+--
+&lt;br&gt;
+
+.blockquote[Two variables are .bold[causally associated] if changing the value of
+the explanatory variable influences the value of the response
+variable
+- e.g. .yellow-h[Studies show that taking a practice exam increases your score on an exam]
+]
+
+---
+
+# College Education and Aging
+
+.blockquote[
+.font80[
+“Education seems to be an elixir that can bring us a healthy body and mind
+throughout adulthood and even a longer life,” says Margie E. Lachman, a psychologist
+at Brandeis University who specializes in aging. “For those in midlife and beyond, a
+college degree appears to slow the brain’s aging process by up to a decade, adding a
+new twist to the cost-benefit analysis of higher education - for young students as
+well as those thinking about returning to school.”]]
+
+--
+
+Which of the following is true?
+
+.blockquote-list[
+1. Explanatory Variable = brain aging; Response Variable = elixir
+2. Explanatory Variable = brain aging; Response Variable = college
+degree
+3. Explanatory Variable = college degree; Response Variable = brain
+aging
+]
+--
+
+.footnote[A Sharper Mind, Middle Age and Beyond, NY Times, 1/19/12]
+
+---
+
+class: middle
+
+# College Education and Aging
+
+.blockquote[Based on this passage, should we conclude that obtaining a college
+degree causes a slowdown in the brain’s aging process?
+- Yes
+- No
+]
+
+---
+
+class: middle
+
+# Explanatory, Response, Causation
+
+Does the following headline imply a causal association?
+.blockquote[
+1. "Daily Exercise Improves Mental Performance"
+2. "Want to lose weight? Eat more fiber"
+3. "Cat owners tend to be more educated than dog owners"
+]
+
+---
+
+# Should you buy more TVs to live longer?
+
+&lt;center&gt;
+&lt;img src="images/tv_life_expectancy.png" width="70%" height="60%"&gt; &lt;br&gt;
+&lt;a&gt;Life expectancy Vs Number of TVs&lt;/a&gt;
+&lt;/center&gt;
 
 
-<div class="countdown" id="timer_6241d003" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
+---
 
+class: middle
+
+# TVs and Life Expectancy
+
+&lt;center&gt;
+&lt;img src="images/confounding.png" width="70%" height="60%"&gt; &lt;br&gt;
+&lt;a&gt;Extra lurking variable&lt;/a&gt;
+&lt;/center&gt;
+
+---
+
+# Facebook and Greek Debt Crisis
+
+
+&lt;center&gt;
+&lt;img src="images/confounding_facebook.png" width="60%" height="50%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+.footnote[https://www.bloomberg.com/news/articles/2011-12-01/correlation-or-causation]
+
+---
+
+# Global Warming and Scientists
+
+&lt;center&gt;
+&lt;img src="images/confounding_globalwarming.png" width="60%" height="50%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+.footnote[https://www.bloomberg.com/news/articles/2011-12-01/correlation-or-causation]
+
+---
+
+
+# Confounding Variable
+
+.font120[
+&gt; A third variable that is associated with both the explanatory
+variable and the response variable is called a .bold[confounding variable]
+]
+
+--
+
+.font120[
+&gt; A confounding variable can offer a plausible explanation for an association between the two variables.
+]
+
+--
+
+.font120[
+&gt; Whenever confounding variables are present (or may be present), a causal association .bold[CANNOT] be determined!
+]
+
+---
+
+# Experiment Vs Observational Study
+
+.font120.blockquote[
+An .out-t.bold[observational study] is a study in which the researcher does
+not actively control the value of any variable, but simply
+observes the values as they naturally exist
+]
+
+--
+&lt;br&gt;
+
+.font120.blockquote[
+An .out-t.bold[experiment] is a study in which the researcher actively
+controls one or more of the explanatory variables
+]
+
+---
+
+class: middle
+
+# Experiment or Observational Study?
+
+.blockquote[
+To examine whether playing music in a store increases the amount
+customers spend, we randomly assign some stores to play music and
+some to stay silent and compare the average amount spent by
+customers. Does this describe an experiment or an observational
+study?
+
+- Experiment
+- Observational Study
+]
+
+---
+
+class: middle
+
+# Experiment or Observational Study?
+
+.blockquote[
+To examine whether farm-grown salmon contain more omega-3 oils
+if water is more acidic, we collect samples of salmon and water from
+multiple fish farms to see if the two variables are related.
+
+- Experiment
+- Observational Study
+]
+
+
+---
+
+# Observational Studies and Confounding Variable
+
+.blockquote-list[
+- There are almost always confounding variables in observational
+studies
+
+- Observational studies can almost never be used to establish
+causation!!
+]
+
+--
+
+.yellow-h[To avoid confounding variables: Randomly assign values of the explanatory variable!]
+
+
+---
+
+class: middle
+
+# Randomized Experiments
+
+.blockquote-list[
+- In a .bold[randomized experiment], the explanatory variable for each
+unit is determined randomly, before the response variable is
+measured
+- The different levels of the explanatory variable are known as
+.bold[treatments]
+- Randomly divide the units into groups, and randomly assign a
+different treatment to each group
+- Observe the response variable after treatments are applied
+]
+
+---
+
+# Elimination of confounding variables
+
+&lt;center&gt;
+&lt;img src="images/randomized_experiments.png" width="70%" height="60%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+--
+
+
+.out-t[Because the explanatory variable is randomly assigned, it is not associated with any other variables.  Confounding variables are eliminated!!!]
+
+---
+
+# Exercise and the Brain
+
+.blockquote-list[
+- A sample of mice were divided randomly into two groups. One
+group was given access to an exercise wheel, the other group
+was kept sedentary
+- "The brains of mice and rats that were allowed to run on wheels
+pulsed with vigorous, newly born neurons, and those animals
+then breezed through mazes and other tests of rodent IQ"
+compared to the sedentary mice
+]
+
+Is this evidence that exercise causes an increase in brain
+activity and IQ, at least in mice?
+
+--
+
+.center.out-t[Randomized experiment can yield causal conclusions!]
+
+--
+
+.footnote[Reynolds, "Phys Ed: Your Brain on Exercise", NY Times, July 7, 2010]
+
+---
+
+# Knee Surgery and Arthritis
+
+&gt; Researchers conducted a study on the effectiveness of a knee
+surgery to cure arthritis. It was randomly determined whether
+people got the knee surgery. Everyone who underwent the
+surgery reported feeling less pain
+
+--
+
+- Is this evidence that the surgery causes a decrease in pain?
+
+--
+
+.out-t[Need a control or comparison group. What would happen without surgery?]
+
+---
+
+class: middle
+
+# Control Group
+
+.blockquote-list[
+- When determining whether a treatment is effective, it is
+important to have a comparison group, known as the .bold[control group]
+
+- All randomized experiments need either a control group, or at
+least two different treatments to compare
+]
+
+---
+
+
+# Knee Surgery for Arthritis
+
+.blockquote-list[
+- In the knee surgery study, those in the control group received a
+.bold[fake knee surgery]. They were put under and cut open, but the
+doctor did not actually perform the surgery. All of these patients
+also reported less pain!
+
+- The improvement was .bold[indistinguishable] between those receiving
+the real surgery and those receiving the fake surgery!
+]
+
+--
+
+.center.red.font140.bold[What is the reason?]
+
+--
+
+.footnote[Source: The Placebo Prescription, NY Times Magazine, 1/9/00]
+
+---
+
+class: middle
+
+# Placebo Effect
+
+
+.blockquote-list[
+- People can experience the effect they think they should be
+experiencing, even if they aren’t actually receiving the treatment
+
+- One study estimated that 75% of the effectiveness of
+anti-depressant medication is due to the .bold[placebo effect]
+
+]
+
+---
+
+
+# Can Video Games Help Teens Beat Depression?
+
+.pull-left[
+.blockquote-list[
+- `\(168\)` teens, `\(2/3^{rd}\)` girls
+- Half of the group was
+randomly assigned to
+treatment (video game)
+- Other half received
+traditional counseling
+]
+
+]
+.pull-right[
+&lt;center&gt;
+&lt;img src="images/videogames.jpg" width="90%" height="80%"&gt; &lt;br&gt;
+&lt;a&gt;Source: Brand X Pictures&lt;/a&gt;
+&lt;/center&gt;
+]
+
+--
+&lt;br&gt;
+&lt;br&gt;
+.out-t[
+44% of those who played video game recovered completely from
+depression, compared with 26% of those in regular treatment
+]
+
+.footnote[[Link](https://healthland.time.com/2012/04/20/study-playing-a-video-game-helps-teens-beat-depression/) to the article]
+
+---
+
+class: middle
+
+# Placebo and Blinding
+
+.blockquote-list[
+- Control groups are often given a .bold[placebo], a fake treatment that resembles the active treatment as much as possible
+- If possible, randomized experiments should be .bold[double-blinded:] neither the participants or the researchers evaluating participants should know which treatment the participants are actually getting
+]
+
+
+---
+
+class: middle
+
+# Types of Randomized Experiments
+
+.blockquote-list[
+- Randomizing cases into different treatment groups is called a
+.bold[randomized comparative experiment]
+- We can also give each treatment to each case, and just
+randomize the order in which treatments are received: .bold[matched pairs experiment]
+- There are other, more complicated types of randomized
+experiments (blocking, split plots, …)
+
+]
+
+---
+
+class: middle
+
+# More on Randomization
+
+.blockquote-list[
+- Doing a randomized experiment on a random sample is ideal,
+but rarely achievable. (why?)
+- If the focus of the study is using a sample to estimate a
+population parameter, you need a random sample but do not
+need a randomized experiment (example: election polling)
+- If the focus of the study is establishing causality, you need a
+randomized experiment and can settle for a non-random
+sample (example: drug testing)
+]
+
+---
+
+# Randomization in Data Collection
+
+
+&lt;center&gt;
+&lt;img src="images/randomized_flowcharts.png" width="70%" height="60%"&gt; &lt;br&gt;
+&lt;/center&gt;
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

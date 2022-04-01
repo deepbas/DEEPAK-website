@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Simple Linear Regression</title>
+    <title>Simple Linear Regression (SLR) model</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -9,6 +9,14 @@
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
     <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -26,9 +34,11 @@
 
 
 
+
+
 layout: true
   
-&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Bastola&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Stat 230&lt;/span&gt;&lt;/div&gt; --&gt;
 &lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
 
 ---
@@ -38,43 +48,639 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Simple Linear Regression]
+# .fancy[Simple Linear Regression (SLR) model]
 
 ### .fancy[Stat 230]
 
- March 24 2022
+ April 01 2022
+
+---
+
+## Simple Linear Regression
+
+.pull-left[
+&lt;img src="Day3_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+.pull-right[
+Today: 
+.blockquote-list[
+- Introduce SLR model
+
+- SLR model interpretation
+
+- Parameter estimation
+  + sampling distribution
+]
+
+]
+
+---
+
+class: middle
+
+## `cars` example
+
+.blockquote-list[
+How does speed of cars relates to the distances taken to stop?
+- `speed`: car speed in miles per hours (mph) 
+- `dist`: stopping distance in feet (ft)
+]
+
+
+
+```r
+str(cars)
+```
+
+```
+'data.frame':	50 obs. of  2 variables:
+ $ speed: num  4 4 7 7 8 9 10 10 10 11 ...
+ $ dist : num  2 10 4 22 16 10 18 26 34 17 ...
+```
+
+
+---
+
+# Statistical Modeling: EDA
+
+For now: assume `\(y\)` and `\(x\)` are .bold[quantitative] variables
+
+.blockquote-list[
+.bold[univariate:] summary stats, boxplot/histogram
+
+.bold[bivariate:] scatterplot of `\(y\)` against `\(x\)`
+- relationship form
+- direction
+- relationship strength
+- unusual cases
+]
+
+---
+
+# `cars` summary
+
+.pull-left[
+
+```r
+library(dplyr)
+cars %&gt;% summary()
+```
+
+```
+     speed           dist       
+ Min.   : 4.0   Min.   :  2.00  
+ 1st Qu.:12.0   1st Qu.: 26.00  
+ Median :15.0   Median : 36.00  
+ Mean   :15.4   Mean   : 42.98  
+ 3rd Qu.:19.0   3rd Qu.: 56.00  
+ Max.   :25.0   Max.   :120.00  
+```
+]
+.pull-right[
+
+```r
+cars %&gt;%
+  summarize(sd(speed), sd(dist))
+```
+
+```
+  sd(speed) sd(dist)
+1  5.287644 25.76938
+```
+]
+
+---
+
+count: false
+ 
+## Scatter plot
+.panel1-cars-scatter-plot-auto[
+
+```r
+*ggplot(cars, aes(x = speed, y = dist))
+```
+]
+ 
+.panel2-cars-scatter-plot-auto[
+&lt;img src="Day3_files/figure-html/cars-scatter-plot_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Scatter plot
+.panel1-cars-scatter-plot-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+* geom_point()
+```
+]
+ 
+.panel2-cars-scatter-plot-auto[
+&lt;img src="Day3_files/figure-html/cars-scatter-plot_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Scatter plot
+.panel1-cars-scatter-plot-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point() +
+* labs(x='Speed (in Miles Per Hour)',
+*      y='Stopping Distance (in Feet)',
+*      title='Stopping Distance vs Speed')
+```
+]
+ 
+.panel2-cars-scatter-plot-auto[
+&lt;img src="Day3_files/figure-html/cars-scatter-plot_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Scatter plot
+.panel1-cars-scatter-plot-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point() +
+  labs(x='Speed (in Miles Per Hour)',
+       y='Stopping Distance (in Feet)',
+       title='Stopping Distance vs Speed') +
+* theme(plot.title = element_text(hjust = 0.5))
+```
+]
+ 
+.panel2-cars-scatter-plot-auto[
+&lt;img src="Day3_files/figure-html/cars-scatter-plot_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-cars-scatter-plot-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-cars-scatter-plot-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-cars-scatter-plot-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Statistical Modeling
+
+`$$\text{Response} = \text{Mean} + \text{Random error}$$`
+
+.blockquote[.bold[Mean:] A population/theoretical mean value for the response
+- Statistical models often focus on modeling this mean response as a function of other variables!
+`$$Y = \beta_0 + \beta_1 X + \epsilon$$`
+]
+
+--
+
+.blockquote[.bold[Random error:] How much do individual responses vary from the mean 
+- Random errors are centered around 0 (why?)]
+
+---
+
+# The Simple Linear Regression (SLR) Model
+
+`$$Y_i = \beta_0 + \beta_1x_i + \epsilon_i \qquad \epsilon_i \sim N(0, \sigma)$$`
+
+.font90.blockquote[.bold[Linear Mean:] : The population mean value of `\(Y\)` given a value of `\(x\)` is
+
+`$$\mu_{y \mid x}=E(Y \mid x)=\beta_{0}+\beta_{1} x$$`
+- This mean value .yellow-h[varies linearly with `\(x\)`]]
+
+.font90.blockquote[ .bold[Constant SD:] The population SD value of given a value of is
+
+`$$SD(Y \mid x)=\sigma$$`
+- The fact that this SD does not depend on the value of `\(x\)` is called the .yellow-h[contant variance, or homoscedastic, assumption]]
+
+---
+
+class: middle
+
+# The Simple Linear Regression (SLR) Model
+
+`$$Y_i = \beta_0 + \beta_1x_i + \epsilon_i \qquad \epsilon_i \sim N(0, \sigma)$$`
+
+&gt; .bold[Normality:] The population distribution of Y given a value of `\(x\)` is
+
+`$$Y_i|x_i \sim N(\mu_{y|x} = \beta_0 + \beta_1x_i, \sigma)$$`
+
+&gt; .bold[Independence:] All responses given a value of `\(x\)` occur independently of each other
+
+---
+
+# SLR model: quick example
+
+`$$\text{exam score}_i = 30 + 12\text{study hours}_i + \epsilon_i \qquad \epsilon_i \sim N(0,3)$$`
+
+--
+
+.pull-left[
+.blockquote.font90[For all students who studied 5 hours, their scores are normally distributed with a mean of 90 and SD of 3.
+
+`$$\mu_{y \mid x=5}=30+12 * 5=90$$`]
+]
+
+--
+
+.pull-right[
+.blockquote.font90[For all students who studied 1 hour, their scores are normally distributed with a mean of 42 and SD of `\(3 .\)`
+`$$\mu_{y \mid x=1}=30+12 * 1=42$$`]
+]
+
+---
+
+class: middle
+
+# SLR model interpretation
+
+`$$Y_i = \beta_0 + \beta_1x_i + \epsilon_i \qquad \epsilon_i \sim N(0, \sigma)$$`
+
+&lt;blockquote&gt;
+There are a total of three parameters in the SLR model:
+&lt;/blockquote&gt;
+
+- the two mean parameters `\(\beta_0\)` and `\(\beta_1\)`
+- the SD parameter `\(\sigma\)`
+
+---
+
+# SLR model interpretation: Slope `\(\beta_1\)`
+
+&gt; `\(\beta_{1}\)` is the constant (additive) rate of change in the mean of `\(Y\)` as `\(x\)` varies.
+- A 1 unit increase in `\(x\)` is associated with a `\(\beta_{1}\)` change in `\(Y\)`, on average.
+- `\(\beta_{1}\)` is the "effect" of `\(x\)` on the response `\(Y\)`
+
+--
+
+`$$\text{exam score}_{i} = 30+12 \text{study hours}_{i}+\epsilon_{i} \quad \epsilon_{i} \sim N(0,3)$$`
+&gt; Each additional hour studying is associated with a 12 points increase in exam score, on average.
+
+---
+
+# SLR model interpretion: Intercept `\(\beta_0\)`
+
+&gt; `\(\beta_0\)` is the mean value of `\(Y\)` when `\(x=0\)`
+- Usually needed in the model but may not make sense to interpret unless we’ve observed x values around 0
+
+--
+
+`$$\text{exam score}_i = 30 + 12\text{study hours}_i + \epsilon_i \qquad \epsilon_i \sim N(0,3)$$`
+&gt; The mean exam score is 30 for all students who did not study (hours = 0).
+- if we didn't see any cases with 0 study hours, then this would
+be an extrapolation!
+
+---
+
+# SLR model interpretation:  `\(\sigma\)`
+
+&gt; `\(\sigma\)` is the standard deviation of `\(Y\)` around `\(\mu_{y \mid x}\)` given any predictor value `\(x\)`
+
+`$$\text{exam score}_i = 30 + 12\text{study hours}_i + \epsilon_i \qquad \epsilon_i \sim N(0,3)$$`
+
+&gt; For any study hour value, individual exam scores vary around the model mean `\(30+12\)` study hours with a SD of 3 points.
+
+---
+
+class: middle
+
+# SLR estimation
+
+`$$Y_i = \beta_0 + \beta_1x_i + \epsilon_i \qquad \epsilon_i \sim N(0, \sigma)$$`
+
+&gt; How do we estimate `\(\beta_0\)`, `\(\beta_1\)`, `\(\sigma\)` given a sample of `\(n\)` data points?
+`$$(x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n)$$`
+
+---
+
+# Maximum likelihood estimation (MLE) 
+.font90[
+&gt; .bold[Motivation:] To find the values of `\(\hat{\beta}_0, \hat{\beta_1}, \hat{\sigma}\)` that .italics[maximizes] the likelihood (probability) of the observed data based on the SLR model
+]
+
+`$$\hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(Y_{i}-\bar{Y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \qquad \hat{\beta}_{0}=\bar{Y}-\hat{\beta}_{1} \bar{x}$$`
+`$$\hat{\sigma}=\sqrt{\frac{\sum_{i=1}^{n}\left(Y_{i}-\hat{y}_{i}\right)^{2}}{n-2}}$$`
+.font90.out-t[MLE yields the .bold[same estimates] that you get from the "best fit" line
+found via "least squares" estimation]
+
+---
+
+# Fitting a SLR in R
+
+`$$\operatorname{lm}(y \sim x, \text { data }= \quad)$$`
+
+```r
+cars_lm &lt;- lm(dist ~ speed, data = cars)
+cars_lm
+```
+
+```
+
+Call:
+lm(formula = dist ~ speed, data = cars)
+
+Coefficients:
+(Intercept)        speed  
+    -17.579        3.932  
+```
 
 ---
 
 
+# `cars` linear model estimates
+
+`$$\hat{\beta}_{0}=-17.579 \quad \hat{\beta}_{1}=3.932$$`
+
+--
+
+.blockquote[A one miles per hour increase in speed is associated with an estimated 3.932 feet
+increase in mean stopping distance]
+
+--
+
+.blockquote[At 0 speed, we estimate an average stopping  of -17.579 feet]
 
 ---
+
+# Linear fit object in R
+
+.code75[
+
+```r
+summary(cars_lm)
+```
+
+```
+
+Call:
+lm(formula = dist ~ speed, data = cars)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-29.069  -9.525  -2.272   9.215  43.201 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -17.5791     6.7584  -2.601   0.0123 *  
+speed         3.9324     0.4155   9.464 1.49e-12 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 15.38 on 48 degrees of freedom
+Multiple R-squared:  0.6511,	Adjusted R-squared:  0.6438 
+F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12
+```
+]
+
+- The .out-t[Residual standard error] gives the estimate of `\(\sigma\)`: `\(\hat{\sigma} = 15.38\)`
+
+---
+
+count: false
+ 
+##  Visualize the SLR line
+.panel1-cars-model-auto[
+
+```r
+*ggplot(cars, aes(x = speed, y = dist))
+```
+]
+ 
+.panel2-cars-model-auto[
+&lt;img src="Day3_files/figure-html/cars-model_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Visualize the SLR line
+.panel1-cars-model-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+* geom_point()
+```
+]
+ 
+.panel2-cars-model-auto[
+&lt;img src="Day3_files/figure-html/cars-model_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Visualize the SLR line
+.panel1-cars-model-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point() +
+* labs(x='Speed (in Miles Per Hour)',
+*      y='Stopping Distance (in Feet)',
+*      title='Stopping Distance vs Speed')
+```
+]
+ 
+.panel2-cars-model-auto[
+&lt;img src="Day3_files/figure-html/cars-model_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Visualize the SLR line
+.panel1-cars-model-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point() +
+  labs(x='Speed (in Miles Per Hour)',
+       y='Stopping Distance (in Feet)',
+       title='Stopping Distance vs Speed') +
+* theme(plot.title = element_text(hjust = 0.5))
+```
+]
+ 
+.panel2-cars-model-auto[
+&lt;img src="Day3_files/figure-html/cars-model_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Visualize the SLR line
+.panel1-cars-model-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point() +
+  labs(x='Speed (in Miles Per Hour)',
+       y='Stopping Distance (in Feet)',
+       title='Stopping Distance vs Speed') +
+  theme(plot.title = element_text(hjust = 0.5))+
+* geom_smooth(method = "lm", se = FALSE)
+```
+]
+ 
+.panel2-cars-model-auto[
+&lt;img src="Day3_files/figure-html/cars-model_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Visualize the SLR line
+.panel1-cars-model-auto[
+
+```r
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point() +
+  labs(x='Speed (in Miles Per Hour)',
+       y='Stopping Distance (in Feet)',
+       title='Stopping Distance vs Speed') +
+  theme(plot.title = element_text(hjust = 0.5))+
+  geom_smooth(method = "lm", se = FALSE) +
+* geom_smooth(method = "lm")
+```
+]
+ 
+.panel2-cars-model-auto[
+&lt;img src="Day3_files/figure-html/cars-model_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-cars-model-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-cars-model-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-cars-model-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Back to estimation theory
+
+.blockquote[A one miles per hour increase in speed is associated with an estimated 3.932 feet
+increase in mean stopping distance]
+- How much uncertainty do we have in this estimated effect?
+
+--
+
+.blockquote[Need to understand the sampling distribution of our estimates]
+- Interested in the mean function parameters
+
+`$$\hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(Y_{i}-\bar{Y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \qquad \hat{\beta}_{0}=\bar{Y}-\hat{\beta}_{1} \bar{x}$$`
+
+---
+
+# Sampling distribution of `\(\hat{\beta}_{0}\)` and `\(\hat{\beta}_{1}\)`
+
+`$$\hat{\beta}_{1}=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(Y_{i}-\bar{Y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}} \qquad \hat{\beta}_{0}=\bar{Y}-\hat{\beta}_{1} \bar{x}$$`
+.blockquote[
+For a fixed set of predictor values `\(x_{1}, \ldots, x_{n}\)` :
+- our observed responses `\(y_{1}, \ldots, y_{n}\)` will vary from sample to sample
+- so our "best fit" line intercept `\(\hat{\beta}_{0}\)` and slope `\(\hat{\beta}_{1}\)` will vary from sample to sample
+]
+
+---
+
+# Sampling distribution of `\(\hat{\beta}_{0}\)` and `\(\hat{\beta}_{1}\)`
+
+.blockquote[Probability theory tells us that the sampling distributions are normally distributed!!
+`$$\hat{\beta}_{j} \sim N\left(\beta_{j}, S D\left(\hat{\beta}_{j}\right)\right) \quad \text { for } j=0,1$$`]
+
+--
+
+.blockquote[
+We need to estimate `\(S D\left(\hat{\beta}_{j}\right)\)` with standard errors:
+`$$SE\left(\hat{\beta}_{1}\right)=\hat{\sigma} \sqrt{\frac{1}{(n-1) s_{x}^{2}}} \quad S E\left(\hat{\beta}_{0}\right)=\hat{\sigma} \sqrt{\frac{1}{n}+\frac{\bar{x}^{2}}{(n-1) s_{x}^{2}}}$$`
+]
+
+---
+
+# Sampling distribution of `\(\hat{\beta}_{0}\)` and `\(\hat{\beta}_{1}\)`
+
+- Need advanced statistics for the proofs!!
+
+.blockquote[Using simulations in R
+- we can generate lots of different responses from the same set of `\(x\)` values and see how the best fit
+slopes/intercepts vary!!]
+
+
+---
+
 class: action
 
 # &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
 
-Please clone the repository on [clustering](https://github.com/stat220/22-clustering) to your local folder.
 
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+.blockquote[
+- Get the in class activity file from [moodle](https://moodle.carleton.edu/)
+- Use given functions to simulate many parameter estimates
+- Infer the standard errors!
+]
+]
 
-
-<div class="countdown" id="timer_623d07f7" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<div class="countdown" id="timer_62471748" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
-
-
----
-
-class: action
-
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
-
-
-
-
-<div class="countdown" id="timer_623d0a96" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
-
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
