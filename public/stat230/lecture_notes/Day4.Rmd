@@ -1,0 +1,634 @@
+---
+title: "Simple Linear Regression (SLR) model Inference"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(parallel)
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+
+# New sim_slr
+sim_slr <- function(x, beta_0 = 20, beta_1 = 30, sigma = 10, grph = T) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  my_data <- data.frame(predictor = x, response = y)
+  my_lm <- lm(response ~ predictor, data = my_data)
+
+  # if plot is TRUE
+  if (grph){
+    plot(y ~x, xlab="Speed (in Miles Per Hour)", 
+         ylab="Simulated Stopping Distance (in Feet)", 
+         pch=16, 
+         data = my_data)
+    legend("topleft",
+           legend=c("Population line", "Sample line"),
+           col=c("red","black"),
+           lty=c(1,1),
+           lwd=2)
+    abline(my_lm,lwd=2)
+    abline(beta_0, beta_1, lwd=2, col="red")
+  }
+  return(list(b0=my_lm$coefficients[[1]], 
+              b1=my_lm$coefficients[[2]]))
+}
+
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Simple Linear Regression (SLR) Model Inference]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+ggplot(sim_data,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+  
+```
+]
+.pull-right[
+<br>
+<br>
+Today: 
+.blockquote-list[
+Inference for the SLR model
+- mean parameters
+- mean value
+- predicted value
+]
+
+]
+
+---
+
+class: middle 
+
+## The Simple Linear Regression (SLR) model
+
+$$Y_i = \beta_0 + \beta_1x_i + \epsilon_i \qquad \epsilon_i \sim N(0, \sigma)$$
+
+> Estimates of $\hat{\beta}_0$ and $\hat{\beta_1}$ are normally distributed!
+
+
+
+> Inference for $\beta_0$ and $\beta_1$ is based on a t-distribution with degrees of freedom equal to $n-2$
+
+
+---
+
+
+`r chunk_reveal("simulation-results", font_size_code="60%", title = "## Sampling Distribution: Simulation results")`
+
+```{r simulation-results, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+set.seed(123)  # just makes simulation reproducible
+n <- 10000
+beta_0 = -20
+beta_1 = 5
+sigma = 15
+x <- cars$speed
+s.x = sd(x)
+sd_beta_1_hat <- sigma*sqrt(1/((50-1)*s.x^2)) 
+slopes <- replicate(n, sim_slr(x, beta_0, beta_1, sigma, grph=F)$b1)
+hist(slopes, prob = TRUE, breaks = 20, 
+     xlab = expression(hat(beta)[1]), 
+     main = "", 
+     border = "dodgerblue",
+     cex.lab=0.5, cex.axis=0.5)
+curve(dnorm(x, mean = beta_1, sd = sd_beta_1_hat),
+      col = "darkorange", add = TRUE, lwd = 3)
+abline(v=5,col="red", lwd=2)
+```
+
+
+---
+
+# SLR: Hypothesis test
+
+$$H_0 : \beta_j = 0 \quad H_A: \beta_j \neq 0$$
+.yellow-h[t-test statistic: ]
+$$\frac{\hat{\beta}_j - 0}{SE(\hat{\beta}_j)}$$
+
+.blockquote.font90[
+Two tailed p-value computed from the t-distribution with $n-2$ degrees of freedom:
+$$\text{p-value} = 2 \times P(T > |t|)$$]
+
+- If $H_A$ is directional (e.g. $<$ or $>$), then compute one-tailed p-value.
+
+
+---
+
+# Testing mean parameters in R
+
+.code80[
+```{r}
+cars_lm <- lm(dist ~ speed, data = cars)
+summary(cars_lm)
+```
+]
+
+---
+
+# Testing mean parameters in R
+
+.code80[
+```{r, echo=FALSE}
+summary(cars_lm)[[4]]
+```
+]
+
+.font90[
+$$H_0 : \beta_1 = 0 \quad H_A: \beta_1 \neq 0$$
+
+$$t = \frac{3.9324 - 0 }{0.415513} = 9.4640$$]
+.code80[
+```{r, collapse=TRUE}
+2*(1-pt(9.4640, df = 50 - 2)) # need left area
+```
+]
+
+> The estimated effect of speed on stopping distance is statistically significant at the level of $5\%$ significance $(t = 9.4640, p = 1.49*10^{-12}\approx 0)$.
+
+---
+
+# SLR: $C\%$ Confidence Intervals
+
+$$\hat{\beta}_j \pm t^*SE(\hat{\beta}_j)$$
+
+> $t^*$ is the $(100 - C)/2$ percentile from the t-distribution with $df = n - 2$ degrees of freedom 
+
+--
+
+.out-t[R code:]
+
+```{r}
+confint(cars_lm)
+```
+
+---
+
+# CI for mean parameters
+
+
+
+.pull-left[
+.blockquote.font90[
+$95\%$ CI : $3.932409 \pm t^*(0.4155128)$]
+
+```{r, collapse=TRUE}
+qt(0.975, df = 50 -2)
+```
+]
+.pull-right[
+
+```{r, echo=FALSE}
+confint(cars_lm)
+```
+]
+
+$95\%$ CI: $3.932409 \pm 2.0106*(0.4155128) = (3.0970, 4.7679)$
+
+.code90[
+```{r, collapse=TRUE}
+cars_lm$coefficients[2] + c(-1,1)*qt(0.975, df = 50 -2)*summary(cars_lm)[[4]][2,2]
+```
+]
+
+> We are 95% confident that a 1 miles per hour increase in cars speed is
+associated with a 3.0970 to 4.7679 ft increase in average stopping distance.
+
+---
+
+# R `broom` package
+
+.code90[
+```{r, collapse=TRUE}
+# useful for presenting a tidy summary of a model
+library(broom)
+tidy(cars_lm, conf.int = TRUE)
+```
+]
+
+--
+
+.code90[
+```{r, collapse=TRUE}
+library(knitr)
+# for nice tables in nicer formats 
+kable(tidy(cars_lm, conf.int = TRUE), digits = 4, format = "html")
+```
+]
+
+---
+
+# Some more notation
+
+$$\mu_{y|x} = \mathrm{E}[Y |x]=\beta_{0}+\beta_{1} x$$
+
+> We use $\hat{\mu}_{y|x}$ as our estimate of $\mu_{y|x} = E[Y|x]$
+
+<br>
+
+.blockquote[
+The predicted value is a function of the x value
+$$\hat{y}(x)=\hat{\beta}_{0}+\hat{\beta}_{1} x$$
+]
+
+---
+
+# Two additional inference problems
+
+.blockquote[Estimate the mean stopping distance for all cars in 1920s that are travelling at 22 mph
+$$\mu_{y|x} = \mathrm{E}[Y \mid 22]=\beta_{0}+\beta_{1}(22)$$
+]
+
+
+
+<br>
+
+.blockquote[Predict the stopping distance for an individual car in 1920s that is travelling at 22 mph
+$$Y=\beta_{0}+\beta_{1}(22)+\epsilon$$
+]
+
+---
+
+# Estimating the average response vs predicting one response
+
+
+> Both the estimation and prediction problem have the same "point" estimate/prediction:
+
+$$\hat{\beta}_{0}+\hat{\beta}_{1}(22)=-17.5791+ 3.9324(22)=68.9339$$
+
+- But, the uncertainty in these two problems is different!
+
+> There is less variability when estimating a mean response then when predicting one individual response.
+
+---
+
+# Estimating a mean response $\mu_{y|x = x_0}$
+
+.pull-left[
+
+.blockquote.font90[
+Parameter:
+$$\mu_{y \mid x_{0}}=\beta_{0}+\beta_{1} x_{0}$$
+Estimate:
+$$\hat{\mu}_{y \mid x_{0}}=\hat{\beta}_{0}+\hat{\beta}_{1} x_{0}$$
+SE of our estimate:
+$$SE\left(\hat{\mu}_{y \mid x_{0}}\right)=\hat{\sigma} \sqrt{\frac{1}{n}+\frac{\left(x_{0}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}$$
+
+]
+]
+--
+
+
+.pull-right[
+
+> SE grows as $x_0$ gets further from the average predictor value $\bar{x}$
+
+<br>
+
+.blockquote[
+A $95 \%$ confidence interval for the mean response $\mu_{y \mid x_{0}}$ :
+$$\hat{\mu}_{y \mid x_{0}} \pm t_{d f=n-2}^{*} S E\left(\hat{\mu}_{y \mid x_{0}}\right)$$
+]
+
+]
+
+---
+
+# CI for a mean response $\mu_{y|x=x_0}$ in R
+
+.dark-maroon[$$\text{predict(my_lm, newdata, interval =  “confidence'')}$$]
+
+```{r}
+predict(cars_lm,  # model object
+        newdata = data.frame(speed = 22), # new data
+        interval = "confidence")   # interval type
+```
+
+
+> I'm $95\%$ confident that the mean stopping distance is between 61.8963 to 75.9715 ft when the speed is 22 mph.
+
+---
+
+# CI for a mean response $\mu_{y|x=x_0}$ in R
+
+.pull-left-60[
+.code80[
+```{r}
+predict(cars_lm,  # model object
+        newdata = data.frame(speed = 22), # new data
+        interval = "confidence",   # interval type
+        se.fit = TRUE)  # include SE for mean est.
+```
+]
+]
+
+
+.pull-right-40[
+
+```{r, collapse=TRUE}
+qt(.975, df = 50 - 2) 
+```
+
+.blockquote[
+.font80[
+$$\hat{\mu}_{y|22}=68.9339$$ 
+
+$$SE\left(\hat{\mu}_{y|22}\right)=3.500187$$
+
+$$\hat{\sigma}=15.37959$$]]
+
+
+.font90[$$68.9339 \pm(2.010635)(3.500187)$$
+
+$$\Longrightarrow (61.8963,75.9715)$$]
+
+]
+
+---
+
+`r chunk_reveal("cars-model", font_size_code="60%", title = "##  Visualizing CI for a mean response")`
+
+```{r cars-model, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point() +
+  theme(legend.position = "bottom") +
+  labs(x='Speed (in Miles Per Hour)',
+       y='Stopping Distance (in Feet)',
+       title='Regression of stopping distance on speed',
+       fill = "Type") +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  geom_smooth(method = "lm", aes(fill = "Confidence Band"))
+```
+
+---
+
+# Predicting unseen/future response $Y$ given $x = x_0$
+
+
+.pull-left.font80.brand-red[.bold[Unknown Response:] $Y=\beta_{0}+\beta_{1}x_0+\epsilon$
+]
+.pull-right.font80.brand-red[.bold[Prediction:] $\operatorname{pred}_{y \mid x_{0}} = \hat{y}(x_0)=\hat{\beta}_{0}+\hat{\beta}_{1} x_0$
+]
+
+
+.blockquote[
+SE of our prediction:
+$$SE\left(\text { pred }_{y \mid x_{0}}\right)=\hat{\sigma} \sqrt{\frac{1}{n}+\frac{\left(x_{0}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}+1}=\sqrt{S E\left(\hat{\mu}_{y \mid x_{0}}\right)^{2}+\hat{\sigma}^{2}}$$
+- Mathematically $S E\left(\right.$ pred $\left._{y \mid x_{0}}\right)>S E\left(\hat{\mu}_{y \mid x_{0}}\right)$
+]
+
+.font90[A $95 \%$ prediction interval for an individual response at $x=x_{0}$
+$$\operatorname{pred}_{y \mid x_{0}} \pm t_{d f=n-2}^{*} S E\left(\operatorname{pred}_{y \mid x_{0}}\right)$$]
+
+---
+
+# Prediction interval in R
+
+.dark-maroon[$$\text{predict(my_lm, newdata, interval =  “prediction")}$$]
+
+```{r}
+predict(cars_lm,  # model object
+        newdata = data.frame(speed = 22), # new data
+        interval = "prediction")   # interval type
+```
+
+
+> I'm $95\%$ confident that the stopping distance for a new car traveling with speed 22 mph is between 37.2204 to 100.6474 ft.
+
+---
+
+# Prediction interval in R
+
+.pull-left-60[
+.code80[
+```{r}
+predict(cars_lm,  # model object
+        newdata = data.frame(speed = 22), # new data
+        interval = "prediction",   # interval type
+        se.fit = TRUE)  # include SE for mean est.
+```
+]
+]
+
+
+.pull-right-40[
+
+```{r, collapse=TRUE}
+qt(.975, df = 50 - 2) 
+```
+
+
+.blockquote[
+.font70[
+$$\hat{y}(22)=68.9339$$ 
+$$\hat{\sigma}=15.37959$$
+
+$$SE\left(\hat{y}(22)\right)= \sqrt{3.50019^2 + 15.3796^2}$$
+$$= 15.77286$$
+
+]]
+
+.font90[
+$$68.9339 \pm(2.010635)(15.77286)$$
+
+$$\Longrightarrow (37.2204,100.6474)$$]
+
+]
+
+---
+
+# Visualizing a prediction interval
+
+.code90[
+```{r}
+cars_pred <- data.frame(cars, predict(cars_lm, 
+                                      newdata = data.frame(speed = cars$speed), 
+                                      interval = "prediction"))
+
+head(cars_pred)
+```
+]
+---
+
+
+`r chunk_reveal("cars-model-prediction", font_size_code="50%", title = "##  Visualizing both prediction interval and confidence interval")`
+
+```{r cars-model-prediction, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+library(ggthemes)
+ggplot(cars_pred, aes(x = speed, y = dist)) + 
+ geom_point() + # plot data
+ theme(legend.position = "bottom",
+       plot.title = element_text(hjust = 0.5)) + 
+  labs(x='Speed (in Miles Per Hour)',
+       y='Stopping Distance (in Feet)',
+       title='Regression of stopping distance on speed',
+       fill = "Type") +
+ geom_ribbon(aes(ymin = lwr, # lower prediction bound at a given speed
+ ymax = upr, # upper prediction bound at a given speed
+ fill = "Prediction Band"), # quick way to get a legend
+ alpha = .1) + # alpha closer to 0 makes ribbon more transparent
+ geom_smooth(method = "lm", # add confidence bands too with smooth geom
+ aes(fill = "Confidence Band"), # another fill for confidence bands
+ alpha = .4) +
+ scale_fill_wsj()
+```
+
+---
+
+# Group HW 2
+
+> End of semester student evaluations for 463 courses taught by a sample of 94 professors from the University of Texas at Austin.
+
+<br>
+<br>
+
+.font90[
+Is there a relationship between a teacher's physical appearance and their teaching evaluation?
+  + `score:` Average professor evaluation score, from (1) very unsatisfactory - (5) excellent
+  + `bty_avg:` Average beauty rating of professor, from (1) lowest - (10) highest 
+]
+
+.footnote[[Beauty in the classroom: instructors’ pulchritude and putative pedagogical productivity](https://www.sciencedirect.com/science/article/pii/S0272775704001165), Economics of Education Review (2005)]
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+.blockquote[
+<br>
+<br>
+
+- Get the in class activity file from [moodle](https://moodle.carleton.edu/)
+- Use the dataset closing forces and the heights of the claws on `crabs`
+- Try to repeat the inference steps in a group
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
