@@ -83,13 +83,13 @@ h1, h2, h3 {
   padding: 0em 2em 1em 2em;
 }
 .remark-slide-content h1 {
-    font-size: 40px;
-}
-.remark-slide-content h2 {
     font-size: 35px;
 }
-.remark-slide-content h3 {
+.remark-slide-content h2 {
     font-size: 30px;
+}
+.remark-slide-content h3 {
+    font-size: 25px;
 }
 .remark-code, .remark-inline-code {
   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
@@ -99,7 +99,7 @@ h1, h2, h3 {
 }
 .remark-inline-code {
   font-size: 1.2em;
-  color:  #3A6185;
+  color:  #390099;
 
 }
 .remark-slide-number {
@@ -184,7 +184,7 @@ blockquote, .blockquote-list {
   border-right: solid 2px #1c5253;
   box-shadow: 0 0 3px rgba(0,0,0,0.5);
   background-color: white; 
-  color: #8F0053;
+  color: #720026;
   padding: 0.5em;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -202,7 +202,7 @@ blockquote, .blockquote {
   border-right: solid 2px #1c5253;
   box-shadow: 0 0 6px rgba(0,0,0,0.5);
   background-color: white; 
-  color: purple;
+  color: #065a82;
   padding: 0.5em;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -350,7 +350,7 @@ pre {
 
 pre code { 
   background: none; 
-  font-size: 0.9rem;
+  font-size: 0.5rem;
 }
 
 .hljs-solarized-light .hljs {

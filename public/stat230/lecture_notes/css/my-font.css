@@ -27,7 +27,7 @@ h3 {
 }
 
 
-.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace; font-size: 100%}
+.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace; font-size: 90%}
 
 
 
@@ -144,7 +144,10 @@ h3 {
 .gray { color: gray; }
 .grey { color: gray; }
 .brown { color:brown;}
+.warmyellow { color:   #FFB81C }
+.dark-maroon{color: #600a09}
 
 .bold { font-weight: bold; }
 .bolder { font-weight: bolder; }
 
+.italic {font-weight: italic;}

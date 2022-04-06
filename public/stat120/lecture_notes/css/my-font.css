@@ -27,7 +27,7 @@ h3 {
 }
 
 
-.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace; font-size: 100%}
+.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace; font-size: 90%}
 
 
 
@@ -50,7 +50,7 @@ h3 {
 
 
 
-.remark-slide-content { font-size:24px; }
+.remark-slide-content { font-size:22px; }
 .remark-slide-content p, 
 .remark-slide-content li {
   line-height: 1.4;

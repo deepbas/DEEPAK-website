@@ -1,0 +1,1054 @@
+---
+title: "SLR: Checking model assumptions"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+
+# New sim_slr
+sim_slr <- function(x, beta_0 = 20, beta_1 = 30, sigma = 10, grph = T) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  my_data <- data.frame(predictor = x, response = y)
+  my_lm <- lm(response ~ predictor, data = my_data)
+
+  # if plot is TRUE
+  if (grph){
+    plot(y ~x, xlab="Speed (in Miles Per Hour)", 
+         ylab="Simulated Stopping Distance (in Feet)", 
+         pch=16, 
+         data = my_data)
+    legend("topleft",
+           legend=c("Population line", "Sample line"),
+           col=c("red","black"),
+           lty=c(1,1),
+           lwd=2)
+    abline(my_lm,lwd=2)
+    abline(beta_0, beta_1, lwd=2, col="red")
+  }
+  return(list(b0=my_lm$coefficients[[1]], 
+              b1=my_lm$coefficients[[2]]))
+}
+
+cars_lm <- lm(dist ~ speed, data = cars)
+
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Simple Linear Regression (SLR) Model Inference]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+ggplot(sim_data,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+  
+```
+]
+.pull-right[
+<br>
+<br>
+Today: 
+.blockquote-list[
+Inference for the SLR model
+- Residual plots
+- Normal QQ plots
+- Checks for Independence
+]
+
+]
+
+---
+
+class: middle 
+
+## The Simple Linear Regression (SLR) model
+
+$$Y_i = \beta_0 + \beta_1x_i + \epsilon_i \qquad \epsilon_i \sim N(0, \sigma)$$
+
+.blockquote[
+- .bold[L]inear mean function: varies linearly with $x$
+- .bold[I]ndependence of errors
+- .bold[N]ormality of errors
+- .bold[E]quality of variance of the errors
+]
+
+<!-- Conditions .bold[L], .bold[N], and .bold[E] can be verified through what is known as a .bold[residual analysis.] Condition .bold[I] can only be verified through an understanding of how the data was collected.] -->
+
+---
+
+class: inverse, middle
+
+.blockquote-list.center["All models are wrong, but some are useful."
+.right[Professor George Box (1919-2013)]]
+
+- Statistical models are used to model or describe potentially complex physical phenomenon
+
+.blockquote[
+.bold[Need to strike a balance between]
+- model simplicity: easy to derive estimates/inference methods and interpret
+- model complexity: more challenging to derive estimates/inference methods and interpret
+]
+
+> For any model: we need check whether our data "fits" the model assumptions
+
+
+---
+
+# Model error terms
+
+Reframe the theoretical model:
+
+$$\epsilon_{i}=Y_{i}-\left(\beta_{0}+\beta_{1} x_{i}\right) \quad \epsilon_{i} \sim N(0, \sigma)$$
+.blockquote-list[ $\epsilon_{i}$ are the key!
+- mean and SD don't depend on $x$,
+- normally distributed
+- and independent!
+]
+
+--
+
+> .bold[Problem:] we only know $\epsilon_{i}$ if we know $\beta_{0}$ and $\beta_{1}$ !
+
+---
+
+# Residuals
+.blockquote[Residuals are what we get when we estimate $\beta_{0}$ and $\beta_{1}$ :
+$$r_{i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}\right)=y_{i}-\hat{y}_{i}$$
+- $\hat{y}_{i}=\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}$ are called .bold[fitted] values
+]
+
+--
+
+<br>
+
+.blockquote-list[
+Residuals can be thought of as the error or the “lack-of-fit” between the observed value $y_i$ and the fitted value $\hat{y}_i$ on the regression line
+]
+
+---
+
+# R package `moderndive`
+
+.blockquote[Can get nice tables with built-in functions in `moderndive`. 
+Previously used `broom` and `tidy` to get a nice coefficients table. ]
+
+```{r}
+# call the library
+# install.packages("moderndive")
+library(moderndive)
+```
+
+
+```{r}
+# Get regression table:
+regression_table <- get_regression_table(cars_lm)
+knitr::kable(regression_table, digits = 4, format = "html") # does not work in .pdf
+```
+
+---
+
+# Get regression points with `moderndive`
+
+```{r}
+# Get regression points:
+regression_points <- get_regression_points(cars_lm)
+```
+
+.scroll-box-16[
+```{r, echo=FALSE}
+datatable(regression_points, fillContainer = FALSE, options = list(pageLength=5), height = 30)
+```
+]
+
+
+---
+
+`r chunk_reveal("model-residuals", font_size_code="60%", title = "## Residuals")`
+
+```{r model-residuals, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(regression_points, aes(x = speed, y = dist)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_point(aes(y = dist_hat), shape = 1) +
+  geom_segment(aes(xend = speed, yend = dist_hat), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Stopping Distance (in Feet)', 
+       title='Regression of stopping distance on speed') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+
+---
+
+# Diagnostic tools for model checking
+
+.blockquote.font90[
+.bold[Linearity]
+- residual plot(s)
+
+.bold[Equality of variance]
+- residual plot(s)
+
+.bold[Normality]
+- normal QQ plot of residuals
+
+.bold[Independence]
+- some options: plot residuals against time; plot residuals against variables measuring spatial association
+]
+
+
+---
+
+`r chunk_reveal("residual-plot", font_size_code="60%", title = "## Residual plot (explanatory variable)")`
+
+```{r residual-plot, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(regression_points, aes(x = speed, y = residual)) +
+  geom_point() +
+  geom_segment(aes(xend = speed, yend = 0), alpha = .2) +
+  theme(legend.position = "none") +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Residuals', 
+       title='Residual plot for regression of stopping distance on speed') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+
+---
+
+# Scatterplot of  $r_{i}$ against $\hat{y}_{i}=\hat{\beta}_{0}+\hat{\beta}_{1} x_{i}$
+
+.pull-left[
+```{r fig.width = 3, fig.height = 3, out.width = "100%", echo=FALSE}
+ggplot(regression_points, aes(x = speed, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = speed, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Residuals', 
+       title='Residual plot for regression of stopping distance on speed') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+]
+.pull-right[
+```{r fig.width = 3, fig.height = 3, out.width = "100%", echo=FALSE}
+ggplot(regression_points, aes(x = dist_hat, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = dist_hat, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  labs(x='Fitted values', 
+       y='Residuals', 
+       title='Residual plot for regression of stopping distance on speed') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+]
+
+---
+
+# Residual plot: interpretation
+
+.blockquote.font90[
+SLR assumptions met if we see a "null" plot:
+1. .bold[Linearity met:] similar scatter above and below the 0-line, for all values of $x$
+2. .bold[Equal/Constant variance met:] magnitude of residual values around the 0-line doesn't depend on $x$
+]
+
+--
+
+<br>
+
+.blockquote-list.font90[
+Watch out for:
+- .bold[Curvature] - indicates mean function may not be linear
+- .bold[Fan shapes] - indicates nonconstant variance
+- .bold[Outliers] (may have large effect on estimates)
+]
+
+---
+
+# Residual plot: null plot
+
+```{r, echo=FALSE}
+num_obs = 50
+x_vals = runif(num_obs, 0, 10)
+sim_data1 = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+sim1_lm = lm(response ~ predictor, data = sim_data1)
+regression_points1 <- get_regression_points(sim1_lm)
+```
+
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+ggplot(sim_data1, aes(x= predictor, y = response)) +
+  geom_point() + 
+  labs(x = "Predictor",
+       y = "Response",
+       title='Scatterplot of response against predictor') +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+  
+```
+
+]
+.pull-right[
+```{r fig.width = 3, fig.height = 3, out.width = "100%", echo=FALSE}
+ggplot(regression_points1, aes(x = predictor, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = predictor, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  labs(x='Predictor)', 
+       y='Residuals', 
+       title='Residual plot for regression of response against predictor') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+---
+
+# Residual plot: null plot (n=10)
+
+```{r, echo=FALSE}
+num_obs = 10
+x_vals = runif(num_obs, 0, 10)
+sim_data2 = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+sim2_lm = lm(response ~ predictor, data = sim_data2)
+regression_points2 <- get_regression_points(sim2_lm)
+```
+
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(sim_data2, aes(x= predictor, y = response)) +
+  geom_point() + 
+  labs(x = "Predictor",
+       y = "Response",
+       title='Scatterplot of response against predictor') +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+  
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(regression_points2, aes(x = predictor, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = predictor, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  labs(x='Predictor)', 
+       y='Residuals', 
+       title='Residual plot for regression of response against predictor') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+--
+
+.brand-blue[.bold[Warning:] residual plots can be hard to interpret if you don’t have a lot of data!!]
+
+---
+
+# Residual plot: null plot (n=10)
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(sim_data2, aes(x= predictor, y = response)) +
+  geom_point() + 
+  labs(x = "Predictor",
+       y = "Response",
+       title='Scatterplot of response against predictor') +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+  
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(regression_points2, aes(x = predictor, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = predictor, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  geom_smooth(se=FALSE) +
+  labs(x='Predictor)', 
+       y='Residuals', 
+       title='Residual plot for regression of response against predictor') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+--
+
+.brand-blue[Smoothers are very sensitive to individual points when data is sparse]
+
+---
+
+
+# Violation 1: Guess the assumption violation ...
+
+```{r, echo=FALSE}
+set.seed(123)
+sim_slr_non_normal1 = function(x, beta_0, beta_1, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, 0, x) # right skewed
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 500
+x_vals = runif(n = num_obs) * 5
+sim_data4 = sim_slr_non_normal1(x = x_vals, beta_0 = 3, beta_1 = 5, sigma = 3)
+sim4_lm = lm(response ~ predictor, data = sim_data4)
+regression_points4 <- get_regression_points(sim4_lm)
+regression_points_nonnormal <- regression_points4
+```
+
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(sim_data4, aes(x= predictor, y = response)) +
+  geom_point() + 
+  labs(x = "Predictor",
+       y = "Response",
+       title='Scatterplot of response against predictor') +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+  
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(regression_points4, aes(x = predictor, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = predictor, yend = residual), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  geom_smooth(se=FALSE) +
+  labs(x='Predictor)', 
+       y='Residuals', 
+       title='Residual plot for regression of response against predictor') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+
+---
+
+# Violation 2: Guess the assumption violation ...
+
+```{r, echo=FALSE}
+set.seed(123)
+sim_slr_non_normal2 = function(x, beta_0 = 2, beta_1 = 3, sigma = 5){
+  n = length(x)
+  epsilon = rnorm(n, 0, sigma)
+  y = beta_0 + beta_1 * x^2 + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 500
+x_vals = runif(n = num_obs) * 5
+sim_data5 = sim_slr_non_normal2(x = x_vals, beta_0 = 3, beta_1 = 5, sigma = 5)
+sim5_lm = lm(response ~ predictor, data = sim_data5)
+regression_points5 <- get_regression_points(sim5_lm)
+
+```
+
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(sim_data5, aes(x= predictor, y = response)) +
+  geom_point() + 
+  labs(x = "Predictor",
+       y = "Response",
+       title='Scatterplot of response against predictor') +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+  
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(regression_points5, aes(x = predictor, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = predictor, yend = residual), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  geom_smooth(se=FALSE) +
+  labs(x='Predictor)', 
+       y='Residuals', 
+       title='Residual plot for regression of response against predictor') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+---
+
+# Good model
+
+```{r, echo=FALSE}
+sim_slr_normal1 = function(x, beta_0, beta_1, sigma) {
+  n = length(x)
+  epsilon = rnorm(n, 0, sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 500
+x_vals = runif(n = num_obs) * 5
+sim_data_good = sim_slr_normal1(x = x_vals, beta_0 = 3, beta_1 = 5, sigma = 1)
+sim_good_lm = lm(response ~ predictor, data = sim_data_good)
+regression_points_good <- get_regression_points(sim_good_lm)
+
+```
+
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(sim_data_good, aes(x= predictor, y = response)) +
+  geom_point() + 
+  labs(x = "Predictor",
+       y = "Response",
+       title='Scatterplot of response against predictor') +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+  
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(regression_points_good, aes(x = predictor, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = predictor, yend = residual), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  geom_smooth(se=FALSE) +
+  labs(x='Predictor)', 
+       y='Residuals', 
+       title='Residual plot for regression of response against predictor') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+---
+
+# Normal QQ plot of residuals $r_{i}$
+
+.blockquote.font90[Normal QQ plots graph .bold[residual values (y-axis) vs. z-score] expected for that observed value if they follow a normal distribution.
+- e.g. the median residual should have a $z$-score of 0 if they are normally distributed
+]
+<br>
+.blockquote-list.font90[
+Interpretation:
+- Normally distributed residuals should (roughly) .bold[follow the straight line] in the normal QQ plot.
+- .bold[No major deviation] towards the center
+]
+
+
+---
+
+`r chunk_reveal("normality-residuals", font_size_code="60%", title = "## Histogram of residuals: Cars dataset")`
+
+```{r normality-residuals, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(regression_points, aes(x = residual)) +
+  geom_histogram(binwidth = 8, color = "dodgerblue", fill = "lightblue") +
+   labs(x = "Residual",
+        y = "Counts",
+        title = "Histogram of residuals")+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+
+---
+
+`r chunk_reveal("normality-qqplot", font_size_code="60%", title = "## Q-Q Plot: Cars dataset")`
+
+```{r normality-qqplot, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(regression_points, aes(sample = residual)) +
+ stat_qq(col = "brown") +
+  stat_qq_line(col = "darkblue")+
+  labs(
+    title = "QQ Plot",
+    x = "Theoretical",
+    y = "Normal Samples") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+---
+
+# Normal Q-Q plot: Potential violations
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(regression_points_nonnormal, aes(x = residual)) +
+  geom_histogram(binwidth = 2, color = "dodgerblue", fill = "lightblue") +
+  labs(x = "Residual",
+       y = "Counts",
+       title = "Histogram of residuals")+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(regression_points_nonnormal, aes(sample = residual)) +
+  stat_qq(col = "brown") +
+  stat_qq_line(col = "darkblue")+
+  labs(
+    title = "QQ Plot",
+    x = "Theoretical",
+    y = "Normal Samples") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+---
+
+# Normal Q-Q plot: Potential violations
+
+
+```{r, echo=FALSE}
+n <- 500
+errors <- data.frame(rep = 1:n,
+                     heavy_tailed = rt(n, df=3),
+                     right_skewed = exp(rnorm(n))) %>%
+  mutate(right_skewed = right_skewed - exp(1/2),  # make sure errors have expectation of 0
+         left_skewed  = 0 - right_skewed) 
+```
+
+
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(errors, aes(x = left_skewed)) +
+  geom_histogram(binwidth = 1, color = "dodgerblue", fill = "lightblue") +
+  labs(x = "Residual",
+       y = "Counts",
+       title = "Histogram of residuals")+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(errors, aes(sample = left_skewed)) +
+  stat_qq(col = "brown") +
+  stat_qq_line(col = "darkblue")+
+  labs(
+    title = "QQ Plot",
+    x = "Theoretical",
+    y = "Normal Samples") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+.brand-red.center[Concave down means left skewed!]
+
+---
+
+# Normal Q-Q plot: Potential violations
+
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=3.5, fig.height=3.5, out.width="90%"}
+ggplot(errors, aes(x = right_skewed)) +
+  geom_histogram(binwidth = 1, color = "dodgerblue", fill = "lightblue") +
+  labs(x = "Residual",
+       y = "Counts",
+       title = "Histogram of residuals")+
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+]
+.pull-right[
+```{r fig.width = 3.5, fig.height = 3.5, out.width = "90%", echo=FALSE}
+ggplot(errors, aes(sample = right_skewed)) +
+  stat_qq(col = "brown") +
+  stat_qq_line(col = "darkblue")+
+  labs(
+    title = "QQ Plot",
+    x = "Theoretical",
+    y = "Normal Samples") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+.brand-red.center[Concave up means right skewed!]
+
+---
+
+# Diagnostics using `ggResidpanel` package
+.code80[
+```{r, fig.width = 4.5, fig.height = 3, out.width = "50%", echo=TRUE, fig.align='center'}
+library(ggResidpanel) # need to install if you aren't using maize
+resid_xpanel(cars_lm, axis.text.size = 10, title.text.size = 8, scale = 1) # residual against speed(x)
+```
+]
+
+---
+
+# Diagnostics using `ggResidpanel` package
+
+.code80[
+```{r, fig.width = 4.5, fig.height = 3, out.width = "50%", echo=TRUE, fig.align='center'}
+# QQ plot and histogram of residuals
+resid_panel(cars_lm, plots = c("qq", "hist"), axis.text.size = 10, title.text.size = 8, scale = 1)
+```
+]
+
+---
+
+class: middle
+
+# Assessing independence
+
+.blockquote[
+Can only verified through an understanding of how the data was collected
+- do measurements vary over time?
+- do measurements vary over a space (geographic region)?
+- are measurements naturally clustered together?
+- If the answer is "yes", then try plotting residuals against any variables that measure these attributes (time/space/clustering)
+]
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Get the in class activity file from [moodle](https://moodle.carleton.edu/)
+- We will do a case study of global warming 
+- Please skim through the activity .Rmd file in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+
+# Case Study 15.2 Global Warming
+
+.pull-left[
+.blockquote[
+- $y=$ annual mean global temp
+- $x=$ year
+- $n=161$ years from 1850 to 2010
+- Model: SLR of global temp on year
+]
+]
+.pull-right[
+```{r, echo=FALSE}
+library(Sleuth3)
+global_warming <- case1502
+
+ggplot(global_warming, aes(x = Year, y = Temperature)) + 
+        geom_point() + 
+        geom_smooth(method = "lm", se = FALSE) + 
+        geom_smooth(method = "loess", se = FALSE, linetype = "dashed")
+```
+]
+
+---
+
+# Case Study 15.2 Global Warming
+
+```{r, echo=FALSE, fig.width = 4.5, fig.height = 3, out.width = "50%", fig.align='center'}
+# Fit the linear model
+global_warming_lm <- lm(Temperature ~ Year, data = global_warming)
+
+# Get regression points:
+regression_points <- get_regression_points(global_warming_lm)
+
+# Plot of linear model with residuals
+ggplot(regression_points, aes(x = Year, y = Temperature)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_point(aes(y = Temperature_hat), shape = 1) +
+  geom_segment(aes(xend = Year, yend = Temperature_hat), alpha = .2) +
+  theme(legend.position = "none") +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  labs(x='Year',
+       y='Temperature',
+       title='Regression of Temperature on Year') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+
+---
+
+# Residual plot for SLR of global temp on year
+
+
+```{r, echo=FALSE, fig.width = 4.5, fig.height = 3, out.width = "50%", fig.align='center'}
+ggplot(regression_points, aes(x = Year, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = Year, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") +
+ labs(x='Year',
+      y='Residual',
+      title='Regression of Temperature on Year') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+
+```
+
+
+
+---
+
+# Residual plot for regression of global temp on $year$ and $year^2$
+
+```{r, echo=FALSE, fig.width = 4.5, fig.height = 3, out.width = "50%", fig.align='center'}
+# Fit a model with quatractic term
+global_warming_lm2 <- lm(Temperature ~ Year + I(Year^2), data = global_warming)
+
+# Get regression points:
+regression_points2 <- get_regression_points(global_warming_lm2)
+
+ggplot(regression_points2, aes(x = Year, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = Year, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") +
+ labs(x='Year',
+      y='Residual',
+      title='Regression of Temperature on Year') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+
+.blockquote.font80[
+- Residuals that are 1 year apart have a(n) (auto)correlation coefficient of 0.59!
+- Even after accounting for year, temps are still correlated. A more complex model is needed!
+]
+
+---
+
+class: middle
+
+# How “robust” is regression against violation of the assumptions?
+
+.blockquote-list[Robust = can violate an assumption and still get valid inference results]
+
+.blockquote[SLR models are robust against violations of
+
+- .bold[Normality:] the t-tests and CI for model parameters and the mean
+response are saved by the Central Limit Theorem when n is large, even if
+your subpopulation of responses are not normally distributed.]
+
+
+
+---
+
+class: middle
+
+# How “robust” is regression against violation of the assumptions?
+
+.blockquote.font90[SLR models are not robust against violations of
+
+- .bold[Linearity:] if the mean function is wrong then your estimated effects,
+mean response, or predicted response will be biased!
+- .bold[Equal/Constant variance and independence:] if you are not correctly modeling
+your response variability, then your SEs will not be an accurate reflection
+of your actual uncertainty (meaning CIs/tests might be misleading)
+- .bold[Normality when computing prediction intervals:] these intervals need
+the normal subpopulation assumption to hold
+]
+
+---
+
+class: middle
+
+# What if model assumptions are violated?
+
+> Start by finding the correct mean function form!
+
+<br>
+
+.blockquote-list.font90[
+- .bold[Linearity, Variance, Normality:] Transform one or both variables
+- .bold[Linearity:] change mean function, use non-linear regression
+- .bold[Variance:] weighted regression, “robust SEs"
+- .bold[Independence:] use a mixed-effects model (Stat 330), times series (Stat 320) or spatial regression models
+]
+
+
+
