@@ -520,7 +520,7 @@ ggplot(regression_points2, aes(x = predictor, y = residual)) +
   geom_point(aes(color = abs(residual))) +
   geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
   geom_smooth(se=FALSE) +
-  labs(x='Predictor)', 
+  labs(x='Predictor', 
        y='Residuals', 
        title='Residual plot for regression of response against predictor') +
   theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
