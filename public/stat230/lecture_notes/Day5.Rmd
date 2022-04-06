@@ -222,7 +222,7 @@ Reframe the theoretical model:
 
 $$\epsilon_{i}=Y_{i}-\left(\beta_{0}+\beta_{1} x_{i}\right) \quad \epsilon_{i} \sim N(0, \sigma)$$
 .blockquote-list[ $\epsilon_{i}$ are the key!
-- mean and SD don't depend on $x$,
+- mean and SD don't depend on $x$
 - normally distributed
 - and independent!
 ]
@@ -480,7 +480,7 @@ ggplot(regression_points2, aes(x = predictor, y = residual)) +
   scale_color_continuous(low = "black", high = "red") +  # Colors to use here
   geom_point(aes(color = abs(residual))) +
   geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
-  labs(x='Predictor)', 
+  labs(x='Predictor', 
        y='Residuals', 
        title='Residual plot for regression of response against predictor') +
   theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 

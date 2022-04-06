@@ -96,7 +96,7 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Describing Categorical Variables]
+# .fancy[Describing Quantitative Variables]
 
 ### .fancy[Stat 120]
 
@@ -136,6 +136,7 @@ class: middle
 ]
 
 ---
+
 class: middle
 
 # Distribution 
@@ -217,9 +218,6 @@ The SD of pulse rates for this sample of students is $s = 12.2$ beats per minute
 ---
 
 
-
----
-
 class: action
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
@@ -247,7 +245,7 @@ Feel free to talk to your neighbor
 
 .blockquote-list[
 - Missing data values in R are coded as `NA` values
-- Many basic statistic functions in R return an NA value if variable has any missing values
+- Many basic statistic functions in R return an `NA` value if variable has any missing values
 ]
 
 --
@@ -524,7 +522,7 @@ sd(survey$Pulse)
 
 class: middle
 
-# Shape: Right skew
+# Shape
 
 .blockquote-list[If a distribution of data is .bold[approximately bell-shaped], about 95% of the data should fall within two standard deviations of the sample mean.
 
@@ -535,7 +533,7 @@ class: middle
 
 ---
 
-# Shape: Right skew
+# Shape
 
 
 ```{r}
