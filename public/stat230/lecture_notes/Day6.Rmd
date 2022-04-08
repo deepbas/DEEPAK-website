@@ -1,0 +1,821 @@
+---
+title: "SLR: Transforming variables"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+
+# New sim_slr
+sim_slr <- function(x, beta_0 = 20, beta_1 = 30, sigma = 10, grph = T) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  my_data <- data.frame(predictor = x, response = y)
+  my_lm <- lm(response ~ predictor, data = my_data)
+
+  # if plot is TRUE
+  if (grph){
+    plot(y ~x, xlab="Speed (in Miles Per Hour)", 
+         ylab="Simulated Stopping Distance (in Feet)", 
+         pch=16, 
+         data = my_data)
+    legend("topleft",
+           legend=c("Population line", "Sample line"),
+           col=c("red","black"),
+           lty=c(1,1),
+           lwd=2)
+    abline(my_lm,lwd=2)
+    abline(beta_0, beta_1, lwd=2, col="red")
+  }
+  return(list(b0=my_lm$coefficients[[1]], 
+              b1=my_lm$coefficients[[2]]))
+}
+
+cars_lm <- lm(dist ~ speed, data = cars)
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/APM_DougEvansCases.csv")
+
+autompg <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/auto-mpg.csv",
+                    col_types = list(horsepower = col_double()),
+                    na = c("", "NA", "N/A"))
+                                    
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[SLR: Transforming variables]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+ggplot(sim_data,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+  
+```
+]
+.pull-right[
+<br>
+<br>
+Today: 
+.blockquote-list[
+Transforming variables in SLR
+- trial-and-error
+- common models 
+- interpretation
+]
+
+]
+
+---
+
+class: middle
+
+# What if model assumptions are violated?
+
+> .bold[Linearity, Variance, Normality:] Transform one or both variables
+
+> Check if a linear relationship exists on a transformed scale
+
+- $\text{log}(y)$ vs $x$
+- $\text{sqrt}(y)$ vs $x$
+- $1/y$ vs $x$
+- $\text{log}(y)$ vs $\text{log}(x)$
+- $y$ vs $\text{log}(x)$
+
+---
+
+class: middle
+
+# What transformation to use?
+
+> Application specific!
+
+> Trial-and-error
+
+- Use scatter/residual plots to explore different transformations of $y$ and/or $x$
+- Common transformation forms: .bold[logarithm, square root and reciprocal]
+
+---
+
+# Case Study 1: Island Area and Number of Species
+
+> The data are the numbers of reptile and amphibian species and the island areas for seven islands in the West Indies.
+
+```{r}
+summary(case0801)
+```
+
+---
+
+# Both Predictor and Response Transformation
+
+```{r, echo=FALSE}
+p1 <- ggplot(case0801, aes(x = Area, y = Species)) +
+  geom_point() +
+  theme(legend.position = "bottom") +
+  labs(x='Area of Island (square miles)',
+       y='Number of animal and plant species')+
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+p2 <- ggplot(case0801, aes(x = log(Area), y = log(Species))) +
+  geom_point() +
+  theme(legend.position = "bottom") +
+  labs(x='Log of Area of Island (square miles)',
+       y='Log of Number of animal and plant species')+
+  geom_smooth(method = "lm") +
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+
+```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.5, fig.align='center'}
+grid.arrange(p1, p2, ncol = 2)
+```
+
+--
+
+.out-t.font80.center[The data does not lie close to a straight line, but it does if both variables are log-transformed.]
+
+
+---
+
+# Case Study 2: Breakdown Times for Insulating Fluid Under Different Voltages
+
+.blockquote.font80[Batches of electrical insulating fluid were subjected to several constant voltages until the insulating property of the fluids broke down and the times taken were recorded]
+
+
+```{r}
+summary(case0802)
+```
+
+---
+
+```{r, echo=FALSE}
+p3 <- ggplot(case0802, aes(x = Voltage, y = Time)) +
+  geom_point() +
+  theme(legend.position = "bottom") +
+  labs(x = "Voltage Level (kV)", 
+       y = "Breakdown Time (minutes)")+
+  geom_smooth(method = "lm") +
+  theme(plot.title = element_text(hjust = 0.5)) 
+
+
+p4 <- ggplot(case0802, aes(x = Voltage, y = log(Time))) +
+  geom_point() +
+  theme(legend.position = "bottom") +
+  labs(x = "Voltage Level (kV)", 
+       y = "Breakdown Time (minutes) (log scale)")+
+  geom_smooth(method = "lm") +
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+
+```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.5, fig.align='center'}
+grid.arrange(p3, p4, ncol = 2, top = "Before (left) and after (right) log transformation of response")
+```
+
+--
+
+.out-t.font80.center[Taking the log of the y scale results in a fairly linear relationship]
+
+---
+
+## Distribution of response before (left) and after (right) log transformation
+
+```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.3, fig.align='center'}
+h3 <- ggplot(case0802, aes(x = Time)) +
+  geom_histogram(bins = 10, color = "dodgerblue", fill = "lightblue") 
+
+h4 <- ggplot(case0802, aes(x = log(Time))) +
+  geom_histogram(bins = 10, color = "dodgerblue", fill = "lightblue") 
+  
+
+grid.arrange(h3, h4, ncol = 2)
+```
+
+> Right-skewed response seems to be "normalized" after the log trnsformation
+
+---
+
+# Case Study 3: `autompg` dataset 
+
+.code90[
+```{r, warning=FALSE}
+library(dplyr)
+glimpse(autompg)
+```
+]
+
+
+.footnote[UCI Machine Learning (2017). Auto-mpg dataset [Dataset]. https://www.kaggle.com/uciml/autompg-dataset]
+---
+
+# 
+
+.pull-left[
+
+.code80[
+```{r}
+lm_1 <- lm(mpg ~ horsepower, data = autompg)
+
+# Get regression table
+reg_table_auto_mpg_hp <- 
+  get_regression_table(lm_1)
+
+# Get regression points
+reg_points_auto_mpg_hp <- 
+  get_regression_points(lm_1)
+```
+]
+]
+
+.pull-right[
+
+```{r, echo=FALSE}
+ggplot(reg_points_auto_mpg_hp, aes(x = horsepower, y = mpg)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_point(aes(y = mpg_hat), shape = 1) +
+  geom_segment(aes(xend = horsepower, yend = mpg_hat), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  labs(x = "Horsepower", 
+       y = "Miles per Galloon") +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+]
+
+--
+
+> The residuals are unevenly scattered for different values of the predictor.
+
+---
+
+```{r, echo=FALSE}
+# QQ plot
+g1 <- ggplot(reg_points_auto_mpg_hp, aes(sample = residual)) +
+ stat_qq(col = "brown") +
+  stat_qq_line(col = "darkblue")+
+  labs(
+    title = "QQ Plot",
+    x = "Theoretical N(0,1) quantiles",
+    y = "Normal Sample quantiles") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+
+g2 <- ggplot(reg_points_auto_mpg_hp, aes(x = horsepower, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = horsepower, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+   labs(x = "Horsepower", 
+       y = "Residuals",
+       title = "Residual plot") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.5, fig.align='center'}
+grid.arrange(g1, g2, ncol = 2)
+```
+
+--
+
+> The constant variance assumptions seems to have been violated. Q-Q plot shows some deviations.
+
+---
+
+
+## Transforming the response
+
+.pull-left[
+.code80[
+```{r}
+# make a new variable with mutate
+autompg <-  autompg %>% 
+  mutate(logmpg = log(mpg))
+```
+
+
+```{r}
+lm_2 <- lm(logmpg ~ horsepower, data = autompg)
+
+# Get regression table
+reg_table_auto_logmpg_hp <-
+  get_regression_table(lm_2)
+
+# Get regression points
+reg_points_auto_logmpg_hp <- 
+  get_regression_points(lm_2)
+```
+
+]
+]
+
+.pull-right[
+
+```{r, echo=FALSE}
+ggplot(reg_points_auto_logmpg_hp, aes(x = horsepower, y = logmpg)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_point(aes(y = logmpg_hat), shape = 1) +
+  geom_segment(aes(xend = horsepower, yend = logmpg_hat), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  labs(x = "Horsepower", 
+       y = "Miles per Galloon (log scale)") +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+
+```
+
+]
+
+--
+
+> The plot looks a lot more linear than before after the log transformation of the response, but pattern in the residuals persists
+
+---
+
+```{r, echo=FALSE}
+# QQ plot
+g3 <- ggplot(reg_points_auto_logmpg_hp, aes(sample = residual)) +
+ stat_qq(col = "brown") +
+  stat_qq_line(col = "darkblue")+
+  labs(
+    title = "QQ Plot",
+    x = "Theoretical N(0,1) quantiles",
+    y = "Normal Sample quantiles") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+
+g4 <- ggplot(reg_points_auto_logmpg_hp, aes(x = horsepower, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = horsepower, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+  labs(x = "Horsepower", 
+       y = "Residuals",
+       title = "Residual plot") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.5, fig.align='center'}
+grid.arrange(g3, g4, ncol = 2)
+```
+
+--
+
+> Q-Q plot has improved. We still see non-random pattern in the residual plot. So, a transformation of predictor would help. 
+
+
+---
+
+## Transforming both response and predictor
+
+.pull-left[
+.code80[
+```{r}
+autompg <-  autompg %>% 
+  mutate(loghp = log(horsepower))
+
+lm_3 <- lm(logmpg ~ loghp, data = autompg)
+
+# Get regression table
+reg_table_auto_logmpg_loghp <- get_regression_table(lm_3)
+
+# Get regression points
+reg_points_auto_logmpg_loghp <- get_regression_points(lm_3)
+```
+]
+]
+
+.pull-right[
+
+```{r, echo=FALSE}
+ggplot(reg_points_auto_logmpg_loghp, aes(x = loghp, y = logmpg)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_point(aes(y = logmpg_hat), shape = 1) +
+  geom_segment(aes(xend = loghp, yend = logmpg_hat), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  labs(x = "Horsepower (log scale)", 
+       y = "Miles per Galloon (log scale)") +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+]
+
+--
+
+> The linearity assumption seems to be satisfied
+
+---
+
+
+```{r, echo=FALSE}
+# QQ plot
+g5 <- ggplot(reg_points_auto_logmpg_loghp, aes(sample = residual)) +
+ stat_qq(col = "brown") +
+  stat_qq_line(col = "darkblue")+
+  labs(
+    title = "QQ Plot",
+    x = "Theoretical N(0,1) quantiles",
+    y = "Normal Sample quantiles") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+
+g6 <- ggplot(reg_points_auto_logmpg_loghp, aes(x = loghp, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = loghp, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+   labs(x = "Horsepower (log scale)", 
+       y = "Residuals",
+       title = "Residual Plot") +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+
+
+```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.5, fig.align='center'}
+grid.arrange(g5, g6, ncol = 2)
+```
+
+--
+
+> Finally, both the residual plot and the Q-Q plot look good.
+
+---
+
+### Diagnostics using `ggResidpanel`
+
+```{r, echo=FALSE, fig.width = 3.5, fig.height = 3, out.width = "60%", fig.align='center'}
+library(ggResidpanel)
+resid_panel(lm_3, plots = c("qq", "hist", "resid", "boxplot"), axis.text.size = 7, title.text.size = 7, scale = 1)
+```
+
+
+---
+
+# Example: `autompg`
+
+$$\hat{\mu}(\text { log(miles per gallon)} \mid \text {log(horsepower})) =6.961-0.842 \text{ log(horsepower)}$$
+
+```{r}
+library(moderndive)
+
+# Get regression table
+regression_table <- get_regression_table(lm_3)
+knitr::kable(regression_table, digits = 4, format = "html")
+```
+
+.out-t.center[How do we interpret the parameters in the original response scale?]
+
+---
+
+class: inverse, middle
+
+> Brief interlude and practice session to brush up your power, exponential, and logarithm knowledge!!
+
+---
+
+class: middle
+
+# Logarithm Transformations
+.blockquote[
+The logarithm base $b$ of $x>0$ is denoted $\log _{b}(x)$ and equal to
+$$\log _{b}(x)=a$$
+where $a$ tells us what power we must raise $b$ to to obtain the value $x$ :
+$$b^{a}=x$$
+- $\log _{10} 10=1$ since $10^{1}=10$
+- $\log _{10} 100=2$ since $10^{2}=100$
+- $\log _{2} 0.5=-1$ since $2^{-1}=0.5$
+- $\log _{b} 1=0$ since $b^{0}=1$
+]
+
+---
+
+class: middle
+
+# Logarithm Transformations
+
+.blockquote[
+Multiplicative changes in $x$ result in additive changes in $\log _{b}(x) .$ If $m>0$, then
+$$\log _{b}(m x)=\log _{b}(m)+\log _{b}(x)$$
+- We can "remove" a log transformation by applying the inverse function:
+$$b^{\log _{b}(x)}=x$$
+  - e.g. $e^{\ln y}=y$
+]
+
+---
+
+# Logarithm model types
+
+.blockquote[Logarithmic model: The regression of $Y$ on $\log (x)$ has the mean function
+$$\mu(Y \mid \log (x))=\beta_{0}+\beta_{1} \log (x)$$]
+
+.blockquote[Multiplying $x$ by a factor $m$ is associated with a mean function change of
+$$\mu(Y \mid \log (m x))-\mu(Y \mid \log (x))=\beta_{1} \log (m)$$]
+
+- e.g. Using base-2: a doubling of $x(m=2)$ is associated with a change in mean $y$ of
+$$\beta_{1} \log _{2}(2)=\beta_{1}$$
+---
+
+# Logarithm of the response
+
+<center>Suppose $\log (y) \mid x \sim N\left(\mu_{\log (y) \mid x}, \sigma\right)$ </center><br>
+.blockquote-list.font90[
+- By symmetry of the normal model,
+$$\mu(\log (Y) \mid x)=\operatorname{median}(\log (Y) \mid x)$$
+- Because median only depends on the order of responses,
+$$\operatorname{median}(\log (Y) \mid x)=\log (\operatorname{median}(Y \mid x))$$
+- Putting these two facts together (using natural log)
+$$\operatorname{median}(Y \mid x)=e^{\log (\operatorname{median}(Y \mid x))}=e^{\mu(\log (Y) \mid x)}$$
+- Note $\operatorname{median}(Y \mid x) \neq \mu(Y \mid x)$
+]
+---
+
+# Logarithm model types
+
+.blockquote.font80[
+- .bold[Exponential model:] The regression of $\log (Y)$ on $x$ has the mean function
+$$\mu(\log (Y) \mid x)=\operatorname{median}(\log (Y) \mid x)=\beta_{0}+\beta_{1} x$$
+- On the original response scale,
+$$\operatorname{median}(Y \mid x)=e^{\mu(\log (Y) \mid x)}=e^{\beta_{0}} e^{\beta_{1} x}$$
+- A one unit increase in $x$ is associated with a $e^{\beta_{1}}$-factor change in the median response
+$$\operatorname{median}(Y \mid x+1)=e^{\beta_{0}} e^{\beta_{1}(x+1)}=e^{\beta_{0}} e^{\beta_{1} x} e^{\beta_{1}}=\operatorname{median}(Y \mid x) e^{\beta_{1}}$$
+- This result assumes a natural log transformation of $y$. If log base $b$ is used, the one unit change in $x$ effect is $b^{\beta_{1}}$.
+]
+
+---
+
+# Logarithm model types
+
+.blockquote-list.font80[
+- .bold[Power model:] The regression of $\log (Y)$ on $\log (x)$ has the mean function
+$$\mu(\log (Y) \mid \log (x))=\operatorname{median}(\log (Y) \mid \log (x))=\beta_{0}+\beta_{1} \log (x)$$
+- On the original response scale,
+$$\operatorname{median}(Y \mid x)=e^{\mu(\log (Y) \mid \log (x))}=e^{\beta_{0}} e^{\beta_{1} \log (x)}=e^{\beta_{0}} x^{\beta_{1}}$$
+- An m-fold (multiplicative) change in $x$ is associated with a $m^{\beta_{1}}$-factor change in the median function since
+$$\operatorname{median}(Y \mid m x)=e^{\beta_{0}} e^{\beta_{1} \log (m x)}=\operatorname{median}(Y \mid x) m^{\beta_{1}}$$
+]
+
+---
+
+class: middle
+
+# Factor changes vs. percent changes
+
+.blockquote[
+- A $m$-fold change in $x$ is equivalent to a $(m-1) 100 \%$ percentage change
+$$\begin{aligned}
+\text { percentage change } &=100 \% \times \frac{m x-x}{x} \\
+&=100 \% \times\left(\frac{m x}{x}-\frac{x}{x}\right) \\
+&=100 \% \times(m-1)
+\end{aligned}$$
+]
+
+---
+
+class: middle
+
+# Interpretation after log transformations (Summary)
+
+.blockquote-list.font80[
+
+Use $\text{median}(Y|x)$:
+
+- When X is logged: a .bold[doubling of] X is associated with adding a constant amount to Y.
+- When only Y is logged: When .bold[X increases by 1], Y's median is multiplied.
+- When both X and Y are logged: a .bold[doubling of X] is associated with multiplying Y's median by a constant factor.
+]
+
+---
+
+# `autompg` log-log transformation power model interpretation
+.font80[
+$$\hat{\mu}(\text { log(miles per gallon)} \mid \text {log(horsepower})) =6.961-0.842 \text{ log(horsepower)}$$
+]
+.code90[
+```{r}
+knitr::kable(regression_table, digits = 4, format = "html")
+```
+
+]
+--
+.blockquote.font80[We are 95% confident that a factor of 2 increase in horsepower of a car is
+associated with a reduction of 0.5382 to 0.5784 fold of median miles per gallon.]
+
+.code80[
+```{r, collapse=TRUE}
+2^confint(lm_3)
+```
+]
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Get the in class activity file from [moodle](https://moodle.carleton.edu/)
+- We will do a case study of residential energy survey
+- Please skim through the activity .Rmd file in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+# Residential Energy Survey (RECS)
+
+> .bold[Goal:] model total energy costs (`CostTotal`) as a function of the size of the housing unit (`SqftMeasure`).
+
+```{r}
+energy <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/EnergySurvey.csv")
+summary(dplyr::select(energy, CostTotal,SqftMeasure))
+```
+
+---
+
+
+
+`r chunk_reveal("recs-1", font_size_code="60%", title = "## RECS")`
+
+```{r recs-1, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+ labs(title = "Log of Cost vs. log of square feet")+
+ theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+
+---
+
+`r chunk_reveal("recs-2", font_size_code="60%", title = "## RECS")`
+
+```{r recs-2, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+ scale_x_log10() + 
+ scale_y_log10() +
+ labs(title = "Log of Cost vs. log of square feet")+
+ theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+
+---
+
+# RECS
+
+```{r}
+cost_lm <- lm(log(CostTotal) ~ log(SqftMeasure), data = energy)
+regression_table <- get_regression_table(cost_lm)
+knitr::kable(regression_table, digits = 4)
+```
+
+<br>
+
+.blockquote[
+- What is the fitted model?
+- How does cost change if house size is doubled? Get a CI for this effect.
+- How does cost change if house size decreases by $10 \%$ ? Get a CI for the effect.
+]

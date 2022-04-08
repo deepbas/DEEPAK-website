@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>SLR: Transforming variables</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Stat 230&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[SLR: Transforming variables]
+
+### .fancy[Stat 230]
+
+ April 08 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day6_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+Today: 
+.blockquote-list[
+Transforming variables in SLR
+- trial-and-error
+- common models 
+- interpretation
+]
+
+]
+
+---
+
+class: middle
+
+# What if model assumptions are violated?
+
+&gt; .bold[Linearity, Variance, Normality:] Transform one or both variables
+
+&gt; Check if a linear relationship exists on a transformed scale
+
+- `\(\text{log}(y)\)` vs `\(x\)`
+- `\(\text{sqrt}(y)\)` vs `\(x\)`
+- `\(1/y\)` vs `\(x\)`
+- `\(\text{log}(y)\)` vs `\(\text{log}(x)\)`
+- `\(y\)` vs `\(\text{log}(x)\)`
+
+---
+
+class: middle
+
+# What transformation to use?
+
+&gt; Application specific!
+
+&gt; Trial-and-error
+
+- Use scatter/residual plots to explore different transformations of `\(y\)` and/or `\(x\)`
+- Common transformation forms: .bold[logarithm, square root and reciprocal]
+
+---
+
+# Case Study 1: Island Area and Number of Species
+
+&gt; The data are the numbers of reptile and amphibian species and the island areas for seven islands in the West Indies.
+
+
+```r
+summary(case0801)
+```
+
+```
+      Area            Species      
+ Min.   :    1.0   Min.   :  7.00  
+ 1st Qu.:   18.5   1st Qu.: 13.50  
+ Median : 3435.0   Median : 45.00  
+ Mean   :11615.1   Mean   : 48.57  
+ 3rd Qu.:16807.5   3rd Qu.: 76.50  
+ Max.   :44218.0   Max.   :108.00  
+```
+
+---
+
+# Both Predictor and Response Transformation
+
+
+
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-4-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+--
+
+.out-t.font80.center[The data does not lie close to a straight line, but it does if both variables are log-transformed.]
+
+
+---
+
+# Case Study 2: Breakdown Times for Insulating Fluid Under Different Voltages
+
+.blockquote.font80[Batches of electrical insulating fluid were subjected to several constant voltages until the insulating property of the fluids broke down and the times taken were recorded]
+
+
+
+```r
+summary(case0802)
+```
+
+```
+      Time             Voltage         Group   
+ Min.   :   0.090   Min.   :26.00   Group1: 3  
+ 1st Qu.:   1.617   1st Qu.:31.50   Group2: 5  
+ Median :   6.925   Median :34.00   Group3:11  
+ Mean   :  98.558   Mean   :33.13   Group4:15  
+ 3rd Qu.:  38.383   3rd Qu.:36.00   Group5:19  
+ Max.   :2323.700   Max.   :38.00   Group6:15  
+                                    Group7: 8  
+```
+
+---
+
+
+
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-7-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+--
+
+.out-t.font80.center[Taking the log of the y scale results in a fairly linear relationship]
+
+---
+
+## Distribution of response before (left) and after (right) log transformation
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-8-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+&gt; Right-skewed response seems to be "normalized" after the log trnsformation
+
+---
+
+# Case Study 3: `autompg` dataset 
+
+.code90[
+
+```r
+library(dplyr)
+glimpse(autompg)
+```
+
+```
+Rows: 398
+Columns: 9
+$ mpg          &lt;dbl&gt; 18, 15, 18, 16, 17, 15, 14, 14, 14, 15, 15, 14, 15, 14, 2…
+$ cylinders    &lt;dbl&gt; 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 6, 6, 6, 4, …
+$ displacement &lt;dbl&gt; 307, 350, 318, 304, 302, 429, 454, 440, 455, 390, 383, 34…
+$ horsepower   &lt;dbl&gt; 130, 165, 150, 150, 140, 198, 220, 215, 225, 190, 170, 16…
+$ weight       &lt;dbl&gt; 3504, 3693, 3436, 3433, 3449, 4341, 4354, 4312, 4425, 385…
+$ acceleration &lt;dbl&gt; 12.0, 11.5, 11.0, 12.0, 10.5, 10.0, 9.0, 8.5, 10.0, 8.5, …
+$ `model year` &lt;dbl&gt; 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 7…
+$ origin       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, …
+$ `car name`   &lt;chr&gt; "chevrolet chevelle malibu", "buick skylark 320", "plymou…
+```
+]
+
+
+.footnote[UCI Machine Learning (2017). Auto-mpg dataset [Dataset]. https://www.kaggle.com/uciml/autompg-dataset]
+---
+
+# 
+
+.pull-left[
+
+.code80[
+
+```r
+lm_1 &lt;- lm(mpg ~ horsepower, data = autompg)
+
+# Get regression table
+reg_table_auto_mpg_hp &lt;- 
+  get_regression_table(lm_1)
+
+# Get regression points
+reg_points_auto_mpg_hp &lt;- 
+  get_regression_points(lm_1)
+```
+]
+]
+
+.pull-right[
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-11-1.svg" width="100%" /&gt;
+
+]
+
+--
+
+&gt; The residuals are unevenly scattered for different values of the predictor.
+
+---
+
+
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-13-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+--
+
+&gt; The constant variance assumptions seems to have been violated. Q-Q plot shows some deviations.
+
+---
+
+
+## Transforming the response
+
+.pull-left[
+.code80[
+
+```r
+# make a new variable with mutate
+autompg &lt;-  autompg %&gt;% 
+  mutate(logmpg = log(mpg))
+```
+
+
+
+```r
+lm_2 &lt;- lm(logmpg ~ horsepower, data = autompg)
+
+# Get regression table
+reg_table_auto_logmpg_hp &lt;-
+  get_regression_table(lm_2)
+
+# Get regression points
+reg_points_auto_logmpg_hp &lt;- 
+  get_regression_points(lm_2)
+```
+
+]
+]
+
+.pull-right[
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-16-1.svg" width="100%" /&gt;
+
+]
+
+--
+
+&gt; The plot looks a lot more linear than before after the log transformation of the response, but pattern in the residuals persists
+
+---
+
+
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-18-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+--
+
+&gt; Q-Q plot has improved. We still see non-random pattern in the residual plot. So, a transformation of predictor would help. 
+
+
+---
+
+## Transforming both response and predictor
+
+.pull-left[
+.code80[
+
+```r
+autompg &lt;-  autompg %&gt;% 
+  mutate(loghp = log(horsepower))
+
+lm_3 &lt;- lm(logmpg ~ loghp, data = autompg)
+
+# Get regression table
+reg_table_auto_logmpg_loghp &lt;- get_regression_table(lm_3)
+
+# Get regression points
+reg_points_auto_logmpg_loghp &lt;- get_regression_points(lm_3)
+```
+]
+]
+
+.pull-right[
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-20-1.svg" width="100%" /&gt;
+]
+
+--
+
+&gt; The linearity assumption seems to be satisfied
+
+---
+
+
+
+
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-22-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+--
+
+&gt; Finally, both the residual plot and the Q-Q plot look good.
+
+---
+
+### Diagnostics using `ggResidpanel`
+
+&lt;img src="Day6_files/figure-html/unnamed-chunk-23-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Example: `autompg`
+
+`$$\hat{\mu}(\text { log(miles per gallon)} \mid \text {log(horsepower})) =6.961-0.842 \text{ log(horsepower)}$$`
+
+
+```r
+library(moderndive)
+
+# Get regression table
+regression_table &lt;- get_regression_table(lm_3)
+knitr::kable(regression_table, digits = 4, format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.961 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57.296 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.722 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.199 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; loghp &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.842 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.026 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -31.881 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.894 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.790 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+.out-t.center[How do we interpret the parameters in the original response scale?]
+
+---
+
+class: inverse, middle
+
+&gt; Brief interlude and practice session to brush up your power, exponential, and logarithm knowledge!!
+
+---
+
+class: middle
+
+# Logarithm Transformations
+.blockquote[
+The logarithm base `\(b\)` of `\(x&gt;0\)` is denoted `\(\log _{b}(x)\)` and equal to
+`$$\log _{b}(x)=a$$`
+where `\(a\)` tells us what power we must raise `\(b\)` to to obtain the value `\(x\)` :
+`$$b^{a}=x$$`
+- `\(\log _{10} 10=1\)` since `\(10^{1}=10\)`
+- `\(\log _{10} 100=2\)` since `\(10^{2}=100\)`
+- `\(\log _{2} 0.5=-1\)` since `\(2^{-1}=0.5\)`
+- `\(\log _{b} 1=0\)` since `\(b^{0}=1\)`
+]
+
+---
+
+class: middle
+
+# Logarithm Transformations
+
+.blockquote[
+Multiplicative changes in `\(x\)` result in additive changes in `\(\log _{b}(x) .\)` If `\(m&gt;0\)`, then
+`$$\log _{b}(m x)=\log _{b}(m)+\log _{b}(x)$$`
+- We can "remove" a log transformation by applying the inverse function:
+`$$b^{\log _{b}(x)}=x$$`
+  - e.g. `\(e^{\ln y}=y\)`
+]
+
+---
+
+# Logarithm model types
+
+.blockquote[Logarithmic model: The regression of `\(Y\)` on `\(\log (x)\)` has the mean function
+`$$\mu(Y \mid \log (x))=\beta_{0}+\beta_{1} \log (x)$$`]
+
+.blockquote[Multiplying `\(x\)` by a factor `\(m\)` is associated with a mean function change of
+`$$\mu(Y \mid \log (m x))-\mu(Y \mid \log (x))=\beta_{1} \log (m)$$`]
+
+- e.g. Using base-2: a doubling of `\(x(m=2)\)` is associated with a change in mean `\(y\)` of
+`$$\beta_{1} \log _{2}(2)=\beta_{1}$$`
+---
+
+# Logarithm of the response
+
+&lt;center&gt;Suppose `\(\log (y) \mid x \sim N\left(\mu_{\log (y) \mid x}, \sigma\right)\)` &lt;/center&gt;&lt;br&gt;
+.blockquote-list.font90[
+- By symmetry of the normal model,
+`$$\mu(\log (Y) \mid x)=\operatorname{median}(\log (Y) \mid x)$$`
+- Because median only depends on the order of responses,
+`$$\operatorname{median}(\log (Y) \mid x)=\log (\operatorname{median}(Y \mid x))$$`
+- Putting these two facts together (using natural log)
+`$$\operatorname{median}(Y \mid x)=e^{\log (\operatorname{median}(Y \mid x))}=e^{\mu(\log (Y) \mid x)}$$`
+- Note `\(\operatorname{median}(Y \mid x) \neq \mu(Y \mid x)\)`
+]
+---
+
+# Logarithm model types
+
+.blockquote.font80[
+- .bold[Exponential model:] The regression of `\(\log (Y)\)` on `\(x\)` has the mean function
+`$$\mu(\log (Y) \mid x)=\operatorname{median}(\log (Y) \mid x)=\beta_{0}+\beta_{1} x$$`
+- On the original response scale,
+`$$\operatorname{median}(Y \mid x)=e^{\mu(\log (Y) \mid x)}=e^{\beta_{0}} e^{\beta_{1} x}$$`
+- A one unit increase in `\(x\)` is associated with a `\(e^{\beta_{1}}\)`-factor change in the median response
+`$$\operatorname{median}(Y \mid x+1)=e^{\beta_{0}} e^{\beta_{1}(x+1)}=e^{\beta_{0}} e^{\beta_{1} x} e^{\beta_{1}}=\operatorname{median}(Y \mid x) e^{\beta_{1}}$$`
+- This result assumes a natural log transformation of `\(y\)`. If log base `\(b\)` is used, the one unit change in `\(x\)` effect is `\(b^{\beta_{1}}\)`.
+]
+
+---
+
+# Logarithm model types
+
+.blockquote-list.font80[
+- .bold[Power model:] The regression of `\(\log (Y)\)` on `\(\log (x)\)` has the mean function
+`$$\mu(\log (Y) \mid \log (x))=\operatorname{median}(\log (Y) \mid \log (x))=\beta_{0}+\beta_{1} \log (x)$$`
+- On the original response scale,
+`$$\operatorname{median}(Y \mid x)=e^{\mu(\log (Y) \mid \log (x))}=e^{\beta_{0}} e^{\beta_{1} \log (x)}=e^{\beta_{0}} x^{\beta_{1}}$$`
+- An m-fold (multiplicative) change in `\(x\)` is associated with a `\(m^{\beta_{1}}\)`-factor change in the median function since
+`$$\operatorname{median}(Y \mid m x)=e^{\beta_{0}} e^{\beta_{1} \log (m x)}=\operatorname{median}(Y \mid x) m^{\beta_{1}}$$`
+]
+
+---
+
+class: middle
+
+# Factor changes vs. percent changes
+
+.blockquote[
+- A `\(m\)`-fold change in `\(x\)` is equivalent to a `\((m-1) 100 \%\)` percentage change
+`$$\begin{aligned}
+\text { percentage change } &amp;=100 \% \times \frac{m x-x}{x} \\
+&amp;=100 \% \times\left(\frac{m x}{x}-\frac{x}{x}\right) \\
+&amp;=100 \% \times(m-1)
+\end{aligned}$$`
+]
+
+---
+
+class: middle
+
+# Interpretation after log transformations (Summary)
+
+.blockquote-list.font80[
+
+Use `\(\text{median}(Y|x)\)`:
+
+- When X is logged: a .bold[doubling of] X is associated with adding a constant amount to Y.
+- When only Y is logged: When .bold[X increases by 1], Y's median is multiplied.
+- When both X and Y are logged: a .bold[doubling of X] is associated with multiplying Y's median by a constant factor.
+]
+
+---
+
+# `autompg` log-log transformation power model interpretation
+.font80[
+`$$\hat{\mu}(\text { log(miles per gallon)} \mid \text {log(horsepower})) =6.961-0.842 \text{ log(horsepower)}$$`
+]
+.code90[
+
+```r
+knitr::kable(regression_table, digits = 4, format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.961 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.121 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 57.296 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6.722 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.199 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; loghp &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.842 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.026 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -31.881 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.894 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.790 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+--
+.blockquote.font80[We are 95% confident that a factor of 2 increase in horsepower of a car is
+associated with a reduction of 0.5382 to 0.5784 fold of median miles per gallon.]
+
+.code80[
+
+```r
+2^confint(lm_3)
+                  2.5 %      97.5 %
+(Intercept) 105.5512084 146.9823446
+loghp         0.5382086   0.5783716
+```
+]
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Get the in class activity file from [moodle](https://moodle.carleton.edu/)
+- We will do a case study of residential energy survey
+- Please skim through the activity .Rmd file in your group
+]
+]
+
+<div class="countdown" id="timer_62505df8" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Residential Energy Survey (RECS)
+
+&gt; .bold[Goal:] model total energy costs (`CostTotal`) as a function of the size of the housing unit (`SqftMeasure`).
+
+
+```r
+energy &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/EnergySurvey.csv")
+summary(dplyr::select(energy, CostTotal,SqftMeasure))
+```
+
+```
+   CostTotal      SqftMeasure   
+ Min.   :   57   Min.   :  167  
+ 1st Qu.: 1138   1st Qu.: 1056  
+ Median : 1673   Median : 1848  
+ Mean   : 1841   Mean   : 2284  
+ 3rd Qu.: 2331   3rd Qu.: 3042  
+ Max.   :10346   Max.   :11383  
+ NA's   :1                      
+```
+
+---
+
+
+
+count: false
+ 
+## RECS
+.panel1-recs-1-auto[
+
+```r
+*ggplot(energy, aes(x = SqftMeasure, y = CostTotal))
+```
+]
+ 
+.panel2-recs-1-auto[
+&lt;img src="Day6_files/figure-html/recs-1_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-1-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+*geom_point(alpha = .1)
+```
+]
+ 
+.panel2-recs-1-auto[
+&lt;img src="Day6_files/figure-html/recs-1_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-1-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+*geom_smooth(method = "loess", se = FALSE)
+```
+]
+ 
+.panel2-recs-1-auto[
+&lt;img src="Day6_files/figure-html/recs-1_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-1-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+*labs(title = "Log of Cost vs. log of square feet")
+```
+]
+ 
+.panel2-recs-1-auto[
+&lt;img src="Day6_files/figure-html/recs-1_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-1-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+ labs(title = "Log of Cost vs. log of square feet")+
+*theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+]
+ 
+.panel2-recs-1-auto[
+&lt;img src="Day6_files/figure-html/recs-1_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-recs-1-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-recs-1-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-recs-1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+count: false
+ 
+## RECS
+.panel1-recs-2-auto[
+
+```r
+*ggplot(energy, aes(x = SqftMeasure, y = CostTotal))
+```
+]
+ 
+.panel2-recs-2-auto[
+&lt;img src="Day6_files/figure-html/recs-2_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-2-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+*geom_point(alpha = .1)
+```
+]
+ 
+.panel2-recs-2-auto[
+&lt;img src="Day6_files/figure-html/recs-2_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-2-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+*geom_smooth(method = "loess", se = FALSE)
+```
+]
+ 
+.panel2-recs-2-auto[
+&lt;img src="Day6_files/figure-html/recs-2_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-2-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+*scale_x_log10()
+```
+]
+ 
+.panel2-recs-2-auto[
+&lt;img src="Day6_files/figure-html/recs-2_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-2-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+ scale_x_log10() +
+*scale_y_log10()
+```
+]
+ 
+.panel2-recs-2-auto[
+&lt;img src="Day6_files/figure-html/recs-2_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-2-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+ scale_x_log10() +
+ scale_y_log10() +
+*labs(title = "Log of Cost vs. log of square feet")
+```
+]
+ 
+.panel2-recs-2-auto[
+&lt;img src="Day6_files/figure-html/recs-2_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## RECS
+.panel1-recs-2-auto[
+
+```r
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+ scale_x_log10() +
+ scale_y_log10() +
+ labs(title = "Log of Cost vs. log of square feet")+
+*theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+]
+ 
+.panel2-recs-2-auto[
+&lt;img src="Day6_files/figure-html/recs-2_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-recs-2-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-recs-2-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-recs-2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+# RECS
+
+
+```r
+cost_lm &lt;- lm(log(CostTotal) ~ log(SqftMeasure), data = energy)
+regression_table &lt;- get_regression_table(cost_lm)
+knitr::kable(regression_table, digits = 4)
+```
+
+
+
+|term             | estimate| std_error| statistic| p_value| lower_ci| upper_ci|
+|:----------------|--------:|---------:|---------:|-------:|--------:|--------:|
+|intercept        |    4.358|     0.074|    59.083|       0|    4.214|    4.503|
+|log(SqftMeasure) |    0.403|     0.010|    41.135|       0|    0.384|    0.422|
+
+&lt;br&gt;
+
+.blockquote[
+- What is the fitted model?
+- How does cost change if house size is doubled? Get a CI for this effect.
+- How does cost change if house size decreases by `\(10 \%\)` ? Get a CI for the effect.
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
