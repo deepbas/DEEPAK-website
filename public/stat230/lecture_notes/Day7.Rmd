@@ -1,0 +1,694 @@
+---
+title: "SLR: R-squared and brief ANOVA intro"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+
+cars_lm <- lm(dist ~ speed, data = cars)
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/APM_DougEvansCases.csv")
+
+# Get regression table
+reg_table_cars <-
+  get_regression_table(cars_lm)
+
+# Get regression points
+reg_points_cars <- 
+  get_regression_points(cars_lm)
+
+
+energy <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/EnergySurvey.csv")
+energy <- energy %>% 
+  mutate(logCost = log(CostTotal), 
+         logSqft = log(SqftMeasure))
+
+cost_lm1 <- lm(logCost ~ logSqft, data = energy)
+
+# New example
+
+BP <- data.frame(Temperature = c(194.5, 194.3, 197.9, 198.4, 199.4, 199.9, 200.9, 201.1, 
+        201.4, 201.3, 203.6, 204.6, 209.5, 208.6, 210.7, 211.9, 212.2,
+        210.8, 210.2, 208.4, 202.5, 200.6, 200.1, 199.5, 197., 196.4,
+        196.3, 195.6, 193.4, 193.6, 191.4, 191.1, 190.6, 189.5, 188.8,
+        188.5, 185.7, 186., 185.6, 184.1, 184.6, 184.1, 183.2, 182.4,
+        181.9, 181.9, 181., 180.6), 
+        Pressure =  c(20.79, 20.79, 22.4, 22.67, 23.15, 23.35, 23.89, 23.99, 
+        24.02, 24.01, 25.14, 26.57, 28.49, 27.76, 29.04, 29.88, 30.06, 
+        29.211, 28.559, 27.972, 24.697, 23.726, 23.369, 23.03, 21.892, 
+        21.928, 21.654, 21.605, 20.48, 20.212, 19.758, 19.49, 19.386, 
+        18.869, 18.356, 18.507, 17.267, 17.221, 17.062, 16.959, 16.881, 
+        16.817, 16.385, 16.235, 16.106, 15.928, 15.919, 15.376),
+        Source = structure(
+        .Data = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2), levels = c("Forbes", "Hooker"), 
+        class = "factor"))
+
+
+lm_eqn <- function(df){
+    m <- lm(df[,2] ~ df[,1], df);
+    eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2, 
+         list(a = format(unname(coef(m)[1]), digits = 2),
+              b = format(unname(coef(m)[2]), digits = 2),
+             r2 = format(summary(m)$r.squared, digits = 3)))
+    as.character(as.expression(eq));
+}
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[SLR: R-squared and brief ANOVA intro]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+ggplot(sim_data,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+  
+```
+]
+.pull-right[
+<br>
+<br>
+Today: 
+.blockquote-list[
+- Why include predictors in SLR?
+- Percent variability explained (R-squared)
+- Simple Analysis of Varaiance (ANOVA)
+]
+
+]
+
+---
+
+# Example: `Cars` data
+
+.pull-left[
+
+```{r, echo=FALSE}
+ggplot(cars, 
+       aes(y=dist)) + 
+  geom_boxplot() +
+  labs(y = "Stopping distance in feet") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+```
+
+]
+.pull-right[
+<br>
+.blockquote[Suppose we want to guess the
+stopping distance of cars in 1920s but don't have the speeds.
+
+- How much variability?
+]
+]
+
+---
+
+# Example: `Cars` data
+
+.pull-left[
+
+```{r, echo=FALSE, fig.height=3}
+ggplot(cars, 
+       aes(y=dist)) + 
+  geom_boxplot() +
+  labs(y = "Stopping distance in feet") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+.code70[
+```{r, collapse=TRUE}
+sd(cars$dist) # standard deviation
+sd(cars$dist)^2 # variance
+```
+]
+
+]
+.pull-right[
+<br>
+.blockquote[Suppose we want to guess the
+stopping distance of cars in 1920s but don't have the speeds.
+
+- How much variability?
+]
+
+<br>
+
+.blockquote[
+Stopping distances range from about 0 feet
+to 125 $feet$, with a standard
+deviation of about  26 $feet$ and
+variance of about 664 $feet^2$
+]
+
+]
+
+---
+
+# Example: `Cars` data
+
+.pull-left[
+
+```{r, echo=FALSE}
+ggplot(cars,aes(speed, dist)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Stopping Distance (in Feet)', 
+       title='Regresion of Stopping Distance on Speed') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+]
+.pull-right[
+
+<br>
+.blockquote[Now suppose we know the speeds and want to guess the depth.
+
+- How much variability?
+
+]
+
+]
+
+---
+
+
+# Example: `Cars` data
+
+.pull-left[
+
+```{r, echo=FALSE}
+ggplot(cars,aes(speed, dist)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Stopping Distance (in Feet)', 
+       title='Regresion of Stopping Distance on Speed') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+.code70[
+```{r, collapse=TRUE}
+cars_lm <- lm(dist ~ speed, data = cars)
+summary(cars_lm)$sigma 
+summary(cars_lm)$sigma^2
+```
+]
+
+
+]
+.pull-right[
+
+<br>
+.blockquote[
+Now suppose we know the speeds and want to guess the depth.
+- How much variability?
+]
+
+<br>
+
+.blockquote[
+At any speed, the standard
+deviation of stopping distance is about  15.4 $feet$ and
+variance is about 236.5 $feet^2$
+]
+
+]
+
+---
+
+# R-squared
+
+.blockquote[
+R-squared ( $R^2$ or coefficient of determination) measures the proportion of variability observed in the response Y which can be explained by the regression of Y on x.
+]
+
+.code70[
+```{r}
+summary(cars_lm)
+```
+]
+
+
+---
+
+# R-squared
+
+```{r, collapse=TRUE}
+summary(cars_lm)$r.squared
+```
+
+> About 65% of the variation in stopping distances can be explained by the regression of stopping distances on speed.
+
+
+Also ok:
+
+> About 65% of the variation in observed stopping distances can be explained by speed.
+
+---
+
+# Analysis of Variance (ANOVA) for SLR
+
+.blockquote-list[Total response variation = variation explained by SLR + variation unexplained by SLR]
+
+.yellow-h[Decompose each response into "parts" as:]
+
+.blockquote.font80[
+.bold[Total variation:] response variation from the overall response average
+$$y_{i}-\bar{y}$$
+.bold[Unexplained variation:] response variation from the predicted response (aka residual value)
+$$y_{i}-\hat{y}_{i}=r_{i}$$
+.bold[Explained variation:] variation between predicted response and overall response average
+$$\hat{y}_{i}-\bar{y}$$]
+
+---
+
+
+`r chunk_reveal("model-horizontal", font_size_code="60%", title = "# Modeling with a horizontal line")`
+
+```{r model-horizontal, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(reg_points_cars, aes(x = speed, y = dist)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_segment(aes(xend = speed, yend = dist_hat), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  labs(x='Speed (in Miles Per Hour)', 
+       y='Stopping Distance (in Feet)', 
+       title='Regresion of Stopping Distance on Speed') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) +
+  geom_hline(yintercept=mean(cars$dist), col = 'turquoise')
+
+```
+
+
+---
+
+`r chunk_reveal("model-fit", font_size_code="60%", title = "# Example: ANOVA breakdown for (x,y) = (25,75)")`
+
+```{r model-fit, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(reg_points_cars, aes(x = speed, y = dist)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  labs(x = "Speed in miles per hour", 
+       y = "Stopping distance in feet") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_point(aes(y = dist_hat[50], x = speed[50]), shape = 1)+
+  geom_hline(yintercept=mean(cars$dist), col = 'grey', linetype = "dashed")+
+  geom_text(aes(7,48, label=(paste(expression(bar(y)~"= 42.98")))), parse = TRUE, size = 2) +
+  geom_hline(yintercept=reg_points_cars$dist_hat[50], col = 'grey', linetype = "dashed") +
+  geom_text(aes(7,78, label=(paste(expression(hat(y)~"= 80.73")))), parse = TRUE, size = 2) +
+  geom_hline(yintercept=cars$dist[50], col = 'grey', linetype = "dashed") +
+  geom_text(aes(6.64, 87, label=(paste(expression(y~"= 85")))), parse = TRUE, size = 2) +
+  geom_segment(aes(x = 25, xend = 25, y =mean(cars$dist) , yend = 85), color = "red", linetype = "dashed") +
+  geom_text(aes(24,48, label=(paste(expression(y - bar(y))))), colour = "red", parse = TRUE, size = 2 ) +
+  geom_segment(aes(x = 25.2, xend = 25.2, y =mean(cars$dist) , yend = dist_hat[50]), color = "blue", linetype = "dashed") +
+  geom_text(aes(24,60, label=(paste(expression(hat(y) - bar(y))))), colour = "blue", parse = TRUE, size = 2) +
+  geom_segment(aes(x = 25.2, xend = 25.2, y =dist_hat[50] , yend = 85), color = "green", linetype = "dashed") +
+  geom_text(aes(24,83, label=(paste(expression(y - hat(y))))), colour = "green", parse = TRUE, size = 2) +
+  geom_text(x = 15, y = 110, label = lm_eqn(cars), parse = TRUE, size = 3)
+```
+
+---
+
+# Analysis of Variance (ANOVA) for SLR
+
+.brand-red[$$SST = SSreg + SSR$$]
+.blockquote.font80[
+- .bold[SST: Total variation] Total sum of squares
+$$S S T=S S T o t=\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}=(n-1) s_{y}^{2}$$
+- .bold[SSR: Unexplained variation] Residual sum of squares
+$$S S R=\sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)^{2}=(n-2) \hat{\sigma}^{2}$$
+- .bold[SSreg: Explained variation] Regression sum of squares
+$$\text { SSreg }=\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{y}\right)^{2}$$
+]
+
+---
+
+# R-squared
+
+.blockquote[
+R-squared ( $R^2$ or coefficient of determination) measures the proportion of variability observed in the response Y which can be explained by the regression of Y on x.
+]
+
+
+$$R^{2}=\frac{\text { explained variation }}{\text { total variation }}=\frac{S S r e g}{S S T}$$
+
+.blockquote[
+- In terms of <cite>unexplained</cite> (residual) variation:
+$$R^{2}=1-\frac{\text { unexplained variation }}{\text { total variation }}=1-\frac{S S R}{S S T}=1-\frac{(n-2) \hat{\sigma}^{2}}{(n-1) s_{y}^{2}}$$
+]
+
+---
+
+# Example: `cars` 
+
+.blockquote[
+Here is how the summary reported $R^{2}$ of $65 \%$ was calculated:
+- $n=50$
+- $s_{y}^{2}=664.0608$ (sample variance of stopping distance)
+- $\hat{\sigma}^{2}= 236.5317$
+$$R^{2}=1-\frac{(50-2) 236.5317}{(50-1) 664.0608} \approx 0.6511$$
+]
+
+.pull-left[
+.code80[
+```{r, collapse=TRUE}
+(SSreg <- (50-2)*236.5317)
+(SST <- (50-1)*664.0608)
+```
+]]
+.pull-right[
+```{r, collapse=TRUE}
+1 - SSreg/SST
+```
+
+]
+
+
+---
+
+
+`r chunk_reveal("recs-1", font_size_code="60%", title = "## RECS")`
+
+```{r recs-1, fig.width = 3, width = c(4,5), fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "lm", se = FALSE) +
+ labs(title = "Cost vs. square feet")+
+ theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+
+---
+
+`r chunk_reveal("recs-2", font_size_code="60%", title = "## RECS")`
+
+```{r recs-2, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "loess", se = FALSE) +
+ scale_x_log10() + 
+ scale_y_log10() +
+ labs(title = "Log of Cost vs. log of square feet")+
+ theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+---
+
+`r chunk_reveal("recs-3", font_size_code="60%", title = "## RECS")`
+
+```{r recs-3, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+energy <- energy %>% 
+  mutate(logCost = log(CostTotal), 
+         logSqft = log(SqftMeasure))
+ggplot(energy, aes(x = logSqft, y = logCost)) +
+ geom_point(alpha = .1) +
+ geom_smooth(method = "lm", se = FALSE) +
+ labs(title = "Log of Cost vs. log of square feet",
+      x = "CostTotal (log scale)",
+      y = "SqftMeasure (log scale)") +
+ theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+---
+
+# RECS
+
+```{r}
+cost_lm <- lm(log(CostTotal) ~ log(SqftMeasure), data = energy)
+summary(cost_lm)$r.squared
+```
+
+.blockquote.font80[
+- The log of square footage only accounts for $27.9 \%$ of the variation in $\log$ of total energy cost.
+- $72.1 \%$ of the variation in cost is unexplained by square footage
+- A low R-squared like this does not mean that square foot is a is worthless explanatory variable!
+- We should explore a multiple regression model that includes more explanatory variables that could explain more of the variation in cost
+]
+
+---
+
+# R-squared warning
+
+.blockquote-list.font70[
+.bold[Warning:] Do not use only R-squared to assess the quality of a model unless you have verified that all model assumptions hold!!
+]
+
+```{r, echo=FALSE, fig.width = 3, fig.height = 2.5, out.width = "45%", fig.align='center'}
+ggplot(BP,aes(Temperature, Pressure)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(x='Water boiling temperature', 
+       y='Barometric Pressure', 
+       title='Regresion of pressure on temperature') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+.out-t.center[R-squared value is 99.8% but what about the assumptions?]
+
+---
+
+# R-squared warning
+
+```{r, echo=FALSE}
+boiling_lm <- lm(Pressure ~ Temperature, data = BP)
+
+# Get regression points
+reg_points_boiling <- 
+  get_regression_points(boiling_lm)
+```
+
+
+.pull-left[
+```{r, echo=FALSE}
+ggplot(reg_points_boiling, aes(x = Temperature, y = Pressure)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_point(aes(y = Pressure_hat), shape = 1) +
+  geom_segment(aes(xend = Temperature, yend = Pressure_hat), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  labs(x='Water boiling temperature', 
+       y='Barometric Pressure', 
+       title='Regresion of pressure on temperature') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+]
+
+.pull-right[
+```{r, echo=FALSE}
+ggplot(reg_points_boiling, aes(x = Temperature, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = Temperature, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+   labs(x='Water boiling temperature', 
+        y='Residuals', 
+        title='Residual plot') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+.blockquote-list.font70[
+.bold[Warning:] Do not use only R-squared to assess the quality of a model unless you have verified that all model assumptions hold!!
+]
+
+---
+
+# SLR of log pressure on temp does fit a SLR form
+
+```{r, echo=FALSE}
+BP <- BP %>% mutate(logPressure = log(Pressure))
+boiling_lm1 <- lm(logPressure ~ Temperature, data = BP)
+
+# Get regression points
+reg_points_boiling1 <- 
+  get_regression_points(boiling_lm1)
+```
+
+
+.pull-left[
+```{r, echo=FALSE}
+ggplot(reg_points_boiling1, aes(x = Temperature, y = logPressure)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +  
+  geom_point(aes(y = logPressure_hat), shape = 1) +
+  geom_segment(aes(xend = Temperature, yend = logPressure_hat), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  labs(x='Water boiling temperature', 
+       y='Barometric Pressure (log scale)', 
+       title='Regresion of log pressure on temperature') +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+]
+
+.pull-right[
+```{r, echo=FALSE}
+ggplot(reg_points_boiling1, aes(x = Temperature, y = residual)) +
+  geom_point() +
+  theme(legend.position = "none") +
+  geom_segment(aes(xend = Temperature, yend = 0), alpha = .2) +
+  scale_color_continuous(low = "black", high = "red") +  # Colors to use here
+  geom_point(aes(color = abs(residual))) +
+  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
+   labs(x='Water boiling temperature', 
+        y='Residuals', 
+        title='Residual plot') +
+  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
+```
+]
+
+.out-t.font90[For this model, R-squared is 99.5 %. It doesn't matter that R-squared is lower, what matters is that the observed relationship now agrees with our SLR linearity assumption.]
+
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Get the in class activity file from [moodle](https://moodle.carleton.edu/)
+- We will further practice the concepts seen in the slides
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+

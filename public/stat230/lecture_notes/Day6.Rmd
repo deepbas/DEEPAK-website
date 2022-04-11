@@ -397,6 +397,7 @@ g2 <- ggplot(reg_points_auto_mpg_hp, aes(x = horsepower, y = residual)) +
   theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
 ```
 
+
 ```{r echo=FALSE, out.width = "90%", fig.width = 7, fig.height=3.5, fig.align='center'}
 grid.arrange(g1, g2, ncol = 2)
 ```
@@ -782,7 +783,7 @@ summary(dplyr::select(energy, CostTotal,SqftMeasure))
 ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
  geom_point(alpha = .1) +
  geom_smooth(method = "loess", se = FALSE) +
- labs(title = "Log of Cost vs. log of square feet")+
+ labs(title = "Cost vs. Square feet")+
  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
 ```
 
