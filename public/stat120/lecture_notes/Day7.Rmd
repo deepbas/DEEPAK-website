@@ -303,10 +303,10 @@ d. 1.5
 
 # Recall:  Gettysburg Address
 
-.yellow-h[What are each dots?]
+.yellow-h.font80[What are each dots?]
 
 <center>
-<img src="images/gettys.png" width="50%" height="45%"><br>
+<img src="images/gettys.png" width="45%" height="45%"><br>
 </center>
 
 

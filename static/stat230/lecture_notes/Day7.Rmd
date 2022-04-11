@@ -251,7 +251,6 @@ stopping distance of cars in 1920s but don't have the speeds.
 - How much variability?
 ]
 
-<br>
 
 .blockquote[
 Stopping distances range from about 0 feet
@@ -339,11 +338,11 @@ variance is about 236.5 $feet^2$
 
 # R-squared
 
-.blockquote[
+.blockquote.font80[
 R-squared ( $R^2$ or coefficient of determination) measures the proportion of variability observed in the response Y which can be explained by the regression of Y on x.
 ]
 
-.code70[
+.code50[
 ```{r}
 summary(cars_lm)
 ```
@@ -449,10 +448,12 @@ $$\text { SSreg }=\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{y}\right)^{2}$$
 
 .blockquote[
 R-squared ( $R^2$ or coefficient of determination) measures the proportion of variability observed in the response Y which can be explained by the regression of Y on x.
-]
+
 
 
 $$R^{2}=\frac{\text { explained variation }}{\text { total variation }}=\frac{S S r e g}{S S T}$$
+]
+
 
 .blockquote[
 - In terms of <cite>unexplained</cite> (residual) variation:
@@ -488,7 +489,6 @@ $$R^{2}=1-\frac{(50-2) 236.5317}{(50-1) 664.0608} \approx 0.6511$$
 
 ---
 
-
 `r chunk_reveal("recs-1", font_size_code="60%", title = "## RECS")`
 
 ```{r recs-1, fig.width = 3, width = c(4,5), fig.height = 3.5, out.width = "100%", include=FALSE}
@@ -498,7 +498,6 @@ ggplot(energy, aes(x = SqftMeasure, y = CostTotal)) +
  labs(title = "Cost vs. square feet")+
  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
 ```
-
 
 ---
 
