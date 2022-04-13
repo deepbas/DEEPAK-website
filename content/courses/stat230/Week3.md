@@ -10,3 +10,5 @@ weight: 20
 
 
 Day 7 Slides ({{% staticref "stat230/lecture_notes/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat230/lecture_notes/Day7.html" "newtab" %}}html{{% /staticref %}})
+
+Day 8 Slides ({{% staticref "stat230/lecture_notes/Day8.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat230/lecture_notes/Day8.html" "newtab" %}}html{{% /staticref %}})
