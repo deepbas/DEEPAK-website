@@ -403,7 +403,7 @@ ggplot(reg_points_cars, aes(x = speed, y = dist)) +
 
 ---
 
-`r chunk_reveal("model-fit", font_size_code="60%", title = "# Example: ANOVA breakdown for (x,y) = (25,75)")`
+`r chunk_reveal("model-fit", font_size_code="60%", title = "# Example: ANOVA breakdown for (x,y) = (25,85)")`
 
 ```{r model-fit, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
 ggplot(reg_points_cars, aes(x = speed, y = dist)) +
@@ -475,13 +475,13 @@ $$R^{2}=1-\frac{(50-2) 236.5317}{(50-1) 664.0608} \approx 0.6511$$
 .pull-left[
 .code80[
 ```{r, collapse=TRUE}
-(SSreg <- (50-2)*236.5317)
+(SSR <- (50-2)*236.5317)
 (SST <- (50-1)*664.0608)
 ```
 ]]
 .pull-right[
 ```{r, collapse=TRUE}
-1 - SSreg/SST
+1 - SSR/SST
 ```
 
 ]

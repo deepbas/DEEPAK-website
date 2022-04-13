@@ -496,11 +496,12 @@ ggplot(my_data, aes(x = x1, y = y)) +
 
 ---
 
-`r chunk_reveal("perch-interaction", font_size_code="60%", title = "## Example: Perch interaction")`
+`r chunk_reveal("perch-interaction", font_size_code="50%", title = "## Example: Perch interaction")`
 
-```{r perch-interaction, fig.width = 3, widths = c(0.5,0.5), fig.height = 3.5, out.width = "100%", include=FALSE}
+```{r perch-interaction, fig.width = 3, widths = c(0.5,0.5), fig.height = 3, out.width = "80%", include=FALSE}
 library(Stat2Data)
 data("Perch")
+glimpse(Perch)
 ggplot(Perch, aes(x = Width, y = Weight)) +
  geom_point() +
  geom_smooth(method = "lm", se = FALSE) +
@@ -555,7 +556,7 @@ $$\hat{\mu}_{\text {Weight } \mid x}=113.93-3.48 \text { Length }-94.63 \text { 
 .blockquote.font80[
 - How does width affect mean weight?
 
-  - well, it depends on the length of the fish in a model with a length and width interaction
+  - it depends on the length of the fish in a model with a length and width interaction
   
 - Holding length fixed, a 1 unit increase in width is associated with an estimated mean change in weight of
 $$\hat{\beta}_{\text {Width }}+\hat{\beta}_{\text {Width:Length }} \text { Length }=-94.63+5.24 \text { Length }$$
