@@ -159,8 +159,10 @@ ggplot(sim_data, aes(predictor1, y=predictor2, z=response)) +
 <br>
 Today: 
 .blockquote-list[
-- Multiple predictors (Planar and Quadratic)
+- Multiple predictors 
+- Quadratic predictors
 - Interactions of predictors
+- Interpretation
 ]
 
 ]
@@ -310,7 +312,7 @@ ggpairs(energy,
 
 # Example: RECS
 
-> Regression of log of energy cost against log of square footage and household size
+.blockquote.font80[Regression of log of energy cost against log of square footage and household size]
 
 <br>
 
@@ -326,12 +328,12 @@ knitr::kable(reg_table, digits = 5, format = "html")
 ```
 
 $$\hat{\mu}(\log (\text { Cost }) \mid x)=4.3667+0.3722 \log (\text { Sqft })+0.0839 \text { HHSize }$$
-.blockquote-list.font90[
+.blockquote-list.font80[
 In the original scale of the response
 
 $$
 \begin{aligned}
-\widehat{\operatorname{med}(\text { Cost } \mid x)} &=e^{4.3667+0.3722 \log (\text { Sqft })+0.0839 H H \text { Size }} \\
+\hat{\operatorname{med}}(\text { Cost } \mid x) &=e^{4.3667+0.3722 \log (\text { Sqft })+0.0839 H H \text { Size }} \\
 &=e^{4.3667} \times(S q f t)^{0.3722} \times e^{0.0839 H H \text { Size }}
 \end{aligned}
 $$
@@ -395,9 +397,9 @@ ggplot(my_data, aes(x = my_x, y = my_y)) +
 
 ---
 
-`r chunk_reveal("model-corn", font_size_code="60%", title = "## Example: Corn Yield")`
+`r chunk_reveal("model-corn", widths = c(1,1.2), font_size_code="60%", title = "## Example: Corn Yield  (Textbook Ex. 9.15)")`
 
-```{r model-corn, fig.width = 3, width = c(4,4), fig.height = 3.5, out.width = "100%", include=FALSE}
+```{r model-corn, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
 ggplot(ex0915, aes(Rainfall, Yield)) +
   geom_point() +
   geom_smooth(method = "lm", formula = y ~ x + I(x^2), se = FALSE) +
@@ -427,7 +429,6 @@ $$
 &=\mu\left(y \mid x_{1}, x_{2}\right)+\beta_{1}+\beta_{2}\left(2 x_{1}+1\right)
 \end{aligned}
 $$
-
 ]
 
 ---
@@ -466,7 +467,7 @@ $$\hat{\mu}_{\text {yield } \mid \text { rain }}=-5.015+6.004(\text { rain })-0.
 
 class: middle
 
-## Example: Corn Yield (Textbook Ex. 9.15)
+## Example: Corn Yield
 
 .blockquote[
 - An increase from 9 to 10 inches of rainfall is associated with a mean yield increase of $1.646$ bushels per acre.
@@ -482,8 +483,7 @@ $$6.004-0.229(2 \times 14+1)=-0.648$$
 .blockquote.font90[
 - An interaction $x_{1} \times x_{2}$ is warranted if the effect of $x_{1}$ on $y$ depends on the value of $x_{2}$and vice versa
 - EDA: we need to look at how $x_{1}$ and $y$ related for cases with the same, or similar, values of $x_{2}$
-- if this relationship changes, as $x_{2}$ changes, then an interaction term may improve the model
-- Assume all three variables $y, x_{1}$ and $x_{2}$ are quantitative
+- If this relationship changes, as $x_{2}$ changes, then an interaction term may improve the model
 - `ntile` with $\mathrm{n}=4$ divides cases into 4 equal sized groups based on the $25^{th}$, $50^{th}$, and $75^{th}$ percentiles of $x_2$
 ]
 
@@ -568,20 +568,26 @@ $$\hat{\beta}_{\text {Width }}+\hat{\beta}_{\text {Width:Length }} \text { Lengt
 
 $$\hat{\mu}_{\text {Weight } \mid x}=113.93-3.48 \text { Length }-94.63 \text { Width }+5.24 \text { Length } \times \text { Width }$$
 
-.blockquote.font90[
+.blockquote.font80[
 - Holding length fixed at $20 \mathrm{~cm}$, a $1 \mathrm{~cm}$ increase in width is associated with an estimated mean increase in weight of
+
 $$\hat{\beta}_{\text {Width }}+\hat{\beta}_{\text {Width:Length }} 20=-94.63+5.24(20)=10.194 \mathrm{grams}$$
 - Holding length fixed at $40 \mathrm{~cm}$, a $1 \mathrm{~cm}$ increase in width is associated with an estimated mean increase in weight of
+
 $$\hat{\beta}_{\text {Width }}+\hat{\beta}_{\text {Width:Length }} 20=-94.63+5.24(40)=115.02 \text { grams}$$
+
+
 - The positive interaction parameter estimate means the effect of width on weight is greater for larger values of length
+
+
   - same is true for the effect of length on weight
 ]
 
 ---
 
-## Fitting MLR in R
+### Fitting MLR in R
 
-- Planar 
+- .small[Planar] 
 
 .font80[
 ```r
@@ -589,7 +595,7 @@ lm(y~x1 + x2 + x3, data = )
 ```
 ]
 
-- Quadratic
+- .small[Quadratic]
 
 .font80[
 ```
@@ -597,7 +603,7 @@ lm(y ~ x1 + I(x1^2) + x2, data = )
 ```
 ]
 
-- Interaction 
+- .small[Interaction]
 
 .font80[
 ```
@@ -606,7 +612,7 @@ lm(y ~ x1*x2, data = ) # equals x1 + x2 + x1:x2
 ```
 ]
 
-- Updating an existing model
+- .small[Updating an existing model]
 
 .font80[
 ```
