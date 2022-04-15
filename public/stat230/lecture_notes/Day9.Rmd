@@ -1,0 +1,661 @@
+---
+title: "Categorical predictors"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(Stat2Data)
+library(palmerpenguins)
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(1234)
+
+sim_mlr = function(x1, x2, beta_0 = 2, beta_1 = 3, beta_2 = 2, sigma = 3) {
+  n = length(x1)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x1 + beta_2 * x2 + epsilon
+  data.frame(predictor1 = x1, predictor2 = x2, response = y)
+}
+
+num_obs = 25
+x_vals1 = runif(num_obs, 0, 10)
+x_vals2 = rbeta(num_obs, 1,5)*10
+sim_data = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = 3, beta_1 = 2, beta_2= 1.6, sigma = 3)
+
+
+cars_lm <- lm(dist ~ speed, data = cars)
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/APM_DougEvansCases.csv")
+
+# Get regression table
+reg_table_cars <-
+  get_regression_table(cars_lm)
+
+# Get regression points
+reg_points_cars <- 
+  get_regression_points(cars_lm)
+
+
+energy <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/EnergySurvey.csv")
+
+
+# New example
+
+lm_eqn <- function(df){
+    m <- lm(df[,2] ~ df[,1], df);
+    eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2, 
+         list(a = format(unname(coef(m)[1]), digits = 2),
+              b = format(unname(coef(m)[2]), digits = 2),
+             r2 = format(summary(m)$r.squared, digits = 3)))
+    as.character(as.expression(eq));
+}
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Categorical predictors]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+library(gg3D)
+ggplot(sim_data, aes(predictor1, y=predictor2, z=response)) + 
+  theme_void()+
+  axes_3D() +
+  stat_3D()
+```
+
+
+]
+.pull-right[
+<br>
+<br>
+Today: 
+.blockquote-list[
+- Indicator variables
+- No interaction model 
+- Interaction model
+- Model interpretation
+]
+
+]
+
+---
+
+class: middle
+
+# MLR Variables
+
+.blockquote.font90[
+- $Y=$ quantitative response
+
+- $x_{1}, \ldots, x_{p}: p$ explanatory (predictor) variables
+  - $X_{j}$ can be *either* quantitative or categorical
+  - .bold[Today:] adding and interpreting categorical predictors
+
+]
+
+---
+
+class: middle
+
+# Quantitative predictors
+
+.blockquote.font90[
+- .bold[Quantitative] predictor effects on $Y$ are interpreted by quantitative changes: How does the mean response change for
+  - a one unit increase in $x$
+  - a $10 \%$ reduction in $x$
+  
+- In a "basic" model (e.g. no interactions, polynomial terms, etc)
+  - any one unit increase in $x_{j}$ results in a $\beta_{j}$ change in $\mu_{y \mid x}$
+]
+
+
+---
+
+# Categorical predictors
+
+.blockquote.font90[
+.bold[Categorical] predictor effects on $Y$ are interpreted by changing the level of the categorical variable: How does the mean response differ when
+  - comparing level "A" to level "B"
+  - comparing level "A" to level "C"
+]
+
+--
+
+<br>
+
+.blockquote.font90[
+In a "basic" model (e.g. no interactions, polynomial terms, etc)
+  - we don't assume that the difference in $\mu_{y \mid x}$ is the same for all level combinations
+  - the mean difference between levels "A" and "B" is not necessarily the same as the difference between levels
+  "A" and "C"
+
+]
+
+---
+
+# `Palmerpenguins` dataset
+
+```{r, highlight.output = c(3,5,6)}
+library(palmerpenguins) # package hosting penguins data
+library(dplyr) # package for data wrangling
+penguins %>% glimpse() # get a glimpse of your data
+```
+
+
+---
+
+class: middle
+
+# Indicator variables
+
+.pull-left[
+
+.blockquote.font90[
+Categorical variables are represented in regression models as .bold[indicator] (aka dummy) variables
+- entries are either "1" or "0"
+- a "1" indicates one particular level
+- if we have $k$ levels, we need $k-1$ indicator variables
+]
+]
+
+.pull-right[
+
+
+<br>
+
+| species | indicator_Chinstrap | indicator_Gentoo |
+|:------|:-----:|-------:|
+| Adelie    | 0   | 0   |
+| Gentoo     | 0    | 1   |
+| Adelie     | 0    | 0   |
+| Chinstrap  | 1    | 0   |
+|Chinstrap  |  1   |  0   |
+| $\cdots$ |  $\cdots$ | $\cdots$ |
+
+]
+
+---
+
+class: middle
+
+# Indicator variables
+
+.pull-left[
+
+<br>
+<br>
+
+| species | indicator_Chinstrap | indicator_Gentoo |
+|:------|:-----:|-------:|
+| Adelie    | 0   | 0   |
+| Gentoo     | 0    | 1   |
+| Adelie     | 0    | 0   |
+| Chinstrap  | 1    | 0   |
+|Chinstrap  |  1   |  0   |
+| $\cdots$ |  $\cdots$ | $\cdots$ |
+
+
+]
+
+.pull-right[
+
+.blockquote[
+
+- The baseline level is the level that doesn't have an indicator variable
+- Adelie is the baseline level in `penguins` example
+- $\mathrm{R}$ will automatically create indicator variables when using a factor or character variable in an $\mathrm{lm}$
+- In R, the baseline level is the first level of a variable with order usually determined alphabetically
+]
+]
+
+
+---
+
+# Mean function without interaction (parallel lines model)
+
+$$\mu_{\text {mass } \mid x}=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo}$$
+
+.pull-left[
+
+.code90[
+```{r, echo=FALSE}
+library(moderndive)
+peng_parallel_lm <-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points <- get_regression_points(peng_parallel_lm)
+ggplot(peng_parallel_points,
+ aes(bill_length_mm, body_mass_g, color = species)) +
+ theme(legend.position = "bottom")+
+ geom_point() +
+ # add parallel lines for each color variable
+ geom_line(aes(y = body_mass_g_hat), size = 1) +
+ labs(title = "Regression of mass on bill length and species") +
+ theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+]
+]
+
+.pull-right[
+
+.blockquote.font70[
+- Mean function for .red[Adelie]
+
+\begin{align}
+\mu_{\text {mass } \mid \text { bill }, \text { Adelie }} & = \beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(0)\\ & =\beta_{0}+\beta_{1} \text { bill }
+\end{align}
+
+]
+
+.blockquote.font70[
+- Mean function for .green[Chinstrap]
+
+\begin{align}
+\mu_{\text {mass } \mid \text { bill }, \text { Chinstrap }} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(1)+\beta_{3}(0)\\ &=\beta_{0}+\beta_{2}+\beta_{1} \text { bill }
+\end{align}
+
+]
+
+.blockquote.font70[
+- Mean function for .ggplotblue[Gentoo] 
+
+\begin{align}
+\mu_{\text {mass } \mid \text { bill }, \text { Gentoo }}&=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(1)\\&=\beta_{0}+\beta_{3}+\beta_{1} \text { bill }
+\end{align}
+
+]
+]
+
+---
+
+class: middle
+
+# Example: Penguins
+
+.blockquote-list.font90[
+- $\beta_{1}$ : effect of bill length on mass, holding species fixed
+- $\beta_{2}$ : holding bill length fixed, $\beta_{2}$ is the difference in mean mass between Chinstrap and Adelie
+$$\mu_{\text {mass } \mid \text { } \text { Chinstrap }}-\mu_{\text {mass } \mid \text {} \text { Adelie }}=\beta_{2}$$
+- $\beta_{3}$ : holding bill length fixed, $\beta_{3}$ is the difference in mean mass between Gentoo and Adelie
+$$\mu_{\text {mass } \mid \text { } \text { Gentoo }}-\mu_{\text {mass } \mid \text { } \text { Adelie }}=\beta_{3}$$
+- $\beta_{2}-\beta_{3}$ : holding bill length fixed, $\beta_{2}-\beta_{3}$ is the difference in mean mass between Chinstrap and Gentoo
+$$\mu_{\text {mass } \mid \text {  } \text { Chinstrap }}-\mu_{\text {mass } \mid \text { } \text { Gentoo }}=\beta_{2}-\beta_{3}$$
+]
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+Work through Problem 1 of the categorical predictors worksheet with a neighbor
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+`r chunk_reveal("parallel-penguins", widths = c(0.4, 0.6), font_size_code="60%", title = "### Visualizing the fitted parallel lines (No interaction!)")`
+
+```{r parallel-penguins, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+library(moderndive)
+peng_parallel_lm <-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points <- get_regression_points(peng_parallel_lm)
+ggplot(peng_parallel_points,
+ aes(bill_length_mm, body_mass_g, color = species)) +
+ theme(legend.position = "bottom") +
+ geom_point() +
+ geom_line(aes(y = body_mass_g_hat), size = 1) +
+ labs(title = "Regression of mass on bill length and species") +
+ theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+
+
+---
+
+# Regression Table for parallel lines model
+
+```{r}
+peng_parallel_table <- get_regression_table(peng_parallel_lm)
+knitr::kable(peng_parallel_table, digis= 4)
+```
+
+.blockquote-list[
+$$
+\begin{aligned}
+\mu_{\text {mass } \mid x} &=153.74 + 91.436 \text { bill } - 885.81 \text { speciesChinstrap } + 578.62 \text { speciesGentoo } 
+\end{aligned}
+$$
+]
+
+---
+
+`r chunk_reveal("explore-penguins", widths = c(0.3, 0.7), font_size_code="60%", title = "### Example: Penguins")`
+
+
+```{r explore-penguins, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+# adding a color aesthetics fits the model separately
+ggplot(penguins, aes(x = bill_length_mm, 
+                     y = body_mass_g, 
+                     color = species)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm", se = FALSE)+
+labs(title = "Regression of mass on bill length and species") 
+```
+
+
+---
+
+
+# Example: Penguins
+
+.pull-left[
+
+```{r, echo=FALSE}
+
+ggplot(penguins, aes(x = bill_length_mm, 
+                     y = body_mass_g, 
+                     color = species)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE)+
+labs(title = "Regression of mass on bill length and species") 
+
+```
+
+]
+
+.pull-right[
+
+<br>
+<br>
+
+.blockquote[
+
+Does the effect of bill length on body mass differed by species?
+
+- If yes, then we need an interaction to create separate lines for each species!
+
+]
+
+]
+
+---
+
+# Example: Penguins interaction
+
+$$
+\begin{aligned}
+\mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+& \quad +\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}
+$$
+
+.pull-left-40[
+
+```{r, echo=FALSE}
+
+ggplot(penguins, aes(x = bill_length_mm, 
+                     y = body_mass_g, 
+                     color = species)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE, 
+             aes(color=species))+
+labs(title = "Regression of mass on bill length and species") 
+
+```
+
+]
+
+.pull-right-60[
+
+.blockquote.font70[
+- Mean function for .red[Adelie]
+
+$$
+\begin{aligned}
+\mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(0)+\beta_{4} b i l l \times(0)+\beta_{5} b i l l \times(0) \\
+&=\beta_{0}+\beta_{1} \text { bill }
+\end{aligned}
+$$
+
+]
+
+.blockquote.font70[
+- Mean function for .green[Chinstrap]
+$$
+\begin{aligned}
+\mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(1)+\beta_{3}(0)+\beta_{4} b i l l \times(1)+\beta_{5} b i l l \times(0) \\
+&=\beta_{0}+\beta_{2}+\left(\beta_{1}+\beta_{4}\right) \text { bill }
+\end{aligned}
+$$
+
+]
+
+.blockquote.font70[
+- Mean function for .ggplotblue[Gentoo] 
+
+$$
+\begin{aligned}
+\mu_{m a s s \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(1)+\beta_{4} b i l l \times(0)+\beta_{5} b i l l \times(1) \\
+&=\beta_{0}+\beta_{3}+\left(\beta_{1}+\beta_{5}\right) \text { bill }
+\end{aligned}
+$$
+
+]
+]
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+.blockquote.font90[
+- Effect of bill length on mass (.bold[slope]) depends on species
+
+  - $\beta_{1}$ : effect of bill length on mass for .red[Adelie] (baseline)
+  - $\beta_{1}+\beta_{4}:$ effect of bill length on mass for .green[Chinstrap]
+  - $\beta_{1}+\beta_{5}:$ effect of bill length on mass for .ggplotblue[Gentoo]
+
+]
+
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+- Difference between mean mass between species depends on bill length
+- Holding bill length fixed, $\beta_{2}+\beta_{4} \text{bill}$ is the difference in mean mass between .green[Chinstrap] and .red[Adelie]
+
+.blockquote[
+$$
+\begin{align}
+\mu_{\text {mass } \mid  \text { Chinstrap }}-\mu_{\text {mass } \mid  \text { Adelie }} &= \left[\beta_{0}+\beta_{2}+\left(\beta_{1}+\beta_{4}\right) b i l l\right]-\left[\beta_{0}+\beta_{1} \text { bill }\right]\\ &= \beta_{2}+\beta_{4} b i l l
+\end{align}
+$$
+]
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+- Difference between mean mass between species depends on bill length
+- Holding bill length fixed, $\beta_{3}+\beta_{5} \text{bill}$ is the difference in mean mass between .ggplotblue[Gentoo] and .red[Adelie]
+
+.blockquote[
+\begin{align}
+\mu_{\text {mass } \mid  \text { Gentoo }}-\mu_{\text {mass } \mid  \text { Adelie }} &= \left[\beta_{0}+\beta_{3}+\left(\beta_{1}+\beta_{5}\right) b i l l\right]-\left[\beta_{0}+\beta_{1} \text { bill }\right]\\ &= \beta_{3}+\beta_{5} b i l l
+\end{align}
+]
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+- Difference between mean mass between species depends on bill length
+- Holding bill length fixed, $\left(\beta_{2}-\beta_{3}\right)+\left(\beta_{4}-\beta_{5}\right) b i l l$ is the difference in mean mass between .green[Chinstrap] and .ggplotblue[Gentoo]
+
+.blockquote[
+$$
+\begin{align}
+\mu_{\text {mass } \mid \text { Chinstrap }}-\mu_{\text {mass } \mid  \text { Gentoo }} & =\left[\beta_{0}+\beta_{2}+\left(\beta_{1}+\beta_{4}\right) \text { bill }\right]-\left[\beta_{0}+\beta_{3}+\left(\beta_{1}+\beta_{5}\right) \text { bill }\right]\\ &=  \left(\beta_{2}-\beta_{3}\right)+\left(\beta_{4}-\beta_{5}\right) b i l l
+\end{align}
+$$
+]
+
+---
+
+# Fit the model with interaction 
+
+.code80.font80[
+```{r}
+library(moderndive) # call the library
+# can use either y ~ x1*x2 or y ~ x1 + x2 + x1:x2
+peng_interaction_lm <-  lm(body_mass_g ~ bill_length_mm*species, data = penguins)
+peng_table_interaction <- get_regression_table(peng_interaction_lm)
+knitr::kable(peng_table_interaction, digis= 4, format = "html")
+```
+]
+
+.blockquote-list.font80[
+$$
+\begin{aligned}
+\mu_{\text {mass } \mid x} &=34.88+94.50 \text { bill }+811.26 \text { speciesChinstrap }-158.71 \text { speciesGentoo } \\
+& \quad -35.38 \text { bill } \times \text { speciesChinstrap }+14.96 \text { bill } \times \text { speciesGentoo }
+\end{aligned}
+$$
+]
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+Work through Problem 2 of the categorical predictors worksheet with a neighbor
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+

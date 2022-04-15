@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Categorical predictors</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Categorical predictors]
+
+### .fancy[Stat 230]
+
+ April 15 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day9_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+Today: 
+.blockquote-list[
+- Indicator variables
+- No interaction model 
+- Interaction model
+- Model interpretation
+]
+
+]
+
+---
+
+class: middle
+
+# MLR Variables
+
+.blockquote.font90[
+- `\(Y=\)` quantitative response
+
+- `\(x_{1}, \ldots, x_{p}: p\)` explanatory (predictor) variables
+  - `\(X_{j}\)` can be *either* quantitative or categorical
+  - .bold[Today:] adding and interpreting categorical predictors
+
+]
+
+---
+
+class: middle
+
+# Quantitative predictors
+
+.blockquote.font90[
+- .bold[Quantitative] predictor effects on `\(Y\)` are interpreted by quantitative changes: How does the mean response change for
+  - a one unit increase in `\(x\)`
+  - a `\(10 \%\)` reduction in `\(x\)`
+  
+- In a "basic" model (e.g. no interactions, polynomial terms, etc)
+  - any one unit increase in `\(x_{j}\)` results in a `\(\beta_{j}\)` change in `\(\mu_{y \mid x}\)`
+]
+
+
+---
+
+# Categorical predictors
+
+.blockquote.font90[
+.bold[Categorical] predictor effects on `\(Y\)` are interpreted by changing the level of the categorical variable: How does the mean response differ when
+  - comparing level "A" to level "B"
+  - comparing level "A" to level "C"
+]
+
+--
+
+&lt;br&gt;
+
+.blockquote.font90[
+In a "basic" model (e.g. no interactions, polynomial terms, etc)
+  - we don't assume that the difference in `\(\mu_{y \mid x}\)` is the same for all level combinations
+  - the mean difference between levels "A" and "B" is not necessarily the same as the difference between levels
+  "A" and "C"
+
+]
+
+---
+
+# `Palmerpenguins` dataset
+
+
+```r
+library(palmerpenguins) # package hosting penguins data
+library(dplyr) # package for data wrangling
+penguins %&gt;% glimpse() # get a glimpse of your data
+```
+
+```
+Rows: 344
+Columns: 8
+*$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…
+*$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39.2, 34.1, …
+*$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19.6, 18.1, …
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193, 190, 186…
+$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 4675, 3475, …
+$ sex               &lt;fct&gt; male, female, female, NA, female, male, female, male…
+$ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…
+```
+
+
+---
+
+class: middle
+
+# Indicator variables
+
+.pull-left[
+
+.blockquote.font90[
+Categorical variables are represented in regression models as .bold[indicator] (aka dummy) variables
+- entries are either "1" or "0"
+- a "1" indicates one particular level
+- if we have `\(k\)` levels, we need `\(k-1\)` indicator variables
+]
+]
+
+.pull-right[
+
+
+&lt;br&gt;
+
+| species | indicator_Chinstrap | indicator_Gentoo |
+|:------|:-----:|-------:|
+| Adelie    | 0   | 0   |
+| Gentoo     | 0    | 1   |
+| Adelie     | 0    | 0   |
+| Chinstrap  | 1    | 0   |
+|Chinstrap  |  1   |  0   |
+| `\(\cdots\)` |  `\(\cdots\)` | `\(\cdots\)` |
+
+]
+
+---
+
+class: middle
+
+# Indicator variables
+
+.pull-left[
+
+&lt;br&gt;
+&lt;br&gt;
+
+| species | indicator_Chinstrap | indicator_Gentoo |
+|:------|:-----:|-------:|
+| Adelie    | 0   | 0   |
+| Gentoo     | 0    | 1   |
+| Adelie     | 0    | 0   |
+| Chinstrap  | 1    | 0   |
+|Chinstrap  |  1   |  0   |
+| `\(\cdots\)` |  `\(\cdots\)` | `\(\cdots\)` |
+
+
+]
+
+.pull-right[
+
+.blockquote[
+
+- The baseline level is the level that doesn't have an indicator variable
+- Adelie is the baseline level in `penguins` example
+- `\(\mathrm{R}\)` will automatically create indicator variables when using a factor or character variable in an `\(\mathrm{lm}\)`
+- In R, the baseline level is the first level of a variable with order usually determined alphabetically
+]
+]
+
+
+---
+
+# Mean function without interaction (parallel lines model)
+
+`$$\mu_{\text {mass } \mid x}=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo}$$`
+
+.pull-left[
+
+.code90[
+&lt;img src="Day9_files/figure-html/unnamed-chunk-3-1.svg" width="100%" /&gt;
+]
+]
+
+.pull-right[
+
+.blockquote.font70[
+- Mean function for .red[Adelie]
+
+`\begin{align}
+\mu_{\text {mass } \mid \text { bill }, \text { Adelie }} &amp; = \beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(0)\\ &amp; =\beta_{0}+\beta_{1} \text { bill }
+\end{align}`
+
+]
+
+.blockquote.font70[
+- Mean function for .green[Chinstrap]
+
+`\begin{align}
+\mu_{\text {mass } \mid \text { bill }, \text { Chinstrap }} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(1)+\beta_{3}(0)\\ &amp;=\beta_{0}+\beta_{2}+\beta_{1} \text { bill }
+\end{align}`
+
+]
+
+.blockquote.font70[
+- Mean function for .ggplotblue[Gentoo] 
+
+`\begin{align}
+\mu_{\text {mass } \mid \text { bill }, \text { Gentoo }}&amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(1)\\&amp;=\beta_{0}+\beta_{3}+\beta_{1} \text { bill }
+\end{align}`
+
+]
+]
+
+---
+
+class: middle
+
+# Example: Penguins
+
+.blockquote-list.font90[
+- `\(\beta_{1}\)` : effect of bill length on mass, holding species fixed
+- `\(\beta_{2}\)` : holding bill length fixed, `\(\beta_{2}\)` is the difference in mean mass between Chinstrap and Adelie
+`$$\mu_{\text {mass } \mid \text { } \text { Chinstrap }}-\mu_{\text {mass } \mid \text {} \text { Adelie }}=\beta_{2}$$`
+- `\(\beta_{3}\)` : holding bill length fixed, `\(\beta_{3}\)` is the difference in mean mass between Gentoo and Adelie
+`$$\mu_{\text {mass } \mid \text { } \text { Gentoo }}-\mu_{\text {mass } \mid \text { } \text { Adelie }}=\beta_{3}$$`
+- `\(\beta_{2}-\beta_{3}\)` : holding bill length fixed, `\(\beta_{2}-\beta_{3}\)` is the difference in mean mass between Chinstrap and Gentoo
+`$$\mu_{\text {mass } \mid \text {  } \text { Chinstrap }}-\mu_{\text {mass } \mid \text { } \text { Gentoo }}=\beta_{2}-\beta_{3}$$`
+]
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+Work through Problem 1 of the categorical predictors worksheet with a neighbor
+]
+]
+
+<div class="countdown" id="timer_62597bd7" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+*library(moderndive)
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+*peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+*peng_parallel_points &lt;- get_regression_points(peng_parallel_lm)
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points &lt;- get_regression_points(peng_parallel_lm)
+*ggplot(peng_parallel_points,
+*aes(bill_length_mm, body_mass_g, color = species))
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+&lt;img src="Day9_files/figure-html/parallel-penguins_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points &lt;- get_regression_points(peng_parallel_lm)
+ggplot(peng_parallel_points,
+ aes(bill_length_mm, body_mass_g, color = species)) +
+*theme(legend.position = "bottom")
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+&lt;img src="Day9_files/figure-html/parallel-penguins_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points &lt;- get_regression_points(peng_parallel_lm)
+ggplot(peng_parallel_points,
+ aes(bill_length_mm, body_mass_g, color = species)) +
+ theme(legend.position = "bottom") +
+*geom_point()
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+&lt;img src="Day9_files/figure-html/parallel-penguins_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points &lt;- get_regression_points(peng_parallel_lm)
+ggplot(peng_parallel_points,
+ aes(bill_length_mm, body_mass_g, color = species)) +
+ theme(legend.position = "bottom") +
+ geom_point() +
+*geom_line(aes(y = body_mass_g_hat), size = 1)
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+&lt;img src="Day9_files/figure-html/parallel-penguins_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points &lt;- get_regression_points(peng_parallel_lm)
+ggplot(peng_parallel_points,
+ aes(bill_length_mm, body_mass_g, color = species)) +
+ theme(legend.position = "bottom") +
+ geom_point() +
+ geom_line(aes(y = body_mass_g_hat), size = 1) +
+*labs(title = "Regression of mass on bill length and species")
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+&lt;img src="Day9_files/figure-html/parallel-penguins_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Visualizing the fitted parallel lines (No interaction!)
+.panel1-parallel-penguins-auto[
+
+```r
+library(moderndive)
+peng_parallel_lm &lt;-  lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_parallel_points &lt;- get_regression_points(peng_parallel_lm)
+ggplot(peng_parallel_points,
+ aes(bill_length_mm, body_mass_g, color = species)) +
+ theme(legend.position = "bottom") +
+ geom_point() +
+ geom_line(aes(y = body_mass_g_hat), size = 1) +
+ labs(title = "Regression of mass on bill length and species") +
+*theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+]
+ 
+.panel2-parallel-penguins-auto[
+&lt;img src="Day9_files/figure-html/parallel-penguins_auto_09_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-parallel-penguins-auto {
+  color: black;
+  width: 39.2%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-parallel-penguins-auto {
+  color: black;
+  width: 58.8%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-parallel-penguins-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+# Regression Table for parallel lines model
+
+
+```r
+peng_parallel_table &lt;- get_regression_table(peng_parallel_lm)
+knitr::kable(peng_parallel_table, digis= 4)
+```
+
+
+
+|term               | estimate| std_error| statistic| p_value|  lower_ci| upper_ci|
+|:------------------|--------:|---------:|---------:|-------:|---------:|--------:|
+|intercept          |  153.740|   268.901|     0.572|   0.568|  -375.191|  682.670|
+|bill_length_mm     |   91.436|     6.887|    13.276|   0.000|    77.889|  104.983|
+|species: Chinstrap | -885.812|    88.250|   -10.038|   0.000| -1059.401| -712.223|
+|species: Gentoo    |  578.629|    75.362|     7.678|   0.000|   430.391|  726.867|
+
+.blockquote-list[
+$$
+`\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=153.74 + 91.436 \text { bill } - 885.81 \text { speciesChinstrap } + 578.62 \text { speciesGentoo } 
+\end{aligned}`
+$$
+]
+
+---
+
+count: false
+ 
+### Example: Penguins
+.panel1-explore-penguins-auto[
+
+```r
+# adding a color aesthetics fits the model separately
+*ggplot(penguins, aes(x = bill_length_mm,
+*                    y = body_mass_g,
+*                    color = species))
+```
+]
+ 
+.panel2-explore-penguins-auto[
+&lt;img src="Day9_files/figure-html/explore-penguins_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Example: Penguins
+.panel1-explore-penguins-auto[
+
+```r
+# adding a color aesthetics fits the model separately
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = body_mass_g,
+                     color = species)) +
+*theme(legend.position = "bottom")
+```
+]
+ 
+.panel2-explore-penguins-auto[
+&lt;img src="Day9_files/figure-html/explore-penguins_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Example: Penguins
+.panel1-explore-penguins-auto[
+
+```r
+# adding a color aesthetics fits the model separately
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = body_mass_g,
+                     color = species)) +
+theme(legend.position = "bottom")+
+*geom_point()
+```
+]
+ 
+.panel2-explore-penguins-auto[
+&lt;img src="Day9_files/figure-html/explore-penguins_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Example: Penguins
+.panel1-explore-penguins-auto[
+
+```r
+# adding a color aesthetics fits the model separately
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = body_mass_g,
+                     color = species)) +
+theme(legend.position = "bottom")+
+geom_point() +
+*geom_smooth(method = "lm", se = FALSE)
+```
+]
+ 
+.panel2-explore-penguins-auto[
+&lt;img src="Day9_files/figure-html/explore-penguins_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+### Example: Penguins
+.panel1-explore-penguins-auto[
+
+```r
+# adding a color aesthetics fits the model separately
+ggplot(penguins, aes(x = bill_length_mm,
+                     y = body_mass_g,
+                     color = species)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm", se = FALSE)+
+*labs(title = "Regression of mass on bill length and species")
+```
+]
+ 
+.panel2-explore-penguins-auto[
+&lt;img src="Day9_files/figure-html/explore-penguins_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-explore-penguins-auto {
+  color: black;
+  width: 29.4%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-explore-penguins-auto {
+  color: black;
+  width: 68.6%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-explore-penguins-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+---
+
+
+# Example: Penguins
+
+.pull-left[
+
+&lt;img src="Day9_files/figure-html/unnamed-chunk-5-1.svg" width="100%" /&gt;
+
+]
+
+.pull-right[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+
+Does the effect of bill length on body mass differed by species?
+
+- If yes, then we need an interaction to create separate lines for each species!
+
+]
+
+]
+
+---
+
+# Example: Penguins interaction
+
+$$
+`\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp; \quad +\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}`
+$$
+
+.pull-left-40[
+
+&lt;img src="Day9_files/figure-html/unnamed-chunk-6-1.svg" width="100%" /&gt;
+
+]
+
+.pull-right-60[
+
+.blockquote.font70[
+- Mean function for .red[Adelie]
+
+$$
+`\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(0)+\beta_{4} b i l l \times(0)+\beta_{5} b i l l \times(0) \\
+&amp;=\beta_{0}+\beta_{1} \text { bill }
+\end{aligned}`
+$$
+
+]
+
+.blockquote.font70[
+- Mean function for .green[Chinstrap]
+$$
+`\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(1)+\beta_{3}(0)+\beta_{4} b i l l \times(1)+\beta_{5} b i l l \times(0) \\
+&amp;=\beta_{0}+\beta_{2}+\left(\beta_{1}+\beta_{4}\right) \text { bill }
+\end{aligned}`
+$$
+
+]
+
+.blockquote.font70[
+- Mean function for .ggplotblue[Gentoo] 
+
+$$
+`\begin{aligned}
+\mu_{m a s s \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(1)+\beta_{4} b i l l \times(0)+\beta_{5} b i l l \times(1) \\
+&amp;=\beta_{0}+\beta_{3}+\left(\beta_{1}+\beta_{5}\right) \text { bill }
+\end{aligned}`
+$$
+
+]
+]
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+.blockquote.font90[
+- Effect of bill length on mass (.bold[slope]) depends on species
+
+  - `\(\beta_{1}\)` : effect of bill length on mass for .red[Adelie] (baseline)
+  - `\(\beta_{1}+\beta_{4}:\)` effect of bill length on mass for .green[Chinstrap]
+  - `\(\beta_{1}+\beta_{5}:\)` effect of bill length on mass for .ggplotblue[Gentoo]
+
+]
+
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+- Difference between mean mass between species depends on bill length
+- Holding bill length fixed, `\(\beta_{2}+\beta_{4} \text{bill}\)` is the difference in mean mass between .green[Chinstrap] and .red[Adelie]
+
+.blockquote[
+$$
+`\begin{align}
+\mu_{\text {mass } \mid  \text { Chinstrap }}-\mu_{\text {mass } \mid  \text { Adelie }} &amp;= \left[\beta_{0}+\beta_{2}+\left(\beta_{1}+\beta_{4}\right) b i l l\right]-\left[\beta_{0}+\beta_{1} \text { bill }\right]\\ &amp;= \beta_{2}+\beta_{4} b i l l
+\end{align}`
+$$
+]
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+- Difference between mean mass between species depends on bill length
+- Holding bill length fixed, `\(\beta_{3}+\beta_{5} \text{bill}\)` is the difference in mean mass between .ggplotblue[Gentoo] and .red[Adelie]
+
+.blockquote[
+`\begin{align}
+\mu_{\text {mass } \mid  \text { Gentoo }}-\mu_{\text {mass } \mid  \text { Adelie }} &amp;= \left[\beta_{0}+\beta_{3}+\left(\beta_{1}+\beta_{5}\right) b i l l\right]-\left[\beta_{0}+\beta_{1} \text { bill }\right]\\ &amp;= \beta_{3}+\beta_{5} b i l l
+\end{align}`
+]
+
+---
+
+class: middle
+
+# Example: Penguins interaction
+
+- Difference between mean mass between species depends on bill length
+- Holding bill length fixed, `\(\left(\beta_{2}-\beta_{3}\right)+\left(\beta_{4}-\beta_{5}\right) b i l l\)` is the difference in mean mass between .green[Chinstrap] and .ggplotblue[Gentoo]
+
+.blockquote[
+$$
+`\begin{align}
+\mu_{\text {mass } \mid \text { Chinstrap }}-\mu_{\text {mass } \mid  \text { Gentoo }} &amp; =\left[\beta_{0}+\beta_{2}+\left(\beta_{1}+\beta_{4}\right) \text { bill }\right]-\left[\beta_{0}+\beta_{3}+\left(\beta_{1}+\beta_{5}\right) \text { bill }\right]\\ &amp;=  \left(\beta_{2}-\beta_{3}\right)+\left(\beta_{4}-\beta_{5}\right) b i l l
+\end{align}`
+$$
+]
+
+---
+
+# Fit the model with interaction 
+
+.code80.font80[
+
+```r
+library(moderndive) # call the library
+# can use either y ~ x1*x2 or y ~ x1 + x2 + x1:x2
+peng_interaction_lm &lt;-  lm(body_mass_g ~ bill_length_mm*species, data = penguins)
+peng_table_interaction &lt;- get_regression_table(peng_interaction_lm)
+knitr::kable(peng_table_interaction, digis= 4, format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.883 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 443.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.079 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.937 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -836.866 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 906.632 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 94.500 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.398 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.080 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 116.920 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; species: Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 811.260 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 799.806 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.311 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -761.997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2384.517 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; species: Gentoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -158.711 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 683.191 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.232 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.816 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1502.582 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1185.160 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm:speciesChinstrap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -35.382 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.747 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.994 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.047 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -70.291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.474 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm:speciesGentoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.959 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.786 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.948 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.344 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -16.093 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.012 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+.blockquote-list.font80[
+$$
+`\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=34.88+94.50 \text { bill }+811.26 \text { speciesChinstrap }-158.71 \text { speciesGentoo } \\
+&amp; \quad -35.38 \text { bill } \times \text { speciesChinstrap }+14.96 \text { bill } \times \text { speciesGentoo }
+\end{aligned}`
+$$
+]
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+Work through Problem 2 of the categorical predictors worksheet with a neighbor
+]
+]
+
+<div class="countdown" id="timer_62597d7f" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
