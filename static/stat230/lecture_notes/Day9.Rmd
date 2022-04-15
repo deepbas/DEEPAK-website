@@ -572,7 +572,7 @@ class: middle
 # Example: Penguins interaction
 
 - Difference between mean mass between species depends on bill length
-- Holding bill length fixed, $\beta_{2}+\beta_{4} \text{bill}$ is the difference in mean mass between .green[Chinstrap] and .red[Adelie]
+- Holding bill length fixed, $\beta_{2}+\beta_{4} bill$ is the difference in mean mass between .green[Chinstrap] and .red[Adelie]
 
 .blockquote[
 $$
@@ -589,7 +589,7 @@ class: middle
 # Example: Penguins interaction
 
 - Difference between mean mass between species depends on bill length
-- Holding bill length fixed, $\beta_{3}+\beta_{5} \text{bill}$ is the difference in mean mass between .ggplotblue[Gentoo] and .red[Adelie]
+- Holding bill length fixed, $\beta_{3}+\beta_{5} bill$ is the difference in mean mass between .ggplotblue[Gentoo] and .red[Adelie]
 
 .blockquote[
 \begin{align}
