@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MLR Inference</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[MLR Inference]
+
+### .fancy[Stat 230]
+
+ April 18 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day10_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+Today: 
+.blockquote-list[
+MLR Inference
+- t tests/CIs for coefficients
+- CI for mean response, PI for new response
+- Linear combinations of coefficients: CIs and tests
+]
+
+]
+
+---
+
+class: middle
+
+# MLR Model
+
+`$$Y_{i}=\beta_{0}+\beta_{1} x_{1}+\beta_{2} x_{2}+\cdots \beta_{p} x_{p}+\epsilon_{i}, \epsilon_{i} \sim N(0, \sigma)$$`
+
+.blockquote[
+MLR inference:
+- estimation is the same as SLR!
+- tests/CI are also same as SLR!
+  - .bold[Except] we use `\(n-(p+1)\)` degrees of freedom where `\(p+1\)` is the number of `\(\beta\)`'s in the model (including the intercept)
+
+]
+
+
+---
+
+class: middle
+
+# MLR inference for one parameter: Testing
+
+.blockquote-list[
+- Testing single parameters:
+`$$\begin{array}{c}
+H_{0}: \beta_{j}=0 \quad H_{A}: \beta_{j} \neq 0 \\
+t=\frac{\hat{\beta}_{j}-0}{S E\left(\hat{\beta}_{j}\right)} \\
+\text{p-value }=2 \times P(T&gt;|t|)
+\end{array}$$`
+using t-distribution with `\(n-(p+1)\)` degrees of freedom
+]
+
+---
+
+class: middle
+
+# MLR inference for one parameter: Confidence intervals (CI)
+
+.blockquote[
+- CI for a single parameters:
+`$$\hat{\beta}_{j} \pm t^{*} S E\left(\hat{\beta}_{j}\right)$$`
+`\(t^{*}\)` is the `\((100-C) / 2\)` percentile from the t-distribution with `\(n-(p+1)\)` degrees of freedom
+]
+
+---
+
+# Example: RECS MLR
+
+.code90[
+
+```r
+library(moderndive)
+energy &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/EnergySurvey.csv")
+energy &lt;- energy %&gt;% 
+  mutate(logCost = log(CostTotal), 
+         logSqft = log(SqftMeasure))
+
+cost_lm_log &lt;- lm(logCost ~ logSqft + HHSize, data = energy)
+reg_table_energy &lt;- get_regression_table(cost_lm_log, digits = 4)
+knitr::kable(reg_table_energy, format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.3667 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0711 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.3860 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.2272 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.5061 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; logSqft &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3722 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0096 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 38.7495 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3533 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.3910 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HHSize &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0839 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0046 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1906 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0929 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+`$$\hat{\mu}(\log (\text { Cost }) \mid x)=4.3667+0.3722 \log (\text { Sqft })+0.0839 \text { HHSize }$$`
+
+
+---
+
+# Example: RECS MLR
+
+.code80[
+
+```r
+get_regression_summaries(cost_lm_log) %&gt;% knitr::kable(digits = 4)
+```
+
+
+
+| r_squared| adj_r_squared|    mse|  rmse| sigma| statistic| p_value| df| nobs|
+|---------:|-------------:|------:|-----:|-----:|---------:|-------:|--:|----:|
+|     0.329|         0.329| 0.1998| 0.447| 0.447|  1075.249|       0|  2| 4381|
+]
+
+&lt;br&gt;
+--
+
+&gt; What does `\(H_0: \beta_2 = 0\)` vs. `\(H_A: \beta_2 \neq 0\)` test?
+
+---
+
+# Example: RECS MLR
+
+.code80[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HHSize &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0839 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0046 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1906 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0929 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+&lt;br&gt;
+.code80[
+
+| r_squared| adj_r_squared|    mse|  rmse| sigma| statistic| p_value| df| nobs|
+|---------:|-------------:|------:|-----:|-----:|---------:|-------:|--:|----:|
+|     0.329|         0.329| 0.1998| 0.447| 0.447|  1075.249|       0|  2| 4381|
+]
+
+.blockquote.font80[
+- Is household size associated with energy cost after controlling for dwelling size?
+- Test stat? p-value?
+`$$t=\frac{0.0839-0}{0.0046} \approx 18.19$$`
+`$$\text {p-value }=2 \times P(T&gt;18.19)=2 \times P(T&lt;-18.19)= 2 \times \operatorname{pt}(-18.19, \mathrm{df}=4381-3)&lt;0.0001$$`]
+
+.pull-left[
+.code80[
+
+```r
+# 2 times area in the left tail 
+# beyond negative observed test stat
+2*pt(-18.19, df = 4378)
+[1] 2.473683e-71
+```
+]
+]
+
+.pull-right[
+.code80[
+
+```r
+# 2 times area in the right tail 
+# beyond the observed test stat
+2*(1 - pt(18.19, df = 4378)) 
+[1] 0
+```
+]
+]
+
+---
+
+# Example: RECS MLR
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HHSize &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0839 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0046 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18.1906 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0748 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.0929 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+.blockquote.font80[
+&lt;br&gt;
+Is household size associated with energy cost after controlling for dwelling size?
+- Yes, after accounting for dwelling square footage, the estimated effect of household size on mean energy costs is statistically significant `\((\mathrm{t}=18.19, \mathrm{df}=4378, \mathrm{p}&lt;0.0001)\)`.
+- Quantify the "effect": `\(95 \%\)` CI for `\(\beta_{2}\)`
+`$$0.0839 \pm(1.9605)(0.0046)=(0.075,0.093)$$`
+]
+
+
+```r
+qt(.975, df = 4378)
+[1] 1.960506
+0.0839 + c(-1,1)*(1.9605)*(0.0046)
+[1] 0.0748817 0.0929183
+```
+
+
+---
+
+# Example: RECS MLR
+
+.blockquote.font80[
+- Quantify the "effect": `\(95 \%\)` CI for `\(\beta_{2}\)` is `\(0.075\)` to `\(0.093\)`
+- Our response was logged but HHSize was not (think, SLR exponential model)
+]
+
+--
+
+
+```r
+cost_lm_log &lt;- lm(logCost ~ logSqft + HHSize, data = energy)
+```
+
+--
+
+.blockquote.font80[A 1 person increase in household size is associated with a multiplicative
+change in median energy cost between]
+
+
+```r
+exp(c(.075, .093))
+[1] 1.077884 1.097462
+```
+
+--
+
+.blockquote-list.font80[We are 95% confident that a 1 person increase in household size is associated with 7.9% to 9.7% increase in median energy cost after accounting for dwelling size.]
+
+---
+
+# Example: Pengiuns from `palmerpenguins`
+
+.blockquote-list[
+Model mean mass as a function of bill length, species and their interaction:
+`$$\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp;+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$`
+- Mean function for Adelie (baseline species)
+`$$\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2}(0)+\beta_{3}(0)+\beta_{4} b i l l \times(0)+\beta_{5} b i l l \times(0) \\
+&amp;=\beta_{0}+\beta_{1} \text { bill }
+\end{aligned}$$`
+- `\(\beta_{1}\)` : effect of bill length on mass for Adelie (baseline)
+- .yellow-h[95% CI for this parameter??]
+]
+
+---
+
+# Example: Pengiuns from `palmerpenguins`
+
+
+
+```r
+# load library and remove NA cases for the 3 variables of interest
+library(palmerpenguins)
+library(tidyr) # has `drop_na()` function that drops rows having missing values
+penguins &lt;- penguins %&gt;% tidyr::drop_na(bill_length_mm, body_mass_g, species)
+peng_interaction_lm &lt;-  lm(body_mass_g ~ bill_length_mm*species, data = penguins)
+peng_table_interaction &lt;- get_regression_table(peng_interaction_lm, digits = 5)
+knitr::kable(peng_table_interaction, digis= 5, format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.88299 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 443.17604 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.07871 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.93731 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -836.86616 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 906.63214 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 94.49982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.39794 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.29095 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.07950 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 116.92013 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; species: Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 811.26034 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 799.80552 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.01432 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.31116 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -761.99661 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2384.51729 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; species: Gentoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -158.71092 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 683.19141 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.23231 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.81644 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1502.58216 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1185.16031 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm:speciesChinstrap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -35.38208 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.74666 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.99373 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04699 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -70.29064 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.47353 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm:speciesGentoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.95935 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.78642 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.94761 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.34401 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -16.09333 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.01202 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Example: Pengiuns from `palmerpenguins`
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 94.49982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.39794 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.29095 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.0795 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 116.9201 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
+| r_squared| adj_r_squared|    mse|    rmse| sigma| statistic| p_value| df| nobs|
+|---------:|-------------:|------:|-------:|-----:|---------:|-------:|--:|----:|
+|     0.788|         0.785| 135810| 368.524| 371.8|   250.097|       0|  5|  342|
+
+
+```r
+qt(.975, df = 336) # df = 342 - 6 = 336
+[1] 1.967049
+```
+
+
+.blockquote[
+- A one `\(\mathrm{mm}\)` increase in bill length in Adelie penguins is associated with a `\(72.1 \mathrm{~g}\)` to `\(116.9 \mathrm{~g}\)` increase in mean weight.
+`$$94.49982 \pm(1.9670)(11.39794)=72.08,116.92$$`]
+
+
+---
+
+# Example: Pengiuns from `palmerpenguins`
+
+.blockquote-list[
+Model mean mass as a function of bill length, species and their interaction:
+`$$\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp;+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$`
+- Mean function for Chinstrap
+`$$\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} b i l l+\beta_{2}(1)+\beta_{3}(0)+\beta_{4} b i l l \times(1)+\beta_{5} b i l l \times(0) \\
+&amp;=\beta_{0}+\beta_{2}+\left(\beta_{1}+\beta_{4}\right) b i l l
+\end{aligned}$$`
+- `\(\beta_{1}+\beta_{4}\)` : effect of bill length on mass for Chinstrap
+- .yellow-h[95% CI for this parameter??]
+]
+
+---
+
+class: middle
+
+# Sampling distribution of `\(\hat{\beta}_j\)`'s
+
+.blockquote[
+Before, we looked at how `\(\hat{\beta}_{j}\)` estimates are correlated 
+- For penguins:
+- `\(\hat{\beta}_{1}\)` and `\(\hat{\beta}_{4}\)` are also correlated, meaning
+`$$S E\left(\hat{\beta}_{1}+\hat{\beta}_{4}\right) \neq \sqrt{S E\left(\hat{\beta}_{1}\right)^{2}+S E\left(\hat{\beta}_{4}\right)^{2}}$$`
+]
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.bold[Parameter of interest:]
+
+`$$\gamma=c_{i} \beta_{i}+c_{j} \beta_{j}$$`
+where `\(c_{i}\)` and `\(c_{j}\)` are known constants.
+
+.blockquote-list.font90[
+- The effect of bill length on mass for Chinstraps:
+`$$\gamma=(1) \times \beta_{1}+(1) \times \beta_{4}=\beta_{1}+\beta_{4}$$`
+where `\(c_{1}=1\)` and `\(c_{4}=1\)`.
+- Holding bill length fixed, `\(\beta_{2}+\beta_{4} b i l l\)` is the difference in mean mass between Chinstrap and Adelie.
+- If bill length is `\(45 \mathrm{~mm}\)`, this difference is
+`$$\gamma=(1) \times \beta_{2}+(45) \times \beta_{4}=\beta_{2}+45 \beta_{4}$$`
+where `\(c_{2}=1\)` and `\(c_{4}=45\)`.
+]
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.bold[Estimated parameter:]
+
+`$$\gamma=c_{i} \beta_{i}+c_{j} \beta_{j}$$`
+where `\(c_{i}\)` and `\(c_{j}\)` are known constants.
+
+
+```r
+knitr::kable(peng_table_interaction[c(2,5),], digits= 5, format = "html")
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 94.49982 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.39794 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.29095 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.00000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.07950 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 116.92013 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm:speciesChinstrap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -35.38208 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.74666 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.99373 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.04699 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -70.29064 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.47353 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+.blockquote[
+- The estimated effect of bill length on mass for Chinstraps:
+`$$\hat{\gamma}=\hat{\beta}_{1}+\hat{\beta}_{4}=94.49982+(-35.38208)=59.11774$$`
+]
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.pull-left-60[
+&lt;img src="Day10_files/figure-html/unnamed-chunk-16-1.svg" width="100%" /&gt;
+]
+.pull-right-40[
+.blockquote[
+Quick check: does it make sense that the effect of bill length on mass (.bold[slope]) less for Chinstrap than Adelie?
+]
+
+]
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.pull-left-60[
+&lt;img src="Day10_files/figure-html/unnamed-chunk-17-1.svg" width="100%" /&gt;
+]
+.pull-right-40[
+.blockquote[
+Quick check: does it make sense that the effect of bill length on mass (.bold[slope]) less for Chinstrap than Adelie?]
+
+
+&lt;br&gt;
+.blockquote[
+- .bold[Yes:] The green line (chinstrap) is a bit flatter than the red line (adelie)
+]
+
+]
+
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.blockquote-list[
+SE of the Estimated parameter:
+`$$S E(\hat{\gamma})=\sqrt{c_{i}^{2} \operatorname{Var}\left(\hat{\beta}_{i}\right)+c_{j}^{2} \operatorname{Var}\left(\hat{\beta}_{j}\right)+2 c_{i} c_{j} \operatorname{Cov}\left(\hat{\beta}_{i}, \hat{\beta}_{j}\right)}$$`
+where `\(c_{i}\)` and `\(c_{j}\)` are known constants.
+- "Var" is the variance of an estimator, which equals
+`$$\operatorname{Var}(\hat{\beta})=S E(\hat{\beta})^{2}$$`
+- "Cov" is the covariance between two estimators: how do they "co-vary" together?
+- an "unscaled" version of correlation
+`$$\operatorname{Cov}\left(\hat{\beta}_{i}, \hat{\beta}_{j}\right)=\text { how do } \hat{\beta}_{i} \text { and } \hat{\beta}_{j} \text { co-vary? }$$`
+]
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.blockquote[
+SE of the Estimated parameter:
+`$$S E(\hat{\gamma})=\sqrt{c_{i}^{2} \operatorname{Var}\left(\hat{\beta}_{i}\right)+c_{j}^{2} \operatorname{Var}\left(\hat{\beta}_{j}\right)+2 c_{i} c_{j} \operatorname{Cov}\left(\hat{\beta}_{i}, \hat{\beta}_{j}\right)}$$`
+where `\(c_{i}\)` and `\(c_{j}\)` are known constants.
+- The effect of bill length on mass for Chinstraps:
+`$$\gamma=(1) \times \beta_{1}+(1) \times \beta_{4}=\beta_{1}+\beta_{4}$$`
+where `\(c_{1}=1\)` and `\(c_{4}=1\)`.
+- The SE of the estimated effect of bill length on mass for Chinstraps:
+`$$S E(\hat{\gamma})=\sqrt{1^{2} \operatorname{Var}\left(\hat{\beta}_{1}\right)+1^{2} \operatorname{Var}\left(\hat{\beta}_{4}\right)+2(1)(1) \operatorname{Cov}\left(\hat{\beta}_{1}, \hat{\beta}_{4}\right)}$$`
+
+]
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.blockquote-list[
+- The SE of the estimated effect of bill length on mass for Chinstraps:
+
+`$$SE(\hat{\gamma})=\sqrt{1^{2} \operatorname{Var}\left(\hat{\beta}_{1}\right)+1^{2} \operatorname{Var}\left(\hat{\beta}_{4}\right)+2(1)(1) \operatorname{Cov}\left(\hat{\beta}_{1}, \hat{\beta}_{4}\right)}$$`
+- Both `\(\operatorname{Var}\left(\hat{\beta}_{j}\right)\)` 's and `\(\operatorname{Cov}\left(\hat{\beta}_{i}, \hat{\beta}_{j}\right)\)` are obtained using the `vcov` command
+- `vcov` returns a `\((p+1) \times (p+1)\)` matrix (rows/cols for each `\(\hat{\beta}_{j}\)` in a model)
+- diagonal values are `\(\operatorname{Var}\left(\hat{\beta}_{j}\right)\)`'s
+- off-diagonal values are `\(\operatorname{Cov}\left(\hat{\beta}_{i}, \hat{\beta}_{j}\right)\)`'s
+- row/column combination determines "i" and "j"
+]
+
+---
+
+class: middle
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.blockquote-list.font80[
+The SE of the estimated effect of bill length on mass for Chinstraps:
+
+`$$SE(\hat{\gamma}) = \sqrt{1^{2} \operatorname{Var}\left(\hat{\beta}_{1}\right)+1^{2} \operatorname{Var}\left(\hat{\beta}_{4}\right)+2(1)(1) \operatorname{Cov}\left(\hat{\beta}_{1}, \hat{\beta}_{4}\right)}\\
+\quad \quad = \sqrt{\operatorname{Var}\left(\hat{\beta}_{1}\right)+ \operatorname{Var}\left(\hat{\beta}_{4}\right)+2\operatorname{Cov}\left(\hat{\beta}_{1}, \hat{\beta}_{4}\right)}$$`
+]
+
+The variance-covariance matrix is:
+.code80[
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{\beta}_0\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{\beta}_1\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{\beta}_2\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{\beta}_3\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{\beta}_4\)` &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; `\(\hat{\beta}_5\)` &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; `\(\hat{\beta}_0\)` &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 196404.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -196404.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -196404.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; `\(\hat{\beta}_1\)` &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 129.913 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -129.913 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -129.913 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; `\(\hat{\beta}_2\)` &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -196404.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 639688.864 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 196404.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -14075.274 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5039.508 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; `\(\hat{\beta}_3\)` &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -196404.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 196404.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 466750.497 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10706.750 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; `\(\hat{\beta}_4\)` &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -129.913 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -14075.274 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 314.944 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 129.913 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; `\(\hat{\beta}_5\)` &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -129.913 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -5039.508 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -10706.750 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 129.913 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 249.211 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+
+```r
+# beta_1 = bill = row/col 2
+# beta_4 = bill:chinstrap = row/col 5
+vcov(peng_interaction_lm)[c(2,5), c(2,5)]
+```
+
+```
+                                bill_length_mm bill_length_mm:speciesChinstrap
+bill_length_mm                        129.9131                       -129.9131
+bill_length_mm:speciesChinstrap      -129.9131                        314.9440
+```
+
+.blockquote.font90[
+- `\(\operatorname{Var}\left(\hat{\beta}_{1}\right)=11.39794^{2}=129.9131\)`
+- `\(\operatorname{Var}\left(\hat{\beta}_{4}\right)=17.74666^{2}=314.9440\)`
+- `\(\operatorname{Cov}\left(\hat{\beta}_{1}, \hat{\beta}_{4}\right)=-129.9131\)`
+]
+
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+The SE of the estimated effect of bill length on mass for Chinstraps:
+
+`$$S E(\hat{\gamma})=\sqrt{1^{2} 129.9131+1^{2} 314.9440+2(1)(1)(-129.9131)}=13.60261$$`
+.font90[
+
+```r
+sqrt(129.9131 + 314.9440 + 2*(-129.9131))
+```
+
+```
+[1] 13.60261
+```
+]
+.blockquote[
+- The estimated value of `\(\gamma=\beta_{1}+\beta_{4}\)` is `\(59.11774\)` with a SE of `\(13.60261\)`.
+- Is this estimated effect of bill length on mass for Chinstraps statistically significant?
+- What is a `\(95\%\)` CI for the true effect?
+]
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.blockquote-list[
+- Tests: test stat `\(t=\frac{\hat{\gamma}-\text { null } \gamma}{S E(\hat{\gamma})}\)`
+- CI: `\(\hat{\gamma} \pm t * S E(\hat{\gamma})\)`
+- use usual t-distribution with `\(\mathbf{d f}=n-(p+1)\)`
+- Is the estimated effect of bill length on mass for Chinstraps statistically significant?
+`$$\begin{array}{l}
+H_{0}: \gamma=0 \quad t=\frac{59.11774-0}{13.60261}=4.346 \\
+\text {p-value}=2 \times P(T&gt;4.346)=0.00002
+\end{array}$$`
+
+]
+
+
+```r
+(test_stat &lt;- 59.11774/13.60261)
+[1] 4.346059
+2*pt(-4.346, df = 336)
+[1] 1.83941e-05
+```
+
+---
+
+# New Inference: linear combinations of two `\(\beta_j\)`
+
+.pull-left[
+
+.blockquote[
+- Tests: test stat `\(t=\frac{\hat{\gamma}-\text { null } \gamma}{S E(\hat{\gamma})}\)`
+- CI: `\(\hat{\gamma} \pm t * S E(\hat{\gamma})\)`
+- use usual t-distribution with df `\(=n-(p+1)\)`
+- `\(95 \%\)` CI for the effect of bill length on mass for Chinstraps?
+`$$59.11774 \pm(1.967049)(13.60261)\\=32.36,85.87$$`
+]
+
+
+
+```r
+qt(.975, df = 336)
+[1] 1.967049
+```
+
+]
+.pull-right[
+
+
+.blockquote[
+- The estimated effect of bill length on mean mass is statistically significant in Chinstraps `\((\mathrm{t}=4.346, \mathrm{df}=336, \mathrm{p}&lt;0.0001)\)`.
+- A one `\(\mathrm{mm}\)` increase in bill length in Chinstrap penguins is associated with a `\(32.4 \mathrm{~g}\)` to `\(85.9 \mathrm{~g}\)` increase in mean weight.
+
+&lt;br&gt;
+]
+
+
+
+```r
+59.11774 + c(-1,1)*(1.967049)*(13.60261) 
+[1] 32.36074 85.87474
+```
+
+]
+
+---
+
+# Mean response and prediction
+
+.blockquote[
+- Inference for `\(\mu_{y \mid x}\)` and `\(\operatorname{pred}(y \mid x)\)` are the same in MLR as SLR!!
+- Predicting the mass of a Gentoo with a bill length of `\(40 \mathrm{~mm}\)` :
+]
+
+
+
+```r
+predict(peng_interaction_lm, 
+        newdata = data.frame(bill_length_mm = 40,
+                             species = "Gentoo"),
+        interval = "prediction")
+```
+
+```
+       fit      lwr      upr
+1 4254.539 3502.729 5006.348
+```
+
+
+---
+
+# Pengiuns big picture
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; term &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; std_error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; statistic &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; p_value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; lower_ci &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; upper_ci &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; intercept &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 34.883 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 443.176 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.079 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.937 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -836.866 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 906.632 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 94.500 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.398 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.080 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 116.920 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; species: Chinstrap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 811.260 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 799.806 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.014 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.311 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -761.997 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2384.517 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; species: Gentoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -158.711 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 683.191 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.232 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.816 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1502.582 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1185.160 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm:speciesChinstrap &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -35.382 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.747 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -1.994 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.047 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -70.291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.474 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; bill_length_mm:speciesGentoo &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 14.959 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.786 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.948 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.344 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -16.093 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 46.012 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;br&gt;
+
+.blockquote.out-t.font90[
+- What do the last two rows of t-tests?
+
+- What can we tell or not tell from the last two rows of results?
+]
+
+---
+
+# Pengiuns big picture
+
+
+.pull-left[
+
+.out-t.font80[Is the interaction of bill length and species needed?]
+
+&lt;img src="Day10_files/figure-html/unnamed-chunk-26-1.svg" width="100%" /&gt;
+]
+.pull-right[
+.blockquote[
+
+- t-test results for interaction terms tell us *individually* how Chinstrap differs from Adelie `\(\beta_{4}\)` and how Gentoo differs from Adelie `\(\beta_{5}\)`
+- We can't use t-test results to remove more than one term! 
+- All t-test results assume *all other terms are in the model!*
+
+]
+
+]
+
+---
+
+class: middle
+
+# Next...
+
+.blockquote-list[
+We will test whether .bold[the effect of bill length on mass depends on species]:
+
+`$$H_{0}: \beta_{4}=\beta_{5}=0$$`
+with a new test done using .bold[ANOVA]!
+]
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

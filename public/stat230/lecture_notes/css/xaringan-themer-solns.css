@@ -379,13 +379,12 @@ ul li::marker {
 }
 
 .yellow-h{
-   background: #ffff88;
+  border-left: solid 5px lightgray;
+  background: #ffff88;
 }
 
 .out-t, remark-inline-code {
    background: #9fff9f;
    border-radius: 3px;
-   padding: 4px;
-   
 }
 

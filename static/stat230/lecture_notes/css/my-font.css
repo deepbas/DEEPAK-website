@@ -9,8 +9,6 @@ body { font-family: 'Droid Sans', "Frutiger", 'Book Antiqua', Palatino, 'Microso
 }
 
 
-
-
 h1 {
   font-family: "Frutiger", 'Open Sans-Serif';
   font-size: 36pt;
@@ -50,7 +48,7 @@ h3 {
 
 
 
-.remark-slide-content { font-size:24px; }
+.remark-slide-content { font-size:22px; }
 .remark-slide-content p, 
 .remark-slide-content li {
   line-height: 1.4;
@@ -144,12 +142,8 @@ h3 {
 .gray { color: gray; }
 .grey { color: gray; }
 .brown { color:brown;}
-.warmyellow { color:   #FFB81C }
-.dark-maroon{color: #600a09}
 .ggplotblue{ color: #619CFF}
-
 
 .bold { font-weight: bold; }
 .bolder { font-weight: bolder; }
 
-.italic {font-weight: italic;}
