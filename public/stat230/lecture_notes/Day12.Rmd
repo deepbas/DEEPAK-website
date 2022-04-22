@@ -1,0 +1,849 @@
+---
+title: "ANOVA for MLR"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(Stat2Data)
+library(palmerpenguins)
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(1234)
+
+sim_mlr = function(x1, x2, beta_0 = 2, beta_1 = 3, beta_2 = 2, sigma = 3) {
+  n = length(x1)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x1 + beta_2 * x2 + epsilon
+  data.frame(predictor1 = x1, predictor2 = x2, response = y)
+}
+
+num_obs = 25
+x_vals1 = runif(num_obs, 0, 10)
+x_vals2 = rbeta(num_obs, 1,5)*10
+sim_data = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = 3, beta_1 = 2, beta_2= 1.6, sigma = 3)
+
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[ANOVA for MLR]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+library(gg3D)
+ggplot(sim_data, aes(predictor1, y=predictor2, z=response)) + 
+  theme_void()+
+  axes_3D() +
+  stat_3D()
+```
+
+]
+.pull-right[
+<br>
+<br>
+Today: 
+.blockquote-list[
+- ANOVA for MLR
+- MLR Inference
+- $R^2$ adjusted
+- ANOVA F-test
+]
+
+]
+
+---
+
+# Penguins example
+
+$$\begin{aligned}
+\mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$
+
+
+.pull-left[
+```{r, echo=FALSE}
+ggplot(penguins, aes(x = bill_length_mm, 
+                     y = body_mass_g, 
+                     color = species)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE, 
+             aes(color=species))+
+labs(title = "Regression of mass on bill length and species") 
+```
+]
+.pull-right[
+<br>
+.blockquote[
+- We will test whether the effect of bill length on mass depends on species:
+$$H_{0}: \beta_{4}=\beta_{5}=0$$
+]
+]
+
+---
+
+# Comparing models
+
+.blockquote[
+
+Is the effect of of bill length the same for Gentoo and Adelie (baseline)?
+
+\begin{align*}
+H_0: \beta_{5} &= 0\\
+H_A: \beta_{5} &\neq 0
+\end{align*}
+]
+
+--
+
+<br>
+
+.blockquote.font90[
+.bold[Equivalent test:] 
+\begin{aligned}
+H_{0}: \mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&+\beta_{4} \text { bill } \times \text { speciesChinstrap } \\
+H_{A}: \mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}
+
+
+]
+
+--
+
+.out-t.center[Individual t-tests: Is this term significant assuming all others are in the model?]
+
+---
+
+# Comparing models
+
+.blockquote[
+Does the effect of bill length on mass depends on species?
+
+\begin{align*}
+H_0: &  \beta_4 = \beta_{5} = 0\\
+H_A: & \text{ at least one } \beta_4, \beta_5 \neq 0
+\end{align*}
+]
+
+--
+
+<br>
+
+.blockquote.font90[
+.bold[Equivalent test:]
+\begin{aligned}
+H_{0}: \mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+H_{A}: \mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}
+]
+
+--
+
+.out-t[Our new test ("F-test"): Is at least one of these terms significant assuming all others are in the model?]
+
+---
+
+# Comparing models
+
+\begin{align*}
+H_0: & \beta_4 = \beta_{5} = 0\\
+H_A: & \text{at least one } \beta_4, \beta_5 \neq 0
+\end{align*}
+
+
+
+
+
+.blockquote.font80[
+We can no longer use 
+
+\begin{align*}
+t=\frac{\hat{\beta}-0}{S E(\hat{\beta})}
+\end{align*}
+]
+
+--
+
+<br>
+
+.blockquote-list[
+
+We will use Analysis of Variance (ANOVA)
+
+- .green[idea:] how much more explanatory power does the bigger model $H_{A}$ have compared to the smaller model $H_{0}$ ?
+]
+
+
+---
+
+# ANOVA for MLR (basically same as SLR!)
+
+$$S S T=S S r e g+S S R$$
+
+.blockquote-list.font90[
+- SST: Total variation Total sum of squares
+
+$$SST=\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}=(n-1) s_{y}^{2}$$
+
+- SSR: Unexplained variation Residual sum of squares
+
+$$S S R=\sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)^{2}=(n-p-1) \hat{\sigma}^{2}$$
+- SSreg: Explained variation Regression sum of squares
+
+$$SSreg=\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{y}\right)^{2}$$
+
+]
+
+---
+
+# R-squared
+
+
+```{r, echo=FALSE}
+library(palmerpenguins)
+library(tidyr) # has `drop_na()` function that drops rows having missing values
+penguins <- penguins %>% tidyr::drop_na(bill_length_mm, body_mass_g, species)
+peng_bill_lm <-  lm(body_mass_g ~ bill_length_mm, data = penguins)
+peng_nointeraction_lm <- lm(body_mass_g ~ bill_length_mm + species, data = penguins)
+peng_interaction_lm <-  lm(body_mass_g ~ bill_length_mm*species, data = penguins)
+
+peng_bill_summary <- get_regression_summaries(peng_bill_lm, digits = 5)
+peng_bill_table <- get_regression_table(peng_bill_lm, digits = 5)
+
+peng_nointeraction_summary <- get_regression_summaries(peng_nointeraction_lm, digits = 5)
+peng_interaction_summary <- get_regression_summaries(peng_interaction_lm, digits = 5)
+
+
+# bill
+ssreg.bill <- sum((peng_bill_lm$fitted.values - mean(peng_bill_lm$fitted.values))^2)
+ssr.bill <- sum(((peng_bill_lm$fitted.values - penguins$body_mass_g)^2))
+ss.total <- ssreg.bill + ssr.bill
+
+# no interaction
+ssreg.nointeraction <- sum((peng_nointeraction_lm$fitted.values - mean(peng_nointeraction_lm$fitted.values))^2)
+ssr.nointeraction <- sum(((peng_nointeraction_lm$fitted.values - penguins$body_mass_g)^2))
+ss.total <- ssreg.bill + ssr.bill
+
+
+# interaction
+
+ssreg.interaction <- sum((peng_interaction_lm$fitted.values - mean(peng_interaction_lm$fitted.values))^2)
+ssr.interaction <- sum(((peng_interaction_lm$fitted.values - penguins$body_mass_g)^2))
+ss.total <- ssreg.bill + ssr.bill
+
+# make data.frame for plotting
+
+my_data <- data.frame(SS = c(ssreg.bill,ssr.bill, ssreg.nointeraction,ssr.nointeraction,ssreg.interaction,ssr.interaction),
+            SStype = c("SSreg", "SSR", "SSreg", "SSR", "SSreg", "SSR"),
+            model = c("bill \n R^2 = 35.4", "bill \n R^2 = 35.4",
+                      "parallel \n R^2 = 78.3", "parallel \n R^2 = 78.3", 
+                      "interaction \n R^2 = 78.8", "interaction \n R^2 = 78.8"))
+
+
+```
+
+.blockquote.font90[
+R-squared (coefficient of determination) measures the proportion of variability observed in the response $Y$ which can be explained by the regression of $\mathbf{Y}$ on $x_{1}, \ldots, x_{p}$.
+]
+
+<br>
+
+.blockquote-list.font80[
+
+$$R^{2}=\frac{S S r e g}{S S T}=1-\frac{S S R}{S S T}$$
+
+- About $35.4 \%$ of the variation in mass is explained by the regression of mass on bill length.
+- About $78.3 \%$ of the variation in mass is explained by the regression of mass on bill length and species.
+- About $78.8 \%$ of the variation in mass is explained by the regression of mass on bill length, species and their interaction.
+
+]
+
+---
+
+# Penguins: ANOVA for 3 models
+
+.pull-left-60[
+
+```{r, echo = FALSE}
+library(ggthemes)
+ggplot(my_data, aes(x = model, y = SS, fill = SStype)) +
+  geom_col() +
+  labs(y = "Sum of Squares",
+       title = "Decomposition of total variation for different models") +
+  theme(legend.position = "bottom") +
+  scale_fill_wsj() +
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+
+
+]
+.pull-right-40[
+<br>
+
+$$R^{2}=\frac{S S r e g}{S S T}=1-\frac{S S R}{S S T}$$
+
+.blockquote.font80[
+- SSreg (explained) is largest for the biggest model
+- SSR (unexplained) is smallest for the biggest model
+]
+
+
+]
+
+---
+
+# ANOVA for MLR
+
+
+$$S S T=S S r e g+S S R$$
+
+
+.blockquote.font90[
+- .bold[Mathematically:] bigger models have bigger SSreg:
+
+$$\operatorname{SSreg}\left(x_{1}, x_{2}, x_{1}: x_{2}\right)>\operatorname{SSreg}\left(x_{1}, x_{2}\right)>\operatorname{SSreg}\left(x_{1}\right)$$
+- .bold[Mathematically:] bigger models have smaller SSR:
+
+$$S S R\left(x_{1}, x_{2}, x_{1}: x_{2}\right)<\operatorname{SSR}\left(x_{1}, x_{2}\right)<S S R\left(x_{1}\right)$$
+- Bigger models have more explanatory power (higher SSreg) and larger $R^{2}$ than a smaller model
+- Assume the smaller model is a nested version of the larger
+- But is the bigger model "worth it" if it is more complex and only has slightly more SSreg explained?
+
+]
+
+---
+
+# ANOVA for MLR
+
+.out-t[Mean square values divide SS by their degrees of freedom]
+
+.blockquote-list.font80[
+- Degrees of freedom (basically) measure how much stuff we've added up in the SS
+- .bold[MST:] Average total variation Mean Square of Total
+$$M S T=\frac{S S T}{n-1}=s_{y}^{2}=\text { sample variance of } \mathrm{Y}$$
+- .bold[MSR:] Average unexplained variation residual mean square
+$$M S R=\frac{S S R}{n-(p+1)}=\hat{\sigma}^{2}=\text { estimated model variance }$$
+- .bold[MSreg:] Explained variation Regression mean square
+$$M S r e g=\frac{S S r e g}{p}$$
+]
+
+---
+
+# ANOVA for MLR
+
+$$S S T=S S r e g+S S R$$
+
+
+.blockquote.font80[
+- .bold[Mathematically:] mean square residual and regression values won't equal the total
+$$M S T \neq M S r e g+M S R$$
+- .bold[Mathematically:] mean square regression values won't be ordered based on their size
+$$\operatorname{MSreg}\left(x_{1}, x_{2}, x_{1}: x_{2}\right) ? \operatorname{MSreg}\left(x_{1}, x_{2}\right) ? \operatorname{MSreg}\left(x_{1}\right)$$
+- .bold[Mathematically:] mean square residual values won't be ordered based on their size
+$$\operatorname{MSR}\left(x_{1}, x_{2}, x_{1}: x_{2}\right) ? \operatorname{MSR}\left(x_{1}, x_{2}\right) ? \operatorname{MSR}\left(x_{1}\right)$$
+]
+
+---
+
+class: middle
+
+# Adjusted R-squared
+
+.blockquote.font90[
+Adjusted $R^{2}$ is similar to $R^{2}$, but it uses mean square values to account for the size of a model.
+$$R_{a}^{2}=R_{\text {adjust }}^{2}=1-\frac{M S R}{M S T}$$
+
+- $R_{a}^{2}$ could actually increase if unneeded predictors are removed from a model.
+- $R^{2}$ would never increase when predictors are removed.
+
+]
+
+---
+
+## Penguins: Adjusted $R^2$ for 3 models
+
+.code60[
+```{r, collapse=TRUE}
+penguins <- penguins %>% tidyr::drop_na(bill_length_mm, body_mass_g, species) # drop missing values
+peng_bill_lm <-  lm(body_mass_g ~ bill_length_mm, data = penguins) # simple linear regression model 
+peng_nointeraction_lm <- lm(body_mass_g ~ bill_length_mm + species, data = penguins) # parallel lines model
+peng_interaction_lm <-  lm(body_mass_g ~ bill_length_mm*species, data = penguins) # interaction model
+```
+]
+
+
+.pull-left[
+
+.code60[
+```{r, collapse=TRUE}
+get_regression_summaries(peng_bill_lm) %>% 
+  select(r_squared, adj_r_squared)  # just want these two
+```
+]
+
+
+.code60[
+```{r, collapse=TRUE}
+get_regression_summaries(peng_nointeraction_lm) %>% 
+  select(r_squared, adj_r_squared)
+```
+]
+
+.code60[
+```{r, collapse=TRUE}
+get_regression_summaries(peng_nointeraction_lm) %>% 
+  select(r_squared, adj_r_squared)
+```
+]
+]
+
+
+.pull-right[
+
+.code90[
+```{r, highlight.output = c(3,5,8)}
+glimpse(penguins)
+```
+]
+]
+---
+
+class: middle
+
+# Penguins: Adjusted $R^2$ for 3 models
+
+.blockquote[
+- Removing the interaction terms results in a small drop in adjusted $R^{2}$ (0.785 to $0.781$ ).
+- The explanatory power of both the larger interaction model and smaller no-interaction models looks similar.
+- .bold[Next:] let's verify this observation with an ANOVA F-test
+]
+
+---
+
+# Comparing models: ANOVA F-test
+
+.blockquote.font80[
+- .bold[Hypotheses:]
+$$\begin{array}{l}
+H_{0}: \mu_{Y \mid x}=\text { smaller, nested model } \\
+H_{A}: \mu_{Y \mid x}=\text { larger model }
+\end{array}$$
+where the nested model is arrived at by setting one or more $\beta_{j}$ in the larger model equal to 0
+- .bold[Test stat:]
+$$F=\frac{\text { extraSS } /(\# \text { terms tested })}{M S R_{\text {larger }}}$$
+where extra SS is the difference in explained SS between the larger $H_{A}$ and smaller $H_{0}$ models
+$$\begin{aligned}
+\text { extraSS } &=S S r e g(\text { larger model })-S S r e g(\text { smaller model }) \\
+&=S S R(\text { smaller model })-S S R(\text { larger model })
+\end{aligned}$$
+]
+
+---
+
+# Comparing models: ANOVA F-test
+
+
+.pull-left[
+```{r, echo=FALSE}
+ggplot(data.frame(x = c(0, 5)), aes(x)) +
+  stat_function(fun = df,
+                geom = "area",
+                fill = "turquoise",
+                args = list(
+                  df1 = 5,
+                  df2 = 50
+                ))+
+  labs(
+    title = " F-distribution with DF of 5 and 50",
+    x = "F stat values",
+    y = "Prob"
+  )
+```
+]
+
+.pull-right[
+<br>
+.blockquote.font80[
+- .bold[P-value:] Probability of getting an T test stat larger than one observed
+$$\text{p-value }=P\left(F>f_{\text {observed }}\right)$$
+using the F-distribution with degrees of freedom equal to the # of terms tested (numerator) and $n-(p+1)$ from the larger $H_{A}$ model (denominator)
+]
+
+]
+
+---
+
+# ANOVA F-test in R
+
+
+```r
+# R-code
+anova(smaller_lm, larger_lm)
+```
+
+
+
+.blockquote[
+Let's compare the interaction and parallel lines models in penguins dataset:
+
+$$\begin{aligned}
+H_{0}: \mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+H_{A}: \mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$
+- Same as testing $\beta_{4}$ and $\beta_{5}$ in the larger model
+
+$$\begin{array}{l}
+H_{0}: \beta_{4}=\beta_{5}=0 \\
+H_{A}: \text { at least one } \beta_{4}, \beta_{5} \neq 0
+\end{array}$$
+]
+
+
+---
+
+
+# ANOVA F-test in R
+
+```{r}
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+
+---
+
+
+# ANOVA F-test in R
+
+```{r, highlight.output = c(5,6,7)}
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+
+
+.pull-left[
+.blockquote[
+Res.Df column
+- model DF for smaller $=342-4=338$
+- model DF for larger $=342-6=336$
+]
+]
+.pull-right[
+.blockquote[
+RSS Df column
+- $\operatorname{RSS}($ smaller $)=47,613,707$
+- $\operatorname{RSS}($ larger $)=46,447,006$
+]
+]
+
+---
+
+# ANOVA F-test in R
+
+```{r, highlight.output = c(5,6,7)}
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+
+.pull-left[
+.blockquote[
+Df column
+- number of terms tested $=6-4=338-336=2$
+]
+]
+.pull-right[
+.blockquote[
+Sum of Sq column
+- Extra SS for this test $=$ RSS(smaller) $-$ RSS(larger $)=1,166,702$
+]
+]
+
+
+---
+
+# ANOVA F-test in R
+
+```{r, highlight.output = c(5,6,7)}
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+
+.pull-left[
+.blockquote[
+F column
+- $\mathbf{F}$ test stat $=F=\frac{1,166,702 / 2}{46,447,006 / 336}=4.22$
+
+]
+]
+.pull-right[
+.blockquote[
+$\operatorname{Pr}(>F)$ column
+- p-value for this test $=P\left(F_{2 ; 336}>4.22\right)=1-\operatorname{pf}(4.22,2,336)\\ = 0.01549$
+]
+]
+
+---
+
+# Penguins wrapup
+
+```{r, echo=FALSE, out.width="60%", fig.align='center'}
+ggplot(penguins, aes(x = bill_length_mm, 
+                     y = body_mass_g, 
+                     color = species)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE, 
+             aes(color=species))+
+labs(title = "Regression of mass on bill length and species") 
+```
+
+.yellow-h.center[The slopes are different enough to warrant an interaction model]
+
+---
+
+# Penguins wrapup
+
+
+```{r}
+summary(peng_interaction_lm)$coefficients # simple way of getting summaries
+```
+
+
+---
+
+# Penguins wrapup
+
+```{r, highlight.output = c(7) }
+summary(peng_interaction_lm)$coefficients
+```
+
+
+<br>
+
+.blockquote-list[
+- The difference in slopes (effect of bill length on mass) between Adelie (baseline) and Gentoo isn't statistically significance $(\mathrm{t}=0.948, \mathrm{df}$ $=336, \mathrm{p}=0.344)$
+]
+
+
+---
+
+
+# Penguins wrapup
+
+```{r, highlight.output = c(6) }
+summary(peng_interaction_lm)$coefficients
+```
+
+<br>
+
+.blockquote-list[
+
+- The difference in slopes (effect of bill length on mass) between Adelie (baseline) and Chinstrap is weakly statistically significance $(\mathrm{t}=-1.994$, $\mathrm{df}=336, \mathrm{p}=0.047$ ).
+
+]
+
+
+---
+
+# Penguins wrapup
+
+.code80[
+```{r, echo=FALSE}
+summary(peng_interaction_lm)$coefficients
+```
+]
+
+$$
+\begin{aligned}
+\mu_{\text {mass } \mid x} &=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+& \quad +\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}
+$$
+
+.blockquote-list[
+- To compare Chinstrap and Gentoo, either use the test
+$$H_{0}: \beta_{1}+\beta_{4}=\beta_{1}+\beta_{5} \Rightarrow \beta_{4}-\beta_{5}=0$$
+]
+
+
+---
+
+# Penguins wrapup
+
+.blockquote[
+- OR! Relevel the species variable to make Chinstrap the baseline - it's slope seem most different (flatter) compared to the other two species
+
+$$\begin{aligned}
+\mu_{\text {mass } \mid x} &=\beta_{0}^{*}+\beta_{1}^{*} \text { bill }+\beta_{2}^{*} \text { speciesAdelie }+\beta_{3}^{*} \text { speciesGentoo } \\
+&+\beta_{4}^{*} \text { bill } \times \text { speciesAlelie }+\beta_{5}^{*} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$
+- Same variables but changing up the indicator variables changes our parameter interpretation
+- that's why we used $\beta^{*}$ here (not the same values as $\beta$ in the previous model)
+- but won't change an inference conclusions or effect estimation!!
+]
+
+---
+
+# Penguins wrapup
+
+- OR! Relevel the species variable to make Chinstrap the baseline
+- Use `fct_relevel()` from the `forcats` package:
+
+```{r}
+library(forcats) 
+# just need to specify the first level
+penguins$new_species <- fct_relevel(penguins$species, "Chinstrap")
+```
+
+Check order using a quick table command:
+
+.pull-left[
+```{r, collapse=TRUE}
+table(penguins$species)
+```
+]
+
+.pull-right[
+```{r, collapse=TRUE}
+table(penguins$new_species) 
+```
+]
+
+---
+
+# Penguins wrapup
+
+```{r}
+peng_interaction_lm_CS <- lm(body_mass_g ~ bill_length_mm * new_species, data = penguins)
+summary(peng_interaction_lm_CS)$coefficients
+```
+
+
+
+---
+
+# Penguins wrapup
+
+```{r, highlight.output = c(6)}
+peng_interaction_lm_CS <- lm(body_mass_g ~ bill_length_mm * new_species, data = penguins)
+summary(peng_interaction_lm_CS)$coefficients
+```
+
+
+
+<br>
+
+.blockquote[
+- The difference in slopes (effect of bill length on mass) between Chinstrap (baseline) and Adelie is weakly statistically significance $(\mathrm{t}=$ $1.994, \mathrm{df}=336, \mathrm{p}=0.047$ ).
+]
+
+---
+
+# Penguins wrapup
+
+```{r, highlight.output = c(7)}
+summary(peng_interaction_lm_CS)$coefficients
+```
+
+<br>
+
+.blockquote[
+- The difference in slopes (effect of bill length on mass) between Chinstrap (baseline) and Gentoo is statistically significance $(\mathrm{t}=2.886, \mathrm{df}$ $=336, \mathrm{p}=0.00416$ ).
+]
+
+

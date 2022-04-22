@@ -10,3 +10,7 @@ weight: 20
 
 
 Day 10 Slides ({{% staticref "stat230/lecture_notes/Day10.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat230/lecture_notes/Day10.html" "newtab" %}}html{{% /staticref %}})
+
+Day 11 Midterm I
+
+Day 12 Slides ({{% staticref "stat230/lecture_notes/Day12.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat230/lecture_notes/Day12.html" "newtab" %}}html{{% /staticref %}})

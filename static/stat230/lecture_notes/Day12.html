@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ANOVA for MLR</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[ANOVA for MLR]
+
+### .fancy[Stat 230]
+
+ April 22 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day12_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+Today: 
+.blockquote-list[
+- ANOVA for MLR
+- MLR Inference
+- `\(R^2\)` adjusted
+- ANOVA F-test
+]
+
+]
+
+---
+
+# Penguins example
+
+`$$\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp;+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$`
+
+
+.pull-left[
+&lt;img src="Day12_files/figure-html/unnamed-chunk-2-1.svg" width="100%" /&gt;
+]
+.pull-right[
+&lt;br&gt;
+.blockquote[
+- We will test whether the effect of bill length on mass depends on species:
+`$$H_{0}: \beta_{4}=\beta_{5}=0$$`
+]
+]
+
+---
+
+# Comparing models
+
+.blockquote[
+
+Is the effect of of bill length the same for Gentoo and Adelie (baseline)?
+
+`\begin{align*}
+H_0: \beta_{5} &amp;= 0\\
+H_A: \beta_{5} &amp;\neq 0
+\end{align*}`
+]
+
+--
+
+&lt;br&gt;
+
+.blockquote.font90[
+.bold[Equivalent test:] 
+`\begin{aligned}
+H_{0}: \mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp;+\beta_{4} \text { bill } \times \text { speciesChinstrap } \\
+H_{A}: \mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp;+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}`
+
+
+]
+
+--
+
+.out-t.center[Individual t-tests: Is this term significant assuming all others are in the model?]
+
+---
+
+# Comparing models
+
+.blockquote[
+Does the effect of bill length on mass depends on species?
+
+`\begin{align*}
+H_0: &amp;  \beta_4 = \beta_{5} = 0\\
+H_A: &amp; \text{ at least one } \beta_4, \beta_5 \neq 0
+\end{align*}`
+]
+
+--
+
+&lt;br&gt;
+
+.blockquote.font90[
+.bold[Equivalent test:]
+`\begin{aligned}
+H_{0}: \mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+H_{A}: \mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp;+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}`
+]
+
+--
+
+.out-t[Our new test ("F-test"): Is at least one of these terms significant assuming all others are in the model?]
+
+---
+
+# Comparing models
+
+`\begin{align*}
+H_0: &amp; \beta_4 = \beta_{5} = 0\\
+H_A: &amp; \text{at least one } \beta_4, \beta_5 \neq 0
+\end{align*}`
+
+
+
+
+
+.blockquote.font80[
+We can no longer use 
+
+`\begin{align*}
+t=\frac{\hat{\beta}-0}{S E(\hat{\beta})}
+\end{align*}`
+]
+
+--
+
+&lt;br&gt;
+
+.blockquote-list[
+
+We will use Analysis of Variance (ANOVA)
+
+- .green[idea:] how much more explanatory power does the bigger model `\(H_{A}\)` have compared to the smaller model `\(H_{0}\)` ?
+]
+
+
+---
+
+# ANOVA for MLR (basically same as SLR!)
+
+`$$S S T=S S r e g+S S R$$`
+
+.blockquote-list.font90[
+- SST: Total variation Total sum of squares
+
+`$$SST=\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}=(n-1) s_{y}^{2}$$`
+
+- SSR: Unexplained variation Residual sum of squares
+
+`$$S S R=\sum_{i=1}^{n}\left(y_{i}-\hat{y}_{i}\right)^{2}=(n-p-1) \hat{\sigma}^{2}$$`
+- SSreg: Explained variation Regression sum of squares
+
+`$$SSreg=\sum_{i=1}^{n}\left(\hat{y}_{i}-\bar{y}\right)^{2}$$`
+
+]
+
+---
+
+# R-squared
+
+
+
+
+.blockquote.font90[
+R-squared (coefficient of determination) measures the proportion of variability observed in the response `\(Y\)` which can be explained by the regression of `\(\mathbf{Y}\)` on `\(x_{1}, \ldots, x_{p}\)`.
+]
+
+&lt;br&gt;
+
+.blockquote-list.font80[
+
+`$$R^{2}=\frac{S S r e g}{S S T}=1-\frac{S S R}{S S T}$$`
+
+- About `\(35.4 \%\)` of the variation in mass is explained by the regression of mass on bill length.
+- About `\(78.3 \%\)` of the variation in mass is explained by the regression of mass on bill length and species.
+- About `\(78.8 \%\)` of the variation in mass is explained by the regression of mass on bill length, species and their interaction.
+
+]
+
+---
+
+# Penguins: ANOVA for 3 models
+
+.pull-left-60[
+
+&lt;img src="Day12_files/figure-html/unnamed-chunk-4-1.svg" width="100%" /&gt;
+
+
+]
+.pull-right-40[
+&lt;br&gt;
+
+`$$R^{2}=\frac{S S r e g}{S S T}=1-\frac{S S R}{S S T}$$`
+
+.blockquote.font80[
+- SSreg (explained) is largest for the biggest model
+- SSR (unexplained) is smallest for the biggest model
+]
+
+
+]
+
+---
+
+# ANOVA for MLR
+
+
+`$$S S T=S S r e g+S S R$$`
+
+
+.blockquote.font90[
+- .bold[Mathematically:] bigger models have bigger SSreg:
+
+`$$\operatorname{SSreg}\left(x_{1}, x_{2}, x_{1}: x_{2}\right)&gt;\operatorname{SSreg}\left(x_{1}, x_{2}\right)&gt;\operatorname{SSreg}\left(x_{1}\right)$$`
+- .bold[Mathematically:] bigger models have smaller SSR:
+
+`$$S S R\left(x_{1}, x_{2}, x_{1}: x_{2}\right)&lt;\operatorname{SSR}\left(x_{1}, x_{2}\right)&lt;S S R\left(x_{1}\right)$$`
+- Bigger models have more explanatory power (higher SSreg) and larger `\(R^{2}\)` than a smaller model
+- Assume the smaller model is a nested version of the larger
+- But is the bigger model "worth it" if it is more complex and only has slightly more SSreg explained?
+
+]
+
+---
+
+# ANOVA for MLR
+
+.out-t[Mean square values divide SS by their degrees of freedom]
+
+.blockquote-list.font80[
+- Degrees of freedom (basically) measure how much stuff we've added up in the SS
+- .bold[MST:] Average total variation Mean Square of Total
+`$$M S T=\frac{S S T}{n-1}=s_{y}^{2}=\text { sample variance of } \mathrm{Y}$$`
+- .bold[MSR:] Average unexplained variation residual mean square
+`$$M S R=\frac{S S R}{n-(p+1)}=\hat{\sigma}^{2}=\text { estimated model variance }$$`
+- .bold[MSreg:] Explained variation Regression mean square
+`$$M S r e g=\frac{S S r e g}{p}$$`
+]
+
+---
+
+# ANOVA for MLR
+
+`$$S S T=S S r e g+S S R$$`
+
+
+.blockquote.font80[
+- .bold[Mathematically:] mean square residual and regression values won't equal the total
+`$$M S T \neq M S r e g+M S R$$`
+- .bold[Mathematically:] mean square regression values won't be ordered based on their size
+`$$\operatorname{MSreg}\left(x_{1}, x_{2}, x_{1}: x_{2}\right) ? \operatorname{MSreg}\left(x_{1}, x_{2}\right) ? \operatorname{MSreg}\left(x_{1}\right)$$`
+- .bold[Mathematically:] mean square residual values won't be ordered based on their size
+`$$\operatorname{MSR}\left(x_{1}, x_{2}, x_{1}: x_{2}\right) ? \operatorname{MSR}\left(x_{1}, x_{2}\right) ? \operatorname{MSR}\left(x_{1}\right)$$`
+]
+
+---
+
+class: middle
+
+# Adjusted R-squared
+
+.blockquote.font90[
+Adjusted `\(R^{2}\)` is similar to `\(R^{2}\)`, but it uses mean square values to account for the size of a model.
+`$$R_{a}^{2}=R_{\text {adjust }}^{2}=1-\frac{M S R}{M S T}$$`
+
+- `\(R_{a}^{2}\)` could actually increase if unneeded predictors are removed from a model.
+- `\(R^{2}\)` would never increase when predictors are removed.
+
+]
+
+---
+
+## Penguins: Adjusted `\(R^2\)` for 3 models
+
+.code60[
+
+```r
+penguins &lt;- penguins %&gt;% tidyr::drop_na(bill_length_mm, body_mass_g, species) # drop missing values
+peng_bill_lm &lt;-  lm(body_mass_g ~ bill_length_mm, data = penguins) # simple linear regression model 
+peng_nointeraction_lm &lt;- lm(body_mass_g ~ bill_length_mm + species, data = penguins) # parallel lines model
+peng_interaction_lm &lt;-  lm(body_mass_g ~ bill_length_mm*species, data = penguins) # interaction model
+```
+]
+
+
+.pull-left[
+
+.code60[
+
+```r
+get_regression_summaries(peng_bill_lm) %&gt;% 
+  select(r_squared, adj_r_squared)  # just want these two
+# A tibble: 1 × 2
+  r_squared adj_r_squared
+      &lt;dbl&gt;         &lt;dbl&gt;
+1     0.354         0.352
+```
+]
+
+
+.code60[
+
+```r
+get_regression_summaries(peng_nointeraction_lm) %&gt;% 
+  select(r_squared, adj_r_squared)
+# A tibble: 1 × 2
+  r_squared adj_r_squared
+      &lt;dbl&gt;         &lt;dbl&gt;
+1     0.783         0.781
+```
+]
+
+.code60[
+
+```r
+get_regression_summaries(peng_nointeraction_lm) %&gt;% 
+  select(r_squared, adj_r_squared)
+# A tibble: 1 × 2
+  r_squared adj_r_squared
+      &lt;dbl&gt;         &lt;dbl&gt;
+1     0.783         0.781
+```
+]
+]
+
+
+.pull-right[
+
+.code90[
+
+```r
+glimpse(penguins)
+```
+
+```
+Rows: 342
+Columns: 8
+*$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Adelie, Adel…
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen, Torgerse…
+*$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, 36.7, 39.3, 38.9, 39.2, 34.1, 42.0…
+$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, 19.3, 20.6, 17.8, 19.6, 18.1, 20.2…
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, 193, 190, 181, 195, 193, 190, 186, 18…
+*$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, 3450, 3650, 3625, 4675, 3475, 4250…
+$ sex               &lt;fct&gt; male, female, female, female, male, female, male, NA…
+$ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007…
+```
+]
+]
+---
+
+class: middle
+
+# Penguins: Adjusted `\(R^2\)` for 3 models
+
+.blockquote[
+- Removing the interaction terms results in a small drop in adjusted `\(R^{2}\)` (0.785 to `\(0.781\)` ).
+- The explanatory power of both the larger interaction model and smaller no-interaction models looks similar.
+- .bold[Next:] let's verify this observation with an ANOVA F-test
+]
+
+---
+
+# Comparing models: ANOVA F-test
+
+.blockquote.font80[
+- .bold[Hypotheses:]
+`$$\begin{array}{l}
+H_{0}: \mu_{Y \mid x}=\text { smaller, nested model } \\
+H_{A}: \mu_{Y \mid x}=\text { larger model }
+\end{array}$$`
+where the nested model is arrived at by setting one or more `\(\beta_{j}\)` in the larger model equal to 0
+- .bold[Test stat:]
+`$$F=\frac{\text { extraSS } /(\# \text { terms tested })}{M S R_{\text {larger }}}$$`
+where extra SS is the difference in explained SS between the larger `\(H_{A}\)` and smaller `\(H_{0}\)` models
+`$$\begin{aligned}
+\text { extraSS } &amp;=S S r e g(\text { larger model })-S S r e g(\text { smaller model }) \\
+&amp;=S S R(\text { smaller model })-S S R(\text { larger model })
+\end{aligned}$$`
+]
+
+---
+
+# Comparing models: ANOVA F-test
+
+
+.pull-left[
+&lt;img src="Day12_files/figure-html/unnamed-chunk-10-1.svg" width="100%" /&gt;
+]
+
+.pull-right[
+&lt;br&gt;
+.blockquote.font80[
+- .bold[P-value:] Probability of getting an T test stat larger than one observed
+`$$\text{p-value }=P\left(F&gt;f_{\text {observed }}\right)$$`
+using the F-distribution with degrees of freedom equal to the # of terms tested (numerator) and `\(n-(p+1)\)` from the larger `\(H_{A}\)` model (denominator)
+]
+
+]
+
+---
+
+# ANOVA F-test in R
+
+
+```r
+# R-code
+anova(smaller_lm, larger_lm)
+```
+
+
+
+.blockquote[
+Let's compare the interaction and parallel lines models in penguins dataset:
+
+`$$\begin{aligned}
+H_{0}: \mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+H_{A}: \mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp;+\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$`
+- Same as testing `\(\beta_{4}\)` and `\(\beta_{5}\)` in the larger model
+
+`$$\begin{array}{l}
+H_{0}: \beta_{4}=\beta_{5}=0 \\
+H_{A}: \text { at least one } \beta_{4}, \beta_{5} \neq 0
+\end{array}$$`
+]
+
+
+---
+
+
+# ANOVA F-test in R
+
+
+```r
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: body_mass_g ~ bill_length_mm + species
+Model 2: body_mass_g ~ bill_length_mm * species
+  Res.Df      RSS Df Sum of Sq    F  Pr(&gt;F)  
+1    338 47613707                            
+2    336 46447006  2   1166702 4.22 0.01549 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+---
+
+
+# ANOVA F-test in R
+
+
+```r
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: body_mass_g ~ bill_length_mm + species
+Model 2: body_mass_g ~ bill_length_mm * species
+*  Res.Df      RSS Df Sum of Sq    F  Pr(&gt;F)  
+*1    338 47613707                            
+*2    336 46447006  2   1166702 4.22 0.01549 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+
+.pull-left[
+.blockquote[
+Res.Df column
+- model DF for smaller `\(=342-4=338\)`
+- model DF for larger `\(=342-6=336\)`
+]
+]
+.pull-right[
+.blockquote[
+RSS Df column
+- `\(\operatorname{RSS}(\)` smaller `\()=47,613,707\)`
+- `\(\operatorname{RSS}(\)` larger `\()=46,447,006\)`
+]
+]
+
+---
+
+# ANOVA F-test in R
+
+
+```r
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: body_mass_g ~ bill_length_mm + species
+Model 2: body_mass_g ~ bill_length_mm * species
+*  Res.Df      RSS Df Sum of Sq    F  Pr(&gt;F)  
+*1    338 47613707                            
+*2    336 46447006  2   1166702 4.22 0.01549 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+.pull-left[
+.blockquote[
+Df column
+- number of terms tested `\(=6-4=338-336=2\)`
+]
+]
+.pull-right[
+.blockquote[
+Sum of Sq column
+- Extra SS for this test `\(=\)` RSS(smaller) `\(-\)` RSS(larger `\()=1,166,702\)`
+]
+]
+
+
+---
+
+# ANOVA F-test in R
+
+
+```r
+anova(peng_nointeraction_lm , peng_interaction_lm)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: body_mass_g ~ bill_length_mm + species
+Model 2: body_mass_g ~ bill_length_mm * species
+*  Res.Df      RSS Df Sum of Sq    F  Pr(&gt;F)  
+*1    338 47613707                            
+*2    336 46447006  2   1166702 4.22 0.01549 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+.pull-left[
+.blockquote[
+F column
+- `\(\mathbf{F}\)` test stat `\(=F=\frac{1,166,702 / 2}{46,447,006 / 336}=4.22\)`
+
+]
+]
+.pull-right[
+.blockquote[
+`\(\operatorname{Pr}(&gt;F)\)` column
+- p-value for this test `\(=P\left(F_{2 ; 336}&gt;4.22\right)=1-\operatorname{pf}(4.22,2,336)\\ = 0.01549\)`
+]
+]
+
+---
+
+# Penguins wrapup
+
+&lt;img src="Day12_files/figure-html/unnamed-chunk-15-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+.yellow-h.center[The slopes are different enough to warrant an interaction model]
+
+---
+
+# Penguins wrapup
+
+
+
+```r
+summary(peng_interaction_lm)$coefficients # simple way of getting summaries
+```
+
+```
+                                  Estimate Std. Error     t value     Pr(&gt;|t|)
+(Intercept)                       34.88299  443.17604  0.07871136 9.373091e-01
+bill_length_mm                    94.49982   11.39794  8.29095491 2.733899e-15
+speciesChinstrap                 811.26034  799.80552  1.01432201 3.111590e-01
+speciesGentoo                   -158.71092  683.19141 -0.23230813 8.164401e-01
+bill_length_mm:speciesChinstrap  -35.38208   17.74666 -1.99373192 4.698940e-02
+bill_length_mm:speciesGentoo      14.95935   15.78642  0.94760841 3.440099e-01
+```
+
+
+---
+
+# Penguins wrapup
+
+
+```r
+summary(peng_interaction_lm)$coefficients
+```
+
+```
+                                  Estimate Std. Error     t value     Pr(&gt;|t|)
+(Intercept)                       34.88299  443.17604  0.07871136 9.373091e-01
+bill_length_mm                    94.49982   11.39794  8.29095491 2.733899e-15
+speciesChinstrap                 811.26034  799.80552  1.01432201 3.111590e-01
+speciesGentoo                   -158.71092  683.19141 -0.23230813 8.164401e-01
+bill_length_mm:speciesChinstrap  -35.38208   17.74666 -1.99373192 4.698940e-02
+*bill_length_mm:speciesGentoo      14.95935   15.78642  0.94760841 3.440099e-01
+```
+
+
+&lt;br&gt;
+
+.blockquote-list[
+- The difference in slopes (effect of bill length on mass) between Adelie (baseline) and Gentoo isn't statistically significance `\((\mathrm{t}=0.948, \mathrm{df}\)` `\(=336, \mathrm{p}=0.344)\)`
+]
+
+
+---
+
+
+# Penguins wrapup
+
+
+```r
+summary(peng_interaction_lm)$coefficients
+```
+
+```
+                                  Estimate Std. Error     t value     Pr(&gt;|t|)
+(Intercept)                       34.88299  443.17604  0.07871136 9.373091e-01
+bill_length_mm                    94.49982   11.39794  8.29095491 2.733899e-15
+speciesChinstrap                 811.26034  799.80552  1.01432201 3.111590e-01
+speciesGentoo                   -158.71092  683.19141 -0.23230813 8.164401e-01
+*bill_length_mm:speciesChinstrap  -35.38208   17.74666 -1.99373192 4.698940e-02
+bill_length_mm:speciesGentoo      14.95935   15.78642  0.94760841 3.440099e-01
+```
+
+&lt;br&gt;
+
+.blockquote-list[
+
+- The difference in slopes (effect of bill length on mass) between Adelie (baseline) and Chinstrap is weakly statistically significance `\((\mathrm{t}=-1.994\)`, `\(\mathrm{df}=336, \mathrm{p}=0.047\)` ).
+
+]
+
+
+---
+
+# Penguins wrapup
+
+.code80[
+
+```
+                                  Estimate Std. Error     t value     Pr(&gt;|t|)
+(Intercept)                       34.88299  443.17604  0.07871136 9.373091e-01
+bill_length_mm                    94.49982   11.39794  8.29095491 2.733899e-15
+speciesChinstrap                 811.26034  799.80552  1.01432201 3.111590e-01
+speciesGentoo                   -158.71092  683.19141 -0.23230813 8.164401e-01
+bill_length_mm:speciesChinstrap  -35.38208   17.74666 -1.99373192 4.698940e-02
+bill_length_mm:speciesGentoo      14.95935   15.78642  0.94760841 3.440099e-01
+```
+]
+
+$$
+`\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}+\beta_{1} \text { bill }+\beta_{2} \text { speciesChinstrap }+\beta_{3} \text { speciesGentoo } \\
+&amp; \quad +\beta_{4} \text { bill } \times \text { speciesChinstrap }+\beta_{5} \text { bill } \times \text { speciesGentoo }
+\end{aligned}`
+$$
+
+.blockquote-list[
+- To compare Chinstrap and Gentoo, either use the test
+`$$H_{0}: \beta_{1}+\beta_{4}=\beta_{1}+\beta_{5} \Rightarrow \beta_{4}-\beta_{5}=0$$`
+]
+
+
+---
+
+# Penguins wrapup
+
+.blockquote[
+- OR! Relevel the species variable to make Chinstrap the baseline - it's slope seem most different (flatter) compared to the other two species
+
+`$$\begin{aligned}
+\mu_{\text {mass } \mid x} &amp;=\beta_{0}^{*}+\beta_{1}^{*} \text { bill }+\beta_{2}^{*} \text { speciesAdelie }+\beta_{3}^{*} \text { speciesGentoo } \\
+&amp;+\beta_{4}^{*} \text { bill } \times \text { speciesAlelie }+\beta_{5}^{*} \text { bill } \times \text { speciesGentoo }
+\end{aligned}$$`
+- Same variables but changing up the indicator variables changes our parameter interpretation
+- that's why we used `\(\beta^{*}\)` here (not the same values as `\(\beta\)` in the previous model)
+- but won't change an inference conclusions or effect estimation!!
+]
+
+---
+
+# Penguins wrapup
+
+- OR! Relevel the species variable to make Chinstrap the baseline
+- Use `fct_relevel()` from the `forcats` package:
+
+
+```r
+library(forcats) 
+# just need to specify the first level
+penguins$new_species &lt;- fct_relevel(penguins$species, "Chinstrap")
+```
+
+Check order using a quick table command:
+
+.pull-left[
+
+```r
+table(penguins$species)
+
+   Adelie Chinstrap    Gentoo 
+      151        68       123 
+```
+]
+
+.pull-right[
+
+```r
+table(penguins$new_species) 
+
+Chinstrap    Adelie    Gentoo 
+       68       151       123 
+```
+]
+
+---
+
+# Penguins wrapup
+
+
+```r
+peng_interaction_lm_CS &lt;- lm(body_mass_g ~ bill_length_mm * new_species, data = penguins)
+summary(peng_interaction_lm_CS)$coefficients
+```
+
+```
+                                   Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)                       846.14333  665.79566  1.270875 2.046521e-01
+bill_length_mm                     59.11773   13.60261  4.346059 1.838939e-05
+new_speciesAdelie                -811.26034  799.80552 -1.014322 3.111590e-01
+new_speciesGentoo                -969.97126  844.76586 -1.148213 2.516974e-01
+bill_length_mm:new_speciesAdelie   35.38208   17.74666  1.993732 4.698940e-02
+bill_length_mm:new_speciesGentoo   50.34143   17.44503  2.885718 4.157658e-03
+```
+
+
+
+---
+
+# Penguins wrapup
+
+
+```r
+peng_interaction_lm_CS &lt;- lm(body_mass_g ~ bill_length_mm * new_species, data = penguins)
+summary(peng_interaction_lm_CS)$coefficients
+```
+
+```
+                                   Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)                       846.14333  665.79566  1.270875 2.046521e-01
+bill_length_mm                     59.11773   13.60261  4.346059 1.838939e-05
+new_speciesAdelie                -811.26034  799.80552 -1.014322 3.111590e-01
+new_speciesGentoo                -969.97126  844.76586 -1.148213 2.516974e-01
+*bill_length_mm:new_speciesAdelie   35.38208   17.74666  1.993732 4.698940e-02
+bill_length_mm:new_speciesGentoo   50.34143   17.44503  2.885718 4.157658e-03
+```
+
+
+
+&lt;br&gt;
+
+.blockquote[
+- The difference in slopes (effect of bill length on mass) between Chinstrap (baseline) and Adelie is weakly statistically significance `\((\mathrm{t}=\)` `\(1.994, \mathrm{df}=336, \mathrm{p}=0.047\)` ).
+]
+
+---
+
+# Penguins wrapup
+
+
+```r
+summary(peng_interaction_lm_CS)$coefficients
+```
+
+```
+                                   Estimate Std. Error   t value     Pr(&gt;|t|)
+(Intercept)                       846.14333  665.79566  1.270875 2.046521e-01
+bill_length_mm                     59.11773   13.60261  4.346059 1.838939e-05
+new_speciesAdelie                -811.26034  799.80552 -1.014322 3.111590e-01
+new_speciesGentoo                -969.97126  844.76586 -1.148213 2.516974e-01
+bill_length_mm:new_speciesAdelie   35.38208   17.74666  1.993732 4.698940e-02
+*bill_length_mm:new_speciesGentoo   50.34143   17.44503  2.885718 4.157658e-03
+```
+
+&lt;br&gt;
+
+.blockquote[
+- The difference in slopes (effect of bill length on mass) between Chinstrap (baseline) and Gentoo is statistically significance `\((\mathrm{t}=2.886, \mathrm{df}\)` `\(=336, \mathrm{p}=0.00416\)` ).
+]
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
