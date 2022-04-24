@@ -43,7 +43,7 @@ class: title-slide, middle
 
 ### .fancy[Stat 230]
 
- April 22 2022
+ April 24 2022
 
 ---
 
@@ -363,12 +363,12 @@ get_regression_summaries(peng_nointeraction_lm) %&gt;%
 .code60[
 
 ```r
-get_regression_summaries(peng_nointeraction_lm) %&gt;% 
+get_regression_summaries(peng_interaction_lm) %&gt;% 
   select(r_squared, adj_r_squared)
 # A tibble: 1 × 2
   r_squared adj_r_squared
       &lt;dbl&gt;         &lt;dbl&gt;
-1     0.783         0.781
+1     0.788         0.785
 ```
 ]
 ]
