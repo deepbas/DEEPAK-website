@@ -485,7 +485,7 @@ get_regression_summaries(peng_nointeraction_lm) %>%
 
 .code60[
 ```{r, collapse=TRUE}
-get_regression_summaries(peng_nointeraction_lm) %>% 
+get_regression_summaries(peng_interaction_lm) %>% 
   select(r_squared, adj_r_squared)
 ```
 ]
