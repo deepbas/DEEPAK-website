@@ -1,0 +1,1103 @@
+---
+title: "MLR Diagnostics: outliers"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+#library(MASS)
+library(broom)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(1234)
+
+sim_mlr = function(x1, x2, beta_0 = 2, beta_1 = 3, beta_2 = 2, sigma = 3) {
+  n = length(x1)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x1 + beta_2 * x2 + epsilon
+  data.frame(predictor1 = x1, predictor2 = x2, response = y)
+}
+
+num_obs = 25
+x_vals1 = runif(num_obs, 0, 10)
+x_vals2 = rbeta(num_obs, 1,5)*10
+sim_data = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = 3, beta_1 = 2, beta_2= 1.6, sigma = 3)
+
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[MLR Diagnostics: outliers]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+library(gg3D)
+ggplot(sim_data, aes(predictor1, y=predictor2, z=response)) + 
+  theme_void()+
+  axes_3D() +
+  stat_3D()
+```
+
+]
+
+.pull-right[
+
+Today: 
+.blockquote-list[
+Assessing "outliers" in regression
+- leverage
+- standardized residuals
+- Cook's distance
+]
+
+]
+
+---
+
+# Outliers
+
+> For one variable, outliers are often found by measuring how different value is from a mean or median value.
+
+```{r, echo=FALSE, out.width="50%", fig.align='center'}
+var1 <- data.frame(x=c(3,5,7,8,10,3,5,2,6,7,8,9,10,12,3,3,4,5,2,4,5,6,20,25,30))
+ggplot(var1, aes(x)) + geom_boxplot() + labs(x = "variable", y = "") +
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+
+---
+
+class: middle
+
+# Outliers in Regression
+
+.blockquote-list[
+For two or more variables, outliers can be cases that have
+- an unusual $y$ value
+- an unusual $x_{1}$ value
+- an unusual combination of $\left(x_{1}, y\right)$ values
+- an unusual combination of $\left(x_{1}, x_{2}\right)$ values
+- an unusual combination of $\left(x_{1}, x_{2}, x_{3}\right)$ values
+- and so on ...
+]
+
+---
+
+class: middle
+
+# Leverage
+
+.blockquote.font90[
+- Measures how unusual a case's predictor values are compared to average predictor values for all cases.
+  * .yellow-h[does not depend on the response]
+  
+- .bold[SLR]: the leverage of case $i$ equals
+$$h_{i}=\frac{1}{n-1}\left(\frac{x_{i}-\bar{x}}{s_{x}}\right)^{2}+\frac{1}{n}$$
+
+- .bold[MLR]: $h_{i}$ measures the distance of case $i$'s predictors from the center of the predictor "point cloud"
+]
+
+---
+
+## Leverage
+
+```{r, echo=FALSE}
+# leverage function
+h.i <- function(x){
+  n <- length(x)
+  (1/(n-1))*((x - mean(x))/(sd(x)))^2 + 1/n
+  }
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old1 = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+sim_data_old_mod1 <- sim_data_old1 %>% 
+  as_tibble() %>% 
+  add_row(predictor = 6, response = 40) 
+
+sim_data_old_mod1 <- sim_data_old_mod1 %>% mutate(leverage = h.i(sim_data_old_mod1$predictor),
+                                          ID = row_number())
+
+p1 <- ggplot(sim_data_old_mod1,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+  geom_point(aes(y = 40, x = 6), shape = 1, col = "red")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+  
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old2 = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+sim_data_old_mod2 <- sim_data_old2 %>% as_tibble() %>% add_row(predictor = 40, response = 23)
+sim_data_old_mod2 <- sim_data_old_mod2 %>% mutate(leverage = h.i(sim_data_old_mod2$predictor),
+                                          ID = row_number())
+
+
+
+p2 <- ggplot(sim_data_old_mod2,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+    geom_point(aes(y = 23, x = 40), shape = 1, col = "red") +
+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old3 = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+sim_data_old_mod3 <- sim_data_old3 %>% as_tibble() %>% add_row(predictor = 20, response = 43)
+sim_data_old_mod3 <- sim_data_old_mod3 %>% mutate(leverage = h.i(sim_data_old_mod3$predictor),
+                                          ID = row_number())
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old4 = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+sim_data_old_mod4 <- sim_data_old4 %>% as_tibble() %>% add_row(predictor = 23, response = 63)
+sim_data_old_mod4 <- sim_data_old_mod4 %>% mutate(leverage = h.i(sim_data_old_mod4$predictor),
+                                          ID = row_number())
+
+
+p3 <- ggplot(sim_data_old_mod3,aes(x= predictor, y = response)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor",
+       y = "Response")+
+    geom_point(aes(y = 43, x = 20), shape = 1, col = "red") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) 
+```
+
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4, out.width="90%", fig.align='center'}
+grid.arrange(p1, p2, p3, nrow = 1)
+```
+
+
+.out-t.font80.center[Which red case below will have high leverage?]
+
+---
+
+## Leverage
+
+```{r, echo=FALSE}
+
+
+p4 <- ggplot(sim_data_old_mod1, aes(x = ID, y = leverage)) + 
+  geom_point()  +
+  geom_point(aes(y = leverage[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2*(1+1)/26, linetype = "dotted") +
+  geom_hline(yintercept = 3*(1+1)/26, linetype = "dashed") 
+  
+
+p5 <- ggplot(sim_data_old_mod2, aes(x = ID, y = leverage)) + 
+  geom_point() +
+  geom_point(aes(y = leverage[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2*(1+1)/26, linetype = "dotted") +
+  geom_hline(yintercept = 3*(1+1)/26, linetype = "dashed") 
+
+
+p6 <- ggplot(sim_data_old_mod3, aes(x = ID, y = leverage)) + 
+  geom_point() +
+  geom_point(aes(y = leverage[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2*(1+1)/26, linetype = "dotted") +
+  geom_hline(yintercept = 3*(1+1)/26, linetype = "dashed") 
+
+```
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4, out.width="90%", fig.align='center'}
+grid.arrange(p1, p2, p3, p4, p5, p6, nrow = 2)
+```
+
+.out-t.font80.center[Leverage is high for the red case in the middle and right data sets]
+
+---
+
+class: middle
+
+## Leverage
+
+
+```{r, echo=FALSE}
+num_obs = 25
+x_vals1 = runif(num_obs, 0, 10)
+x_vals2 = rbeta(num_obs, 1,5)*10
+sim_data_mlr1 = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = -3, beta_1 = 1, beta_2= 3, sigma = 3)
+sim_data_mlr1_mod <- sim_data_mlr1 %>% as_tibble() %>% 
+  add_row(predictor1 = 20, predictor2 = 2.5, response = 10)
+
+X <- cbind(X1 = sim_data_mlr1_mod$predictor1,
+           X2 = sim_data_mlr1_mod$predictor2)
+# leverage Hat matrix
+H <- X %*% solve(t(X) %*% X) %*% t(X)
+leverage3 <- diag(H)
+
+sim_data_mlr1_mod <- sim_data_mlr1_mod %>% mutate(leverage1 = h.i(sim_data_mlr1_mod$predictor1),
+                                          leverage2 = h.i(sim_data_mlr1_mod$predictor2),
+                                          leverage3 = leverage3,                 
+                                          ID = row_number())
+
+q1 <- ggplot(sim_data_mlr1_mod, aes(x= predictor1, y = predictor2)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor1",
+       y = "Predictor2") +
+  geom_point(aes(y = 2.5, x = 20), shape = 1, col = "red") +
+  geom_point(aes(y = mean(predictor2), x = mean(predictor1)), shape = 3, col = "green") +
+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) +
+  coord_cartesian(xlim = c(0, 20),
+                  ylim = c(0, 20)) 
+
+  
+```
+
+
+
+```{r, echo=FALSE}
+sim_data_mlr2_mod <- sim_data_mlr1 %>% as_tibble() %>% 
+  add_row(predictor1 = 2.5, predictor2 = 20, response = 10)
+
+X <- cbind(X1 = sim_data_mlr2_mod$predictor1,
+           X2 = sim_data_mlr2_mod$predictor2)
+# leverage Hat matrix
+H <- X %*% solve(t(X) %*% X) %*% t(X)
+leverage3 <- diag(H)
+
+sim_data_mlr2_mod <- sim_data_mlr2_mod %>% mutate(leverage1 = h.i(sim_data_mlr2_mod$predictor1),
+                                          leverage2 = h.i(sim_data_mlr2_mod$predictor2),
+                                          leverage3 = leverage3,                 
+                                          ID = row_number())
+
+q2 <- ggplot(sim_data_mlr2_mod, aes(x= predictor1, y = predictor2)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor1",
+       y = "Predictor2") +
+  geom_point(aes(y = 20, x = 2.5), shape = 1, col = "red") +
+   geom_point(aes(y = mean(predictor2), x = mean(predictor1)), shape = 3, col = "green") +
+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) +
+  coord_cartesian(xlim = c(0, 20),
+                  ylim = c(0, 20)) 
+  
+
+```
+
+
+```{r, echo=FALSE}
+sim_data_mlr3_mod <- sim_data_mlr1 %>% as_tibble() %>% 
+  add_row(predictor1 = 20, predictor2 = 10, response = 10)
+
+X <- cbind(X1 = sim_data_mlr2_mod$predictor1,
+           X2 = sim_data_mlr2_mod$predictor2)
+# leverage Hat matrix
+H <- X %*% solve(t(X) %*% X) %*% t(X)
+leverage3 <- diag(H)
+
+sim_data_mlr3_mod <- sim_data_mlr3_mod %>% mutate(leverage1 = h.i(sim_data_mlr3_mod$predictor1),
+                                          leverage2 = h.i(sim_data_mlr3_mod$predictor2),
+                                          leverage3 = leverage3,                 
+                                          ID = row_number())
+
+q3 <- ggplot(sim_data_mlr3_mod, aes(x= predictor1, y = predictor2)) +
+  geom_point() + 
+  theme(#axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  theme(#axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())+
+  labs(x = "Predictor1",
+       y = "Predictor2") +
+  geom_point(aes(y = 10, x = 20), shape = 1, col = "red") +
+    geom_point(aes(y = mean(predictor2), x = mean(predictor1)), shape = 3, col = "green") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))+
+  theme(plot.title = element_text(hjust=0.5, size=20, face='bold')) +
+  coord_cartesian(xlim = c(0, 20),
+                  ylim = c(0, 20)) 
+  
+```
+
+
+
+```{r, echo=FALSE}
+
+q4 <- ggplot(sim_data_mlr1_mod, aes(x = ID, y = leverage1)) + 
+  geom_point()  + 
+  geom_point(aes(y = leverage1[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2*(1+1)/26, linetype = "dotted") +
+  geom_hline(yintercept = 3*(1+1)/26, linetype = "dashed") 
+
+q5 <- ggplot(sim_data_mlr2_mod, aes(x = ID, y = leverage2)) + 
+  geom_point()  + 
+  geom_point(aes(y = leverage2[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2*(1+1)/26, linetype = "dotted") +
+  geom_hline(yintercept = 3*(1+1)/26, linetype = "dashed") 
+
+q6 <- ggplot(sim_data_mlr3_mod, aes(x = ID, y = leverage3)) + 
+  geom_point()  + 
+  geom_point(aes(y = leverage3[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2*(2+1)/26, linetype = "dotted") +
+  geom_hline(yintercept = 3*(2+1)/26, linetype = "dashed") 
+
+```
+
+
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4, out.width="90%", fig.align='center'}
+grid.arrange(q1, q2, q3, q4, q5, q6, nrow = 2)
+```
+
+.out-t.font80[In MLR, we look at the distance between a case's predictor values (red dot) and the point cloud center (green pluses)]
+
+---
+
+
+# Leverage
+
+.blockquote[
+Mathematically,
+० $\frac{1}{n} \leq h_{i}<1$
+- for all cases, mean leverage is always $\bar{h}=(p+1) / n$
+]
+
+--
+
+<br>
+
+.blockquote[
+Guidelines for "large" leverage
+- $h_{i}>2(p+1) / n$ : potential for some influence
+- $h_{i}>3(p+1) / n$ : potential for large influence
+]
+
+---
+
+
+# Leverage
+
+.blockquote-list[
+- A case with high leverage has the potential to be influential 
+- .bold[influential]: regression line/surface is pulled towards the case
+]
+
+--
+
+<br>
+
+.blockquote[
+.bold[Why?] 
+- The SE of each observed residual $r_{i}=y_{i}-\hat{y}_{i}$ is inversely related to leverage:
+$$S E\left(r_{i}\right)=\hat{\sigma} \sqrt{1-h_{i}}$$
+]
+
+---
+
+class: middle
+
+# Leverage
+
+$$S E\left(r_{i}\right)=\hat{\sigma} \sqrt{1-h_{i}}$$
+
+.blockquote-list[
+Large $h_{i} \approx 1$ : residual has little variability and $\hat{y}_{i}$ will be very close to $Y_{i}$
+- If $Y_{i}$ for case $i$ is not following the "trend" of the other $n-1$ cases, then this case will pull the regression line/surface towards it.
+
+Small $h_{i} \approx 1 / n$ : residual has variability of about $\sigma$ and $\hat{y}_{i}$ that can vary widely from $Y_{i}$.
+]
+
+
+---
+
+class: middle
+
+# Standardized residual
+
+.blockquote[
+- The ratio of a residual to its $\mathrm{SE}$ :
+$$s t u d r_{i}=\frac{r_{i}}{S E\left(r_{i}\right)}=\frac{y_{i}-\hat{y}_{i}}{\hat{\sigma} \sqrt{1-h_{i}}}$$
+- also known as internally *studentized* residuals
+
+]
+
+---
+
+class: middle
+
+# Standardized residual
+
+$$s t u d r_{i}=\frac{r_{i}}{S E\left(r_{i}\right)}=\frac{y_{i}-\hat{y}_{i}}{\hat{\sigma} \sqrt{1-h_{i}}}$$
+
+.blockquote[
+- The reasons for a case with a large standardized residual are
+- a large $r_{i}$ value (just poorly predicted) but "regular" leverage value. These cases will have typical predictor values but an unusual response.
+- a "regular" $r_{i}$ value but a small SE due to a large leverage value.
+]
+
+.blockquote-list[
+Guidelines to flag unusual cases are
+
+- $\mid studr_{i} \mid>2$ for smaller data sets
+- $\mid studr_{i} \mid>4$ for larger data sets
+
+]
+
+---
+
+# Standardized residual
+
+.out-t.font90[Which red case below will have large standardized residual?]
+
+
+```{r, echo =FALSE}
+lm_m1 <- lm(response~predictor, data = sim_data_old1)
+lm_intercept_m1 <- coef(lm_m1)['(Intercept)']
+lm_slope_m1 <- coef(lm_m1)['predictor']
+
+
+m1 <- ggplot(sim_data_old_mod1, aes(x = predictor, 
+                     y = response)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE,
+            color = "red") +
+geom_point(aes(y = 40, x = 6), shape = 1, col = "red") +
+geom_abline(slope=lm_slope_m1, intercept=lm_intercept_m1, col="black")
+
+
+lm_m2 <- lm(response~predictor, data = sim_data_old2)
+lm_intercept_m2 <- coef(lm_m2)['(Intercept)']
+lm_slope_m2 <- coef(lm_m2)['predictor']
+
+
+m2 <- ggplot(sim_data_old_mod2, aes(x = predictor, 
+                     y = response)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE,
+            color = "red") +
+geom_point(aes(y = 23, x = 40), shape = 1, col = "red") +
+geom_abline(slope=lm_slope_m2, intercept=lm_intercept_m2, col="black")
+
+
+lm_m3 <- lm(response~predictor, data = sim_data_old3)
+lm_intercept_m3 <- coef(lm_m3)['(Intercept)']
+lm_slope_m3 <- coef(lm_m3)['predictor']
+
+
+
+m3 <- ggplot(sim_data_old_mod3, aes(x = predictor, 
+                     y = response)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE,
+            color = "red") +
+geom_point(aes(y = 43, x = 20), shape = 1, col = "red") +
+geom_abline(slope=lm_slope_m3, intercept=lm_intercept_m3, col="black") 
+
+
+lm_m4 <- lm(response~predictor, data = sim_data_old4)
+lm_intercept_m4 <- coef(lm_m4)['(Intercept)']
+lm_slope_m4 <- coef(lm_m4)['predictor']
+
+
+m4 <- ggplot(sim_data_old_mod4, aes(x = predictor, 
+                     y = response)) +
+theme(legend.position = "bottom")+
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE,
+            color = "red") +
+geom_point(aes(y = 63, x = 23), shape = 1, col = "red") +
+geom_abline(slope=lm_slope_m4, intercept=lm_intercept_m4, col="black") 
+
+```
+
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4, out.width="90%", fig.align='center'}
+grid.arrange(m1, m2, m3, m4, nrow = 1)
+```
+
+
+---
+
+# Standardized residual
+
+
+```{r, echo=FALSE}
+# function for calculating residual
+
+lm_m1 <- lm(response~predictor, data = sim_data_old_mod1)
+sr_m1 <- data.frame(std_res = rstudent(lm_m1)) %>% as_tibble()
+sr_m1 <- sr_m1 %>% mutate(ID = row_number())
+
+
+lm_m2 <- lm(response~predictor, data = sim_data_old_mod2)
+sr_m2 <- data.frame(std_res = rstudent(lm_m2)) %>% as_tibble()
+sr_m2 <- sr_m2 %>% mutate(ID = row_number())
+
+
+lm_m3 <- lm(response~predictor, data = sim_data_old_mod3)
+sr_m3 <- data.frame(std_res = rstudent(lm_m3)) %>% as_tibble()
+sr_m3 <- sr_m3 %>% mutate(ID = row_number())
+
+lm_m4 <- lm(response~predictor, data = sim_data_old_mod4)
+sr_m4 <- data.frame(std_res = rstudent(lm_m4)) %>% as_tibble()
+sr_m4 <- sr_m4 %>% mutate(ID = row_number())
+
+
+
+m5 <- ggplot(sr_m1, aes(x = ID, y = std_res)) + 
+  geom_point()  + 
+  geom_point(aes(y = std_res[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2, linetype = "dotted") + 
+  geom_hline(yintercept = -2, linetype = "dotted") +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = -4, linetype = "dashed") 
+
+m6 <- ggplot(sr_m2, aes(x = ID, y = std_res)) + 
+  geom_point()  + 
+  geom_point(aes(y = std_res[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2, linetype = "dotted") + 
+  geom_hline(yintercept = -2, linetype = "dotted") +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = -4, linetype = "dashed") 
+
+m7 <- ggplot(sr_m3, aes(x = ID, y = std_res)) + 
+  geom_point()  + 
+  geom_point(aes(y = std_res[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2, linetype = "dotted") + 
+  geom_hline(yintercept = -2, linetype = "dotted") +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = -4, linetype = "dashed") 
+
+m8 <- ggplot(sr_m4, aes(x = ID, y = std_res)) + 
+  geom_point()  + 
+  geom_point(aes(y = std_res[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 2, linetype = "dotted") + 
+  geom_hline(yintercept = -2, linetype = "dotted") +
+  geom_hline(yintercept = 4, linetype = "dashed") + 
+  geom_hline(yintercept = -4, linetype = "dashed") 
+
+```
+
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4, out.width="90%", fig.align='center'}
+grid.arrange(m1, m2, m3, m4, m5, m6, m7, m8, nrow = 2)
+```
+
+---
+
+# Cook's distance
+
+
+.blockquote-list[
+.bold[Cook's distance]: a measure of a case's influence on the fitted regression line/surface.
+$$D_{i}=\sum_{j=1}^{n} \frac{\left(\hat{Y}_{j(-i)}-\hat{Y}_{j}\right)^{2}}{(p+1) \hat{\sigma}^{2}}=\frac{s t u d r_{i}^{2}}{p+1} \frac{h_{i}}{1-h_{i}}$$
+]
+
+.blockquote[
+- $\hat{Y}_{j(-i)}=$ predicted response for case $j$ using a model fit that excludes case $i$.
+- $\hat{Y}_{j}=$ predicted response for case $j$ using a model fit that uses all cases.
+- If these two predictions deviate a lot, overall all cases, then we would say that case $i$ is influential in the regression fit.
+- $\frac{h_i}{1- h_i}$ can be shown to be the distance from $x_i$ to the centroid of remaining data
+
+]
+
+---
+
+# Cook's distance
+
+.blockquote[
+$$D_{i}=\sum_{j=1}^{n} \frac{\left(\hat{Y}_{j(-i)}-\hat{Y}_{j}\right)^{2}}{(p+1) \hat{\sigma}^{2}}=\frac{s t u d r_{i}^{2}}{p+1} \frac{h_{i}}{1-h_{i}}$$
+- Cases have large Cook's distance if it has
+- high standardized residual,
+- high leverage,
+- or a combination of both.
+]
+
+---
+
+# Cook's distance
+
+.out-t.font80[Largest Cook's distance case?]
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4, out.width="90%", fig.align='center'}
+grid.arrange(m1, m2, m3, m4, nrow = 2)
+```
+
+
+---
+
+## Cook's distance
+
+```{r, echo=FALSE}
+cook.m1_mod <- data.frame(cooks_dist = cooks.distance(lm_m1)) %>% as_tibble()
+cook_m1 <- cook.m1_mod %>% mutate(ID = row_number())
+
+
+cook.m2_mod <- data.frame(cooks_dist = cooks.distance(lm_m2)) %>% as_tibble()
+cook_m2 <- cook.m2_mod %>% mutate(ID = row_number())
+
+cook.m3_mod <- data.frame(cooks_dist = cooks.distance(lm_m3)) %>% as_tibble()
+cook_m3 <- cook.m3_mod %>% mutate(ID = row_number())
+
+cook.m4_mod <- data.frame(cooks_dist = cooks.distance(lm_m4)) %>% as_tibble()
+cook_m4 <- cook.m4_mod %>% mutate(ID = row_number())
+
+c1 <- ggplot(cook_m1, aes(x = ID, y = cooks_dist)) + 
+  geom_point()  + 
+  geom_point(aes(y = cooks_dist[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 1, linetype = "dotted") 
+  
+
+c2 <- ggplot(cook_m2, aes(x = ID, y = cooks_dist)) + 
+  geom_point()  + 
+  geom_point(aes(y = cooks_dist[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 1, linetype = "dotted") 
+
+c3 <- ggplot(cook_m3, aes(x = ID, y = cooks_dist)) + 
+  geom_point()  + 
+  geom_point(aes(y = cooks_dist[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 1, linetype = "dotted") 
+
+c4 <- ggplot(cook_m4, aes(x = ID, y = cooks_dist)) + 
+  geom_point()  + 
+  geom_point(aes(y = cooks_dist[26], x = 26), shape = 1, col = "red") +
+  geom_hline(yintercept = 1, linetype = "dotted") 
+
+
+```
+
+
+
+```{r, echo=FALSE, fig.width=7.5, fig.height=4, out.width="90%", fig.align='center'}
+grid.arrange(m1, m2, m3, m4, c1, c2, c3, c4, nrow = 2)
+```
+
+---
+
+## Cook's distance
+
+.blockquote-list[
+.bold[Y outlier] (1st from left): This red case has a very large residual value $r_{i}$ but it doesn't have high leverage. It is not very influential.
+
+.bold[X outlier] (2nd): This red case has a large negative standardized residual and large leverage, so it is very influential $\left(D_{i} \approx 100\right)$.
+
+.bold[X and Y outlier] (3rd and 4th):
+- The left case doesn't have an unusual standardized residual value though it has large leverage, so it isn't very influential because it follows the trend of the other cases.
+- The right case has the same leverage as the left case, but this time it has a larger standardized residual than the left case and it is deemed to be influential $\left.\left(D_{i}>3\right)\right)$.
+]
+
+
+---
+
+class: middle
+
+## Cook's distance
+
+.blockquote[
+.out-t[Guidelines for possible influence:]
+- Flag cases whose $D_{i}$ is really unusual (sticks out from the rest)
+- Flag cases whose $D_{i}>1$ for large data sets or $D_{i}>q f(0.5, p+1, n-p-1)$ for smaller data sets
+- for really big data sets: will be hard for one case to be overly influential
+- `ggResidpanel` uses another common cutoff: 4/n
+
+]
+
+---
+
+class: middle
+
+# Outlier strategy
+
+.blockquote-list.font90[
+(1) After EDA, fit potential model
+
+(2) Check residual plots, make transformations if needed, repeat 1-2
+
+(3) Check case-influence statistics. If an "outlier" is found, fit model with and without the case
+- Keep the case if conclusions don't change
+]
+
+.blockquote-list.font90[
+If conclusions change:
+- Omit case if part of a different population
+- if not in a different population, omit case if it has high leverage and report reduced predictor range
+- else, may need to learn more about the data collection to understand what makes the case different
+]
+
+---
+
+class: middle
+
+# Case influence disgnostics in R
+
+.blockquote[.bold[Base-R options]
+- Cook's distance vs. row number: `plot(my_lm, which = 4)`
+- Standardized residuals (y-axis) against leverage (x-axis) with contours given by Cook's distance: `plot (my_lm, which=5)`
+- add `id.n` to get row numbers for the $n$ most "extreme" cases
+]
+
+---
+
+class: middle
+
+# Case influence disgnostics in R
+
+.blockquote[.bold[ggResidpanel] package `resid_panel(my_lm, plots =c("cookd", "lev"))`:
+- `cookd`: Cook's distance vs. row number
+- `lev`: Standardized residuals (y-axis) against leverage (x-axis) with contours given by Cook's distance
+
+
+.bold[`resid_interact(my_lm, plots = c("cookd", "lev"))`:]
+- clickable plots
+]
+
+---
+
+# Case influence disgnostics in R
+
+.blockquote[.bold[`ggplot2` + `broom` option]
+
+```{r, eval=FALSE}
+# is not possible using moderndive yet!
+data_aug <- augment(my_lm)  # variables used in the lm
+# all variables in the lm data set
+regression_points <- augment(data = mydata, my_lm)
+```
+
+]
+
+--
+
+.blockquote[
+What is added?
+- `hat`: leverage
+- `cooksd`: Cook's distance
+- `.std.resid`: standardized residuals
+]
+
+---
+
+class: middle
+
+# Case influence disgnostics in R
+
+.blockquote[.bold[GGally]
+Case influence stats vs. predictors:
+
+`ggnostic (my_lm, columnsY =c(".std.resid", ".hat", ".cooksd"))`
+
+- `.std.resid`: standardized residual
+- `.hat`: leverage
+- `.cooksd`: Cook's distance
+]
+
+---
+
+# `Penguins` example
+
+.font90[
+```{r, fig.width=7.5, fig.height=3.7, out.width="80%", fig.align='center'}
+peng_interaction_lm <- lm(body_mass_g ~ bill_length_mm * species, data= penguins)
+plot(peng_interaction_lm, which = 4)
+```
+]
+---
+
+# `Penguins` example
+
+```{r, fig.width=7, fig.height=5, out.width="60%", fig.align='center'}
+plot(peng_interaction_lm, which = 5, id.n = 5)
+```
+
+---
+
+# Interactive plots
+
+```{r, fig.width=7.5, fig.height=5.5, out.width="80%", fig.align='center'}
+library(ggResidpanel)
+resid_interact(peng_interaction_lm, plots = c("cookd", "lev"))
+```
+
+
+```{r, echo=FALSE}
+detach("package:ggResidpanel")
+```
+
+---
+
+# `Penguins` example
+
+```{r}
+regression_points <- augment(peng_interaction_lm)
+regression_points <- regression_points %>% mutate(ID = row_number())
+```
+
+.font80.yellow-h[ID 292 has the largest Cook's distance and 2nd largest leverage]
+
+.code80[
+```{r, collapse=TRUE}
+regression_points %>%
+  slice_max(.cooksd, n = 2) %>% select(-1, -5, -8)
+```
+]
+
+.code80[
+```{r, collapse=TRUE}
+regression_points %>%
+  slice_max(.hat, n = 2) %>% select(-1, -5, -8)
+```
+]
+
+---
+
+# `Penguins` example
+
+
+.pull-left-40[
+
+.code80[
+```{r,  eval = FALSE, fig.width=7, fig.height=5, out.width="100%", fig.align='center'}
+library(GGally)
+ggnostic(peng_interaction_lm, 
+         columnsY = c(".std.resid", 
+                      ".hat",
+                      ".cooksd"))
+```
+]
+
+
+.blockquote.font60[
+- case 292 (largest Cook's D) has the second largest bill length 
+
+- case 185 has larger leverage (largest bill length) but smaller std. residual
+]
+
+]
+
+.pull-right-60[
+```{r, echo = FALSE}
+library(GGally)
+ggnostic(peng_interaction_lm, 
+         columnsY = c(".std.resid", ".hat", ".cooksd"))
+```
+
+]
+
+
+
+---
+
+# `Penguins` example
+
+- Case 292 does not have a concerning Cook's distance, but what if we want to check by fitting a model that excludes this case?
+
+```{r, echo=FALSE, out.width="60%", fig.align='center'}
+peng_interaction_lm_no292 <- update(peng_interaction_lm, subset = -292)
+
+lm_intercept_peng <- coef((peng_interaction_lm_no292))['(Intercept)']
+lm_intercept_peng1 <- coef((peng_interaction_lm_no292))['speciesChinstrap']
+
+lm_slope_1 <- coef(peng_interaction_lm_no292)['bill_length_mm']
+lm_slope_2 <- coef(peng_interaction_lm_no292)['bill_length_mm:speciesChinstrap']
+slope = lm_slope_1 + lm_slope_2
+intercept = lm_intercept_peng + lm_intercept_peng1
+
+library(palmerpenguins)
+ggplot(penguins, aes(x = bill_length_mm, 
+                     y = body_mass_g, 
+                     color = species)) +
+theme(legend.position = "bottom") +
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE, 
+             aes(color=species))+
+labs(title = "Regression of mass on bill length and species") +
+geom_point(aes(y = body_mass_g[294], x = bill_length_mm[294]), shape = 2, col = "black") +
+geom_abline(slope=lm_slope_1 + lm_slope_2, intercept= lm_intercept_peng + lm_intercept_peng1, col="black")
+
+
+```
+
+---
+
+# `Penguins` example
+
+
+```{r}
+# remove 292 and refit the model
+peng_interaction_lm_no292 <- update(peng_interaction_lm, subset = -292)
+get_regression_table(peng_interaction_lm_no292)
+```
+
+---
+
+# `Penguins` example
+
+.blockquote[
+- Removing case 292 makes the effect of bill length on mass larger for Chinstrap
+- closer to the slope of Adelie!
+]
+
+```{r}
+get_regression_table(peng_interaction_lm)
+```
+
+---
+
+# `Penguins` example
+.blockquote[
+- Removing this one case makes the interaction between species and bill length marginally insignificant $(\mathrm{F}=2.74, \mathrm{df}=2,335, \mathrm{p}=0.066)$ !
+- This case does seem to have some influence on the model.
+]
+
+```{r}
+anova(peng_interaction_lm_no292)
+```
+

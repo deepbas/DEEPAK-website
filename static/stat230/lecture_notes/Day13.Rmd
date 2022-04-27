@@ -428,7 +428,6 @@ class: middle
 .blockquote.font90[
 - .bold[Robust:] can violate and still get valid inference results
 - .bold[Normality:] the t-tests and CI for model parameters and the mean response are saved by the Central Limit Theorem when $\mathrm{n}$ is large, even if your subpopulation of responses are not normally distributed.
-- .bold[Not very robust:] can give misleading results if violated
 ]
 
 ---
@@ -439,6 +438,7 @@ class: middle
 
 
 .blockquote.font90[
+.bold[Not very robust:] can give misleading results if violated
 - .bold[Linearity:] if the mean function is wrong then your estimated effects, mean response, or predicted response will be biased!
 - .bold[Constant variance and independence:] if you are not correctly modeling your response variability, then your SEs will not be an accurate reflection of your actual uncertainty (meaning CIs/tests might be misleading)
 - .bold[Normality only when computing prediction intervals:] these intervals need the normal subpopulation assumption to hold
