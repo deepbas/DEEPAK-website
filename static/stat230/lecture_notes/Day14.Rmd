@@ -1070,9 +1070,12 @@ geom_abline(slope=lm_slope_1 + lm_slope_2, intercept= lm_intercept_peng + lm_int
 # `Penguins` example
 
 
-```{r}
+```{r, eval=FALSE}
 # remove 292 and refit the model
 peng_interaction_lm_no292 <- update(peng_interaction_lm, subset = -292)
+```
+
+```{r}
 get_regression_table(peng_interaction_lm_no292)
 ```
 
@@ -1093,7 +1096,7 @@ get_regression_table(peng_interaction_lm)
 
 # `Penguins` example
 .blockquote[
-- Removing this one case makes the interaction between species and bill length marginally insignificant $(\mathrm{F}=2.74, \mathrm{df}=2,335, \mathrm{p}=0.066)$ !
+- Removing this one case makes the interaction between species and bill length significant $(\mathrm{F}=4.28, \mathrm{df}= 335, \mathrm{p}=0.01449)$ !
 - This case does seem to have some influence on the model.
 ]
 
