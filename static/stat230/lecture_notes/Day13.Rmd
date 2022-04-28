@@ -84,8 +84,6 @@ num_obs = 25
 x_vals1 = runif(num_obs, 0, 10)
 x_vals2 = rbeta(num_obs, 1,5)*10
 sim_data = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = 3, beta_1 = 2, beta_2= 1.6, sigma = 3)
-
-
 ```
 
 
