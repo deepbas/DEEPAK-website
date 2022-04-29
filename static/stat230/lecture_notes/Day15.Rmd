@@ -1,0 +1,526 @@
+---
+title: "MLR Partial Residual Plots"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+#library(MASS)
+library(broom)
+library(car)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(1234)
+
+sim_mlr = function(x1, x2, beta_0 = 2, beta_1 = 3, beta_2 = 2, sigma = 3) {
+  n = length(x1)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x1 + beta_2 * x2 + epsilon
+  data.frame(predictor1 = x1, predictor2 = x2, response = y)
+}
+
+num_obs = 25
+x_vals1 = runif(num_obs, 0, 10)
+x_vals2 = rbeta(num_obs, 1,5)*10
+sim_data = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = 3, beta_1 = 2, beta_2= 1.6, sigma = 3)
+
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[MLR Partial Residual Plots]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+library(gg3D)
+ggplot(sim_data, aes(predictor1, y=predictor2, z=response)) + 
+  theme_void()+
+  axes_3D() +
+  stat_3D()
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+<br>
+.blockquote-list[
+Partial Residual plots
+]
+
+]
+
+---
+
+class: middle
+
+# Supervisor dataset
+
+.blockquote.font80[
+- Employees in a large company were asked to rate their immediate supervisor
+
+- .bold[Response:] overall rating on a scale of 0 (bad) to 100 (good)
+
+- Predictors from survey questions measured on an agreement scale $(0=$ completely disagree to $100=$ completely agree)
+
+  + `raises`: "Your supervisor bases raises on performance."
+  + `learn`: "Your supervisor provides opportunities to learn new things."
+  + `advance`: "I am not satisfied with the rate I am advancing in the company."
+]
+
+
+---
+
+# Supervisor dataset
+
+```{r}
+library(dplyr)
+supervisor <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/supervisor.csv")
+glimpse(supervisor)
+```
+
+
+---
+
+```{r, echo=FALSE, out.width="100%", fig.align='center', fig.width=9, fig.height=5}
+library(GGally)
+ggpairs(supervisor,
+ columns = c("overall", "learn", "raises", "advance"),
+ lower = list(continuous = wrap("smooth")))
+```
+
+---
+
+# Supervisor satisfaction
+
+
+```{r}
+supervisor_lm <- lm(overall ~ learn + raises + advance, data = supervisor)
+get_regression_table(supervisor_lm)
+```
+
+.blockquote[
+- The estimated effect of `advance` is negative!
+$$\hat{\mu}_{\text {overall } \mid x}=17.7+0.548 \text { learn }+0.566 \text { raises }-0.477 \text { advance }$$
+]
+
+
+---
+
+# Supervisor satisfaction
+
+.pull-left[
+
+```{r, echo=FALSE}
+ggplot(supervisor, aes(x = advance, 
+                     y = overall)) +
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE) +
+labs(title = "Regression of overall on advance score")+
+theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+
+```
+
+]
+.pull-right[
+<br>
+<br>
+.blockquote[
+Bivariate scatterplot of `overall` against `advance`:
+- Across all `learn` and `raises` ratings, increases in the advance rating is associated with an increase in mean overall rating.
+]
+]
+
+---
+
+# Supervisor satisfaction
+
+.pull-left[
+
+```{r, echo=FALSE}
+ggplot(supervisor, aes(x = advance, 
+                     y = overall)) +
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE) +
+labs(title = "Regression of overall on advance score")+
+theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+
+```
+
+]
+.pull-right[
+<br>
+<br>
+.blockquote[
+.bold[MLR model:]
+- Holding `learn` and `raises` ratings fixed, a 10 point increase in the `advance` rating is associated with a decrease in the mean `overall` rating of $0.7$ to $8.8$ points.
+]
+]
+
+---
+
+class: middle
+
+# Visualizing SLR
+
+.blockquote[
+- The main question is how is the mean of $Y$ associated with $x$ ?
+$$\mu_{y \mid x}=f\left(x, \beta^{\prime} s\right)=? ?$$
+- A scatterplot of $Y$ vs. $x$ helps us see this relationship in an SLR model (which doesn't account for any other predictors).
+]
+
+---
+
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+
+class: middle
+
+# Visualizing MLR
+
+.blockquote[
+- The main question is how is the mean of $Y$ associated with, say, $x_{1}$ and $x_{2}$
+
+$$\mu_{y \mid x_{1}, x_{2}}=f\left(x_{1}, x_{2}, \beta^{\prime} s\right)=? ?$$
+- We need a 3-d graphic to see this relationship
+
+]
+
+---
+
+
+# Visualizing MLR
+
+.blockquote-list[
+
+A 2-d scatterplot of $Y$ vs. $x_{1}$ doesn't hold $x_{2}$ fixed 
+- Scatterplot of `overall` and `advance` is positive
+- because of this, a simple scatterplot doesn't necessary show the effect of $x_{1}$ in our MLR model
+- The relationship between `overall` and `advance` is negative, holding `learn` and `raises` fixed.
+
+]
+
+--
+
+.out-t.center[Why do these differ?]
+
+---
+
+class: middle
+
+# Scatterplot vs. MLR effect
+
+.pull-left[
+```{r, echo=FALSE}
+supervisor <- supervisor %>% mutate(learnQuartile = as.factor(ntile(learn, n = 4)))
+
+ggplot(supervisor, aes(x = advance, 
+                      y = overall,
+                     color = learnQuartile)) +
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE) +
+labs(title = "Regression of overall on advance score holding learn 'fixed'")+
+theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+
+```
+
+]
+.pull-right[
+<br>
+.blockquote[
+For people with similar `learn` ratings (quartile)
+- lower `advance` ratings are associated with higher overall rating
+- this is the .bold[negative] effect of `advance` in the MLR!
+]
+
+]
+
+---
+
+class: middle
+
+# Scatterplot vs. MLR effect
+
+.pull-left[
+```{r, echo=FALSE}
+supervisor <- supervisor %>% mutate(learnQuartile = as.factor(ntile(learn, n = 4)))
+
+ggplot(supervisor, aes(x = advance, 
+                      y = overall,
+                     color = learnQuartile)) +
+geom_point() +
+geom_smooth(method = "lm",
+             se = FALSE) +
+labs(title = "Regression of overall on advance score holding learn 'fixed'")+
+theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+
+]
+.pull-right[
+<br>
+.blockquote[
+Why does `overall` against `advance` scatterplot show a positive trend?
+- As `learn` increases so does `advance` (positively correlated predictors)
+- As `learn` increases, it increases `overall` at a faster rate than the decrease in `overall` due to `advance`
+]
+
+]
+
+---
+
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+# Visualizing MLR: Partial Residual plot
+
+.blockquote-list[
+- The main question is how is the mean of $Y$ associated with, say, $x_{1}$ and $x_{2}$
+$$\mu_{y \mid x_{1}, x_{2}}=f\left(x_{1}, x_{2}, \beta^{\prime}s\right)=? ?$$
+- One was to visualize the effect of $x_{1}$ on $y$ in a MLR model is to plot $x_{1}$'s partial residuals against $x_{1}$ :
+$$\text { pres }_{1, i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{2} x_{2, i}\right)$$
+where $\hat{\beta}^{\prime}$ s come from the MLR of $y$ on $x_{1}$ and $x_{2}$.
+- Partial residuals "take away" the (linear) effect of $x_{2}$ from $y$ to help us see the effect of $x_{1}$ after accounting for $x_{2}$
+]
+
+---
+
+class: middle
+
+# Visualizing MLR: Partial Residual plot
+
+.blockquote[
+- Partial residuals for $x_{2}$ look like
+$$\operatorname{pres}_{2, i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{1, i}\right)$$
+- Generalizes to larger MLR models
+]
+
+---
+
+# Partial residual plot in R using `car` package
+
+.blockquote.font80[
+`crp(my_lm)`
+- add `layout` to control rows/columns layout
+- add `id = TRUE` to `ID` 2 extreme residual and 2 extreme predictor values
+- add `smooth = FALSE` to remove the smoother
+
+`crp` plots $pres_{i}-\overline{pres}$ on y-axis so that these residuals are centered around 0 and have the feel of the "usual" residuals.
+
+`crp` means "component + residual plot" since
+- residual: $r_{i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{1, i}+\hat{\beta}_{2} x_{2, i}\right)$
+- component (for $x_{1}$ ): $\hat{\beta}_{1} x_{1, i}$
+$$\operatorname{pres}_{1, i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{2} x_{2, i}\right)=r_{i}+\hat{\beta}_{1} x_{1}$$
+]
+
+---
+
+# Supervisor satisfaction
+
+Now we see the effect of `advance` is negative after accounting for `learn` and `raises`
+
+.code80[
+```{r, out.width="70%", fig.align='center', fig.width=7}
+library(car)
+crp(supervisor_lm, layout = c(1,3))
+```
+]
+
+---
+
+# Visualizing MLR: Partial Residual plot
+
+.blockquote-list.font80[
+The slope of the least squares line in the partial residuals in this plot for $x_{j}$ will equal its estimated (linear) effect $\hat{\beta}_{j}$ in the MLR
+]
+
+<br>
+
+.blockquote[
+.bold[Using partial residual plots]:
+- We can see the "effect" of $x_{j}$ after adjusting for other model terms.
+- We can also see the variation in $y$ that remains after adjusting for other model terms.
+- We can look for outliers that could be affecting the estimated effect of $x_{j}$
+- We can see if the effect of $x_{j}$ is correctly modeled, signs of non-linearity and/or non-constant variance suggest we need to correct our model form.
+]
+
+---
+
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the rest of in class activity file
+- Complete the activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+

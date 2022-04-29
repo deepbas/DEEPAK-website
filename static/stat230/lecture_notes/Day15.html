@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MLR Partial Residual Plots</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[MLR Partial Residual Plots]
+
+### .fancy[Stat 230]
+
+ April 29 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day15_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+Partial Residual plots
+]
+
+]
+
+---
+
+class: middle
+
+# Supervisor dataset
+
+.blockquote.font80[
+- Employees in a large company were asked to rate their immediate supervisor
+
+- .bold[Response:] overall rating on a scale of 0 (bad) to 100 (good)
+
+- Predictors from survey questions measured on an agreement scale `\((0=\)` completely disagree to `\(100=\)` completely agree)
+
+  + `raises`: "Your supervisor bases raises on performance."
+  + `learn`: "Your supervisor provides opportunities to learn new things."
+  + `advance`: "I am not satisfied with the rate I am advancing in the company."
+]
+
+
+---
+
+# Supervisor dataset
+
+
+```r
+library(dplyr)
+supervisor &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/supervisor.csv")
+glimpse(supervisor)
+```
+
+```
+Rows: 30
+Columns: 7
+$ overall    &lt;int&gt; 43, 63, 71, 61, 81, 43, 58, 71, 72, 67, 64, 67, 69, 68, 77,…
+$ complaints &lt;int&gt; 51, 64, 70, 63, 78, 55, 67, 75, 82, 61, 53, 60, 62, 83, 77,…
+$ privileges &lt;int&gt; 30, 51, 68, 45, 56, 49, 42, 50, 72, 45, 53, 47, 57, 83, 54,…
+$ learn      &lt;int&gt; 39, 54, 69, 47, 66, 44, 56, 55, 67, 47, 58, 39, 42, 45, 72,…
+$ raises     &lt;int&gt; 61, 63, 76, 54, 71, 54, 66, 70, 71, 62, 58, 59, 55, 59, 79,…
+$ critical   &lt;int&gt; 92, 73, 86, 84, 83, 49, 68, 66, 83, 80, 67, 74, 63, 77, 77,…
+$ advance    &lt;int&gt; 45, 47, 48, 35, 47, 34, 35, 41, 31, 41, 34, 41, 25, 35, 46,…
+```
+
+
+---
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-3-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Supervisor satisfaction
+
+
+
+```r
+supervisor_lm &lt;- lm(overall ~ learn + raises + advance, data = supervisor)
+get_regression_table(supervisor_lm)
+```
+
+```
+# A tibble: 4 × 7
+  term      estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept   17.7      10.2        1.73   0.096   -3.37    38.7  
+2 learn        0.548     0.184      2.99   0.006    0.171    0.926
+3 raises       0.566     0.214      2.64   0.014    0.125    1.01 
+4 advance     -0.477     0.196     -2.43   0.022   -0.881   -0.074
+```
+
+.blockquote[
+- The estimated effect of `advance` is negative!
+`$$\hat{\mu}_{\text {overall } \mid x}=17.7+0.548 \text { learn }+0.566 \text { raises }-0.477 \text { advance }$$`
+]
+
+
+---
+
+# Supervisor satisfaction
+
+.pull-left[
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-5-1.svg" width="100%" /&gt;
+
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+.blockquote[
+Bivariate scatterplot of `overall` against `advance`:
+- Across all `learn` and `raises` ratings, increases in the advance rating is associated with an increase in mean overall rating.
+]
+]
+
+---
+
+# Supervisor satisfaction
+
+.pull-left[
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-6-1.svg" width="100%" /&gt;
+
+]
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+.blockquote[
+.bold[MLR model:]
+- Holding `learn` and `raises` ratings fixed, a 10 point increase in the `advance` rating is associated with a decrease in the mean `overall` rating of `\(0.7\)` to `\(8.8\)` points.
+]
+]
+
+---
+
+class: middle
+
+# Visualizing SLR
+
+.blockquote[
+- The main question is how is the mean of `\(Y\)` associated with `\(x\)` ?
+`$$\mu_{y \mid x}=f\left(x, \beta^{\prime} s\right)=? ?$$`
+- A scatterplot of `\(Y\)` vs. `\(x\)` helps us see this relationship in an SLR model (which doesn't account for any other predictors).
+]
+
+---
+
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+<div class="countdown" id="timer_626c0714" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+
+class: middle
+
+# Visualizing MLR
+
+.blockquote[
+- The main question is how is the mean of `\(Y\)` associated with, say, `\(x_{1}\)` and `\(x_{2}\)`
+
+`$$\mu_{y \mid x_{1}, x_{2}}=f\left(x_{1}, x_{2}, \beta^{\prime} s\right)=? ?$$`
+- We need a 3-d graphic to see this relationship
+
+]
+
+---
+
+
+# Visualizing MLR
+
+.blockquote-list[
+
+A 2-d scatterplot of `\(Y\)` vs. `\(x_{1}\)` doesn't hold `\(x_{2}\)` fixed 
+- Scatterplot of `overall` and `advance` is positive
+- because of this, a simple scatterplot doesn't necessary show the effect of `\(x_{1}\)` in our MLR model
+- The relationship between `overall` and `advance` is negative, holding `learn` and `raises` fixed.
+
+]
+
+--
+
+.out-t.center[Why do these differ?]
+
+---
+
+class: middle
+
+# Scatterplot vs. MLR effect
+
+.pull-left[
+&lt;img src="Day15_files/figure-html/unnamed-chunk-7-1.svg" width="100%" /&gt;
+
+]
+.pull-right[
+&lt;br&gt;
+.blockquote[
+For people with similar `learn` ratings (quartile)
+- lower `advance` ratings are associated with higher overall rating
+- this is the .bold[negative] effect of `advance` in the MLR!
+]
+
+]
+
+---
+
+class: middle
+
+# Scatterplot vs. MLR effect
+
+.pull-left[
+&lt;img src="Day15_files/figure-html/unnamed-chunk-8-1.svg" width="100%" /&gt;
+
+]
+.pull-right[
+&lt;br&gt;
+.blockquote[
+Why does `overall` against `advance` scatterplot show a positive trend?
+- As `learn` increases so does `advance` (positively correlated predictors)
+- As `learn` increases, it increases `overall` at a faster rate than the decrease in `overall` due to `advance`
+]
+
+]
+
+---
+
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+<div class="countdown" id="timer_626c0779" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Visualizing MLR: Partial Residual plot
+
+.blockquote-list[
+- The main question is how is the mean of `\(Y\)` associated with, say, `\(x_{1}\)` and `\(x_{2}\)`
+`$$\mu_{y \mid x_{1}, x_{2}}=f\left(x_{1}, x_{2}, \beta^{\prime}s\right)=? ?$$`
+- One was to visualize the effect of `\(x_{1}\)` on `\(y\)` in a MLR model is to plot `\(x_{1}\)`'s partial residuals against `\(x_{1}\)` :
+`$$\text { pres }_{1, i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{2} x_{2, i}\right)$$`
+where `\(\hat{\beta}^{\prime}\)` s come from the MLR of `\(y\)` on `\(x_{1}\)` and `\(x_{2}\)`.
+- Partial residuals "take away" the (linear) effect of `\(x_{2}\)` from `\(y\)` to help us see the effect of `\(x_{1}\)` after accounting for `\(x_{2}\)`
+]
+
+---
+
+class: middle
+
+# Visualizing MLR: Partial Residual plot
+
+.blockquote[
+- Partial residuals for `\(x_{2}\)` look like
+`$$\operatorname{pres}_{2, i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{1, i}\right)$$`
+- Generalizes to larger MLR models
+]
+
+---
+
+# Partial residual plot in R using `car` package
+
+.blockquote.font80[
+`crp(my_lm)`
+- add `layout` to control rows/columns layout
+- add `id = TRUE` to `ID` 2 extreme residual and 2 extreme predictor values
+- add `smooth = FALSE` to remove the smoother
+
+`crp` plots `\(pres_{i}-\overline{pres}\)` on y-axis so that these residuals are centered around 0 and have the feel of the "usual" residuals.
+
+`crp` means "component + residual plot" since
+- residual: `\(r_{i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1} x_{1, i}+\hat{\beta}_{2} x_{2, i}\right)\)`
+- component (for `\(x_{1}\)` ): `\(\hat{\beta}_{1} x_{1, i}\)`
+`$$\operatorname{pres}_{1, i}=y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{2} x_{2, i}\right)=r_{i}+\hat{\beta}_{1} x_{1}$$`
+]
+
+---
+
+# Supervisor satisfaction
+
+Now we see the effect of `advance` is negative after accounting for `learn` and `raises`
+
+.code80[
+
+```r
+library(car)
+crp(supervisor_lm, layout = c(1,3))
+```
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-9-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Visualizing MLR: Partial Residual plot
+
+.blockquote-list.font80[
+The slope of the least squares line in the partial residuals in this plot for `\(x_{j}\)` will equal its estimated (linear) effect `\(\hat{\beta}_{j}\)` in the MLR
+]
+
+&lt;br&gt;
+
+.blockquote[
+.bold[Using partial residual plots]:
+- We can see the "effect" of `\(x_{j}\)` after adjusting for other model terms.
+- We can also see the variation in `\(y\)` that remains after adjusting for other model terms.
+- We can look for outliers that could be affecting the estimated effect of `\(x_{j}\)`
+- We can see if the effect of `\(x_{j}\)` is correctly modeled, signs of non-linearity and/or non-constant variance suggest we need to correct our model form.
+]
+
+---
+
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;3&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the rest of in class activity file
+- Complete the activity in your group
+]
+]
+
+<div class="countdown" id="timer_626c0771" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
