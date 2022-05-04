@@ -555,7 +555,7 @@ class: middle
 
 .bold[Classification problem]
 - Are you going to default on your loan? Plug your employment, loan history, personal background in to a model and predict default (yes/no).
-- They didn't care about parameter interpretation!
+- We don't care about parameter interpretation!
 ]
 
 
@@ -566,7 +566,7 @@ class: middle
 # Thoughts on Variable Selection
 
 .blockquote[
-- Modeling goals 1 and 3 often involve determining the most "statistically significant" variables.
+- Modeling goals 1 and 2 often involve determining the most "statistically significant" variables.
 - A model with $p$ terms will have $2^{p}$ possible models!.
 - Usually, when faced with many variables, there is no one best model!
 - But some models are better than others. You need to (correctly) justify the choice of your "best" model.
