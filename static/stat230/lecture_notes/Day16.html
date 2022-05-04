@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>MLR Collinearity</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[MLR Collinearity and Variable Selection]
+
+### .fancy[Stat 230]
+
+ May 04 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day16_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+- Issues with correlated predictors
+- Collinearity
+- Variance Inflation Factor
+- Model selection strategies 
+]
+
+]
+
+---
+
+# Correlated predictors
+
+
+
+.blockquote.font90[
+It can be hard to "see" the MLR effect of a predictor in basic EDA
+- e.g. effect of `advance` in the supervisor MLR (partial residual plot slides)
+]
+
+&lt;br&gt;
+--
+
+.blockquote.font90[
+Interpretation of MLR effects can be challenging
+- e.g. can we really "hold `learn` rating constant" when interpreting the effect of `advance` if they are correlated?
+]
+
+&lt;br&gt;
+
+--
+
+.blockquote.font90[
+Parameter estimates have larger SE's than if predictors weren't correlated
+- can make it harder to find "statistically significant" predictors
+]
+
+---
+
+class: middle
+
+# Collinearity
+
+.blockquote[
+Two predictors `\(x_{1}\)` and `\(x_{2}\)` are (exactly) collinear if for all cases `\(i=1, \ldots, n\)` :
+`$$c_{1} x_{1, i}+c_{2} x_{2, i}=c \quad \Rightarrow \quad x_{1, i}=\left(c-c_{2} x_{2, i}\right) / c_{1}$$`
+where `\(c_{1}, c_{2}, c\)` are all known constants.
+
+&lt;br&gt;
+
+.bold[Example:] `\(x_{1}=\)` height in inches and `\(x_{2}=\)` height in feet
+- `\(x_{1, i}=12 x_{2, i}\)` so we could have `\(c=0, c_{2}=-12, c_{1}=1\)`
+]
+
+---
+
+class: middle
+
+# Collinearity
+
+.blockquote[
+Can extend collinearity to more than two terms:
+`$$c_{1} x_{1, i}+c_{2} x_{2, i}+\cdots+c_{p} x_{p, i}=c$$`
+&lt;br&gt;
+
+.bold[Example:] `\(x_{\% \text { frosh }}+x_{\% \text { soph }}+x_{\% j u n i o r}+x_{\% \text { senior }}=100 \%\)`
+- Terms that are approximately collinear will have high correlation and will show a linear relationship in the scatterplot matrix.
+]
+
+---
+
+# Variance Inflation Factor (VIF)
+
+.blockquote-list.font80[
+VIF for predictor `\(x_{i}\)` is equal to
+`$$V I F_{i}=\frac{1}{1-R_{i}^{2}}$$`
+`\(R_{i}^{2}\)` is the R-squared value for the regression of `\(x_{i}\)` on all other model predictors
+]
+
+&lt;br&gt;
+
+.blockquote.font80[
+`\(R_{i}^{2} \approx 0\)` means `\(V I F_{i} \approx 1\)`
+- Little collinearity between `\(x_{i}\)` and other terms
+
+`\(R_{i}^{2} \approx 0.5\)` means `\(V I F_{i} \approx 2\)`
+- moderate collinearity between `\(x_{i}\)` and other terms
+
+`\(R_{i}^{2} \approx 0.9\)` means `\(V I F_{i} \approx 10\)`
+- lots of collinearity between `\(x_{i}\)` and other terms
+]
+
+
+---
+
+# Why "Variance inflation" factor?
+
+.blockquote-list[
+The variance (squared SE) of `\(\hat{\beta}_{i}\)` is equal to
+
+`$$S E\left(\hat{\beta}_{i}\right)^{2}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} \frac{1}{1-R_{i}^{2}}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} V I F_{i}$$`
+]
+
+.yellow-h[Implications:]
+
+.pull-left[
+
+.blockquote[
+No collinearity in `\(x_{i}\)`
+`$$\Rightarrow V I F_{i}=1$$`
+`$$\Rightarrow S E\left(\hat{\beta}_{i}\right)=\frac{\hat{\sigma}}{\sqrt{(n-1) s_{i}^{2}}}$$`
+]
+]
+
+.pull-right[
+.blockquote[
+More collinearity in `\(x_{i}\)`
+`$$\Rightarrow V I F_{i} &gt; 1$$`
+`$$\Rightarrow S E\left(\hat{\beta}_{i}\right)&gt;\frac{\hat{\sigma}}{\sqrt{(n-1) s_{i}^{2}}}$$`
+
+]
+]
+
+---
+
+# Why "Variance inflation" factor?
+
+
+`$$S E\left(\hat{\beta}_{i}\right)^{2}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} \frac{1}{1-R_{i}^{2}}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} V I F_{i}$$`
+
+.blockquote[
+- higher `\(S E\left(\hat{\beta}_{i}\right)\)`
+- more uncertainty when estimating `\(\beta_{i}\)`
+- larger confidence intervals
+- smaller t-test stats and larger p-values
+
+]
+
+---
+
+# VIF in R using `car` package
+
+.blockquote[
+- `vif(my_lm)`
+
+.bold[Generalized VIF.]
+- If `my_lm` used a categorical predictor with more than 2 levels, `\(R\)` will report Generalized VIF.
+- It's exactly the same thing as VIF for single terms but is a sort of cumulative VIF across all levels of the factor variable (across all indicator variables for the factor).
+
+.out-t[VIF is influenced by outliers.]
+- Make sure to check for outliers before putting too much "weight" on VIF values.
+
+]
+
+---
+
+# Supervisor satisfaction
+
+.blockquote.font80[
+.bold[Question:] What supervisor characteristics are most important to employees in a large company who were asked to rate their immediate supervisor
+
+- .bold[Response:] overall rating on a scale of 0 (bad) to 100 (good)
+- .bold[Predictors] from survey questions measured on an agreement scale `\((0=\)` completely disagree to `\(100=\)` completely agree)
+]
+
+&lt;br&gt;
+
+Predictors | Description
+-------- | -------------
+raises |  "Your supervisor bases raises on performance."
+learn | "Your supervisor provides opportunities to learn new things."
+advance | "I am not satisfied with the rate I am advancing in the company."
+complaints | "Your supervisor handles employee complaints appropriately."
+privileges | "Your supervisor allows special privileges."
+critical | "Your supervisor is too critical of poor performance."
+
+
+---
+
+&lt;img src="Day16_files/figure-html/unnamed-chunk-3-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+*library(corrr)
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+*library(scico)
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+*library(paletteer)
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+*supervisor   # only numerical variables
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+
+```
+   overall complaints privileges learn raises critical advance
+1       43         51         30    39     61       92      45
+2       63         64         51    54     63       73      47
+3       71         70         68    69     76       86      48
+4       61         63         45    47     54       84      35
+5       81         78         56    66     71       83      47
+6       43         55         49    44     54       49      34
+7       58         67         42    56     66       68      35
+8       71         75         50    55     70       66      41
+9       72         82         72    67     71       83      31
+10      67         61         45    47     62       80      41
+11      64         53         53    58     58       67      34
+12      67         60         47    39     59       74      41
+13      69         62         57    42     55       63      25
+14      68         83         83    45     59       77      35
+15      77         77         54    72     79       77      46
+16      81         90         50    72     60       54      36
+17      74         85         64    69     79       79      63
+18      65         60         65    75     55       80      60
+19      65         70         46    57     75       85      46
+20      50         58         68    54     64       78      52
+21      50         40         33    34     43       64      33
+22      64         61         52    62     66       80      41
+23      53         66         52    50     63       80      37
+24      40         37         42    58     50       57      49
+25      63         54         42    48     66       75      33
+26      66         77         66    63     88       76      72
+27      78         75         58    74     80       78      49
+28      48         57         44    45     51       83      38
+29      85         85         71    71     77       74      55
+30      82         82         39    59     64       78      39
+```
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %&gt;%  # only numerical variables
+* correlate()
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+
+```
+# A tibble: 7 × 8
+  term       overall complaints privileges  learn raises critical advance
+  &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+1 overall     NA          0.825      0.426  0.624  0.590    0.156   0.155
+2 complaints   0.825     NA          0.558  0.597  0.669    0.188   0.225
+3 privileges   0.426      0.558     NA      0.493  0.445    0.147   0.343
+4 learn        0.624      0.597      0.493 NA      0.640    0.116   0.532
+5 raises       0.590      0.669      0.445  0.640 NA        0.377   0.574
+6 critical     0.156      0.188      0.147  0.116  0.377   NA       0.283
+7 advance      0.155      0.225      0.343  0.532  0.574    0.283  NA    
+```
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %&gt;%  # only numerical variables
+  correlate() %&gt;%
+* stretch()
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+
+```
+# A tibble: 49 × 3
+   x          y               r
+   &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;
+ 1 overall    overall    NA    
+ 2 overall    complaints  0.825
+ 3 overall    privileges  0.426
+ 4 overall    learn       0.624
+ 5 overall    raises      0.590
+ 6 overall    critical    0.156
+ 7 overall    advance     0.155
+ 8 complaints overall     0.825
+ 9 complaints complaints NA    
+10 complaints privileges  0.558
+# … with 39 more rows
+```
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %&gt;%  # only numerical variables
+  correlate() %&gt;%
+  stretch() %&gt;%
+* ggplot(aes(x, y, fill = r))
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+&lt;img src="Day16_files/figure-html/cor-heatmap_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %&gt;%  # only numerical variables
+  correlate() %&gt;%
+  stretch() %&gt;%
+  ggplot(aes(x, y, fill = r)) +
+* geom_tile()
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+&lt;img src="Day16_files/figure-html/cor-heatmap_auto_08_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %&gt;%  # only numerical variables
+  correlate() %&gt;%
+  stretch() %&gt;%
+  ggplot(aes(x, y, fill = r)) +
+  geom_tile() +
+* theme(text = element_text(size = 8))
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+&lt;img src="Day16_files/figure-html/cor-heatmap_auto_09_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %&gt;%  # only numerical variables
+  correlate() %&gt;%
+  stretch() %&gt;%
+  ggplot(aes(x, y, fill = r)) +
+  geom_tile() +
+  theme(text = element_text(size = 8))+
+* geom_text(aes(label = as.character(fashion(r))), size = 3)
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+&lt;img src="Day16_files/figure-html/cor-heatmap_auto_10_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Correlation heatmaps
+.panel1-cor-heatmap-auto[
+
+```r
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %&gt;%  # only numerical variables
+  correlate() %&gt;%
+  stretch() %&gt;%
+  ggplot(aes(x, y, fill = r)) +
+  geom_tile() +
+  theme(text = element_text(size = 8))+
+  geom_text(aes(label = as.character(fashion(r))), size = 3) +
+* scale_fill_paletteer_c("scico::roma",
+*                        limits = c(-1, 1),
+*                        direction = -1)
+```
+]
+ 
+.panel2-cor-heatmap-auto[
+&lt;img src="Day16_files/figure-html/cor-heatmap_auto_11_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-cor-heatmap-auto {
+  color: black;
+  width: 32.6666666666667%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-cor-heatmap-auto {
+  color: black;
+  width: 65.3333333333333%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-cor-heatmap-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+
+class: middle
+
+# Example: supervisor satisfaction
+
+.blockquote[
+All pairwise relationships show some degree of positive association
+- moderate/strong correlations between `overall` and the predictors `complaints`, `learn`, and `raises`
+- `raises` has moderate/strong correlation with all but one other predictor
+]
+
+&lt;br&gt;
+
+
+---
+
+# Fit model
+
+Let's model `overall` rating as a function of all predictors
+
+.code80[
+
+```r
+library(moderndive)
+supervisor_lm &lt;- lm(overall ~ complaints + privileges + learn + raises 
+                    + critical + advance, data = supervisor)
+get_regression_table(supervisor_lm)
+```
+
+```
+# A tibble: 7 × 7
+  term       estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept    10.8      11.6       0.931   0.362  -13.2     34.8  
+2 complaints    0.613     0.161     3.81    0.001    0.28     0.946
+3 privileges   -0.073     0.136    -0.538   0.596   -0.354    0.208
+4 learn         0.32      0.169     1.90    0.07    -0.028    0.669
+5 raises        0.082     0.221     0.369   0.715   -0.376    0.54 
+6 critical      0.038     0.147     0.261   0.796   -0.266    0.342
+7 advance      -0.217     0.178    -1.22    0.236   -0.586    0.152
+```
+]
+
+.out-t[Only complaints is statistically significant at the 5% level after accounting for other terms]
+
+---
+
+# Example: supervisor satisfaction
+
+
+```r
+library(car)
+vif(supervisor_lm)
+```
+
+```
+complaints privileges      learn     raises   critical    advance 
+  2.667060   1.600891   2.271043   3.078226   1.228109   1.951591 
+```
+
+.blockquote[
+If goal is to find the variables that are most predictive of `overall` rating:
+- We need to reduce the number of insignificant terms and redundant terms.
+]
+
+.out-t[Let's test whether `privileges`, `raises` and `critical` are needed (high p-values, high VIF for raises)]
+
+---
+
+# Example: supervisor satisfaction
+
+
+```r
+supervisor_lm_red &lt;- lm(overall ~ complaints + learn + advance, data = supervisor)
+anova(supervisor_lm_red, supervisor_lm)
+```
+
+```
+Analysis of Variance Table
+
+Model 1: overall ~ complaints + learn + advance
+Model 2: overall ~ complaints + privileges + learn + raises + critical + 
+    advance
+  Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+1     26 1179.1                           
+2     23 1149.0  3    30.109 0.2009 0.8947
+```
+
+
+.out-t[With `complaints`, `learn` and `advance` already in the model, `raises`, `privileges` and `critical` are statistically insignificant (F = 2.01, df=3,23, p = 0.895).]
+
+---
+
+# Example: supervisor satisfaction
+
+.code80[
+
+```r
+get_regression_table(supervisor_lm_red)
+# A tibble: 4 × 7
+  term       estimate std_error statistic p_value lower_ci upper_ci
+  &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 intercept    13.6       7.54       1.8    0.084   -1.93    29.1  
+2 complaints    0.623     0.118      5.27   0        0.38     0.866
+3 learn         0.312     0.154      2.03   0.053   -0.005    0.629
+4 advance      -0.187     0.145     -1.29   0.208   -0.485    0.111
+*vif(supervisor_lm_red)
+complaints      learn    advance 
+  1.582432   2.094593   1.420359 
+```
+]
+
+.blockquote.font80[
+`complaints` is the most statistically significant term and has the largest coefficient effect estimate:
+- a 10 point increase in how a supervisor handles `complaints` is associated with a `\(6.2\)` point increase in mean `overall` rating, holding other predictors fixed.
+
+`learn` is somewhat statistically significant and it's effect is about half the size of `complaints`:
+- a 10 point increase in how a supervisor provides opportunities to learn new things is associated with a `\(3.1\)` point increase in mean `overall` rating, holding other predictors fixed.
+]
+
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+<div class="countdown" id="timer_6272950e" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+# SLR/MLR modeling strategy
+
+.blockquote-list.font80[
+1. Identify objectives of analysis
+
+2. Understand your data: EDA, graphical/numerical summaries, clean up data, consider missing data issues
+
+3. Consider if transformations are needed.
+
+4. Fit "rich" model (with many terms), check assumptions, reconsider transformations, check outliers.
+  - can be an iterative process (rethinking transformations, outliers)
+  
+5. Once a suitable large model is found, if needed, check for collinearity and use variable selection techniques to reduce the number of model terms.
+
+6. Check assumptions/outliers, proceed with needed inference/interpretation (CI, PI, etc)
+]
+
+---
+
+# Consider your modeling objective
+
+.blockquote-list[
+"The single most important tool in selecting a subset of variables is the analyst's knowledge of the area under study and of each of the variables."
+.right.blue[Applied Linear Regression, Sandy Weisberg]
+]
+
+&lt;br&gt;
+
+.blockquote[
+Three common objectives (goals):
+1. Adjusting for explanatory variables
+2. Fishing expedition
+3. Prediction (often, predictive analytics, supervised learning)
+]
+
+
+---
+
+# Consider your modeling objective
+
+.blockquote-list[
+Adjusting (controlling) for the effects of a group of explanatory variables.
+- (one approach) Find an appropriate model with only the controlling variables, then add the main explanatory variable of interest to the model.
+]
+
+&lt;br&gt;
+
+.blockquote.font80[
+.bold[HW Race and Wage Example:] What, if any, is the effect of race on wages after accounting for region, SMSA, education and experience levels?
+
+Fit a model with just region, SMSA, education and experience
+- if race is collinear with other predictors: refine the model (find significant predictors) to reduce collinearity between race and other term
+- if race is not collinear with other predictors: could refine or not refine
+
+Add the variable of interest, race, to the model (and possible interactions) to determine its effect on wages.
+]
+
+---
+
+class: middle
+
+# Consider your modeling objective
+
+.blockquote.font90[
+.bold[Fishing for an explanation]
+- What to do a when you have a very large set of candidate predictors from which you wish to extract a few?
+- No well-defined questions, may be start from scratch to add new predictors one step at a time, if feasible
+- Often collinearity is an issue, interpretation of coefficients can be difficult
+- If predictors are correlated, than can we really "hold all other terms constant" while changing the value of another term?
+]
+
+---
+
+class: middle
+
+# Consider your modeling objective
+
+.blockquote.font90[
+.bold[Prediction]
+- Usually don't care about interpreting model, just want a good model (low prediction error) with easy to measure explanatory variables.
+
+.bold[Classification problem]
+- Are you going to default on your loan? Plug your employment, loan history, personal background in to a model and predict default (yes/no).
+- They didn't care about parameter interpretation!
+]
+
+
+---
+
+class: middle
+
+# Thoughts on Variable Selection
+
+.blockquote[
+- Modeling goals 1 and 3 often involve determining the most "statistically significant" variables.
+- A model with `\(p\)` terms will have `\(2^{p}\)` possible models!.
+- Usually, when faced with many variables, there is no one best model!
+- But some models are better than others. You need to (correctly) justify the choice of your "best" model.
+]
+
+---
+
+class: middle
+
+# Thoughts on Variable Selection
+
+.blockquote[
+Perhaps for an introductory class like STAT 230, .bold[backwards selection] approach is easier:
+- Start with a rich (large) model
+- Take out one term at a time with t-tests and see if `\(R^2_{adjusted}\)` increases
+- OR take out multiple terms at a time with F-tests and verify with `\(R^2_{adjusted}\)`
+- We will not deal with automatic model selection in this course (e.g. using criteria like AIC, BIC, Mallows `\(C_p\)` etc.)
+-  It's best to use our own judgment and intuition about our data 
+]
+
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+<div class="countdown" id="timer_62729756" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

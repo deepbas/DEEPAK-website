@@ -1,0 +1,614 @@
+---
+title: "MLR Collinearity"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(car)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(1234)
+
+sim_mlr = function(x1, x2, beta_0 = 2, beta_1 = 3, beta_2 = 2, sigma = 3) {
+  n = length(x1)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x1 + beta_2 * x2 + epsilon
+  data.frame(predictor1 = x1, predictor2 = x2, response = y)
+}
+
+num_obs = 25
+x_vals1 = runif(num_obs, 0, 10)
+x_vals2 = rbeta(num_obs, 1,5)*10
+sim_data = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = 3, beta_1 = 2, beta_2= 1.6, sigma = 3)
+
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[MLR Collinearity and Variable Selection]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+library(gg3D)
+ggplot(sim_data, aes(predictor1, y=predictor2, z=response)) + 
+  theme_void()+
+  axes_3D() +
+  stat_3D()
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+<br>
+.blockquote-list[
+- Issues with correlated predictors
+- Collinearity
+- Variance Inflation Factor
+- Model selection strategies 
+]
+
+]
+
+---
+
+# Correlated predictors
+
+```{r, echo=FALSE}
+
+```
+
+.blockquote.font90[
+It can be hard to "see" the MLR effect of a predictor in basic EDA
+- e.g. effect of `advance` in the supervisor MLR (partial residual plot slides)
+]
+
+<br>
+--
+
+.blockquote.font90[
+Interpretation of MLR effects can be challenging
+- e.g. can we really "hold `learn` rating constant" when interpreting the effect of `advance` if they are correlated?
+]
+
+<br>
+
+--
+
+.blockquote.font90[
+Parameter estimates have larger SE's than if predictors weren't correlated
+- can make it harder to find "statistically significant" predictors
+]
+
+---
+
+class: middle
+
+# Collinearity
+
+.blockquote[
+Two predictors $x_{1}$ and $x_{2}$ are (exactly) collinear if for all cases $i=1, \ldots, n$ :
+$$c_{1} x_{1, i}+c_{2} x_{2, i}=c \quad \Rightarrow \quad x_{1, i}=\left(c-c_{2} x_{2, i}\right) / c_{1}$$
+where $c_{1}, c_{2}, c$ are all known constants.
+
+<br>
+
+.bold[Example:] $x_{1}=$ height in inches and $x_{2}=$ height in feet
+- $x_{1, i}=12 x_{2, i}$ so we could have $c=0, c_{2}=-12, c_{1}=1$
+]
+
+---
+
+class: middle
+
+# Collinearity
+
+.blockquote[
+Can extend collinearity to more than two terms:
+$$c_{1} x_{1, i}+c_{2} x_{2, i}+\cdots+c_{p} x_{p, i}=c$$
+<br>
+
+.bold[Example:] $x_{\% \text { frosh }}+x_{\% \text { soph }}+x_{\% j u n i o r}+x_{\% \text { senior }}=100 \%$
+- Terms that are approximately collinear will have high correlation and will show a linear relationship in the scatterplot matrix.
+]
+
+---
+
+# Variance Inflation Factor (VIF)
+
+.blockquote-list.font80[
+VIF for predictor $x_{i}$ is equal to
+$$V I F_{i}=\frac{1}{1-R_{i}^{2}}$$
+$R_{i}^{2}$ is the R-squared value for the regression of $x_{i}$ on all other model predictors
+]
+
+<br>
+
+.blockquote.font80[
+$R_{i}^{2} \approx 0$ means $V I F_{i} \approx 1$
+- Little collinearity between $x_{i}$ and other terms
+
+$R_{i}^{2} \approx 0.5$ means $V I F_{i} \approx 2$
+- moderate collinearity between $x_{i}$ and other terms
+
+$R_{i}^{2} \approx 0.9$ means $V I F_{i} \approx 10$
+- lots of collinearity between $x_{i}$ and other terms
+]
+
+
+---
+
+# Why "Variance inflation" factor?
+
+.blockquote-list[
+The variance (squared SE) of $\hat{\beta}_{i}$ is equal to
+
+$$S E\left(\hat{\beta}_{i}\right)^{2}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} \frac{1}{1-R_{i}^{2}}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} V I F_{i}$$
+]
+
+.yellow-h[Implications:]
+
+.pull-left[
+
+.blockquote[
+No collinearity in $x_{i}$
+$$\Rightarrow V I F_{i}=1$$
+$$\Rightarrow S E\left(\hat{\beta}_{i}\right)=\frac{\hat{\sigma}}{\sqrt{(n-1) s_{i}^{2}}}$$
+]
+]
+
+.pull-right[
+.blockquote[
+More collinearity in $x_{i}$
+$$\Rightarrow V I F_{i} > 1$$
+$$\Rightarrow S E\left(\hat{\beta}_{i}\right)>\frac{\hat{\sigma}}{\sqrt{(n-1) s_{i}^{2}}}$$
+
+]
+]
+
+---
+
+# Why "Variance inflation" factor?
+
+
+$$S E\left(\hat{\beta}_{i}\right)^{2}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} \frac{1}{1-R_{i}^{2}}=\frac{\hat{\sigma}^{2}}{(n-1) s_{i}^{2}} V I F_{i}$$
+
+.blockquote[
+- higher $S E\left(\hat{\beta}_{i}\right)$
+- more uncertainty when estimating $\beta_{i}$
+- larger confidence intervals
+- smaller t-test stats and larger p-values
+
+]
+
+---
+
+# VIF in R using `car` package
+
+.blockquote[
+- `vif(my_lm)`
+
+.bold[Generalized VIF.]
+- If `my_lm` used a categorical predictor with more than 2 levels, $R$ will report Generalized VIF.
+- It's exactly the same thing as VIF for single terms but is a sort of cumulative VIF across all levels of the factor variable (across all indicator variables for the factor).
+
+.out-t[VIF is influenced by outliers.]
+- Make sure to check for outliers before putting too much "weight" on VIF values.
+
+]
+
+---
+
+# Supervisor satisfaction
+
+.blockquote.font80[
+.bold[Question:] What supervisor characteristics are most important to employees in a large company who were asked to rate their immediate supervisor
+
+- .bold[Response:] overall rating on a scale of 0 (bad) to 100 (good)
+- .bold[Predictors] from survey questions measured on an agreement scale $(0=$ completely disagree to $100=$ completely agree)
+]
+
+<br>
+
+Predictors | Description
+-------- | -------------
+raises |  "Your supervisor bases raises on performance."
+learn | "Your supervisor provides opportunities to learn new things."
+advance | "I am not satisfied with the rate I am advancing in the company."
+complaints | "Your supervisor handles employee complaints appropriately."
+privileges | "Your supervisor allows special privileges."
+critical | "Your supervisor is too critical of poor performance."
+
+
+---
+
+```{r, echo=FALSE, out.width="100%", fig.align='center', fig.width=9, fig.height=5}
+library(dplyr)
+supervisor <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/supervisor.csv")
+
+library(GGally)
+ggpairs(supervisor,
+ columns = c("overall", "learn", "raises", "critical", "advance", "complaints", "privileges"),
+ lower = list(continuous = wrap("smooth"), se = FALSE))
+```
+
+
+---
+
+`r chunk_reveal("cor-heatmap", widths = c(0.5,1), font_size_code="60%", title = "## Correlation heatmaps")`
+
+```{r cor-heatmap, fig.width = 3.5, fig.height = 3.5, out.width = "100%", include=FALSE}
+# nice correlation heatmaps
+library(corrr)
+library(scico)
+library(paletteer)
+supervisor %>% # only numerical variables
+  correlate() %>%
+  stretch() %>%
+  ggplot(aes(x, y, fill = r)) +
+  geom_tile() +
+  theme(text = element_text(size = 8))+
+  geom_text(aes(label = as.character(fashion(r))), size = 3) +
+  scale_fill_paletteer_c("scico::roma", 
+                         limits = c(-1, 1), 
+                         direction = -1)
+```
+
+
+---
+
+
+class: middle
+
+# Example: supervisor satisfaction
+
+.blockquote[
+All pairwise relationships show some degree of positive association
+- moderate/strong correlations between `overall` and the predictors `complaints`, `learn`, and `raises`
+- `raises` has moderate/strong correlation with all but one other predictor
+]
+
+<br>
+
+
+---
+
+# Fit model
+
+Let's model `overall` rating as a function of all predictors
+
+.code80[
+```{r}
+library(moderndive)
+supervisor_lm <- lm(overall ~ complaints + privileges + learn + raises 
+                    + critical + advance, data = supervisor)
+get_regression_table(supervisor_lm)
+```
+]
+
+.out-t[Only complaints is statistically significant at the 5% level after accounting for other terms]
+
+---
+
+# Example: supervisor satisfaction
+
+```{r}
+library(car)
+vif(supervisor_lm)
+```
+
+.blockquote[
+If goal is to find the variables that are most predictive of `overall` rating:
+- We need to reduce the number of insignificant terms and redundant terms.
+]
+
+.out-t[Let's test whether `privileges`, `raises` and `critical` are needed (high p-values, high VIF for raises)]
+
+---
+
+# Example: supervisor satisfaction
+
+```{r}
+supervisor_lm_red <- lm(overall ~ complaints + learn + advance, data = supervisor)
+anova(supervisor_lm_red, supervisor_lm)
+```
+
+
+.out-t[With `complaints`, `learn` and `advance` already in the model, `raises`, `privileges` and `critical` are statistically insignificant (F = 2.01, df=3,23, p = 0.895).]
+
+---
+
+# Example: supervisor satisfaction
+
+.code80[
+```{r, collapse=TRUE}
+get_regression_table(supervisor_lm_red)
+vif(supervisor_lm_red) #<< 
+```
+]
+
+.blockquote.font80[
+`complaints` is the most statistically significant term and has the largest coefficient effect estimate:
+- a 10 point increase in how a supervisor handles `complaints` is associated with a $6.2$ point increase in mean `overall` rating, holding other predictors fixed.
+
+`learn` is somewhat statistically significant and it's effect is about half the size of `complaints`:
+- a 10 point increase in how a supervisor provides opportunities to learn new things is associated with a $3.1$ point increase in mean `overall` rating, holding other predictors fixed.
+]
+
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+# SLR/MLR modeling strategy
+
+.blockquote-list.font80[
+1. Identify objectives of analysis
+
+2. Understand your data: EDA, graphical/numerical summaries, clean up data, consider missing data issues
+
+3. Consider if transformations are needed.
+
+4. Fit "rich" model (with many terms), check assumptions, reconsider transformations, check outliers.
+  - can be an iterative process (rethinking transformations, outliers)
+  
+5. Once a suitable large model is found, if needed, check for collinearity and use variable selection techniques to reduce the number of model terms.
+
+6. Check assumptions/outliers, proceed with needed inference/interpretation (CI, PI, etc)
+]
+
+---
+
+# Consider your modeling objective
+
+.blockquote-list[
+"The single most important tool in selecting a subset of variables is the analyst's knowledge of the area under study and of each of the variables."
+.right.blue[Applied Linear Regression, Sandy Weisberg]
+]
+
+<br>
+
+.blockquote[
+Three common objectives (goals):
+1. Adjusting for explanatory variables
+2. Fishing expedition
+3. Prediction (often, predictive analytics, supervised learning)
+]
+
+
+---
+
+# Consider your modeling objective
+
+.blockquote-list[
+Adjusting (controlling) for the effects of a group of explanatory variables.
+- (one approach) Find an appropriate model with only the controlling variables, then add the main explanatory variable of interest to the model.
+]
+
+<br>
+
+.blockquote.font80[
+.bold[HW Race and Wage Example:] What, if any, is the effect of race on wages after accounting for region, SMSA, education and experience levels?
+
+Fit a model with just region, SMSA, education and experience
+- if race is collinear with other predictors: refine the model (find significant predictors) to reduce collinearity between race and other term
+- if race is not collinear with other predictors: could refine or not refine
+
+Add the variable of interest, race, to the model (and possible interactions) to determine its effect on wages.
+]
+
+---
+
+class: middle
+
+# Consider your modeling objective
+
+.blockquote.font90[
+.bold[Fishing for an explanation]
+- What to do a when you have a very large set of candidate predictors from which you wish to extract a few?
+- No well-defined questions, may be start from scratch to add new predictors one step at a time, if feasible
+- Often collinearity is an issue, interpretation of coefficients can be difficult
+- If predictors are correlated, than can we really "hold all other terms constant" while changing the value of another term?
+]
+
+---
+
+class: middle
+
+# Consider your modeling objective
+
+.blockquote.font90[
+.bold[Prediction]
+- Usually don't care about interpreting model, just want a good model (low prediction error) with easy to measure explanatory variables.
+
+.bold[Classification problem]
+- Are you going to default on your loan? Plug your employment, loan history, personal background in to a model and predict default (yes/no).
+- They didn't care about parameter interpretation!
+]
+
+
+---
+
+class: middle
+
+# Thoughts on Variable Selection
+
+.blockquote[
+- Modeling goals 1 and 3 often involve determining the most "statistically significant" variables.
+- A model with $p$ terms will have $2^{p}$ possible models!.
+- Usually, when faced with many variables, there is no one best model!
+- But some models are better than others. You need to (correctly) justify the choice of your "best" model.
+]
+
+---
+
+class: middle
+
+# Thoughts on Variable Selection
+
+.blockquote[
+Perhaps for an introductory class like STAT 230, .bold[backwards selection] approach is easier:
+- Start with a rich (large) model
+- Take out one term at a time with t-tests and see if $R^2_{adjusted}$ increases
+- OR take out multiple terms at a time with F-tests and verify with $R^2_{adjusted}$
+- We will not deal with automatic model selection in this course (e.g. using criteria like AIC, BIC, Mallows $C_p$ etc.)
+-  It's best to use our own judgment and intuition about our data 
+]
+
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
