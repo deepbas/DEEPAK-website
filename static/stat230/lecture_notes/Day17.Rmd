@@ -1,0 +1,510 @@
+---
+title: "Serial Correlation Time Series"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+#library(MASS)
+library(broom)
+library(car)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+set.seed(1234)
+
+sim_mlr = function(x1, x2, beta_0 = 2, beta_1 = 3, beta_2 = 2, sigma = 3) {
+  n = length(x1)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x1 + beta_2 * x2 + epsilon
+  data.frame(predictor1 = x1, predictor2 = x2, response = y)
+}
+
+num_obs = 25
+x_vals1 = runif(num_obs, 0, 10)
+x_vals2 = rbeta(num_obs, 1,5)*10
+sim_data = sim_mlr(x1 = x_vals1, x2 = x_vals2, beta_0 = 3, beta_1 = 2, beta_2= 1.6, sigma = 3)
+
+
+set.seed(123)
+
+sim_slr_old = function(x, beta_0 = 2, beta_1 = 3, sigma = 3) {
+  n = length(x)
+  epsilon = rnorm(n, mean = 0, sd = sigma)
+  y = beta_0 + beta_1 * x + epsilon
+  data.frame(predictor = x, response = y)
+}
+
+num_obs = 25
+x_vals = runif(num_obs, 0, 10)
+sim_data_old = sim_slr_old(x = x_vals, beta_0 = 3, beta_1 = 2, sigma = 3)
+
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Serial Correlation]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+library(gg3D)
+ggplot(sim_data, aes(predictor1, y=predictor2, z=response)) + 
+  theme_void()+
+  axes_3D() +
+  stat_3D()
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+<br>
+.blockquote-list[
+- Violation of independence
+- Serial correlation
+- Partial autocorrelation 
+]
+
+]
+
+
+
+---
+
+# Measuring Global Warming
+
+.pull-left[
+.scroll-box-20[
+```{r, echo=FALSE}
+library(Sleuth3)
+library(fable)
+library(feasts)
+library(dplyr)
+library(ggplot2)
+print(case1502)
+```
+]
+]
+.pull-right[
+<br>
+.blockquote[
+- .bold[Year:] year in which yearly average temperature was computed, from 1850 to 2010
+- .bold[Temperature:] northern hemisphere temperature minus the 161-year average (degrees Celsius)
+
+]
+]
+
+---
+
+# Exploratory Data Analysis (EDA)
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+ggplot(case1502, aes(x = Year, y = Temperature)) +
+  geom_line() +
+  geom_point(size=5, colour="white") + 
+  geom_point(size=2) + 
+  theme(panel.background = element_rect(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+
+---
+
+# Exploratory Data Analysis (EDA)
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+
+ggplot(case1502, aes(x = Year, y = Temperature)) +
+  geom_line() +
+  geom_point(size=5, colour="white") + 
+  geom_point(size=2) + 
+  theme(panel.background = element_rect(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_hline(yintercept = 0, color = "blue", linetype = "dashed") +
+  geom_text(aes(1910,0.1, label=(paste(expression(bar(Temp)~"= 0")))), col = "blue", parse = TRUE, size = 4)
+```
+
+
+---
+
+# Moving away from the independence assumption
+
+.blockquote-list.font80[
+
+- Up until now, we assumed responses are approximately normal and independent of one another
+
+- The assumption of independence is rarely (if ever) quite right, but it is often a reasonable approximation
+
+- We see presence of cluster effects and serial effects in many real life scenarios
+]
+
+<br>
+
+--
+
+.blockquote.font90[
+.bold[Examples:] 
+
+- a single unit of observation (person, organization, nation, etc.) is tracked over many time periods or points of time
+- time periods that are close to one another are more likely to be similar than time periods that are relatively remote, e.g. stock prices, covid case counts
+]
+
+---
+
+class: middle
+
+# Time series with serial correlation
+
+.blockquote.font90[
+- Observed values will go on extended excursions away from the long-run mean
+
+- Residuals exhibits .bold[runs] i.e., consistently positive or negative for long periods
+
+- Sample averages at different time segments do not estimate the correct or long-run mean
+]
+
+---
+
+# Standard Error of an Average in Time Series
+
+.blockquote[
+$$SE(\bar{Y})=\sqrt{\frac{1+r_{1}}{1-r_{1}}} \frac{s}{\sqrt{n}}$$]
+
+<br>
+
+.blockquote-list[
+- sample variability will no longer be $s/\sqrt{n}$ (i.e., the sample standard error assuming the data is independent)
+- $r_1$ is called the sample *first serial correlation coefficient*
+]
+
+---
+
+# First-order autoregressive model
+
+.blockquote-list[
+The series, $\left\{Y_{t}\right\}$, is measured at equally spaced points in time
+
+The deviation of an observation at time $t$ from the long-run series mean $v$ is $\left(Y_{t}-v\right)$ 
+]
+
+--
+
+<br>
+
+.blockquote[
+$\mu \{\left(Y_{t}-v\right) \mid \text{past history}\}$, the mean of the $t^{th}$ deviation as a function of all previous deviations depends on lag 1 deviation
+ 
+$$\mu\left\{\left(Y_{t}-v\right) \mid \text { past history }\right\}=\alpha\left(Y_{t-1}-v\right)$$
+- $\alpha$ is called the autoregression coefficient
+]
+
+
+---
+
+
+## The first serial correlation coefficient, $r_1$
+
+.blockquote.font80[
+$r_1$ provides a numerical summary measure of the correlation between adjacent residuals
+- $r_{1}$ is similar to the estimated slope in a regression of $Y_{t}$ on $Y_{t-1}$
+]
+
+<br>
+
+.blockquote-list.font80[
+$$r_{1}=\frac{c_{1}}{c_{0}}$$
+
+$$\begin{array}{l}
+c_{1}=\frac{1}{n-1} \sum_{t=2}^{n} \text { res }_{t} \times \text { res }_{t-1} \qquad \text{ and } \qquad
+c_{0}=\frac{1}{n-1} \sum_{t=1}^{n} \text { res }_{t}^{2},
+\end{array}$$
+]
+
+
+<br>
+
+.blockquote.font80[
+- $c_0$ is just the sample variance of the residuals
+- $c_1$ is just the sample covariance of the residuals that are 1 lag apart
+]
+
+---
+
+
+## Temperature example: a lag plot
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+new_data <- case1502 %>% mutate(LaggedResidual = Temperature - mean(Temperature),
+                              CurrentResidual = lead(LaggedResidual)) %>% drop_na()
+
+
+ggplot(new_data, aes(x = LaggedResidual, y = CurrentResidual)) +
+  geom_point(size=5, colour="white") + 
+  geom_point(size=2) + 
+  theme(panel.background = element_rect(colour = "black"))+
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_hline(yintercept = 0, color = "blue", linetype = "dashed")+
+  geom_vline(xintercept = 0, color = "blue", linetype = "dashed")+
+  geom_text(aes(-0.25,0.50, label=(paste(expression(r[1]~"= 0.5917")))), col = "blue", parse = TRUE, size = 4)
+
+```
+
+---
+
+
+# Temperature example: linear fit with a quadratic term
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+library(moderndive)
+library(ggResidpanel)
+
+case1502 <- case1502 %>% mutate(Year = (Year - 1900)/100,
+                                yearSquared = Year^2,
+                                yearCubed = Year^3)
+
+gwarming_m1 <- lm(Temperature ~ Year + yearSquared, data = case1502)
+regression_points <- get_regression_points(gwarming_m1)
+```
+
+
+```{r, collapse=TRUE}
+gwarming_m1 <- lm(Temperature ~ Year + yearSquared, data = case1502) 
+summary(gwarming_m1) 
+```
+
+
+---
+
+# Temperature example: residual plot
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+resid_panel(gwarming_m1, plots = "resid")
+```
+
+---
+
+# Remedy: regression with filtered variables (AR(1) model)
+
+> Serial correlation can be handled by a special transformation called *filtering*
+
+$$V_{t}=Y_{t}-\alpha Y_{t-1}, \quad \text { and } \quad U_{t}=X_{t}-\alpha X_{t-1}$$
+.blockquote[
+The model reduces to the following with no more correlated errors and same slope
+$$\mu\left\{V_{t} \mid U_{t}\right\}=\gamma_{0}+\beta_{1} U_{t}$$
+- The intercept changes to $\gamma_0 = (1-\alpha)\beta_0$.
+]
+<br>
+.blockquote-list[Use same modeling concepts on the filtered response and explanatory variables
+to estimate the regression coefficients (Also applies to MLR!)
+]
+
+---
+
+class: middle
+
+# Remedy: regression with filtered variables (AR(1) model)
+
+.blockquote[
+.bold[Problem:] one must know $\alpha$ to construct the filtered variables V and U
+
+.bold[Solution:] Use $r_1$ can be used as an estimate of $\alpha$
+
+$$V_{t}=Y_{t}-r_{1} Y_{t-1} \quad \text { and } \quad U_{t}=X_{t}- r_{1} X_{t-1}$$
+]
+
+---
+
+# Partial autocorrelation
+
+.blockquote[
+Partial autocorrelation measures the association between residuals spaced a certain number of lags apart in time, after accounting for the effects of the residuals between them. 
+]
+
+```{r}
+residual <- gwarming_m1$residuals
+gwarming_Pacf <- pacf(residual, plot = FALSE)  # partial autocorrelation from residuals
+```
+
+
+```{r, collapse=TRUE}
+r1 <- gwarming_Pacf$acf[1]  # First serial correlation coefficient  
+r1
+```
+
+
+---
+
+# Partial autocorrelation functions
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+regression_points %>% 
+  as_tsibble(index = Year) %>%
+  PACF(residual, lag_max = 50) %>%
+  autoplot()
+```
+
+
+---
+
+# Refit the model on filtered variables
+
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+n <- length(case1502$Temperature)   # Series length = 161
+v <- case1502$Temperature[2:n]  -  r1*case1502$Temperature[1:(n-1)]   # Filtered response
+u1 <- case1502$Year[2:n]          -  r1*case1502$Year[1:(n-1)]   # Filtered X1
+u2 <- case1502$yearSquared[2:n]  -  r1*case1502$yearSquared[1:(n-1)]  # Filtered X2
+gwarming_m2 <- lm(v ~  u1 + u2, data = case1502)
+residuals2 <- gwarming_m2$residuals                                       
+#pacf(residuals2)   # Looks fine; don't worry about lag 4 marginal significance
+regression_points2 <- get_regression_points(gwarming_m2)
+```
+
+
+```{r, echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+regression_points2 %>% 
+  as_tsibble(index = ID) %>%
+  PACF(residual, lag_max = 50) %>%
+  autoplot()
+```
+
+
+---
+
+# Residual plot after filtering
+
+```{r,  echo=FALSE, fig.width=5, fig.height=4, out.width="65%", fig.align='center'}
+resid_panel(gwarming_m2, plots = c("resid"))
+```
+
+---
+
+class: middle
+
+# Procedure for filtering with more than one predictor
+
+.blockquote[
+1. Fit the ordinary regression of the response on the explanatory variables and obtain residuals.
+2. Calculate the autocovariance estimates $c_{0}$ and $c_{1}$ from the residuals. From these calculate the first serial correlation coefficient $r_{1}=c_{1} / c_{0}$.
+3. Compute the filtered versions of the response and explanatory variables.
+4. Fit the regression of the filtered response on the filtered explanatory variables, and use the usual tools to make inferences about the coefficients (but not the intercept). The intercept for the model of interest, if desired, is estimated by the reported intercept estimate divided by $\left(1-r_{1}\right)$.
+]
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
