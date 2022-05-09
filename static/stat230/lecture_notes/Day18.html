@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Logistic regression for binary responses: Model</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Logistic regression for binary responses: Model]
+
+### .fancy[Stat 230]
+
+ May 09 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day18_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+- Binary responses and Bernoulli distribution
+- logistic and logit functions
+- odds, log odds and odds ratio
+- logistic regression model
+- interpretation
+]
+
+]
+
+---
+
+# Example: Donner party (Case study 20.1)
+
+.blockquote-list[
+- Response: `Status` either `Died` or `Survived`
+- Explanatory: `Age` and `Sex`
+]
+
+.pull-left[
+
+
+```r
+library(Sleuth3)
+donner &lt;- case2001
+head(donner)
+```
+
+```
+  Age    Sex   Status
+1  23   Male     Died
+2  40 Female Survived
+3  40   Male Survived
+4  30   Male     Died
+5  28   Male     Died
+6  40   Male     Died
+```
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+.blockquote[
+EDA for associations between:
+- `age` and `status`?
+- `sex` and `status`?
+]
+]
+
+---
+
+# Example: Donner party
+
+
+```r
+library(ggplot2)
+ggplot(donner, aes(fill = Status, x = Sex)) +
+ geom_bar(position="fill") +
+ labs(y="proportion", title="Surival rates by Sex")
+```
+
+
+.pull-left[
+&lt;img src="Day18_files/figure-html/unnamed-chunk-4-1.svg" width="100%" /&gt;
+
+]
+.pull-right[
+&lt;br&gt;
+.blockquote[
+Stacked bar graph shows survival `status` conditioned on `sex`.
+- `Females` had higher survival rates than `males`.
+]
+]
+
+---
+
+# Example: Donner party
+
+
+```r
+library(dplyr)
+donner %&gt;%
+ group_by(Sex) %&gt;% # for each Sex group
+ summarize(mean(Status == "Survived")) # proportion who survived
+```
+
+```
+# A tibble: 2 × 2
+  Sex    `mean(Status == "Survived")`
+  &lt;fct&gt;                         &lt;dbl&gt;
+1 Female                        0.667
+2 Male                          0.333
+```
+
+
+.blockquote[
+Survival rates conditioned on `sex`
+- `\(2 / 3\)` of `females` survived while only `\(1 / 3\)` of `males` did.
+]
+
+---
+
+# Example: Donner party
+
+
+```r
+library(ggplot2)
+ggplot(donner, aes(x = Status, y = Age)) +
+ geom_boxplot() +
+ coord_flip()
+```
+
+.pull-left[
+&lt;img src="Day18_files/figure-html/unnamed-chunk-7-1.svg" width="100%" /&gt;
+
+]
+
+.pull-right[
+&lt;br&gt;
+.blockquote[
+`Age` distribution conditioned on `status`
+- People who survived have lower median `age` than people who died.
+]
+]
+
+---
+
+# Example: Donner party
+
+
+
+```r
+donner %&gt;%
+ group_by(Status) %&gt;% # for each status group
+ summarize(mean(Age), sd(Age), median(Age)) # get summary stats
+```
+
+```
+# A tibble: 2 × 4
+  Status   `mean(Age)` `sd(Age)` `median(Age)`
+  &lt;fct&gt;          &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+1 Died            35.5     14.3             30
+2 Survived        27.2      8.00            25
+```
+
+.blockquote.font80[
+- `Age` distribution statistics conditioned on `status`
+  - The mean `age` of people who `survived` is `\(27.2\)` years compared to `\(35.5\)` for people who `died`.
+  
+- .bold[Problem:] this EDA has `Status` as the "given" (conditioning) variable
+
+- But we want to model `Status` given `Age`.
+]
+
+---
+
+# Example: Donner party
+
+
+
+```r
+library(dplyr)
+# recode Status as a binary (0 or 1) response:
+donner$class_surv &lt;- recode(donner$Status, Survived = 1, Died = 0)
+ggplot(donner, aes(x = Age, y = class_surv)) +
+ geom_jitter(aes(color=Status), height = .01) 
+```
+
+
+.pull-left[
+
+&lt;img src="Day18_files/figure-html/unnamed-chunk-10-1.svg" width="100%" /&gt;
+
+]
+
+.pull-right[
+
+
+```r
+mean(donner$class_surv)
+[1] 0.4444444
+```
+
+.blockquote.font80[
+- The mean of a binary variable gives the proportion of 1 's
+- As age increases, proportion who survived decreases
+]
+.out-t.font90[Want to find a function to predict survival given age]
+
+
+
+]
+
+---
+
+# The Bernoulli distribution
+
+.blockquote.font90[
+- A probability model for a random trial that has two possible outcomes: .bold[success or failure]
+
+- A Bernoulli random variable `\(Y\)`
+  - `\(Y=1\)` if a success occurred
+  - `\(Y=0\)` if a failure occurred
+  
+- `\(\pi\)` is the probability of success:
+`$$\pi=P(Y=1)=P(\text { success }), \quad 1-\pi=P(Y=0)=P(\text { failure })$$`
+
+- Shorthand notation: `\(Y \sim \operatorname{Bern}(\pi)\)`
+]
+
+---
+
+# The Bernoulli distribution
+
+.blockquote[
+- The expected value, or mean, of `\(Y\)` is equal to
+`$$E(Y)=\mu=\pi$$`
+- The standard deviation of `\(Y\)` is equal to
+`$$S D(Y)=\sigma=\sqrt{\pi(1-\pi)}$$`
+- The expected value measures the "long run" average value that we would see from `\(Y\)` if we were to repeat the random trial many, many times.
+- The standard deviation tells us how these values of `\(Y\)` will vary over these repeated trials.
+]
+
+---
+
+class: middle
+
+# The logistic model form
+
+.blockquote[
+- Our Bernoulli responses are modeled as a function of predictors `\(X_{i}=x_{1, i}, \ldots, x_{p, i}\)` through the probability of success:
+`$$Y_{i} \mid X_{i} \stackrel{\text { indep. }}{\sim} \operatorname{Bern}\left(\pi\left(X_{i}\right)\right)$$`
+- Need to find a function `\(f()\)` that takes in any number and produces a probability between 0 and 1 :
+`$$\pi\left(X_{i}\right)=f\left(x_{1, i}, \ldots, x_{p, i}\right)$$`
+]
+
+
+---
+
+class: middle
+
+# The logistic model form
+
+.pull-left-60[
+.blockquote.font90[
+- Define `\(\eta_{i}\)` as the linear combination of predictors for case `\(i\)`
+`$$\eta_{i}=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}$$`
+- Use a logistic function to relate `\(X\)` to `\(\pi\)` :
+`$$\pi\left(X_{i}\right)=\frac{e^{\eta_{i}}}{1+e^{\eta_{i}}}=\frac{e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}}{1+e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}}$$`
+
+]
+]
+
+.pull-right-40[
+
+&lt;img src="Day18_files/figure-html/unnamed-chunk-12-1.svg" width="100%" /&gt;
+
+]
+
+---
+
+count: false
+ 
+## Example: Donner party model
+.panel1-s-curve-donner-auto[
+
+```r
+*ggplot(donner, aes(x = Age, y = class_surv))
+```
+]
+ 
+.panel2-s-curve-donner-auto[
+&lt;img src="Day18_files/figure-html/s-curve-donner_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Example: Donner party model
+.panel1-s-curve-donner-auto[
+
+```r
+ggplot(donner, aes(x = Age, y = class_surv)) +
+* geom_jitter(aes(color=Status), height = .01)
+```
+]
+ 
+.panel2-s-curve-donner-auto[
+&lt;img src="Day18_files/figure-html/s-curve-donner_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Example: Donner party model
+.panel1-s-curve-donner-auto[
+
+```r
+ggplot(donner, aes(x = Age, y = class_surv)) +
+  geom_jitter(aes(color=Status), height = .01) +
+# Add estimated logistic curve for the prob of survival.
+* geom_smooth(method="glm",
+*             method.args = list(family=binomial),
+*             se=FALSE)
+```
+]
+ 
+.panel2-s-curve-donner-auto[
+&lt;img src="Day18_files/figure-html/s-curve-donner_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Example: Donner party model
+.panel1-s-curve-donner-auto[
+
+```r
+ggplot(donner, aes(x = Age, y = class_surv)) +
+  geom_jitter(aes(color=Status), height = .01) +
+# Add estimated logistic curve for the prob of survival.
+  geom_smooth(method="glm",
+              method.args = list(family=binomial),
+              se=FALSE) +
+*labs(y = "probability of survival")
+```
+]
+ 
+.panel2-s-curve-donner-auto[
+&lt;img src="Day18_files/figure-html/s-curve-donner_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Example: Donner party model
+.panel1-s-curve-donner-auto[
+
+```r
+ggplot(donner, aes(x = Age, y = class_surv)) +
+  geom_jitter(aes(color=Status), height = .01) +
+# Add estimated logistic curve for the prob of survival.
+  geom_smooth(method="glm",
+              method.args = list(family=binomial),
+              se=FALSE) +
+ labs(y = "probability of survival") +
+*theme(legend.position = "bottom")
+```
+]
+ 
+.panel2-s-curve-donner-auto[
+&lt;img src="Day18_files/figure-html/s-curve-donner_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-s-curve-donner-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-s-curve-donner-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-s-curve-donner-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+---
+
+class: middle
+
+# Fitting logistic regression in `R`
+
+.blockquote.font80[
+- The basic syntax for a logistic model fit is
+]
+
+```r
+glm(y ~ x1 + x2, family = binomial, data= )
+```
+
+
+&lt;br&gt;
+
+.blockquote.font80[
+
+- The variable `\(y\)` can be either form:
+
+  - `\(y\)` can be binary `\(0 / 1\)` coded response where 1 is a "success"
+  - `\(y\)` can be a factor variable with two levels. The second level is what `\(\mathrm{R}\)` will call a "success"
+]
+
+---
+
+# Example: Donner party model
+
+.blockquote[
+- The model form logistic regression of survival status on age:
+`$$\eta=\beta_{0}+\beta_{1} A g e$$`
+- The second level of Status will be what R defines as a "success"
+- So, `\(\pi\)` is the probability of survival
+]
+
+
+```r
+table(donner$Status) # second level = Survived
+```
+
+```
+
+    Died Survived 
+      25       20 
+```
+
+---
+
+# Example: Donner party model
+
+
+```r
+donner_glm1 &lt;- glm(Status ~ Age , family=binomial, data=donner)
+library(broom)
+tidy(donner_glm1)
+```
+
+```
+# A tibble: 2 × 5
+  term        estimate std.error statistic p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+1 (Intercept)   1.82      0.999       1.82  0.0688
+2 Age          -0.0665    0.0322     -2.06  0.0391
+```
+
+
+.blockquote.font90[
+- The estimated value of `\(\eta\)` is
+`$$\hat{\eta}=1.82-0.0665 \text { Age }$$`
+- What is the estimated probability of survival? of death?
+- What are these values for a 20 year old?
+]
+
+
+---
+
+class: middle
+
+
+# Example: Donner party model
+
+.blockquote.font80[
+- the estimated probability of survival is
+`$$\hat{\pi}(\text { age })=\frac{e^{1.82-0.0665 \text { Age }}}{1+e^{1.82-0.0665 \text { Age }}}$$`
+- the estimated probability of death is
+`$$1-\hat{\pi}(\text { age })=1-\frac{e^{1.82-0.0665 \text { Age }}}{1+e^{1.82-0.0665 A g e}}$$`
+- the estimated probability of survival for a 20 year old is
+`$$\hat{\pi}(\text { age }=20)=\frac{e^{1.82-0.0665(20)}}{1+e^{1.82-0.0665(20)}}=0.62$$`
+- the estimated probability of death for a 20 year old is
+`$$1-\hat{\pi}(\text { age }=20)=1-\frac{e^{1.82-0.0665(20)}}{1+e^{1.82-0.0665(20)}}=0.38$$`
+]
+
+
+
+---
+
+# Example: Donner party model
+
+
+
+```r
+tidy(donner_glm1, conf.int=TRUE)
+```
+
+```
+# A tibble: 2 × 7
+  term        estimate std.error statistic p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   1.82      0.999       1.82  0.0688 -0.00599    3.99  
+2 Age          -0.0665    0.0322     -2.06  0.0391 -0.140     -0.0102
+```
+
+--
+
+.out-t.center[How does a one year increase in age affect survival status?]
+
+---
+
+class: middle
+
+
+# The logistic model: interpretation
+
+.blockquote[
+- To interpret the model, "solve for" `\(\eta\)`
+- The inverse of the logistic function is called the .bold[logit function]:
+`$$\eta_{i}=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}=\log \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)$$`
+- .bold[Interpretation]: a one unit increase in `\(x_{1}\)` is associated with an additive `\(\beta_{1}\)` change in the logit function, holding other terms fixed.
+- But what does this mean?
+]
+
+
+---
+
+class: middle
+
+
+# Odds of success
+
+.blockquote[
+- odds of success:
+`$$o d d s=\frac{\pi(X)}{1-\pi(X)}$$`
+- e.g If `\(\pi=0.6\)`, then odds of success is `\(0.6 / 0.4=1.5\)`.
+- for every 6 successes, we see 4 failures.
+]
+
+---
+
+class: middle
+
+
+# Odds Ratio
+
+.blockquote.font90[
+- odds ratio for A vs. `\(B\)` :
+`$$\frac{\text { odds of success for A }}{\text { odds of success for B }}=\frac{\frac{\pi(A)}{1-\pi(A)}}{\frac{\pi(B)}{1-\pi(B)}}$$`
+
+- e.g. If `\(\pi(A)=0.75\)` and `\(\pi(B)=0.6\)`, then the odds ratio is 2 . odds ratio for A vs. `\(\mathrm{B}=\frac{0.75 / 0.25}{0.6 / 0.4}=\frac{3}{1.5}=2\)`
+
+- Odds of success for group A is 2 times the odds of success in group B.
+]
+
+
+---
+
+class: middle
+
+
+# Interpretation
+
+.blockquote[
+- logit `\(=\log\)` odds of success
+`$$\eta_{i}=\log \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}$$`
+- The odds of success equals
+
+`$$\operatorname{odds}\left(x_{1}, \ldots, x_{p}\right)=\frac{\pi(X)}{1-\pi(X)}=e^{\beta_{0}+\beta_{1} x_{1}+\cdots+\beta_{p} x_{p}}$$`
+- What happens if we increase `\(x_{1}\)` by one unit, holding other predictors fixed?
+]
+
+---
+
+class: middle
+
+
+# Interpretation
+
+.blockquote[
+`\(\operatorname{odds}\left(x_{1}+1, \ldots, x_{p}\right)=e^{\beta_{0}+\beta_{1}\left(x_{1}+1\right)+\cdots+\beta_{p} x_{p}}=e^{\beta_{0}+\beta_{1} x_{1}+\cdots+\beta_{p} x_{p}} \times e^{\beta_{1}}\)`
+- Increasing `\(x_{1}\)` by one unit has a multiplicative change of `\(e^{\beta_{1}}\)` in the odds of success.
+- The multiplicative change of `\(e^{\beta_{1}}\)` is also called the odds ratio for a one unit increase in `\(x_{1}\)`
+`$$\frac{\text { odds of success for } x_{1}+1}{\text { odds of succes for } x_{1}}=\frac{\operatorname{odds}\left(x_{1}+1, \ldots, x_{p}\right)}{\operatorname{odds}\left(x_{1}, \ldots, x_{p}\right)}=e^{\beta_{1}}$$`
+]
+
+---
+
+class: middle
+
+
+# Interpretation
+
+.blockquote[
+- What if we have a predictor that is logged?
+`$$\operatorname{odds}\left(x_{1}, \ldots, x_{p}\right)=e^{\beta_{0}+\beta_{1} \log \left(x_{1}\right)+\cdots+\beta_{p} x_{p}}=e^{\beta_{0}} x_{1}^{\beta_{1}} e^{\beta_{2} x_{2}+\cdots+\beta_{p} x_{p}}$$`
+- Changing `\(x_{1}\)` by a factor of `\(m\)` :
+`$$\text { odds }\left(m x_{1}, \ldots, x_{p}\right)=e^{\beta_{0}}\left(m x_{1}\right)^{\beta_{1}} e^{\beta_{2} x_{2}+\cdots+\beta_{p} x_{p}}=e^{\beta_{0}} x_{1}^{\beta_{1}} e^{\beta_{2} x_{2}+\cdots+\beta_{p} x_{p}} \times m^{\beta_{1}}$$`
+results in a multiplicative change of `\(m^{\beta_{1}}\)` in the odds of success.
+]
+
+
+---
+
+class: middle
+
+
+# Example: Donner party model
+
+
+```r
+donner_glm1 &lt;- glm(Status ~ Age , family=binomial, data=donner)
+library(broom)
+tidy(donner_glm1)
+```
+
+```
+# A tibble: 2 × 5
+  term        estimate std.error statistic p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+1 (Intercept)   1.82      0.999       1.82  0.0688
+2 Age          -0.0665    0.0322     -2.06  0.0391
+```
+
+.blockquote.font80[
+- The estimated log odds of survival is
+`$$\operatorname{logit}(\hat{\pi}(a g e))=\log \frac{\hat{\pi}(\text { age })}{1-\hat{\pi}(a g e)}=1.82-0.0665 \text { Age }$$`
+- What is the estimated odds of survival? of death?
+- What are these values for a 20 year old?
+]
+
+---
+
+class: middle
+
+
+# Example: Donner party model
+
+.blockquote.font80[
+- the estimated odds of survival is
+`$$\widehat{\text { odd }(\text { age })}=\frac{\hat{\pi}(\text { age })}{1-\hat{\pi}(\text { age })}=e^{1.82} e^{-0.0665 \mathrm{Age}}$$`
+- the estimated odds of death is
+`$$\widehat{\text { odds.death }(\text { age })}=\frac{1-\hat{\pi}(\text { age })}{\hat{\pi}(\text { age })}=e^{-1.82} e^{0.0665 \text { Age }}$$`
+- the estimated odds of survival for a 20 year old is
+`$$\widehat{\text { odds }(\text { age }=20)}=\frac{\hat{\pi}(\text { age }=20)}{1-\hat{\pi}(\text { age }=20)}=e^{1.82} e^{-0.0665(20)}=1.632$$`
+- the estimated odds of death for a 20 year old is
+
+`$$\widehat{\text { odds.death(age}=20)}=\frac{1-\hat{\pi}(\text { age }=20)}{\hat{\pi}(\text { age }=20)}=e^{-1.82} e^{0.0665(20)}=0.613$$`
+
+]
+
+
+---
+
+class: middle
+
+
+# Fitting logistic model in R
+
+.blockquote.font90[
+`glm` model attributes:
+
+- `fitted(my.glm)` gives `\(\hat{\pi}(X)\)` for each case in your data
+
+- `predict(my.glm)` gives `\(\log \frac{\hat{\pi}(X)}{1-\hat{\pi}(X)}\)` for each case in your data.
+  - Add `newdata=` to get predicted log-odds for new data.
+
+- `predict(my.glm, type = "response")` gives `\(\hat{\pi}(X)\)` for each case in your data.
+  - Add `newdata=` to get predicted log-odds for new data.
+]
+
+
+---
+
+class: middle
+
+
+# Example: Donner party model
+
+.yellow-h[Get the predicted probability of survival:]
+
+
+```r
+new_ages &lt;- data.frame(Age = c(20, 45))
+predict(donner_glm1, newdata = new_ages, type="response")
+        1         2 
+0.6198974 0.2363774 
+```
+
+
+.yellow-h[with the default type, we get log odds survival estimates:]
+
+
+```r
+new_ages &lt;- data.frame(Age = c(20, 45))
+predict(donner_glm1, newdata = new_ages) # log odds
+         1          2 
+ 0.4891127 -1.1726443 
+```
+
+
+
+```r
+exp(predict(donner_glm1, newdata = new_ages)) # odds
+        1         2 
+1.6308685 0.3095473 
+```
+
+---
+
+class: middle
+
+# Example: Donner party model
+
+
+```r
+tidy(donner_glm1, conf.int=TRUE)
+```
+
+```
+# A tibble: 2 × 7
+  term        estimate std.error statistic p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   1.82      0.999       1.82  0.0688 -0.00599    3.99  
+2 Age          -0.0665    0.0322     -2.06  0.0391 -0.140     -0.0102
+```
+
+
+.out-t[How does a one year increase in age affect survival status?]
+
+---
+
+# Example: Donner party model
+
+.blockquote[
+A one year increase in age is associated with a `\(e^{-0.0665}=0.936\)` multiplicative decrease on the odds of survival (95% CI `\(0.87,0.99)\)`
+]
+
+
+```r
+exp(-0.0665) # factor change
+[1] 0.9356629
+exp(c(-0.140, -0.0102)) # factor change CI
+[1] 0.8693582 0.9898518
+```
+
+
+.blockquote[
+A one year increase in age is associated with a decrease on the odds of survival by `\(6.4 \%(95 \%\)` CI `\(1 \%\)` to `\(13 \%)\)`.
+]
+
+
+```r
+100*(exp(-0.0665) - 1) # percent change
+[1] -6.433708
+100*(exp(c(-0.140, -0.0102)) - 1) # % change CI
+[1] -13.064176  -1.014816
+```
+
+---
+
+# Example: Donner party model
+
+.blockquote[`broom` package: add `exponentiate=TRUE` to get exponentiatied estimated effects and confidence intervals
+- but SE, test stat and p-values are untouched!]
+
+
+```r
+tidy(donner_glm1, conf.int=TRUE, exponentiate = TRUE)
+```
+
+```
+# A tibble: 2 × 7
+  term        estimate std.error statistic p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    6.16     0.999       1.82  0.0688    0.994    54.1  
+2 Age            0.936    0.0322     -2.06  0.0391    0.870     0.990
+```
+
+---
+
+# Example: Donner party model
+
+
+```r
+tidy(donner_glm1, conf.int=TRUE)
+```
+
+```
+# A tibble: 2 × 7
+  term        estimate std.error statistic p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   1.82      0.999       1.82  0.0688 -0.00599    3.99  
+2 Age          -0.0665    0.0322     -2.06  0.0391 -0.140     -0.0102
+```
+
+.blockquote[
+How does a one year increase in age affect the odds of death?
+`$$\widehat{\text { odds.death(age)}}=\frac{1-\hat{\pi}}{\hat{\pi}}=\frac{1}{e^{1.82} e^{-0.0665 \text { Age }}}=e^{-1.82} e^{0.0665 \text { Age }}$$`
+]
+
+---
+
+class: middle
+
+# Example: Donner party model
+
+.blockquote[
+A one year increase in age is associated with a `\(e^{0.0665}=1.069\)` multiplicative increase on the odds of death `\((95 \%\)` CI `\(1.01,1.15)\)`
+]
+
+
+```r
+exp(0.0665) # factor change in odds of death
+[1] 1.068761
+```
+
+
+```r
+exp(c(0.140, 0.0102)) # factor change CI
+[1] 1.150274 1.010252
+```
+
+---
+
+class: middle
+
+# Example: Donner party model
+
+.blockquote[A one year increase in age is associated with an increase in the odds of
+death by 6.9% (95% CI 1.0% to 15.0%)]
+
+
+```r
+100*(exp(0.0665) - 1) # percent change
+[1] 6.876096
+```
+
+
+```r
+100*(exp(c(0.140, 0.0102)) - 1) # % change CI
+[1] 15.02738  1.02522
+```
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
