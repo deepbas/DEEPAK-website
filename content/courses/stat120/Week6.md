@@ -10,7 +10,7 @@ weight: 20
 
 Midterm Break!
 
-Day 16 Slides ({{% staticref "stat120/lecture_notes/Day16.pdf" "newtab" %}})
+Day 16 Slides ({{% staticref "stat120/lecture_notes/Day16.pdf" "newtab" %}}pdf{{% /staticref %}})
 
-Day 17 Slides ({{% staticref "stat120/lecture_notes/Day17.pdf" "newtab" %}})
+Day 17 Slides ({{% staticref "stat120/lecture_notes/Day17.pdf" "newtab" %}}pdf{{% /staticref %}})
 

@@ -13,4 +13,4 @@ Day 10 Slides ({{% staticref "stat120/lecture_notes/Day10.pdf" "newtab" %}}pdf{{
 
 Midterm I
 
-Day 12 Slides ({{% staticref "stat120/lecture_notes/Day12.pdf" "newtab" %}})
+Day 12 Slides ({{% staticref "stat120/lecture_notes/Day12.pdf" "newtab" %}}pdf{{% /staticref %}})

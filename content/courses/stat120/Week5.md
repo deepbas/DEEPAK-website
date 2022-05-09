@@ -9,8 +9,8 @@ weight: 20
 ---
 
 
-Day 13 Slides ({{% staticref "stat120/lecture_notes/Day13.pdf" "newtab" %}})
+Day 13 Slides ({{% staticref "stat120/lecture_notes/Day13.pdf" "newtab" %}}pdf{{% /staticref %}})
 
-Day 14 Slides ({{% staticref "stat120/lecture_notes/Day14.pdf" "newtab" %}})
+Day 14 Slides ({{% staticref "stat120/lecture_notes/Day14.pdf" "newtab" %}}pdf{{% /staticref %}})
 
-Day 15 Slides ({{% staticref "stat120/lecture_notes/Day15.pdf" "newtab" %}})
+Day 15 Slides ({{% staticref "stat120/lecture_notes/Day15.pdf" "newtab" %}}pdf{{% /staticref %}})

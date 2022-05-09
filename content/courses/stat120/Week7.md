@@ -9,4 +9,4 @@ weight: 20
 ---
 
 
-Day 18 Slides ({{% staticref "stat230/lecture_notes/Day18.pdf" "newtab" %}})
+Day 18 Slides ({{% staticref "stat230/lecture_notes/Day18.pdf" "newtab" %}}pdf{{% /staticref %}})
