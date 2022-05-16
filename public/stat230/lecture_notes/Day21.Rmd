@@ -1,0 +1,491 @@
+---
+title: "Logistic regression for binary responses: Diagnostics"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+#library(MASS)
+library(broom)
+#library(car)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Logistic regression for binary responses: Diagnostics]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+
+sample <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Sample4.csv")
+
+# load library ggplot2
+library(ggplot2)
+
+
+# Plot Predicted data and original data points
+ggplot(sample, aes(x=Predictor, y=Class)) + geom_point() +
+	stat_smooth(method="glm", color="orange", se=FALSE,
+				method.args = list(family=binomial))+
+  geom_hline(yintercept = 0.5, linetype = "dashed", col = "grey") +
+  geom_text(aes(200, 0.52, label =c("Threshold"))) +
+  theme_void()
+
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+.blockquote-list[
+Checking log-odds linearity: log-odds plots
+
+Residuals and Case influence stats
+]
+
+]
+
+---
+
+# Model Assumptions
+
+$$\begin{array}{c}
+Y_{i} \mid X_{i} \stackrel{i n d e p .}{\sim} \operatorname{Bern}\left(\pi\left(X_{i}\right)\right) \\
+\eta_{i}=\log \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{array}$$
+
+
+.blockquote.font90[
+.bold[Independence]
+- how are data collected?!
+- Are the cases naturally clustered together in a way that isn't accounted for in the model?
+- More on this in binomial logistic regression!
+
+.bold[Log-odds linearity]
+- quantitative predictors are linearly related to the log odds of success
+]
+
+---
+
+# EDA for logistic models: Empirical log odds plot
+
+\begin{align*}
+\eta_{i}=\log \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{align*}
+
+.yellow-h[Plot the empirical (sample) log-odds against the predictor and look for linearity. Get empirical log odds for binned (grouped) data]
+
+.blockquote.font80[
+1. Group cases into groups with similar predictor values using `ntile`
+
+2. Compute (`summarize`) the proportion of successes within each group (`group_by`)
+\begin{align*}
+\tilde{\pi}_{e m p}=\frac{\text { number of successes in the group }}{\text { group size }}
+\end{align*}
+
+3. Compute (`summarize`) the log odds of success in the group, within each group.
+
+\begin{align*}
+\operatorname{logit}_{e m p}=\ln \left(\frac{\tilde{\pi}_{e m p}}{1-\tilde{\pi}_{e m p}}\right)
+\end{align*}
+]
+
+---
+
+
+# Example: BWCA
+
+.pull-left.font90[
+<br>
+.blockquote[
+1999 windstorm in .bold[northern MN]
+- what factors are associated with a tree blow down?
+
+sample of 659 trees
+- $y=1$ means the tree died during the storm
+- D: tree diameter (inches)
+]
+]
+
+.pull-right[
+.code90.font90[
+```{r, collapse=TRUE}
+library(dplyr)
+blowBF <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/blowBF.csv")
+mean(blowBF$y) # proportion died
+```
+
+```{r,collapse=TRUE}
+table(blowBF$status) # character response 
+```
+
+```{r,collapse=TRUE}
+glimpse(blowBF)
+```
+
+]
+]
+
+---
+
+class: middle
+
+# Example: BWCA
+
+.blockquote[
+Divide cases in 1/20 (5%) quantiles of diameter
+- about 33 cases per group
+]
+
+```{r}
+blowBF <- blowBF %>% 
+  mutate(D_grps = ntile(blowBF$D, n = 20))
+table(blowBF$D_grps)
+```
+
+
+---
+
+
+`r chunk_reveal("group", widths= c(1,1), font_size_code="70%", title = "## Example: BWCA")`
+
+```{r group, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+# group by D_grps
+blowBF_empLO <- blowBF %>%
+ group_by(D_grps) %>%
+ summarize(D_grps_med = median(D), # median D of groups
+ pi_emp = mean(y), # proportion died
+ log_odds_emp = log(pi_emp/(1-pi_emp))) # log odds
+blowBF_empLO
+```
+
+---
+
+`r chunk_reveal("linearity", widths= c(1,1), font_size_code="70%", title = "## Linearity in empirical log odds vs. (median) diameter?
+")`
+
+```{r linearity, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(blowBF_empLO, aes(x=D_grps_med, y=log_odds_emp)) +
+ geom_point() + 
+ scale_x_log10() # log is better
+```
+
+
+---
+
+# Residuals in logistic models
+
+.blockquote.font90[
+- .bold[Response:] response minus estimated mean
+\begin{align*}
+r_{i}=y_{i}-\hat{\pi}\left(X_{i}\right)
+\end{align*}
+- .bold[Pearson:] response residuals standardized based on the binomial SD:
+\begin{align*}
+p r_{i}=\frac{y_{i}-\hat{\pi}\left(X_{i}\right)}{\sqrt{\hat{\pi}\left(X_{i}\right)\left(1-\hat{\pi}\left(X_{i}\right)\right)}}
+\end{align*}
+- .bold[Deviance:] each case's contribution to the residual deviance
+\begin{align*}
+\operatorname{Dres}_{i}=\operatorname{sign}\left(y_{i}-\hat{\pi}\left(X_{i}\right)\right) \sqrt{2\left[y_{i} \ln \left(\frac{y_{i}}{\hat{\pi}\left(X_{i}\right)}\right)+\left(1-y_{i}\right) \ln \left(\frac{1-y_{i}}{1-\hat{\pi}\left(X_{i}\right)}\right)\right]}
+\end{align*}
+]
+
+---
+
+# Residuals in R
+
+.blockquote[
+Base-R
+- response: `resid(my_glm, type = "response")`
+- Pearson: `resid(my_glm, type = "pearson")`
+- deviance: `resid(my_glm, type = "deviance")`
+]
+
+<br>
+
+.blockquote[
+`broom` package
+- no response `residual` option
+- pearson: `augment(my.glm, type.residuals = "pearson")`
+- deviance: `augment(my.glm, type.residuals = "deviance")`
+]
+
+---
+
+`r chunk_reveal("interpretation", widths= c(1,1), font_size_code="70%", title = "## Interpretation of binary model's residual plots")`
+
+```{r interpretation, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+fir_glm1 <- glm(y ~ D, family=binomial, data=blowBF)
+blowBF_aug1 <- augment(fir_glm1, data=blowBF, 
+                       type.residuals="pearson")
+ggplot(blowBF_aug1, aes(x=D, y=.resid)) +
+geom_jitter(height = .05) +
+geom_hline(yintercept = 0)
+```
+
+---
+
+class: middle
+
+# Binned response residual plots
+
+.blockquote[
+Look at average residual value for cases with similar values of diameter. 
+- same idea as binning data for the log-odds plot
+]
+
+<br>
+
+.blockquote[
+- Use `broom::augment` to add Pearson residuals to the data (already done)
+- Use `group_by` diameter bins and compute the average residual value
+]
+
+---
+
+`r chunk_reveal("binned", widths= c(1,1), font_size_code="70%", title = "## Binned response residuals")`
+
+```{r binned, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+blowBF_aug1 <- augment(fir_glm1, data=blowBF, 
+                       type.residuals="pearson")
+blowBF_aug1$D_grps <- ntile(blowBF$D, n = 20)
+blowBF_resid1 <- blowBF_aug1 %>%
+ group_by(D_grps) %>%
+ summarize(D_grps_med = median(D), # median D of groups
+ resid_mean = mean(.resid)) # mean residual
+blowBF_resid1
+```
+
+
+---
+
+`r chunk_reveal("binned-residual", widths= c(1,1), font_size_code="70%", title = "## Binned response residuals")`
+
+```{r binned-residual, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(blowBF_resid1, aes(x=D_grps_med, y=resid_mean)) +
+ geom_point() +
+ geom_hline(yintercept = 0) +
+ labs(title="Binned residual plot using Diameter")+
+  theme(plot.title = element_text(hjust=0.5, size=9, face='bold')) 
+```
+
+.out-t[Low diameter cases overestimated and higher diameters underestimated]
+
+---
+
+class: middle
+
+# Case influence in logistic models
+
+> leverage and Cook's distance are used with logistic models, just as they are with regular linear models.
+
+.blockquote[
+Use the usual $R$ commands:
+- `plot(my_glm, which = 5)` (or type 4)
+- `ggResidpanel::resid_panel(my_glm, plots =c("cookd", "lev"))`
+]
+
+
+---
+
+class: middle
+
+# Example: BWCA analysis
+
+```{r, collapse=TRUE}
+# y = 1 means died
+fir_glm2 <- glm(y ~ log(D), family=binomial, data=blowBF)
+tidy(fir_glm2, conf.int=TRUE)
+```
+
+.blockquote[
+- The odds of death as a function of diameter?
+- Effect of doubling tree diameter?
+]
+
+---
+
+# Example: BWCA analysis
+
+```{r, collapse=TRUE}
+tidy(fir_glm2, conf.int=TRUE)
+```
+
+.blockquote[
+- The odds of death as a function of diameter:
+\begin{align*}
+\widehat{odds}(D)=e^{-7.89+3.26 \ln (D)}=e^{-7.89} D^{3.26}
+\end{align*}
+]
+
+
+---
+
+# Example: BWCA analysis
+
+```{r, collapse=TRUE}
+tidy(fir_glm2, conf.int=TRUE)
+```
+
+.blockquote.font90[
+Doubling diameter is associated with a 9.58-fold increase in the odds of death (95% CI 6.68 to 14.12).
+\begin{align*}
+m^{\hat{\beta}_{1}}=2^{3.26}=9.58
+\end{align*}
+]
+
+
+```{r, collapse=TRUE}
+2^3.26 # estimate
+2^2.74 # lower bound
+2^3.82 # upper bound
+```
+
+---
+
+# Example: BWCA analysis
+
+
+```{r}
+anova(fir_glm2)
+```
+
+---
+
+# Example: BWCA with status response
+
+.blockquote.font90[
+- status's second level is survived
+
+- a model with status as the response will model the probability of survival!
+
+  - `glm` will want this `as.factor` in order to fit the model!
+]
+
+```{r, collapse=TRUE}
+table(blowBF$status)
+```
+
+```{r, collapse=TRUE}
+fir_glm2_status <- glm(as.factor(status) ~ log(D), family=binomial, data=blowBF) #<<
+tidy(fir_glm2_status, conf.int=TRUE)
+```
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Go over the class activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`

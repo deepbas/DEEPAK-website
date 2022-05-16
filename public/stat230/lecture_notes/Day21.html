@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Logistic regression for binary responses: Diagnostics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Logistic regression for binary responses: Diagnostics]
+
+### .fancy[Stat 230]
+
+ May 16 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day21_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+Checking log-odds linearity: log-odds plots
+
+Residuals and Case influence stats
+]
+
+]
+
+---
+
+# Model Assumptions
+
+`$$\begin{array}{c}
+Y_{i} \mid X_{i} \stackrel{i n d e p .}{\sim} \operatorname{Bern}\left(\pi\left(X_{i}\right)\right) \\
+\eta_{i}=\log \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{array}$$`
+
+
+.blockquote.font90[
+.bold[Independence]
+- how are data collected?!
+- Are the cases naturally clustered together in a way that isn't accounted for in the model?
+- More on this in binomial logistic regression!
+
+.bold[Log-odds linearity]
+- quantitative predictors are linearly related to the log odds of success
+]
+
+---
+
+# EDA for logistic models: Empirical log odds plot
+
+`\begin{align*}
+\eta_{i}=\log \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{align*}`
+
+.yellow-h[Plot the empirical (sample) log-odds against the predictor and look for linearity. Get empirical log odds for binned (grouped) data]
+
+.blockquote.font80[
+1. Group cases into groups with similar predictor values using `ntile`
+
+2. Compute (`summarize`) the proportion of successes within each group (`group_by`)
+`\begin{align*}
+\tilde{\pi}_{e m p}=\frac{\text { number of successes in the group }}{\text { group size }}
+\end{align*}`
+
+3. Compute (`summarize`) the log odds of success in the group, within each group.
+
+`\begin{align*}
+\operatorname{logit}_{e m p}=\ln \left(\frac{\tilde{\pi}_{e m p}}{1-\tilde{\pi}_{e m p}}\right)
+\end{align*}`
+]
+
+---
+
+
+# Example: BWCA
+
+.pull-left.font90[
+&lt;br&gt;
+.blockquote[
+1999 windstorm in .bold[northern MN]
+- what factors are associated with a tree blow down?
+
+sample of 659 trees
+- `\(y=1\)` means the tree died during the storm
+- D: tree diameter (inches)
+]
+]
+
+.pull-right[
+.code90.font90[
+
+```r
+library(dplyr)
+blowBF &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/blowBF.csv")
+mean(blowBF$y) # proportion died
+[1] 0.353566
+```
+
+
+```r
+table(blowBF$status) # character response 
+
+    died survived 
+     233      426 
+```
+
+
+```r
+glimpse(blowBF)
+Rows: 659
+Columns: 5
+$ X      &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, …
+$ D      &lt;dbl&gt; 9, 11, 9, 9, 5, 8, 8, 6, 8, 5, 22, 6, 8, 8, 9, 10, 7, 14, 15, 1…
+$ S      &lt;dbl&gt; 0.0242120, 0.0305947, 0.0305947, 0.0341815, 0.0341815, 0.034181…
+$ y      &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ status &lt;chr&gt; "survived", "survived", "survived", "survived", "survived", "su…
+```
+
+]
+]
+
+---
+
+class: middle
+
+# Example: BWCA
+
+.blockquote[
+Divide cases in 1/20 (5%) quantiles of diameter
+- about 33 cases per group
+]
+
+
+```r
+blowBF &lt;- blowBF %&gt;% 
+  mutate(D_grps = ntile(blowBF$D, n = 20))
+table(blowBF$D_grps)
+```
+
+```
+
+ 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
+33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 32 
+```
+
+
+---
+
+
+count: false
+ 
+## Example: BWCA
+.panel1-group-auto[
+
+```r
+# group by D_grps
+*blowBF_empLO &lt;- blowBF
+```
+]
+ 
+.panel2-group-auto[
+
+]
+
+---
+count: false
+ 
+## Example: BWCA
+.panel1-group-auto[
+
+```r
+# group by D_grps
+blowBF_empLO &lt;- blowBF %&gt;%
+*group_by(D_grps)
+```
+]
+ 
+.panel2-group-auto[
+
+]
+
+---
+count: false
+ 
+## Example: BWCA
+.panel1-group-auto[
+
+```r
+# group by D_grps
+blowBF_empLO &lt;- blowBF %&gt;%
+ group_by(D_grps) %&gt;%
+*summarize(D_grps_med = median(D),  # median D of groups
+*pi_emp = mean(y),  # proportion died
+*log_odds_emp = log(pi_emp/(1-pi_emp)))  # log odds
+```
+]
+ 
+.panel2-group-auto[
+
+]
+
+---
+count: false
+ 
+## Example: BWCA
+.panel1-group-auto[
+
+```r
+# group by D_grps
+blowBF_empLO &lt;- blowBF %&gt;%
+ group_by(D_grps) %&gt;%
+ summarize(D_grps_med = median(D),  # median D of groups
+ pi_emp = mean(y),  # proportion died
+ log_odds_emp = log(pi_emp/(1-pi_emp)))  # log odds
+*blowBF_empLO
+```
+]
+ 
+.panel2-group-auto[
+
+```
+# A tibble: 20 × 4
+   D_grps D_grps_med pi_emp log_odds_emp
+    &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
+ 1      1        5   0.0606      -2.74  
+ 2      2        5   0.0606      -2.74  
+ 3      3        5   0.0909      -2.30  
+ 4      4        6   0.0909      -2.30  
+ 5      5        6   0.0303      -3.47  
+ 6      6        6.5 0.182       -1.50  
+ 7      7        7   0.212       -1.31  
+ 8      8        7   0.152       -1.72  
+ 9      9        8   0.182       -1.50  
+10     10        8   0.152       -1.72  
+11     11        9   0.212       -1.31  
+12     12        9   0.424       -0.305 
+13     13       10   0.364       -0.560 
+14     14       10.5 0.485       -0.0606
+15     15       11   0.636        0.560 
+16     16       13   0.727        0.981 
+17     17       14   0.606        0.431 
+18     18       15   0.788        1.31  
+19     19       17   0.818        1.50  
+20     20       21.5 0.812        1.47  
+```
+]
+
+&lt;style&gt;
+.panel1-group-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-group-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-group-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+count: false
+ 
+## Linearity in empirical log odds vs. (median) diameter?
+
+.panel1-linearity-auto[
+
+```r
+*ggplot(blowBF_empLO, aes(x=D_grps_med, y=log_odds_emp))
+```
+]
+ 
+.panel2-linearity-auto[
+&lt;img src="Day21_files/figure-html/linearity_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Linearity in empirical log odds vs. (median) diameter?
+
+.panel1-linearity-auto[
+
+```r
+ggplot(blowBF_empLO, aes(x=D_grps_med, y=log_odds_emp)) +
+*geom_point()
+```
+]
+ 
+.panel2-linearity-auto[
+&lt;img src="Day21_files/figure-html/linearity_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Linearity in empirical log odds vs. (median) diameter?
+
+.panel1-linearity-auto[
+
+```r
+ggplot(blowBF_empLO, aes(x=D_grps_med, y=log_odds_emp)) +
+ geom_point() +
+*scale_x_log10()  # log is better
+```
+]
+ 
+.panel2-linearity-auto[
+&lt;img src="Day21_files/figure-html/linearity_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-linearity-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-linearity-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-linearity-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+# Residuals in logistic models
+
+.blockquote.font90[
+- .bold[Response:] response minus estimated mean
+`\begin{align*}
+r_{i}=y_{i}-\hat{\pi}\left(X_{i}\right)
+\end{align*}`
+- .bold[Pearson:] response residuals standardized based on the binomial SD:
+`\begin{align*}
+p r_{i}=\frac{y_{i}-\hat{\pi}\left(X_{i}\right)}{\sqrt{\hat{\pi}\left(X_{i}\right)\left(1-\hat{\pi}\left(X_{i}\right)\right)}}
+\end{align*}`
+- .bold[Deviance:] each case's contribution to the residual deviance
+`\begin{align*}
+\operatorname{Dres}_{i}=\operatorname{sign}\left(y_{i}-\hat{\pi}\left(X_{i}\right)\right) \sqrt{2\left[y_{i} \ln \left(\frac{y_{i}}{\hat{\pi}\left(X_{i}\right)}\right)+\left(1-y_{i}\right) \ln \left(\frac{1-y_{i}}{1-\hat{\pi}\left(X_{i}\right)}\right)\right]}
+\end{align*}`
+]
+
+---
+
+# Residuals in R
+
+.blockquote[
+Base-R
+- response: `resid(my_glm, type = "response")`
+- Pearson: `resid(my_glm, type = "pearson")`
+- deviance: `resid(my_glm, type = "deviance")`
+]
+
+&lt;br&gt;
+
+.blockquote[
+`broom` package
+- no response `residual` option
+- pearson: `augment(my.glm, type.residuals = "pearson")`
+- deviance: `augment(my.glm, type.residuals = "deviance")`
+]
+
+---
+
+count: false
+ 
+## Interpretation of binary model's residual plots
+.panel1-interpretation-auto[
+
+```r
+*fir_glm1 &lt;- glm(y ~ D, family=binomial, data=blowBF)
+```
+]
+ 
+.panel2-interpretation-auto[
+
+]
+
+---
+count: false
+ 
+## Interpretation of binary model's residual plots
+.panel1-interpretation-auto[
+
+```r
+fir_glm1 &lt;- glm(y ~ D, family=binomial, data=blowBF)
+*blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+*                      type.residuals="pearson")
+```
+]
+ 
+.panel2-interpretation-auto[
+
+]
+
+---
+count: false
+ 
+## Interpretation of binary model's residual plots
+.panel1-interpretation-auto[
+
+```r
+fir_glm1 &lt;- glm(y ~ D, family=binomial, data=blowBF)
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+*ggplot(blowBF_aug1, aes(x=D, y=.resid))
+```
+]
+ 
+.panel2-interpretation-auto[
+&lt;img src="Day21_files/figure-html/interpretation_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Interpretation of binary model's residual plots
+.panel1-interpretation-auto[
+
+```r
+fir_glm1 &lt;- glm(y ~ D, family=binomial, data=blowBF)
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+ggplot(blowBF_aug1, aes(x=D, y=.resid)) +
+*geom_jitter(height = .05)
+```
+]
+ 
+.panel2-interpretation-auto[
+&lt;img src="Day21_files/figure-html/interpretation_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Interpretation of binary model's residual plots
+.panel1-interpretation-auto[
+
+```r
+fir_glm1 &lt;- glm(y ~ D, family=binomial, data=blowBF)
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+ggplot(blowBF_aug1, aes(x=D, y=.resid)) +
+geom_jitter(height = .05) +
+*geom_hline(yintercept = 0)
+```
+]
+ 
+.panel2-interpretation-auto[
+&lt;img src="Day21_files/figure-html/interpretation_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-interpretation-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-interpretation-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-interpretation-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+class: middle
+
+# Binned response residual plots
+
+.blockquote[
+Look at average residual value for cases with similar values of diameter. 
+- same idea as binning data for the log-odds plot
+]
+
+&lt;br&gt;
+
+.blockquote[
+- Use `broom::augment` to add Pearson residuals to the data (already done)
+- Use `group_by` diameter bins and compute the average residual value
+]
+
+---
+
+count: false
+ 
+## Binned response residuals
+.panel1-binned-auto[
+
+```r
+*blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+*                      type.residuals="pearson")
+```
+]
+ 
+.panel2-binned-auto[
+
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-auto[
+
+```r
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+*blowBF_aug1$D_grps &lt;- ntile(blowBF$D, n = 20)
+```
+]
+ 
+.panel2-binned-auto[
+
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-auto[
+
+```r
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+blowBF_aug1$D_grps &lt;- ntile(blowBF$D, n = 20)
+*blowBF_resid1 &lt;- blowBF_aug1
+```
+]
+ 
+.panel2-binned-auto[
+
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-auto[
+
+```r
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+blowBF_aug1$D_grps &lt;- ntile(blowBF$D, n = 20)
+blowBF_resid1 &lt;- blowBF_aug1 %&gt;%
+*group_by(D_grps)
+```
+]
+ 
+.panel2-binned-auto[
+
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-auto[
+
+```r
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+blowBF_aug1$D_grps &lt;- ntile(blowBF$D, n = 20)
+blowBF_resid1 &lt;- blowBF_aug1 %&gt;%
+ group_by(D_grps) %&gt;%
+*summarize(D_grps_med = median(D),  # median D of groups
+*resid_mean = mean(.resid))  # mean residual
+```
+]
+ 
+.panel2-binned-auto[
+
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-auto[
+
+```r
+blowBF_aug1 &lt;- augment(fir_glm1, data=blowBF,
+                       type.residuals="pearson")
+blowBF_aug1$D_grps &lt;- ntile(blowBF$D, n = 20)
+blowBF_resid1 &lt;- blowBF_aug1 %&gt;%
+ group_by(D_grps) %&gt;%
+ summarize(D_grps_med = median(D),  # median D of groups
+ resid_mean = mean(.resid))  # mean residual
+*blowBF_resid1
+```
+]
+ 
+.panel2-binned-auto[
+
+```
+# A tibble: 20 × 3
+   D_grps D_grps_med resid_mean
+    &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+ 1      1        5     -0.167  
+ 2      2        5     -0.167  
+ 3      3        5     -0.0939 
+ 4      4        6     -0.158  
+ 5      5        6     -0.329  
+ 6      6        6.5    0.0374 
+ 7      7        7      0.0621 
+ 8      8        7     -0.0931 
+ 9      9        8     -0.0946 
+10     10        8     -0.201  
+11     11        9     -0.126  
+12     12        9      0.270  
+13     13       10      0.00878
+14     14       10.5    0.193  
+15     15       11      0.362  
+16     16       13      0.365  
+17     17       14     -0.0489 
+18     18       15      0.127  
+19     19       17     -0.0296 
+20     20       21.5   -0.913  
+```
+]
+
+&lt;style&gt;
+.panel1-binned-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-binned-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-binned-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+count: false
+ 
+## Binned response residuals
+.panel1-binned-residual-auto[
+
+```r
+*ggplot(blowBF_resid1, aes(x=D_grps_med, y=resid_mean))
+```
+]
+ 
+.panel2-binned-residual-auto[
+&lt;img src="Day21_files/figure-html/binned-residual_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-residual-auto[
+
+```r
+ggplot(blowBF_resid1, aes(x=D_grps_med, y=resid_mean)) +
+*geom_point()
+```
+]
+ 
+.panel2-binned-residual-auto[
+&lt;img src="Day21_files/figure-html/binned-residual_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-residual-auto[
+
+```r
+ggplot(blowBF_resid1, aes(x=D_grps_med, y=resid_mean)) +
+ geom_point() +
+*geom_hline(yintercept = 0)
+```
+]
+ 
+.panel2-binned-residual-auto[
+&lt;img src="Day21_files/figure-html/binned-residual_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-residual-auto[
+
+```r
+ggplot(blowBF_resid1, aes(x=D_grps_med, y=resid_mean)) +
+ geom_point() +
+ geom_hline(yintercept = 0) +
+*labs(title="Binned residual plot using Diameter")
+```
+]
+ 
+.panel2-binned-residual-auto[
+&lt;img src="Day21_files/figure-html/binned-residual_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Binned response residuals
+.panel1-binned-residual-auto[
+
+```r
+ggplot(blowBF_resid1, aes(x=D_grps_med, y=resid_mean)) +
+ geom_point() +
+ geom_hline(yintercept = 0) +
+ labs(title="Binned residual plot using Diameter")+
+* theme(plot.title = element_text(hjust=0.5, size=9, face='bold'))
+```
+]
+ 
+.panel2-binned-residual-auto[
+&lt;img src="Day21_files/figure-html/binned-residual_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-binned-residual-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-binned-residual-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-binned-residual-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+.out-t[Low diameter cases overestimated and higher diameters underestimated]
+
+---
+
+class: middle
+
+# Case influence in logistic models
+
+&gt; leverage and Cook's distance are used with logistic models, just as they are with regular linear models.
+
+.blockquote[
+Use the usual `\(R\)` commands:
+- `plot(my_glm, which = 5)` (or type 4)
+- `ggResidpanel::resid_panel(my_glm, plots =c("cookd", "lev"))`
+]
+
+
+---
+
+class: middle
+
+# Example: BWCA analysis
+
+
+```r
+# y = 1 means died
+fir_glm2 &lt;- glm(y ~ log(D), family=binomial, data=blowBF)
+tidy(fir_glm2, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    -7.89     0.633     -12.5 9.92e-36    -9.18     -6.69
+2 log(D)          3.26     0.276      11.8 3.02e-32     2.74      3.82
+```
+
+.blockquote[
+- The odds of death as a function of diameter?
+- Effect of doubling tree diameter?
+]
+
+---
+
+# Example: BWCA analysis
+
+
+```r
+tidy(fir_glm2, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    -7.89     0.633     -12.5 9.92e-36    -9.18     -6.69
+2 log(D)          3.26     0.276      11.8 3.02e-32     2.74      3.82
+```
+
+.blockquote[
+- The odds of death as a function of diameter:
+`\begin{align*}
+\widehat{odds}(D)=e^{-7.89+3.26 \ln (D)}=e^{-7.89} D^{3.26}
+\end{align*}`
+]
+
+
+---
+
+# Example: BWCA analysis
+
+
+```r
+tidy(fir_glm2, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    -7.89     0.633     -12.5 9.92e-36    -9.18     -6.69
+2 log(D)          3.26     0.276      11.8 3.02e-32     2.74      3.82
+```
+
+.blockquote.font90[
+Doubling diameter is associated with a 9.58-fold increase in the odds of death (95% CI 6.68 to 14.12).
+`\begin{align*}
+m^{\hat{\beta}_{1}}=2^{3.26}=9.58
+\end{align*}`
+]
+
+
+
+```r
+2^3.26 # estimate
+[1] 9.57983
+2^2.74 # lower bound
+[1] 6.680703
+2^3.82 # upper bound
+[1] 14.12325
+```
+
+---
+
+# Example: BWCA analysis
+
+
+
+```r
+anova(fir_glm2)
+```
+
+```
+Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: y
+
+Terms added sequentially (first to last)
+
+       Df Deviance Resid. Df Resid. Dev
+NULL                     658     856.21
+log(D)  1   200.97       657     655.24
+```
+
+---
+
+# Example: BWCA with status response
+
+.blockquote.font90[
+- status's second level is survived
+
+- a model with status as the response will model the probability of survival!
+
+  - `glm` will want this `as.factor` in order to fit the model!
+]
+
+
+```r
+table(blowBF$status)
+
+    died survived 
+     233      426 
+```
+
+
+```r
+*fir_glm2_status &lt;- glm(as.factor(status) ~ log(D), family=binomial, data=blowBF)
+tidy(fir_glm2_status, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)     7.89     0.633      12.5 9.92e-36     6.69      9.18
+2 log(D)         -3.26     0.276     -11.8 3.02e-32    -3.82     -2.74
+```
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Go over the class activity in your group
+]
+]
+
+<div class="countdown" id="timer_62826580" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
