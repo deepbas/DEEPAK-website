@@ -1,5 +1,5 @@
 ---
-title: "Logistic regression for binary responses: Diagnostics"
+title: "Logistic regression for binomial response"
 subtitle: "<br/> STAT 230"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -98,7 +98,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Logistic regression for binary responses: Diagnostics]
+# .fancy[Logistic regression for binomial response]
 
 ### .fancy[Stat 230]
 
