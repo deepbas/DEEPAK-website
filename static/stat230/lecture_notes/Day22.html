@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Logistic regression for binary responses: Diagnostics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Logistic regression for binary responses: Diagnostics]
+
+### .fancy[Stat 230]
+
+ May 18 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day22_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+Binomial responses
+
+Logistic model for binomial responses
+
+EDA and inference
+]
+
+]
+
+---
+
+class: middle
+
+# Binomial responses
+
+.blockquote-list.font90[
+- .bold[Binomial] counts are defined as
+  - `\(Y_{i}=\)` number of successes in `\(m_{i}\)` independent Bernoulli (success/failure) trials for case (unit) `\(i\)`
+
+- Each case has predictor values:
+  - `\(X_{i}=\left(x_{1, i}, \ldots, x_{p, i}\right)\)` be the predictors for this case
+
+- We want to use a logistic model for:
+  - `\(\pi\left(X_{i}\right)\)` is the probability of success for each of the `\(m_{i}\)` trials
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font90[
+In 1949, scientists recorded the number of "at risk" species on each island.
+Ten years later, they recorded how many of these species were extinct. We
+want to model the extinction rate for each island as a function of the island
+size.
+]
+
+&lt;br&gt;
+
+.pull-left[
+.blockquote.font80[
+- `Island` gives us an identifier of each island (case)
+- `Area` is our predictor `\(x_{i}\)` for each island
+- `AtRisk` is `\(m_{i}\)`, the number of animals available for extinction
+- `Extinct` is `\(y_{i}\)`, the number (out of `\(m_{i}\)`) that went extinct
+]
+]
+.pull-right[
+
+```r
+island &lt;- case2101
+glimpse(island)
+Rows: 18
+Columns: 4
+$ Island  &lt;fct&gt; Ulkokrunni, Maakrunni, Ristikari, Isonkivenletto, Hietakraasuk…
+$ Area    &lt;dbl&gt; 185.80, 105.80, 30.70, 8.50, 4.80, 4.50, 4.30, 3.60, 2.60, 1.7…
+$ AtRisk  &lt;int&gt; 75, 67, 66, 51, 28, 20, 43, 31, 28, 32, 30, 20, 31, 16, 15, 33…
+$ Extinct &lt;int&gt; 5, 3, 10, 6, 3, 4, 8, 3, 5, 6, 8, 2, 9, 5, 7, 8, 13, 3
+```
+]
+
+---
+
+class: middle
+
+# Binomial responses
+
+.blockquote.font90[
+Our Binomial counts are modeled by a .bold[Binomial] distribution:
+`\begin{align*}
+Y_{i} \mid X_{i} \stackrel{\text { indep. }}{\sim} \operatorname{Binom}\left(m_{i}, \pi\left(X_{i}\right)\right)
+\end{align*}`
+The mean response for each case is
+`\begin{align*}
+E\left(Y_{i} \mid X_{i}\right)=\mu_{y \mid x}=m_{i} \pi\left(X_{i}\right)
+\end{align*}`
+and the standard deviation is
+`\begin{align*}
+S D\left(Y_{i} \mid X_{i}\right)=\sigma_{y \mid x}=\sqrt{m_{i} \pi\left(X_{i}\right)\left(1-\pi\left(X_{i}\right)\right)}
+\end{align*}`
+]
+
+
+---
+
+class: middle
+
+# Logistic model for Binomial responses
+
+.blockquote.font90[
+- Logistic function for probabilities:
+`\begin{align*}
+\pi\left(X_{i}\right)=\frac{e^{\eta_{i}}}{1+e^{\eta_{i}}}=\frac{e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}}{1+e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}}
+\end{align*}`
+- logit (log odds) function for predictors:
+`\begin{align*}
+\eta_{i}=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}=\ln \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)
+\end{align*}`
+- Interpretation of a logistic model for a binomial response is .bold[exactly the same] as a binary response model.
+]
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font90[
+- .bold[Logistic model:]
+`\begin{align*}
+\log \left(\frac{\pi\left(x_{i}\right)}{1-\pi\left(x_{i}\right)}\right)=\beta_{0}+\beta_{1} \text { area }_{i}
+\end{align*}`
+where `\(\pi\left(X_{i}\right)\)` represents the probability of extinction ("success") for "at risk" animals on island `\(i\)`.
+- EDA:
+- compute proportion of successes `\(\tilde{\pi}_{i}=Y_{i} / m_{i}\)` for each island
+- compute empirical log odds `\(\ln \left(\tilde{\pi}_{i} /\left(1-\tilde{\pi}_{i}\right)\right)\)`
+- plot empirical log odds vs. area to check for linearity
+]
+
+
+---
+
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-auto[
+
+```r
+*island &lt;- mutate(island,
+*                prop = Extinct/AtRisk,  # prop extincts
+*                logOdds = log(prop/(1-prop)))  # emp. logits
+```
+]
+ 
+.panel2-eda-auto[
+
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-auto[
+
+```r
+island &lt;- mutate(island,
+                 prop = Extinct/AtRisk,  # prop extincts
+                 logOdds = log(prop/(1-prop)))  # emp. logits
+
+*ggplot(island, aes(x = Area, y = logOdds))
+```
+]
+ 
+.panel2-eda-auto[
+&lt;img src="Day22_files/figure-html/eda_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-auto[
+
+```r
+island &lt;- mutate(island,
+                 prop = Extinct/AtRisk,  # prop extincts
+                 logOdds = log(prop/(1-prop)))  # emp. logits
+
+ggplot(island, aes(x = Area, y = logOdds)) +
+* geom_point()
+```
+]
+ 
+.panel2-eda-auto[
+&lt;img src="Day22_files/figure-html/eda_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-auto[
+
+```r
+island &lt;- mutate(island,
+                 prop = Extinct/AtRisk,  # prop extincts
+                 logOdds = log(prop/(1-prop)))  # emp. logits
+
+ggplot(island, aes(x = Area, y = logOdds)) +
+  geom_point() +
+* labs(title="empirical log odds vs. area")
+```
+]
+ 
+.panel2-eda-auto[
+&lt;img src="Day22_files/figure-html/eda_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-auto[
+
+```r
+island &lt;- mutate(island,
+                 prop = Extinct/AtRisk,  # prop extincts
+                 logOdds = log(prop/(1-prop)))  # emp. logits
+
+ggplot(island, aes(x = Area, y = logOdds)) +
+  geom_point() +
+  labs(title="empirical log odds vs. area") +
+* theme(plot.title = element_text(hjust=0.5, size=9,
+*                                 face='bold'))
+```
+]
+ 
+.panel2-eda-auto[
+&lt;img src="Day22_files/figure-html/eda_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-eda-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-eda-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-eda-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-log-auto[
+
+```r
+*ggplot(island, aes(x = Area, y = logOdds))
+```
+]
+ 
+.panel2-eda-log-auto[
+&lt;img src="Day22_files/figure-html/eda-log_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-log-auto[
+
+```r
+ggplot(island, aes(x = Area, y = logOdds)) +
+* geom_point()
+```
+]
+ 
+.panel2-eda-log-auto[
+&lt;img src="Day22_files/figure-html/eda-log_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-log-auto[
+
+```r
+ggplot(island, aes(x = Area, y = logOdds)) +
+  geom_point() +
+* scale_x_log10()
+```
+]
+ 
+.panel2-eda-log-auto[
+&lt;img src="Day22_files/figure-html/eda-log_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-log-auto[
+
+```r
+ggplot(island, aes(x = Area, y = logOdds)) +
+  geom_point() +
+  scale_x_log10() +
+* labs(title="empirical log odds vs. log(area)")
+```
+]
+ 
+.panel2-eda-log-auto[
+&lt;img src="Day22_files/figure-html/eda-log_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-eda-log-auto[
+
+```r
+ggplot(island, aes(x = Area, y = logOdds)) +
+  geom_point() +
+  scale_x_log10() +
+  labs(title="empirical log odds vs. log(area)") +
+* theme(plot.title = element_text(hjust=0.5, size=9,
+*                                 face='bold'))
+```
+]
+ 
+.panel2-eda-log-auto[
+&lt;img src="Day22_files/figure-html/eda-log_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-eda-log-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-eda-log-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-eda-log-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font90[
+- .bold[Logistic model:] given an `\(\text{island size area}_{i}\)`, `\(Y_{i}\)`, the number of extinctions on island `\(i\)`, is a binomial variable
+
+`\begin{align*}
+Y_{i} \mid \text { area }_{i} \sim \operatorname{Binom}\left(m_{i}, \pi\left(\text { area }_{i}\right)\right)
+\end{align*}`
+where `\(\pi\left(\right.\)` area `\(\left._{i}\right)\)` is the probability of extinction for each of the `\(m_{i}\)` at risk species on island `\(i\)`.
+
+- Based on the EDA, we will fit the logit model:
+`\begin{align*}
+\log \left(\frac{\pi\left(\text { area }_{i}\right)}{1-\pi\left(\text { area }_{i}\right)}\right)=\beta_{0}+\beta_{1} \ln \left(\text { area }_{i}\right)
+\end{align*}`
+]
+
+---
+
+class: middle
+
+# Inference for Binomial response models
+
+.blockquote.font90[
+.bold[Similarities] between binomial and binary response logistic models:
+- Interpretation of `\(\beta\)` in the two models is the same.
+- Inference for models is the same
+- "Wald" z-tests and confidence intervals for `\(\beta\)` parameters are the same.
+- Drop-in-deviance model comparison tests are the same.
+- R functions of fitted, predict, augment are the same.
+]
+
+---
+
+class: middle
+
+# Inference for Binomial response models
+
+.blockquote.font90[
+.bold[Differences] between binomial and binary response logistic models:
+- The formula for deviance `\(G^{2}\)` is different because our probability model is (slightly) different.
+- In binary models, Wald inference relies on "large `\(n\)` ". In binomial models, we either need "large `\(n\)` " and/or large `\(m_{i}\)` values. E.g. In the binomial model, `\(n=5\)` is fine if all `\(m_{i}=1000\)`.
+- The R function `glm` wants a response equal to the empirical proportion of successes, `\(Y_{i} / m_{i}\)`, along with the number of binomial trials `\(m_{i}\)` in our `glm` specification:
+
+`\begin{align*}
+\operatorname{glm}(y / m \sim x 1+x 2 \text {, family }=\text { binomial, weights }=m \text {, data }= )
+\end{align*}`
+]
+
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+- .bold[response:] the ratio of `\(y\)` (Extinct) to `\(m\)` (AtRisk)
+- .bold[weights:] `\(m\)` (AtRisk):
+
+.font90[
+
+```r
+krunnit.glm &lt;- glm(Extinct/AtRisk ~ log(Area), family="binomial", weights=AtRisk, data=island)
+tidy(krunnit.glm, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   -1.20     0.118     -10.1  5.58e-24   -1.43     -0.968
+2 log(Area)     -0.297    0.0549     -5.42 6.08e- 8   -0.408    -0.192
+```
+]
+
+.blockquote.font90[
+- The estimated estimated odds of extinction is
+`\begin{align*}
+\frac{\hat{\pi}}{1-\hat{\pi}}=e^{-1.1962-0.29710 \ln (\text { Area })}=e^{-1.1962} \mathrm{Area}^{-0.29710}
+\end{align*}`
+]
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island visualization
+
+.blockquote[
+- .bold[Data:] plot success proportions in each group `\(\tilde{\pi}_{i}\)` against the predictor
+- .bold[weights:] add `weights=m` to the `aes` (will be used by the `glm` smoother)
+- .bold[Estimated probability curve:] add `geom_smooth` with `glm` (like binary model)
+]
+
+---
+
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-data-viz-auto[
+
+```r
+*ggplot(island, aes(x=log(Area), y = Extinct/AtRisk, weight = AtRisk))
+```
+]
+ 
+.panel2-data-viz-auto[
+&lt;img src="Day22_files/figure-html/data-viz_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-data-viz-auto[
+
+```r
+ggplot(island, aes(x=log(Area), y = Extinct/AtRisk, weight = AtRisk)) +
+*geom_point()
+```
+]
+ 
+.panel2-data-viz-auto[
+&lt;img src="Day22_files/figure-html/data-viz_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-data-viz-auto[
+
+```r
+ggplot(island, aes(x=log(Area), y = Extinct/AtRisk, weight = AtRisk)) +
+ geom_point() +
+*geom_smooth(method="glm", se=FALSE,
+*method.args = list(family="binomial"))
+```
+]
+ 
+.panel2-data-viz-auto[
+&lt;img src="Day22_files/figure-html/data-viz_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+##  Case study 21.1: Krunnit Island
+.panel1-data-viz-auto[
+
+```r
+ggplot(island, aes(x=log(Area), y = Extinct/AtRisk, weight = AtRisk)) +
+ geom_point() +
+ geom_smooth(method="glm", se=FALSE,
+ method.args = list(family="binomial")) +
+*labs(title="Extinction probability as a function of area")
+```
+]
+ 
+.panel2-data-viz-auto[
+&lt;img src="Day22_files/figure-html/data-viz_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-data-viz-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel2-data-viz-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+.panel3-data-viz-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 60%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.font80[
+
+```r
+tidy(krunnit.glm, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   -1.20     0.118     -10.1  5.58e-24   -1.43     -0.968
+2 log(Area)     -0.297    0.0549     -5.42 6.08e- 8   -0.408    -0.192
+```
+]
+
+.pull-left[
+.blockquote.font80[
+- The estimated odds of extinction for a `\(5 \mathrm{~km}^{2}\)` island is
+`\begin{align*}
+\log\left(\frac{\hat{\pi}(x=5)}{1-\hat{\pi}(x=5)}\right) &amp;=-1.1962-0.29710 \log (5)\\&amp;=-1.674364
+\end{align*}`
+&lt;br&gt;
+]
+
+.font80[
+
+```r
+predict(krunnit.glm, newdata=list(Area=5))
+        1 
+-1.674365 
+```
+]
+]
+
+.pull-right[
+.blockquote.font80[
+- The estimated probability of extinction for at risk species on a `\(5 \mathrm{~km}^{2}\)` island is
+`\begin{align*}
+\hat{\pi}(x=5)&amp;=\frac{e^{-1.1962-0.29710 \log (5)}}{1+e^{-1.1962-0.29710 \log (5)}}\\&amp;=\frac{e^{-1.674364}}{1+e^{-1.674364}}=0.1578432
+\end{align*}`
+]
+
+.font80[
+
+```r
+predict(krunnit.glm, newdata=list(Area=5), type="response")
+       1 
+0.157843 
+```
+]
+]
+
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+
+.font80[
+
+```r
+tidy(krunnit.glm, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   -1.20     0.118     -10.1  5.58e-24   -1.43     -0.968
+2 log(Area)     -0.297    0.0549     -5.42 6.08e- 8   -0.408    -0.192
+```
+]
+
+
+.blockquote.font90[
+- The effect of area on extinction rates is statistically signicant (Wald `\(\mathrm{z}=-5.416, \mathrm{p}&lt;0.0001\)` ).
+- Effect of doubling island size?
+`\begin{align*}
+O R=\frac{o \hat{d} d s(2 \times \text { Area })}{o \hat{d} d s(\text { Area })}=2^{-0.29710}=0.814, \quad 100 \%(0.814-1)=-18.6
+\end{align*}`
+- Doubling an island area is associated with an `\(18.6 \%\)` reduction in the odds of extinction of at risk species.
+- We are `\(95 \%\)` confident that doubling the area of an island is associated with anywhere from a `\(12.3 \%\)` to `\(24.5 \%\)` decrease in extinction rates.
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.font80[
+
+```r
+tidy(krunnit.glm, conf.int=TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic  p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   -1.20     0.118     -10.1  5.58e-24   -1.43     -0.968
+2 log(Area)     -0.297    0.0549     -5.42 6.08e- 8   -0.408    -0.192
+```
+]
+
+
+.blockquote.font90[
+- Effect of a `\(10 \%\)` increase in island size?
+`\begin{align*}
+O R=1.1^{-0.29710}=0.972, \quad 1.1^{-0.408}=0.962, \quad 1.1^{-0.192}=0.982
+\end{align*}`
+- We are `\(95 \%\)` confident that a `\(10 \%\)` increase in the area of an island is associated with a `\(1.8 \%\)` to `\(3.8 \%\)` decrease in the odds of extinction for at risk species.
+]
+
+---
+
+class: middle
+
+# Example: NES revisited
+
+.blockquote.font80[
+- Suppose that the NES data was collected via a .bold[stratified] random sample
+
+    - in 1980: separate random samples of people were taken within each region
+    - in 2000: separate random samples of people were taken within each region
+    
+- In any given year/region combo `\(i=1, \ldots, 8\)`
+
+    - `\(m_{i}=\)` number of people surveyed in that year/region (fixed sample size)
+    - `\(Y_{i}=\)` number of Democrat leaning people surveyed in that year/region
+]
+
+---
+
+# Example: NES revisited
+
+&gt; Use the individual level (binary) data to get the counts of (sample sizes) and (binomial counts of successes)
+
+
+
+```r
+nes &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/NES.csv")
+head(nes) # person-level data
+```
+
+```
+      year age gender  race region     income union dem       educ
+1 year1980  70   male black      S  lower 1/3    no   1 HS or less
+2 year1980  67   male white     NC middle 1/3   yes   1 HS or less
+3 year1980  47 female black      S  lower 1/3    no   1 HS or less
+4 year1980  52 female white      W  upper 1/3   yes   0    College
+5 year1980  30 female white     NC  upper 1/3    no   1 HS or less
+6 year1980  37   male black     NC  upper 1/3    no   1    College
+```
+
+
+---
+
+count: false
+ 
+# Example: NES revisited
+.panel1-nes-strata-auto[
+
+```r
+*nes_binom_data &lt;- nes
+```
+]
+ 
+.panel2-nes-strata-auto[
+
+]
+
+---
+count: false
+ 
+# Example: NES revisited
+.panel1-nes-strata-auto[
+
+```r
+nes_binom_data &lt;- nes %&gt;%
+* group_by(region, year)   # sample size by year/region
+```
+]
+ 
+.panel2-nes-strata-auto[
+
+]
+
+---
+count: false
+ 
+# Example: NES revisited
+.panel1-nes-strata-auto[
+
+```r
+nes_binom_data &lt;- nes %&gt;%
+  group_by(region, year) %&gt;%  # sample size by year/region
+* summarize(m = n(), Dem_count = sum(dem))  # number Dem
+```
+]
+ 
+.panel2-nes-strata-auto[
+
+]
+
+---
+count: false
+ 
+# Example: NES revisited
+.panel1-nes-strata-auto[
+
+```r
+nes_binom_data &lt;- nes %&gt;%
+  group_by(region, year) %&gt;%  # sample size by year/region
+  summarize(m = n(), Dem_count = sum(dem))  # number Dem
+*nes_binom_data
+```
+]
+ 
+.panel2-nes-strata-auto[
+
+```
+# A tibble: 8 × 4
+# Groups:   region [4]
+  region year         m Dem_count
+  &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt;     &lt;int&gt;
+1 NC     year1980   262       128
+2 NC     year2000   301       162
+3 NE     year1980   226       112
+4 NE     year2000   201       122
+5 S      year1980   380       228
+6 S      year2000   426       210
+7 W      year1980   186        96
+8 W      year2000   250       136
+```
+]
+
+&lt;style&gt;
+.panel1-nes-strata-auto {
+  color: black;
+  width: 60.76%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 90%
+}
+.panel2-nes-strata-auto {
+  color: black;
+  width: 37.24%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 90%
+}
+.panel3-nes-strata-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 90%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+.blockquote.font80[
+- `\(m\)`: the number of people per year/region ( `\(n()\)` counts the number of rows for each group)
+
+- `Dem_count:` the number of Democrats per year/region
+
+- Binomial count data with region and year predictors
+]
+
+---
+
+class: middle
+
+# Example: NES revisited
+
+.blockquote.font90[
+`\begin{align*}
+Y_{i} \mid \text { year, region } \sim \operatorname{Binom}\left(m_{i}, \pi_{i}\right)
+\end{align*}`
+where `\(\pi_{i}\)` is the probability of Dem in that year/region combo `\(i\)`.
+- We can model `\(\pi\)` as a function of year and region
+- we get the same results for both the binomial and binary versions of this data!
+]
+
+---
+
+# Example: NES revisited
+
+.blockquote.font80[.bold[Binary version:] using person-level responses and our `dem` indicator of Democrat]
+
+
+```r
+nes_glm_binary &lt;- glm(dem ~ region*year,
+                      data = nes,
+                      family = binomial)
+```
+
+
+.blockquote.font80[.bold[Binomial version:] using aggregated year/region level counts and our `Dem_count/m` proportion Democrats for each year/region combo]
+
+
+```r
+nes_glm_binom &lt;- glm(Dem_count/m ~ region*year,
+                     weights = m,
+                     data = nes_binom_data,
+                     family = binomial)
+```
+
+---
+
+# Example: NES revisited
+.code70[
+
+```r
+summary(nes_glm_binary)
+
+Call:
+glm(formula = dem ~ region * year, family = binomial, data = nes)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.3666  -1.2049   0.9993   1.1131   1.1969  
+
+Coefficients:
+                      Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept)           -0.04581    0.12359  -0.371  0.71090   
+regionNE               0.02811    0.18159   0.155  0.87698   
+regionS                0.45127    0.16199   2.786  0.00534 **
+regionW                0.11035    0.19184   0.575  0.56515   
+yearyear2000           0.19893    0.16924   1.175  0.23982   
+regionNE:yearyear2000  0.25334    0.25923   0.977  0.32842   
+regionS:yearyear2000  -0.63257    0.22136  -2.858  0.00427 **
+regionW:yearyear2000  -0.08701    0.25748  -0.338  0.73540   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 3083.3  on 2231  degrees of freedom
+Residual deviance: 3065.5  on 2224  degrees of freedom
+AIC: 3081.5
+
+Number of Fisher Scoring iterations: 4
+```
+]
+
+
+---
+
+# Example: NES revisited
+.code70[
+
+```r
+summary(nes_glm_binom)
+
+Call:
+glm(formula = Dem_count/m ~ region * year, family = binomial, 
+    data = nes_binom_data, weights = m)
+
+Deviance Residuals: 
+[1]  0  0  0  0  0  0  0  0
+
+Coefficients:
+                      Estimate Std. Error z value Pr(&gt;|z|)   
+(Intercept)           -0.04581    0.12359  -0.371  0.71090   
+regionNE               0.02811    0.18159   0.155  0.87698   
+regionS                0.45127    0.16199   2.786  0.00534 **
+regionW                0.11035    0.19184   0.575  0.56515   
+yearyear2000           0.19893    0.16924   1.175  0.23982   
+regionNE:yearyear2000  0.25334    0.25923   0.977  0.32842   
+regionS:yearyear2000  -0.63257    0.22136  -2.858  0.00427 **
+regionW:yearyear2000  -0.08701    0.25748  -0.338  0.73540   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1.7792e+01  on 7  degrees of freedom
+Residual deviance: 1.7764e-14  on 0  degrees of freedom
+AIC: 64.266
+
+Number of Fisher Scoring iterations: 2
+```
+]
+
+---
+
+class: middle
+
+# Recall: Inference for Binomial response models
+
+.blockquote.font90[
+Differences between binomial and binary response logistic models:
+- The formula for deviance `\(G^{2}\)` is different because our probability model is (slightly) different.
+- Binomial version assumes that the year/region sample size counts `\(m_{i}\)` are fixed
+- Binomial version we have a sample size of `\(n=8\)` year/region observations
+- In Binomial version we have no degrees of freedom left with 8 parameters in the interaction model!
+- The predicted probability `\(\hat{\pi}_{i}\)` is just the sample proportion of Dem for each year/region
+]
+
+---
+
+# Example: NES revisited
+
+.blockquote[
+- Which model (binary vs binomial) to use?
+- Assuming `\(m_{i}\)` are fixed sample sizes (e.g. a stratified design), doesn't much matter*
+- unless you'd like to incorporate additional individual level predictors of a person's probability of voting Democratic `\(\rightarrow\)` use binary
+]
+
+
+```r
+head(nes) # more individual level data!
+```
+
+```
+      year age gender  race region     income union dem       educ
+1 year1980  70   male black      S  lower 1/3    no   1 HS or less
+2 year1980  67   male white     NC middle 1/3   yes   1 HS or less
+3 year1980  47 female black      S  lower 1/3    no   1 HS or less
+4 year1980  52 female white      W  upper 1/3   yes   0    College
+5 year1980  30 female white     NC  upper 1/3    no   1 HS or less
+6 year1980  37   male black     NC  upper 1/3    no   1    College
+```
+
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Go over the class activity in your group
+]
+]
+
+<div class="countdown" id="timer_628511e9" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

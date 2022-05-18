@@ -1,0 +1,618 @@
+---
+title: "Logistic regression for binary responses: Diagnostics"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+#library(MASS)
+library(broom)
+#library(car)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Logistic regression for binary responses: Diagnostics]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+sample <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Sample4.csv")
+
+# load library ggplot2
+library(ggplot2)
+
+# Plot Predicted data and original data points
+ggplot(sample, aes(x=Predictor, y=Class)) + geom_point() +
+	stat_smooth(method="glm", color="orange", se=FALSE,
+				method.args = list(family=binomial))+
+  geom_hline(yintercept = 0.5, linetype = "dashed", col = "grey") +
+  geom_text(aes(200, 0.52, label =c("Threshold"))) +
+  theme_void()
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+.blockquote-list[
+Binomial responses
+
+Logistic model for binomial responses
+
+EDA and inference
+]
+
+]
+
+---
+
+class: middle
+
+# Binomial responses
+
+.blockquote-list.font90[
+- .bold[Binomial] counts are defined as
+  - $Y_{i}=$ number of successes in $m_{i}$ independent Bernoulli (success/failure) trials for case (unit) $i$
+
+- Each case has predictor values:
+  - $X_{i}=\left(x_{1, i}, \ldots, x_{p, i}\right)$ be the predictors for this case
+
+- We want to use a logistic model for:
+  - $\pi\left(X_{i}\right)$ is the probability of success for each of the $m_{i}$ trials
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font90[
+In 1949, scientists recorded the number of "at risk" species on each island.
+Ten years later, they recorded how many of these species were extinct. We
+want to model the extinction rate for each island as a function of the island
+size.
+]
+
+<br>
+
+.pull-left[
+.blockquote.font80[
+- `Island` gives us an identifier of each island (case)
+- `Area` is our predictor $x_{i}$ for each island
+- `AtRisk` is $m_{i}$, the number of animals available for extinction
+- `Extinct` is $y_{i}$, the number (out of $m_{i}$) that went extinct
+]
+]
+.pull-right[
+```{r, collapse=TRUE}
+island <- case2101
+glimpse(island)
+```
+]
+
+---
+
+class: middle
+
+# Binomial responses
+
+.blockquote.font90[
+Our Binomial counts are modeled by a .bold[Binomial] distribution:
+\begin{align*}
+Y_{i} \mid X_{i} \stackrel{\text { indep. }}{\sim} \operatorname{Binom}\left(m_{i}, \pi\left(X_{i}\right)\right)
+\end{align*}
+The mean response for each case is
+\begin{align*}
+E\left(Y_{i} \mid X_{i}\right)=\mu_{y \mid x}=m_{i} \pi\left(X_{i}\right)
+\end{align*}
+and the standard deviation is
+\begin{align*}
+S D\left(Y_{i} \mid X_{i}\right)=\sigma_{y \mid x}=\sqrt{m_{i} \pi\left(X_{i}\right)\left(1-\pi\left(X_{i}\right)\right)}
+\end{align*}
+]
+
+
+---
+
+class: middle
+
+# Logistic model for Binomial responses
+
+.blockquote.font90[
+- Logistic function for probabilities:
+\begin{align*}
+\pi\left(X_{i}\right)=\frac{e^{\eta_{i}}}{1+e^{\eta_{i}}}=\frac{e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}}{1+e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}}
+\end{align*}
+- logit (log odds) function for predictors:
+\begin{align*}
+\eta_{i}=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}=\ln \left(\frac{\pi\left(X_{i}\right)}{1-\pi\left(X_{i}\right)}\right)
+\end{align*}
+- Interpretation of a logistic model for a binomial response is .bold[exactly the same] as a binary response model.
+]
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font90[
+- .bold[Logistic model:]
+\begin{align*}
+\log \left(\frac{\pi\left(x_{i}\right)}{1-\pi\left(x_{i}\right)}\right)=\beta_{0}+\beta_{1} \text { area }_{i}
+\end{align*}
+where $\pi\left(X_{i}\right)$ represents the probability of extinction ("success") for "at risk" animals on island $i$.
+- EDA:
+- compute proportion of successes $\tilde{\pi}_{i}=Y_{i} / m_{i}$ for each island
+- compute empirical log odds $\ln \left(\tilde{\pi}_{i} /\left(1-\tilde{\pi}_{i}\right)\right)$
+- plot empirical log odds vs. area to check for linearity
+]
+
+
+---
+
+`r chunk_reveal("eda", widths= c(1,1), font_size_code="70%", title = "##  Case study 21.1: Krunnit Island")`
+
+```{r eda, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+island <- mutate(island,
+                 prop = Extinct/AtRisk, # prop extincts
+                 logOdds = log(prop/(1-prop))) # emp. logits
+
+ggplot(island, aes(x = Area, y = logOdds)) +
+  geom_point() +
+  labs(title="empirical log odds vs. area") +
+  theme(plot.title = element_text(hjust=0.5, size=9, 
+                                  face='bold'))
+```
+
+
+---
+
+`r chunk_reveal("eda-log", widths= c(1,1), font_size_code="70%", title = "##  Case study 21.1: Krunnit Island")`
+
+```{r eda-log, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(island, aes(x = Area, y = logOdds)) +
+  geom_point() + 
+  scale_x_log10() +
+  labs(title="empirical log odds vs. log(area)") +
+  theme(plot.title = element_text(hjust=0.5, size=9, 
+                                  face='bold'))
+```
+
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font90[
+- .bold[Logistic model:] given an $\text{island size area}_{i}$, $Y_{i}$, the number of extinctions on island $i$, is a binomial variable
+
+\begin{align*}
+Y_{i} \mid \text { area }_{i} \sim \operatorname{Binom}\left(m_{i}, \pi\left(\text { area }_{i}\right)\right)
+\end{align*}
+where $\pi\left(\right.$ area $\left._{i}\right)$ is the probability of extinction for each of the $m_{i}$ at risk species on island $i$.
+
+- Based on the EDA, we will fit the logit model:
+\begin{align*}
+\log \left(\frac{\pi\left(\text { area }_{i}\right)}{1-\pi\left(\text { area }_{i}\right)}\right)=\beta_{0}+\beta_{1} \ln \left(\text { area }_{i}\right)
+\end{align*}
+]
+
+---
+
+class: middle
+
+# Inference for Binomial response models
+
+.blockquote.font90[
+.bold[Similarities] between binomial and binary response logistic models:
+- Interpretation of $\beta$ in the two models is the same.
+- Inference for models is the same
+- "Wald" z-tests and confidence intervals for $\beta$ parameters are the same.
+- Drop-in-deviance model comparison tests are the same.
+- R functions of fitted, predict, augment are the same.
+]
+
+---
+
+class: middle
+
+# Inference for Binomial response models
+
+.blockquote.font90[
+.bold[Differences] between binomial and binary response logistic models:
+- The formula for deviance $G^{2}$ is different because our probability model is (slightly) different.
+- In binary models, Wald inference relies on "large $n$ ". In binomial models, we either need "large $n$ " and/or large $m_{i}$ values. E.g. In the binomial model, $n=5$ is fine if all $m_{i}=1000$.
+- The R function `glm` wants a response equal to the empirical proportion of successes, $Y_{i} / m_{i}$, along with the number of binomial trials $m_{i}$ in our `glm` specification:
+
+\begin{align*}
+\operatorname{glm}(y / m \sim x 1+x 2 \text {, family }=\text { binomial, weights }=m \text {, data }= )
+\end{align*}
+]
+
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+- .bold[response:] the ratio of $y$ (Extinct) to $m$ (AtRisk)
+- .bold[weights:] $m$ (AtRisk):
+
+.font90[
+```{r, collapse=TRUE}
+krunnit.glm <- glm(Extinct/AtRisk ~ log(Area), family="binomial", weights=AtRisk, data=island)
+tidy(krunnit.glm, conf.int=TRUE)
+```
+]
+
+.blockquote.font90[
+- The estimated estimated odds of extinction is
+\begin{align*}
+\frac{\hat{\pi}}{1-\hat{\pi}}=e^{-1.1962-0.29710 \ln (\text { Area })}=e^{-1.1962} \mathrm{Area}^{-0.29710}
+\end{align*}
+]
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island visualization
+
+.blockquote[
+- .bold[Data:] plot success proportions in each group $\tilde{\pi}_{i}$ against the predictor
+- .bold[weights:] add `weights=m` to the `aes` (will be used by the `glm` smoother)
+- .bold[Estimated probability curve:] add `geom_smooth` with `glm` (like binary model)
+]
+
+---
+
+`r chunk_reveal("data-viz", widths= c(1,1), font_size_code="60%", title = "##  Case study 21.1: Krunnit Island")`
+
+```{r data-viz, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(island, aes(x=log(Area), y = Extinct/AtRisk, weight = AtRisk)) +
+ geom_point() +
+ geom_smooth(method="glm", se=FALSE,
+ method.args = list(family="binomial")) +
+ labs(title="Extinction probability as a function of area")
+```
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.font80[
+```{r, collapse=TRUE}
+tidy(krunnit.glm, conf.int=TRUE)
+```
+]
+
+.pull-left[
+.blockquote.font80[
+- The estimated odds of extinction for a $5 \mathrm{~km}^{2}$ island is
+\begin{align*}
+\log\left(\frac{\hat{\pi}(x=5)}{1-\hat{\pi}(x=5)}\right) &=-1.1962-0.29710 \log (5)\\&=-1.674364
+\end{align*}
+<br>
+]
+
+.font80[
+```{r, collapse=TRUE}
+predict(krunnit.glm, newdata=list(Area=5))
+```
+]
+]
+
+.pull-right[
+.blockquote.font80[
+- The estimated probability of extinction for at risk species on a $5 \mathrm{~km}^{2}$ island is
+\begin{align*}
+\hat{\pi}(x=5)&=\frac{e^{-1.1962-0.29710 \log (5)}}{1+e^{-1.1962-0.29710 \log (5)}}\\&=\frac{e^{-1.674364}}{1+e^{-1.674364}}=0.1578432
+\end{align*}
+]
+
+.font80[
+```{r, collapse=TRUE}
+predict(krunnit.glm, newdata=list(Area=5), type="response")
+```
+]
+]
+
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+
+.font80[
+```{r, collapse=TRUE}
+tidy(krunnit.glm, conf.int=TRUE)
+```
+]
+
+
+.blockquote.font90[
+- The effect of area on extinction rates is statistically signicant (Wald $\mathrm{z}=-5.416, \mathrm{p}<0.0001$ ).
+- Effect of doubling island size?
+\begin{align*}
+O R=\frac{o \hat{d} d s(2 \times \text { Area })}{o \hat{d} d s(\text { Area })}=2^{-0.29710}=0.814, \quad 100 \%(0.814-1)=-18.6
+\end{align*}
+- Doubling an island area is associated with an $18.6 \%$ reduction in the odds of extinction of at risk species.
+- We are $95 \%$ confident that doubling the area of an island is associated with anywhere from a $12.3 \%$ to $24.5 \%$ decrease in extinction rates.
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.font80[
+```{r, collapse=TRUE}
+tidy(krunnit.glm, conf.int=TRUE)
+```
+]
+
+
+.blockquote.font90[
+- Effect of a $10 \%$ increase in island size?
+\begin{align*}
+O R=1.1^{-0.29710}=0.972, \quad 1.1^{-0.408}=0.962, \quad 1.1^{-0.192}=0.982
+\end{align*}
+- We are $95 \%$ confident that a $10 \%$ increase in the area of an island is associated with a $1.8 \%$ to $3.8 \%$ decrease in the odds of extinction for at risk species.
+]
+
+---
+
+class: middle
+
+# Example: NES revisited
+
+.blockquote.font80[
+- Suppose that the NES data was collected via a .bold[stratified] random sample
+
+    - in 1980: separate random samples of people were taken within each region
+    - in 2000: separate random samples of people were taken within each region
+    
+- In any given year/region combo $i=1, \ldots, 8$
+
+    - $m_{i}=$ number of people surveyed in that year/region (fixed sample size)
+    - $Y_{i}=$ number of Democrat leaning people surveyed in that year/region
+]
+
+---
+
+# Example: NES revisited
+
+> Use the individual level (binary) data to get the counts of (sample sizes) and (binomial counts of successes)
+
+
+```{r}
+nes <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/NES.csv")
+head(nes) # person-level data
+```
+
+
+---
+
+`r chunk_reveal("nes-strata", widths= c(0.62,0.38), font_size_code="90%", title = "# Example: NES revisited")`
+
+```{r nes-strata, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+nes_binom_data <- nes %>%
+  group_by(region, year) %>% # sample size by year/region
+  summarize(m = n(), Dem_count = sum(dem)) # number Dem
+nes_binom_data
+```
+
+
+.blockquote.font80[
+- $m$: the number of people per year/region ( $n()$ counts the number of rows for each group)
+
+- `Dem_count:` the number of Democrats per year/region
+
+- Binomial count data with region and year predictors
+]
+
+---
+
+class: middle
+
+# Example: NES revisited
+
+.blockquote.font90[
+\begin{align*}
+Y_{i} \mid \text { year, region } \sim \operatorname{Binom}\left(m_{i}, \pi_{i}\right)
+\end{align*}
+where $\pi_{i}$ is the probability of Dem in that year/region combo $i$.
+- We can model $\pi$ as a function of year and region
+- we get the same results for both the binomial and binary versions of this data!
+]
+
+---
+
+# Example: NES revisited
+
+.blockquote.font80[.bold[Binary version:] using person-level responses and our `dem` indicator of Democrat]
+
+```{r}
+nes_glm_binary <- glm(dem ~ region*year,
+                      data = nes,
+                      family = binomial)
+```
+
+
+.blockquote.font80[.bold[Binomial version:] using aggregated year/region level counts and our `Dem_count/m` proportion Democrats for each year/region combo]
+
+```{r}
+nes_glm_binom <- glm(Dem_count/m ~ region*year,
+                     weights = m,
+                     data = nes_binom_data,
+                     family = binomial)
+```
+
+---
+
+# Example: NES revisited
+.code70[
+```{r, collapse=TRUE}
+summary(nes_glm_binary)
+```
+]
+
+
+---
+
+# Example: NES revisited
+.code70[
+```{r, collapse=TRUE}
+summary(nes_glm_binom)
+```
+]
+
+---
+
+class: middle
+
+# Recall: Inference for Binomial response models
+
+.blockquote.font90[
+Differences between binomial and binary response logistic models:
+- The formula for deviance $G^{2}$ is different because our probability model is (slightly) different.
+- Binomial version assumes that the year/region sample size counts $m_{i}$ are fixed
+- Binomial version we have a sample size of $n=8$ year/region observations
+- In Binomial version we have no degrees of freedom left with 8 parameters in the interaction model!
+- The predicted probability $\hat{\pi}_{i}$ is just the sample proportion of Dem for each year/region
+]
+
+---
+
+# Example: NES revisited
+
+.blockquote[
+- Which model (binary vs binomial) to use?
+- Assuming $m_{i}$ are fixed sample sizes (e.g. a stratified design), doesn't much matter*
+- unless you'd like to incorporate additional individual level predictors of a person's probability of voting Democratic $\rightarrow$ use binary
+]
+
+```{r}
+head(nes) # more individual level data!
+```
+
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Go over the class activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
