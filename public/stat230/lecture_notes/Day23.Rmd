@@ -1,0 +1,793 @@
+---
+title: "Binomial Logistic regression: deviance"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Binomial Logistic regression: deviance]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+sample <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Sample4.csv")
+
+# load library ggplot2
+library(ggplot2)
+
+# Plot Predicted data and original data points
+ggplot(sample, aes(x=Predictor, y=Class)) + geom_point() +
+	stat_smooth(method="glm", color="orange", se=FALSE,
+				method.args = list(family=binomial))+
+  geom_hline(yintercept = 0.5, linetype = "dashed", col = "grey") +
+  geom_text(aes(200, 0.52, label =c("Threshold"))) +
+  theme_void()
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+.blockquote-list[
+Deviance
+
+Assumptions
+
+Residuals and case influence
+]
+
+]
+
+---
+
+class: middle
+
+# Review: A Logistic Regression Model for Binomial Count Data
+
+.blockquote[
+For all $i=1, \ldots, n$,
+
+$$\begin{align*}
+y_{i} \sim \operatorname{binomial}\left(m_{i}, \pi_{i}\right),
+\end{align*}$$
+
+where $m_{i}$ is a known number of trials for observation $i$,
+
+$$\begin{align*}
+\pi_{i}=\frac{\exp \left(\boldsymbol{x}_{i}^{\prime} \boldsymbol{\beta}\right)}{1+\exp \left(\boldsymbol{x}_{i}^{\prime} \boldsymbol{\beta}\right)},
+\end{align*}$$
+
+and $y_{1}, \ldots, y_{n}$ are independent.
+]
+
+---
+
+class: middle
+
+# Overview: Binomial Distribution
+
+Recall that for $y_{i} \sim \operatorname{binomial}\left(m_{i}, \pi_{i}\right)$, the probability mass function of $y_{i}$ is
+
+.blockquote[
+$$\begin{align*}
+P\left(y_{i}=y\right) &=\left\{\begin{array}{ll}
+\left(\begin{array}{c}
+m_{i} \\
+y
+\end{array}\right) \pi_{i}^{y}\left(1-\pi_{i}\right)^{m_{i}-y} & \text { for } y \in\left\{0, \ldots, m_{i}\right\} \\
+0 & \text { otherwise }
+\end{array}\right.\\
+E\left(y_{i}\right) &=m_{i} \pi_{i}, \quad \text { and } \operatorname{Var}\left(y_{i}\right)=m_{i} \pi_{i}\left(1-\pi_{i}\right) .
+\end{align*}$$
+]
+
+<br>
+
+.blockquote[
+The binomial log likelihood function is
+
+$$\begin{align*}
+\begin{array}{c}
+\ell(\boldsymbol{\beta} \mid \boldsymbol{y})=\sum_{i=1}^{n}\left[y_{i} \log \left(\frac{\pi_{i}}{1-\pi_{i}}\right)+m_{i} \log \left(1-\pi_{i}\right)\right] \\
++\text { constant }
+\end{array}
+\end{align*}$$
+]
+
+---
+
+# Deviance for Binomial responses
+
+.blockquote.font90[
+- With Binomial responses, the likelihood function is
+
+$$\begin{align*}
+L(\beta)=\prod_{i=1}^{n}\left(\begin{array}{c}
+m_{i} \\
+y_{i}
+\end{array}\right) \pi\left(X_{i}\right)^{y_{i}}\left(1-\pi\left(X_{i}\right)\right)^{m_{i}-y_{i}}
+\end{align*}$$
+
+- and the deviance is
+
+$$\begin{align*}
+G^{2} &=2[\ln L(\bar{\pi})-\ln L(\hat{\pi}(X))] \\
+&=2 \sum_{i=1}^{n}\left[y_{i} \ln \left(\frac{y_{i}}{m_{i} \hat{\pi}\left(X_{i}\right)}\right)+\left(m_{i}-y_{i}\right) \ln \left(\frac{m_{i}-y_{i}}{m_{i}-m_{i} \hat{\pi}\left(X_{i}\right)}\right)\right]
+\end{align*}$$
+
+- $L(\hat{\pi}(X)):$ likelihood of the data that plugs in estimates $\hat{\pi}\left(X_{i}\right)$ from the logistic model.
+- $L(\bar{\pi}):$ likelihood of the data that plugs in estimates $\bar{\pi}_{i}=y_{i} / m_{i}$
+
+$$\begin{align*}
+L(\bar{\pi}) \geq L(\hat{\pi}(X))
+\end{align*}$$
+]
+
+---
+
+# Logistic Regression Model vs Saturated model
+
+.pull-left[
+.yellow-h[Logistic Regression Model]
+.blockquote[
+- $y_{i} \sim \operatorname{binomial}\left(m_{i}, \pi_{i}\right)$
+- $y_{1}, \ldots, y_{n}$ independent
+$$\begin{align*}
+\pi_{i}=\frac{\exp \left(\boldsymbol{x}_{\boldsymbol{i}}^{\prime} \boldsymbol{\beta}\right)}{1+\exp \left(\boldsymbol{x}_{i}^{\prime} \boldsymbol{\beta}\right)}
+\end{align*}$$
+- $p+1$ $\beta$ parameters
+- MLE: $\hat{\pi}_{i}=\frac{\exp \left(\boldsymbol{x}_{i}^{\prime} \hat{\boldsymbol{\beta}}\right)}{1+\exp \left(\boldsymbol{x}_{i}^{\prime} \hat{\boldsymbol{\beta}}\right)}$
+]
+]
+
+
+.pull-right[
+.yellow-h[Saturated Model]
+<br>
+.blockquote[
+- $y_{i} \sim \operatorname{binomial}\left(m_{i}, \pi_{i}\right)$
+- $y_{1}, \ldots, y_{n}$ independent
+- $\pi_{i} \in[0,1]$ for $i=1, \ldots, n$ with no other restrictions
+- $n$ parameters
+- MLE: $y_{i} / m_{i}$
+]
+]
+
+---
+
+class: middle
+
+# Deviance for Binomial responses
+
+.blockquote[
+Deviance for binomial models can be used for two types of hypothesis tests:
+1. .bold[Drop-in-deviance:] Used to compare two models, just like in binary logistic models.
+2. .bold[Goodness-of-fit:] Used to test binomial response model adequacy.
+]
+
+---
+
+# Goodness-of-fit test
+
+.blockquote[
+Our hypotheses for the GOF test are:
+
+$$\begin{align*}
+H_{0}& : \text{ logistic model }\\
+H_{A}& : \text{ saturated model }
+\end{align*}$$
+
+$H_{0}: Y_{i} \mid X_{i} \sim \operatorname{Binom}\left(m_{i}, \pi\left(X_{i}\right)\right)$
+- $\pi\left(X_{i}\right)$ equals the logistic function of the $p$ predictor terms.
+
+$H_{A}$ : the saturated "model"
+- uses the $n$ empirical proportion of successes $\bar{\pi}=y_{i} / m_{i}$ for each case as the probability of success for all $m_{i}$ trials.
+]
+
+---
+
+# Goodness-of-fit test
+
+.blockquote[
+- The test statistic is the residual deviance of the logistic model
+$$\begin{align*}
+G^{2}=2[\ln L(\bar{\pi})-\ln L(\hat{\pi}(X))]
+\end{align*}$$
+- If the "fit" (likelihood) of the logistic model is "close" then $G^{2}$ is "close" to 0 and we can claim that the logistic model is adequate.
+- If $H_{0}$ is true and $m_{i}$ 's are large, $G^{2}$ will have an approximate chi-square distribution with $n-(p+1)$ (model) degrees of freedom. The .bold[p-value] is the probability of getting residual deviance values larger than the observed value:
+$$\begin{align*}
+p-\text { value }=1-P\left(\chi^{2}>G^{2}\right)=1-\operatorname{pchisq}\left(G^{2}, d f=n-(p+1)\right)
+\end{align*}$$
+The suggested rule of thumb for "large $m$ " is that we want most $m_{i}$ 's to be at least 5 .
+]
+
+---
+
+class: middle
+
+# Goodness-of-fit test conclusions
+
+.blockquote[
+.bold[Do not reject the null:] (large p-value)
+- Your logistic model is adequate.
+- You don't have a large enough sample size $n$ to have the power to detect inadequacies in your model.
+]
+
+<br>
+
+.blockquote[
+.bold[Reject the null:] (small p-value)
+- You have outlier(s) that are inflating the residual deviance.
+- Your logistic model is inadequate.
+]
+
+---
+
+# Goodness-of-fit test conclusions
+
+.blockquote[
+.bold[Why might a model be inadequate?]
+- Your log-odds model is inadequate, it is ill-fitting and transformations are needed
+- Extra-binomial variation: your response counts aren't well modeled by a Binomial model*. 
+
+*This could mean:
+- trials are not .bold[independent] for each case
+- probability of success is .bold[not] constant across trials for each case
+- your choice of predictors .bold[isn't] sufficient (i.e. you are missing key explanatory variables)
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote[
+- .bold[GOF] test hypotheses are
+$$\begin{align*}
+H_{0}& : \log(\text{odds})=\beta_{0}+\beta_{1} \log (\text {area})\\
+H_{A}& : \log (\text {odds}) =\alpha_{i}(\text {saturated model})
+\end{align*}$$
+We can conduct a GOF test because all our $m_{i}$'s (AtRisk), are above 5
+]
+
+```{r}
+island <- case2101
+island$AtRisk
+```
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.yellow-h[Test stat: residual deviance of] $G^{2}=12.062$
+
+.font90[
+```{r, collapse=TRUE}
+krunnit_glm <- glm(Extinct/AtRisk ~ log(Area), family="binomial", weights=AtRisk, data = island)
+summary(krunnit_glm)
+```
+]
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+- .bold[p-value:] Using $18-2=16$ degrees of freedom
+$$\begin{align*}
+p\text {-value }=1-P\left(\chi^{2}>12.062\right)=1-p c h i s q(12.062, d f=16)=0.7397
+\end{align*}$$
+
+.blockquote.font90[
+- The .bold[large] p-value means that we .bold[do not reject] the null hypothesis.
+- Our model for the probability of extinction given log-area looks to be adequate.
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.code90[
+```{r, collapse=TRUE}
+krunnit_glm_nolog <- glm(Extinct/AtRisk ~ Area, family="binomial", weights=AtRisk, data = island)
+summary(krunnit_glm_nolog)
+```
+]
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font90[
+- Regression of extinction on area (not logged) has residual deviance of $24.661.$
+
+- The GOF p-value for this model is $0.076$, which suggests that this model may not be adequate
+
+  - agrees with our EDA for the log-odds suggests
+]
+
+```{r}
+1-pchisq(24.661, df=16)
+```
+
+
+---
+
+# Checking Assumptions
+
+.blockquote.font90[
+Binomial logistic model as the .bold[same assumptions] as binary models:
+  - .bold[Independence] of cases takes an understanding of how the data was collected.
+  - Log-odds .bold[linearity] can be checked with an empirical log-odds plot against quantitative predictors and residual plots.
+
+A third assumption is that the counts of successes $Y_{i}$ has a .bold[binomial distribution]:
+  - the $m_{i}$ trials are independent events, and a success or failure for one trial doesn't affect the outcome of another trial, and
+  - the probability of success $\pi\left(X_{i}\right)$ is the same for all $m_{i}$ trials.
+]
+
+---
+
+class: middle
+
+# Checking Assumptions
+
+.blockquote[
+- If one, or both, of these assumptions is violated, then it often induces extra-binomial variation (a.k.a. .bold[over dispersion]):
+- the actual variation $S D\left(Y \mid X_{i}\right)$ is larger than the binomial SD of $\sqrt{m_{i} \pi\left(X_{i}\right)\left(1-\pi\left(X_{i}\right)\right)}$
+- making our reported standard errors larger and p-values too small
+- .bold[Check:] use the goodness-of-fit test, when $m_{i}$ are large enough, to check our binomial distribution assumption.
+]
+
+---
+
+# Checking Assumptions
+
+.blockquote-list[
+If we do find evidence of lack-of-fit in our binomial model, then you should
+- Check deviance residuals as case influence stats to see if an outlier(s) is affecting GOF results.
+- Check the log odds form, change model structure, see if transformations of quantitative predictors are needed
+
+If outliers and transformations aren't a concern, then consider an alternative model:
+- binary logistic model if trial-level predictors are available
+- quasi-binomial logistic model
+- a model that allows for correlated trials (like a mixed-effects logistic model)
+]
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.out-t[How might the Krunnit Island extinction counts violate the binomial counts model assumptions?]
+
+--
+
+.blockquote[
+.bold[Independence:]
+- This assumption implies that the extinction, or not, of all at risk species on an island are independent events.
+- This could be violated if the extinction of one species makes the extinction of a second more likely.
+]
+
+---
+
+class: middle
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote[
+.bold[Probability:]
+- This assumption implies that the probability $\pi\left(\right.$area$\left._{i}\right)$ of extinction on island $i$ is the same for all at risk species on island $i$.
+- This could be violated if, for example, species living primarily on the interior of the island had a lower chance of extinction than species living on the coastal region.
+]
+
+---
+
+# Residuals
+
+.blockquote[
+Pearson residuals are basically response residuals standardized based on the binomial SD:
+$$\begin{align*}
+p r_{i}=\frac{y_{i}-m_{i} \hat{\pi}\left(X_{i}\right)}{\sqrt{m_{i} \hat{\pi}\left(X_{i}\right)\left(1-\hat{\pi}\left(X_{i}\right)\right)}}
+\end{align*}$$
+]
+
+
+<br>
+
+.blockquote-list[
+- `resid(my_glm, type = "pearson")`
+- `augment(my_glm, type.residuals = "pearson")`
+]
+
+---
+
+# Residuals
+
+.blockquote[
+Deviance residuals are each case's contribution to the residual deviance, with a $\pm$ based on whether we over- or under-estimate a case's response (the $\pm$ is denoted by $\left.\operatorname{sign}\left(y_{i}-m_{i} \hat{\pi}\left(X_{i}\right)\right)\right)$ :
+
+$$\begin{align*}
+\text{Dres}_{i} = \operatorname{sign}\left(y_{i}-m_{i} \hat{\pi}\left(X_{i}\right)\right) \sqrt{2\left[y_{i} \ln \left(\frac{y_{i}}{m_{i} \hat{\pi}\left(X_{i}\right)}\right)+\left(m_{i}-y_{i}\right) \ln \left(\frac{m_{i}-y_{i}}{m_{i}-m_{i} \hat{\pi}\left(X_{i}\right)}\right)\right]}
+\end{align*}$$
+]
+
+<br>
+
+.blockquote-list[
+- `resid(my_glm, type = "deviance")`
+- `augment(my_glm, type.residuals = "deviance")`
+]
+
+---
+
+class: middle
+
+# Residuals
+
+.blockquote[
+- Pearson residuals are "easy" to interpret
+- Deviance residuals are good to check if you find significant results in a GOF test.
+- When $m_{i}$ 's are large (at least 5), both types of residuals should be similar in value and have a $N(0,1)$ distribution (approximately).
+- Regardless of size of $m_{i}$, we should plot residuals vs. quantitative predictors to assess linearity of the log odds.
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+- use the `augment` command to get both sets of residuals
+
+```{r}
+island_aug <- augment(krunnit_glm, type.residual="pearson") #<<
+
+plotA <- ggplot(island_aug, aes(x=`log(Area)`, y=.resid)) +
+ geom_point() +
+ geom_hline(yintercept = 0) +
+ labs(title="Pearson residual plot")
+
+island_aug <- augment(krunnit_glm, type.residual="deviance") #<<
+
+plotB <- ggplot(island_aug, aes(x=`log(Area)`, y=.resid)) +
+ geom_point() +
+ geom_hline(yintercept = 0) +
+ labs(title="Deviance residual plot")
+```
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center'}
+library(gridExtra)
+grid.arrange(plotA, plotB, ncol=2)
+```
+
+---
+
+class: middle
+
+# Residuals using `ggResidpanel`
+
+.blockquote[
+- `resid_xpanel(my_glm, type = )`: where type could be pearson or deviance (or response)
+- `resid_panel(my_glm, plots = "qq", type = )`: qq plot of residuals given by type
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font80[
+At risk counts $m_{i}$ are rather large (all cases are 6 or larger) so residuals should be approximately $N(0,1)$.
+]
+.code70[
+```{r, fig.width=3, fig.height=2.5, out.width="30%", fig.align='center', collapse=TRUE}
+resid_panel(krunnit_glm, plots = "qq", type = "pearson", axis.text.size = 6, title.text.size = 6)
+```
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font80[
+at risk counts $m_{i}$ are the `X.weights` variable (we don't want residual values to depend on $m_{i}$)
+]
+
+
+.code70[
+```{r, fig.width=3, fig.height=2, out.width="40%", fig.align='center'}
+resid_xpanel(krunnit_glm, type = "pearson", axis.text.size = 4, title.text.size = 6)
+```
+]
+
+
+---
+
+class: middle
+
+# Case influence stats
+
+.blockquote[
+In a GLM, leverage measures
+- both a cases's "extremeness" in terms of it's predictor values and
+- the size of a case's weight $m_{i}$
+]
+
+<br>
+
+.blockquote[
+- cases with high values of $m_{i}$ are given more weight, and hence higher leverage, in the fitted model
+- Cook's distance also takes into account a cases leverage (measured both by predictor values and by $m_{i}$ size) and a case's residual value.
+]
+
+---
+
+class: middle
+
+## Case study 21.1: Krunnit Island 
+
+.pull-left-40[
+<br>
+<br>
+.blockquote[
+- rows 1,2 and 17 have largest leverage while case 3 looks to have the highest Cook's distance value.
+]
+]
+.pull-right-60[
+```{r, collapse=TRUE, fig.width=5, fig.height=4}
+plot(krunnit_glm, which=5, id.n=18)
+```
+]
+
+---
+
+## Case study 21.1: Krunnit Island 
+
+.code70[
+```{r,fig.width=5, fig.height=3.5, out.width="60%", fig.align='center', collapse=TRUE}
+library(GGally)
+ggnostic(krunnit_glm, columnsY = c(".hat",".cooksd"))
+```
+]
+
+---
+
+## Case study 21.1: Krunnit Island 
+
+.code90[
+```{r, collapse=TRUE}
+island_aug <- augment(krunnit_glm, data=island, type.predict = "response")
+island_aug <- island_aug %>% mutate(ID = row_number())
+island_aug %>% slice(1,2,3,17) %>% select(-.sigma)
+```
+]
+
+.font90[
+```{r, collapse=TRUE}
+summary(select(island_aug, Area, AtRisk))
+```
+]
+
+
+---
+
+## Case study 21.1: Krunnit Island 
+
+
+.pull-left[
+
+```{r, echo=FALSE}
+library(ggrepel)
+p1 <- ggplot(island_aug, aes(x = Area, y = AtRisk)) +
+  scale_x_log10() +
+  geom_point(aes(color = .hat, size = .hat)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE)
+  
+p1 +  geom_label_repel(aes(label = ID),
+                  box.padding   = 0.35, 
+                  point.padding = 0.5,
+                  segment.color = 'grey50')
+
+```
+
+
+]
+
+.pull-right[
+
+```{r, echo=FALSE}
+p2 <- ggplot(island_aug, aes(x = Area, y = AtRisk)) +
+  scale_x_log10() +
+  geom_point(aes(color = .cooksd, size = .cooksd)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE)
+  
+p2 +  geom_label_repel(aes(label = ID),
+                  box.padding   = 0.35, 
+                  point.padding = 0.5,
+                  segment.color = 'grey50')
+
+```
+]
+
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font80[
+Case 1 (Ulkokrunni):
+- largest area and the largest number at risk $m_{i}$.
+- has largest leverage but it doesn't have an large residual value so it doesn't have high Cook's distance.
+]
+
+.pull-left[
+.code80[
+```{r, eval=FALSE}
+library(ggrepel)
+island <- island %>% mutate(ID = row_number())
+plot <- ggplot(island, aes(x=log(Area), 
+                         y = Extinct/AtRisk,
+                         weight = AtRisk)) +
+ geom_point() +
+ geom_smooth(method="glm", se=FALSE,
+ method.args = list(family="binomial")) +
+ labs(title="Extinction probability as a function of area")+
+ theme(plot.title = element_text(hjust=0.5, size=6, 
+                                  face='bold'))  
+
+plot +  geom_label_repel(aes(label = ID),
+                  box.padding   = 0.15, 
+                  point.padding = 0.3,
+                  segment.color = 'grey50')
+```
+]
+]
+
+.pull-right[
+```{r data-viz, echo=FALSE, fig.align='center'}
+island <- island %>% mutate(ID = row_number())
+p3 <- ggplot(island, aes(x=log(Area), 
+                         y = Extinct/AtRisk,
+                         weight = AtRisk)) +
+ geom_point() +
+ geom_smooth(method="glm", se=FALSE,
+ method.args = list(family="binomial")) +
+ labs(title="Extinction probability as a function of area")+
+ theme(plot.title = element_text(hjust=0.5, size=6, 
+                                  face='bold'))  
+
+p3 +  geom_label_repel(aes(label = ID),
+                  box.padding   = 0.15, 
+                  point.padding = 0.3,
+                  segment.color = 'grey50')
+```
+]
+
+---
+
+# Case study 21.1: Krunnit Island 
+
+.blockquote.font80[
+Case 17 (Tiirakari)
+- second smallest area but a large number of at risk species given its small size.
+- has larger leverage than case 18 which has the smallest area but smaller number at risk.
+- has a small residual and low Cook's distance.
+
+Case 3 (Ristikari)
+- third largest area (30.7) but it's number at risk (66) is only one smaller than case 2 (Maakrunni) which is the second largest area (106).
+- has a much larger residual than case 2, which results in it having the highest Cook's distance value in the data set.
+]
+<br>
+.blockquote-list.font90[
+- None of these cases is overly influential in the model it and removal of case 3 , the highest Cook's distance, changes the estimate of $\beta_{1}$ from $0.30$ to $0.33$ and it's significance doesn't change.
+]
+
