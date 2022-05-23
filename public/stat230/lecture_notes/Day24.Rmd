@@ -1,0 +1,642 @@
+---
+title: "Poisson regression model"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Poisson regression model]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+# load library ggplot2
+library(ggplot2)
+set.seed(1234)
+
+reps <- 50000
+nexps <- 5
+rate <- 0.1
+x1 <- replicate(reps, sum(rexp(n=nexps, rate=rate)))
+ggplot(data.frame(x1), aes(x1)) + 
+  geom_histogram(aes(y=..density..,), col="lightblue") +
+  stat_function(fun=function(x)dgamma(x, shape=nexps, scale=1/rate),
+                color="orange", size=1)+
+  theme(legend.position = "none")
+
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+.blockquote-list[
+Poisson responses
+
+GLM: Poisson regression
+
+EDA
+
+Estimation and inference
+]
+
+]
+
+---
+
+# Poisson responses
+
+.blockquote-list[Poisson counts are defined as
+- $Y_{i}=$ number of successes/events that occur in a fixed period of time or region of space
+]
+
+<br>
+
+.blockquote.font80[
+.bold[Examples]
+- Number of possum species per plot
+- Number of COVID cases in Rice County in a week
+- Number of earthquakes, per year, in the US
+- Number of photons emitted per second from an extra-galactic source
+- Number of arrests resulting from 911 calls
+]
+
+---
+
+# Poisson response distribution
+
+.blockquote[
+- If $Y$ has a Poisson distribution, the probability that we observed $y$ successes is
+
+\begin{align*}
+P(Y=y)=\frac{e^{-\mu} \mu^{y}}{y !} \text { for any } y=0,1,2, \ldots \text { and } \mu>0
+\end{align*}
+
+- Expected number (or mean number) of successes is
+
+\begin{align*}
+E(Y)=\mu
+\end{align*}
+
+- SD in the number of successes is
+
+\begin{align*}
+S D(Y)=\sqrt{\mu}
+\end{align*}
+
+- If $Y$ has a Poisson distribution, we write
+
+\begin{align*}
+Y \sim \operatorname{Poisson}(\mu)
+\end{align*}
+
+]
+
+---
+
+class: middle
+
+# Poisson regression assumptions
+
+\begin{align*}
+Y \sim \operatorname{Poisson}(\mu)
+\end{align*}
+.bold[Goal:] Model $\mu$ as a function of predictors $x_1$, $x_2$, $\cdots$ $x_p$!
+
+.blockquote.font90[
+Assumption of Poisson regression:
+1. .bold[Poisson Response] The response variable is a count per unit of time or space, described by a Poisson distribution.
+2. .bold[Independence] The observations must be independent of one another.
+3. .bold[Mean=Variance] By definition, the mean of a Poisson random variable must be equal to its variance.
+4. .bold[Linearity] The log of the mean rate, log($\lambda$), must be a linear function of x.
+]
+
+---
+
+class: middle
+
+# Poisson model as a GLM
+
+.blockquote[
+The kernel mean function defines the expected value (mean $\mu_{y \mid x}$ ) of $Y$ as a function of $\eta=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}$.
+
+- .bold[MLR Kernel Mean:] $-\infty<\mu<\infty$
+\begin{align*}
+\mu_{y \mid x}=\eta=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}
+- .bold[Binary Logistic Kernel Mean:] $0<\pi<1$
+\begin{align*}
+\mu_{y \mid x}=\pi(x)=\frac{e^{\eta}}{1+e^{\eta}}=\frac{e^{\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}}}{1+e^{\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}}}
+\end{align*}
+- .bold[Poisson Kernel Mean:] $\mu>0$
+\begin{align*}
+\mu_{y \mid x}=e^{\eta}=e^{\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}}
+\end{align*}
+]
+
+---
+
+class: middle
+
+# Poisson model as a GLM
+
+.blockquote[
+The link function defines the linear combination $\eta=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}$ as a function of $\mu_{y \mid x}$.
+- .bold[MLR logit (identity) function:] $-\infty<\eta<\infty$
+\begin{align*}
+\eta=\mu_{y \mid x}=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}
+- .bold[Binary Logit Link function:] $-\infty<\eta<\infty$
+\begin{align*}
+\eta=\ln \left(\frac{\pi(x)}{1-\pi(x)}\right)=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}
+- .bold[Poisson "log-linear" link function:] $-\infty<\eta<\infty$
+\begin{align*}
+\eta=\ln \mu_{y \mid x}=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}
+]
+
+
+---
+
+class: middle
+
+# Poisson Regression model
+
+.blockquote[
+\begin{align*}
+Y_{i} \mid X_{i} \stackrel{\text { indep. }}{\sim} \operatorname{Pois}\left(\mu\left(Y_{i} \mid X_{i}\right)\right)
+\end{align*}
+- Changes in $x$ affect the log-mean response ("log-linear" model)
+\begin{align*}
+\ln \left(\mu\left(Y_{i} \mid X_{i}\right)\right)=\eta_{i}=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{align*}
+- The mean response is
+\begin{align*}
+\mu\left(Y_{i} \mid X_{i}\right)=e^{\eta_{i}}=e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}
+\end{align*}
+]
+
+---
+
+
+# Poisson Regression model example
+
+```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center', echo=FALSE}
+# y <- exp(B0 + B1 * x1)
+set.seed(1234)
+beta0 <-  -1.5    # intercept
+beta1 <-  0.2     # slope for x1
+
+x1 <- rep(c(5,10,15,20, 25), 200)
+mu <- exp(beta0 + beta1*x1)
+y <- rpois(n = 1000, lambda = mu)
+
+sim.data1 <- data.frame(y = y, x = x1)
+
+eq = bquote("Poisson response with mean"~mu==e^{-1.5+0.2*x[1]})
+ggplot(sim.data1, aes(x=x1, y=y)) + geom_point() +
+  geom_jitter(width = 0.2) +
+  ggtitle(eq) + 
+  labs(x = bquote(x[1])) + 
+  theme(plot.title = element_text(hjust=0.5, size=9, 
+                                  face='bold'))
+```
+
+
+---
+
+# Poisson Regression model example
+
+```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center', echo=FALSE}
+
+p1 <- ggplot(sim.data1, aes(x = as.factor(x1), y = y)) +
+  geom_boxplot() 
+p1 + geom_smooth(method = "loess", formula= (y ~ exp(x)), se=FALSE, aes(group=1)) +
+  labs(x = bquote(x[1])) + 
+  ggtitle(eq) + 
+  theme(plot.title = element_text(hjust=0.5, size=9, 
+                                  face='bold'))
+```
+
+
+---
+
+class: middle
+
+# Poisson Regression model: estimation
+
+.blockquote[
+- GLM: estimate $\beta_{i}$ using maximum likelihood estimation with likelihood function
+\begin{align*}
+L(\beta ; d a t a)=\prod_{i=1}^{n} \frac{e^{-\mu\left(X_{i}\right)} \mu\left(X_{i}\right)^{y_{i}}}{y_{i} !}
+\end{align*}
+- MLE theory: $\hat{\beta}_{i}$ approximately normally distributed when $\mathbf{n}$ is large enough or when $\mu\left(X_{i}\right)$ (estimated means) are large enough.
+]
+
+---
+
+# Poisson Regression model: Inference
+
+.blockquote.font90[
+Usual Wald (MLE) inference using $N(0,1)$ :
+- A $C \%$ CI for $\beta: \hat{\beta} \pm z^{*} S E(\hat{\beta})$
+- Test $H_{0}: \beta=0$ with test stat $z=\frac{\hat{\beta}-0}{S E(\hat{\beta})}$
+- Usual GLM Drop-in-deviance using Poisson (residual) deviance
+\begin{align*}
+G^{2}=2\left[\ln L\left(\bar{\mu}_{i}\right)-\ln L\left(\hat{\mu}\left(X_{i}\right)\right)\right]=2 \sum_{i=1}^{n}\left[y_{i} \ln \left(\frac{y_{i}}{\hat{\mu}\left(X_{i}\right)}\right)-\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right)\right]
+\end{align*}
+- $L\left(\hat{\mu}\left(X_{i}\right)\right)$ is the Poisson model likelihood where $\hat{\mu}\left(X_{i}\right)$ are estimated from the model.
+- $L\left(\bar{\mu}_{i}\right)$ is the saturated model likelihood where $\bar{\mu}_{i}=y_{i}$.
+]
+
+---
+
+# Poisson Regression model: Interpretation
+
+\begin{align*}
+\mu\left(Y_{i} \mid X_{i}\right)=e^{\eta_{i}}=e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}
+\end{align*}
+
+.blockquote[
+.bold[Unlogged] predictor $x_{1}:$
+- A one unit change in $x_{1}$ is associated with a $e^{\beta_{1}}$ multiplicative change in the mean response.
+
+.bold[Logged] predictor $\ln \left(x_{1}\right)$ :
+- A multiplicative change of $m$ in $x_{1}$ is associated with a $m^{\beta_{1}}$ multiplicative change in the mean response.
+]
+
+---
+
+# Example: Australian Possums
+
+.blockquote[
+.bold[Goal:] what factors are associated with good habitat for possums?
+- Specifically, how is bark quality associated with possum numbers?
+- $n=1513$-hectare sites in Australia
+- $Y=$ number of possum species found on the site
+- $X=$ bark quality index, higher values indicate better quality
+]
+
+--
+
+.out-t[Why fit a Poisson GLM instead of a SLR? instead of a logistic?]
+---
+
+class: middle
+
+# EDA for Poisson counts
+
+.blockquote[
+\begin{align*}
+\ln \left(\mu\left(Y_{i} \mid X_{i}\right)\right)=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{align*}
+- EDA: Scatterplot of $\ln (Y)$ or $\ln (Y+0.5)$ against $x$ should be approximately linear
+- Variance does not need to be constant
+- If $Y$ contains 0 counts, plot $\ln (Y+0.5)$ against $x$
+]
+
+
+---
+
+# Example: Australian Possums
+
+.font90[
+```{r}
+possums <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/possums.csv")
+glimpse(possums)
+```
+]
+
+---
+
+
+`r chunk_reveal("add-offset", widths= c(0.5,0.5), font_size_code="85%", title = "# Example: Australian Possums")`
+
+```{r add-offset, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+library(dplyr)
+possums <- possums %>%
+ mutate(log_y = log(y + 0.5))
+
+ggplot(possums, aes(x = Bark, y = log_y)) +
+ geom_jitter(height = 0.05, width = 0.1) +
+ geom_smooth(se = FALSE)
+```
+
+
+.out-t[At least 25% of plots have 0 species recorded, so EDA needs to add 0.5 to all cases to avoid log of 0.]
+
+---
+
+`r chunk_reveal("transform-y", widths= c(0.5,0.5), font_size_code="85%", title = "# Example: Australian Possums")`
+
+```{r transform-y, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+# can achieve the same thing with y transformation
+ggplot(possums, aes(x = Bark, y = y)) +
+ geom_jitter(height = 0.05, width = 0.1) +
+ geom_smooth(se = FALSE) +
+ scale_y_continuous(trans = "log1p")# log(1+y)  
+```
+
+---
+
+
+`r chunk_reveal("transform-xy", widths= c(0.5,0.5), font_size_code="85%", title = "# Example: Australian Possums")`
+
+```{r transform-xy, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+possums <- possums %>%
+ mutate(log_y = log(y + 0.5))
+      
+ggplot(possums, aes(x = log(Bark), y = log_y)) + 
+ geom_jitter(height = 0.05, width = 0.1) +
+ geom_smooth(se = FALSE)
+```
+
+
+---
+
+class: middle
+
+# Poisson model in R
+
+.blockquote.gont90[
+$\operatorname{glm}(y \sim x 1+x 2$, family $=$ poisson, data $=)$
+-  We don't use log of $\mathrm{Y}$ as the response, the Poisson model will convert it to the log mean scale automatically
+- Get the fitted values $\hat{\mu}=\hat{y}$ for each case in the data
+  - `fitted(my_glm)`
+  - `augment(my_glm, type.predict = "response")`
+  - `predict(my_glm, type = "response")`
+]
+
+---
+
+# Example: Australian Possums
+
+.code70[
+```{r, collapse=TRUE}
+pos_glm <- glm(y ~ log(Bark), # model form
+ family = poisson, # poisson model
+ data = possums) # data
+summary(pos_glm)
+```
+]
+
+---
+
+# Example: Australian Possums
+
+```{r, collapse=TRUE}
+library(broom)
+tidy(pos_glm, conf.int = TRUE)
+```
+
+.blockquote.font90[
+- What is the estimated mean number of species as a function of bark index?
+
+- What is the effect of doubling the bark index on the mean number of possum species?
+  - assess the stat significant of this effect
+  - get a CI for this effect.
+]
+
+---
+
+# Example: Australian Possums
+
+```{r, collapse=TRUE}
+tidy(pos_glm, conf.int = TRUE)
+```
+
+.blockquote.font90[
+- What is the estimated mean number of species as a function of bark index?
+\begin{align*}
+\hat{\mu}(Y \mid x)=e^{-0.880+0.594 \ln (\text { Bark })}=e^{-0.880} \text { Bark }^{0.594}
+\end{align*}
+]
+
+---
+
+# Example: Australian Possums
+
+```{r, collapse=TRUE}
+tidy(pos_glm, conf.int = TRUE)
+```
+
+.blockquote.font90[
+- What is the effect of doubling the bark index on the mean number of possum species?
+- The effect of (log) bark is statistically significant ( $\mathrm{z}=4.45, \mathrm{p}<0.0001$ ).
+\begin{align*}
+2^{0.594}=1.51 \quad 2^{0.333}=1.26 \quad 2^{0.856}=1.81
+\end{align*}
+- We are $95 \%$ confident that a doubling of bark index is associated with an increase in mean number of species by $26 \%$ to $81 \%$.
+]
+
+---
+
+`r chunk_reveal("glm", widths= c(0.5,0.5), font_size_code="90%", title = "# Example: Australian Possums")`
+
+```{r glm, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+ggplot(possums, aes(x = Bark, y = y)) +
+ geom_jitter(height = .05) + 
+  scale_x_log10() +
+ geom_smooth(method="glm", 
+             method.args = list(family=poisson), 
+             se=FALSE)
+```
+
+
+---
+
+# Example: Australian Possums with more predictors
+
+```{r}
+possums$stumps <- dplyr::recode(possums$Stumps, `0`="none",`1`="present")
+pos_glm_bigger <- glm(y ~ sqrt(Acacia) + log(Bark) + Habitat + 
+                        log(Shrubs) + log(Stags) + stumps, 
+                      family=poisson, data=possums)
+tidy(pos_glm_bigger)
+```
+
+---
+
+# Residuals and influence analysis
+
+```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center', echo=FALSE}
+resid_panel(pos_glm_bigger, plots = c("resid", "cookd", "lev", "index"), axis.text.size=4, title.text.size=4)
+```
+
+
+.out-t[Residuals and influential analysis is mostly good!]
+
+---
+
+# Example: Australian Possums
+
+.out-t[Can we remove all insignificant terms from the full model?]
+
+```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center', echo=FALSE, collapse=TRUE}
+pos_glm_red <- glm(y ~ log(Bark) + log(Stags), family="poisson", data=possums)
+anova(pos_glm_red, pos_glm_bigger, test="Chisq")
+```
+
+--
+
+.out-t[No! At least one removed term is statistically significant (drop-in-deviance = 10.96, df = 4, p-value = 0.027)]
+
+---
+
+# Example: Australian Possums
+
+
+```{r, collapse=TRUE}
+car::vif(pos_glm_bigger)
+```
+
+--
+
+.yellow-h[Add `habitat` back in (some collinearity with other terms)]
+
+--
+
+```{r, collapse=TRUE}
+pos_glm_red <- glm(y ~ log(Bark) + Habitat + log(Stags), family="poisson", data = possums)
+anova(pos_glm_red, pos_glm_bigger, test="Chisq")
+```
+
+.out-t[We can remove acacia (area of acacia at the site), shrubs (number of
+shrubs), and stumps (presence of stumps from logging)]
+
+---
+
+# Example: Australian Possums
+
+.blockquote[
+The statistically significant terms are bark quality, habitat score (higher is better), and stags (number of hollow trees)
+]
+
+```{r, collapse=TRUE}
+tidy(pos_glm_red)
+```
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Go over the class activity in your group
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
