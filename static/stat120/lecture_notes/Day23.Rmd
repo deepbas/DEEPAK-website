@@ -1,0 +1,753 @@
+---
+title: "Regression and ANOVA "
+subtitle: "<br/> STAT 120"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(knitr)
+library(grid)
+library(gridExtra)
+
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Regression and ANOVA]
+
+### .fancy[Stat 120]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+
+# Simple Linear Model
+
+<br>
+
+.blockquote-list[
+The population/true simple linear model is:
+
+\begin{align*}
+y=\beta_{0}+\beta_{1} x+\varepsilon
+\end{align*}
+
+- $\beta_{0}$ and $\beta_{1}$ are unknown parameters corresponding to the y-intercept and the slope, respectively
+- $\varepsilon$ is the random error
+- Estimate with $b_{0}$ and $b_{1}$ from the least squares line $\hat{y}=b_{0}+b_{1} x$
+]
+
+
+--
+
+.out-t[How accurate are the estimates? ]
+
+---
+
+# Recall: Least Square Regression
+
+.pull-left[
+
+- .hljs[X = Cricket chirp rate]
+- .hljs[Y = Temperature]
+
+
+```{r, echo=FALSE}
+data <- data.frame(Chirps = c(81, 97, 103, 123, 150, 182, 195),
+                   Temp = c(54.5, 59.5, 63.5, 67.5, 72.0, 78.5, 83.0))
+
+knitr::kable(data, format = "html")
+```
+
+
+]
+.pull-right[
+
+\begin{align*}
+\widehat{\text { Temp }}=37.7+0.23 \text { Chirps }
+\end{align*}
+
+```{r, echo=FALSE}
+ggplot(data, aes(x = Chirps, y = Temp)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+]
+
+--
+
+.out-t[What are the parameters being estimated?] 
+
+---
+
+# Inference for the Slope
+
+.blockquote[
+Confidence intervals and hypothesis tests for the slope can be done using the familiar .bold[formulas]:
+
+\begin{align*}
+b_{1} \pm t^* \cdot S E \qquad\qquad t=\frac{b_{1}-\text { null slope }}{S E}
+\end{align*}
+
+]
+
+--
+
+<br>
+
+.blockquote[
+But how do we estimate the .bold[standard error]?
+- Bootstrap/Randomization distributions
+- Computer output
+]
+
+---
+
+# Standard Error Using a Bootstrap Distribution
+
+<center>
+<img src="images/regression-bootstrap.png" width="80%" height="80%"> <br>
+</center>
+
+---
+
+# Technology Examples
+
+### Slope estimate and Standard Error
+
+```{r, eval=FALSE}
+chirps.lm <- lm(Temp ~ Chirps, data = data)
+summary(chirps.lm)
+```
+
+```
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
+Chirps       0.23067    0.01423   16.21 1.63e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.528 on 5 degrees of freedom
+Multiple R-squared:  0.9813
+```
+
+---
+
+class: middle
+
+# Confidence Interval for Slope
+
+```
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
+Chirps       0.23067    0.01423   16.21 1.63e-05 ***
+```
+
+.blockquote[
+We can use the values for $b_1$ and $SE$ from the regression output to form a confidence interval in the usual way:
+\begin{align*}
+b_{1} \pm t^{*} \cdot S E
+\end{align*}
+]
+
+- Here, $t^{*}$ uses $n-2$ degrees of freedom, since we are estimating two parameters in the simple linear model.
+
+---
+
+class: middle
+
+# Confidence Interval for Slope
+
+
+> Find a 95% confidence interval for the slope of the cricket temperature model.
+
+```r
+Temperature  =  37.7 + 0.231 Chirps
+Predictor       Coef    SE Coef      T    Pr(>|t|)    
+Constant    37.67858    1.97817   19.05  7.35e-06 ***
+Chirps       0.23067    0.01423   16.21  1.63e-05 ***
+```
+
+.blockquote[
+\begin{align*}
+b_{1} \pm t^* \cdot S E
+\end{align*}
+]
+
+---
+
+# Hypothesis Test for Slope
+
+.blockquote-list[
+- Population Simple Linear Model: $y=\beta_{0}+\beta_{1} x+\varepsilon$
+
+\begin{align*}
+H_0& : \beta_1 = 0  \qquad \Longrightarrow \text{ No linear relationship }\\
+H_a& : \beta_1 \neq 0  \qquad  \Longrightarrow \text{ Some relationship }
+\end{align*}
+
+
+\begin{align*}
+t=\frac{\text { statistic-null }}{S E}=\frac{b_{1}-0}{S E}=\frac{b_{1}}{S E}
+\end{align*}
+]
+
+<br>
+
+.blockquote[
+- Again, $\boldsymbol{b}_{1}$ and SE come from R output.
+- We find the p-value by using a $t$ distribution with $n-2 \mathrm{ df}$.
+]
+
+---
+
+# Hypothesis Test for Slope
+
+.blockquote[
+Confirm the .bold[p-value] given by the regression output for testing the slope of the cricket chirp model.
+]
+
+```r
+Temperature  =  37.7 + 0.231 Chirps
+Predictor       Coef    SE Coef      T    Pr(>|t|)    
+Constant    37.67858    1.97817   19.05  7.35e-06 ***
+Chirps       0.23067    0.01423   16.21  1.63e-05 ***
+```
+
+.pull-left[
+.blockquote[
+\begin{align*}
+H_0 :& \beta_1 = 0 \\
+H_a :& \beta_1 \neq 0
+\end{align*}
+]
+]
+.pull-right[
+.blockquote[
+\begin{align*}
+t=\frac{b_{1}}{S E}
+\end{align*}
+]
+]
+
+---
+
+class: middle
+
+# Standard Error of the Slope
+
+.blockquote[
+Although we generally rely on technology to obtain the SE for the slope, we can also obtain it as follows:
+\begin{align*}
+S E=\frac{s_{\varepsilon}}{s_{x} \sqrt{n-1}}
+\end{align*}
+
+where $s_{\varepsilon}$ is the standard deviation of the error term and $s_{x}$ is the standard deviation for the sample values of the predictor. 
+
+]
+
+---
+
+# SE for Slope
+
+
+.pull-left-60[
+.code80[
+```{r, eval=FALSE}
+The regression equation is
+Temperature  =  37.7 + 0.231 Chirps
+
+Predictor       Coef    SE Coef      T    Pr(>|t|)    
+Constant    37.67858    1.97817   19.05  7.35e-06 ***
+Chirps       0.23067    0.01423   16.21  1.63e-05 ***  
+
+s = 1.52778   R-Sq = 98.1%   R-Sq(adj) = 97.8% #<<
+```
+]
+]
+.pull-right-40[
+<br>
+```{r, echo=FALSE}
+library(dplyr)
+stat <- data %>% 
+  summarize(mean(Chirps), 
+            sd(Chirps), 
+            length(Chirps))%>%
+  `colnames<-`(c( "Mean", "Standard Dev.", "n"))
+stat <- t(as.data.frame(stat))
+stat <- stat %>% 
+  `colnames<-`(c( "Chirps"))
+knitr::kable(stat)
+```
+
+
+]
+
+<br>
+
+.blockquote[
+\begin{align*}
+S E=\frac{s_{\varepsilon}}{s_{x} \sqrt{n-1}}=\frac{\sqrt{M S E}}{s_{x} \sqrt{n-1}}=
+\end{align*}
+]
+
+---
+
+# Hypothesis Test for Correlation
+
+.out-t[How else can we measure the strength of association between two quantitative variables?]
+
+--
+
+.blockquote[
+.bold[Recall:] $r$ = sample correlation, $\rho$ = population correlation
+]
+
+--
+
+<br>
+
+.pull-left[
+.blockquote[
+\begin{align*}
+H_0 :& \rho = 0 \\
+H_a :& \rho \neq 0
+\end{align*}
+
+Find the p-value using a t-distribution with n - 2 df
+
+]
+]
+.pull-right[
+.blockquote[
+\begin{align*}
+t & =\frac{\text { statistic -null }}{S E}=\frac{r-0}{\sqrt{\frac{1-r^{2}}{n-2}}} \\
+& =\frac{r}{\frac{\sqrt{1-r^{2}}}{\sqrt{n-2}}}=\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)
+\end{align*}
+
+]
+]
+
+---
+
+# Hypothesis Test for Correlation
+
+> The correlation for the n = 7 cricket chirp data points is r = 0.99062. Compute the t-statistic for the test:
+
+.blockquote[
+\begin{align*}
+H_0 :& \rho = 0 \\
+H_a :& \rho \neq 0
+\end{align*}
+
+\begin{align*}
+t & =\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)\\
+&=\frac{0.99062 \sqrt{7-2}}{\sqrt{1-0.99062^{2}}}=16.21
+\end{align*}
+]
+
+---
+
+# Coefficient of Determination, $R^2$
+
+.yellow-h[Recall that for correlation:] $-1 \leq r \leq 1$
+
+.blockquote[If we square the correlation, we get the .bold[coefficient of determination], which is a number between 0 and 1 that can be interpreted as a proportion or percentage.]
+
+<br>
+
+.blockquote-list[
+
+$R^{2}=$ proportion of .bold[variability] in the response variable, $Y$, that is "explained" by the explanatory variable, $X$.
+
+- By convention we use a capital $R^2$, although the value is just $r^2$ for a single explanatory variable.
+]
+
+---
+
+# Checking Condition
+
+\begin{align*}
+y=\beta_{0}+\beta_{1} x+\varepsilon
+\end{align*}
+
+.blockquote[
+For a simple linear model, we assume the errors $(\varepsilon)$ are randomly distributed above and below the line.
+]
+
+<br>
+
+.blockquote-list.font80[
+- .bold[Quick check] : Look at a scatterplot with regression line on it.
+
+- Watch out for:
+
+    - Curved (nonlinear) patterns in the data
+    - Consistently changing variability
+    - Outliers and influential points
+
+]
+---
+
+## Scatterplot with Regression Line
+
+.pull-left[
+<center>
+<img src="images/regression-good1.png" width="60%" height="60%"> <br>
+<a>Good</a>
+</center>
+
+<br>
+
+.blockquote[
+- Check linearity
+- Check consistent variability
+]
+
+]
+
+.pull-right[
+<center>
+<img src="images/regression-bad-1.png" width="60%" height="60%"> <br>
+<a>Problem</a>
+</center>
+
+<center>
+<img src="images/regression-bad-2.png" width="60%" height="60%"> <br>
+<a>Problem</a>
+</center>
+
+]
+
+---
+
+# Scatterplot with Regression Line
+
+.blockquote[
+- Check for outliers or influential points
+]
+
+
+<center>
+<img src="images/regression-outliers.png" width="90%" height="36%"> 
+</center>
+
+---
+
+# Partitioning Variability
+
+\begin{align*}
+Y=\beta_{0}+\beta_{1} X+\varepsilon
+\end{align*}
+
+\begin{align*}
+\text { Data }=\text { Model }+\text { Error }
+\end{align*}
+
+.blockquote[Split the total variability in Y into two pieces, variability explained by the model + unexplained (residual error) variability]
+
+<center>
+<img src="images/anova-variability.png" width="100%" height="30%"> 
+</center>
+
+
+---
+
+# Measuring Variability
+
+<center>
+<img src="images/anova-variability.png" width="100%" height="30%"> 
+</center>
+
+
+.blockquote[
+Total variability in $Y: \quad$ SSTotal $=\sum(y-\bar{y})^{2}$
+
+Explained variability: $\quad$ SSModel $=\sum(\hat{y}-\bar{y})^{2}$
+
+Unexplained variability: $\quad S S E=\sum(y-\hat{y})^{2}$
+]
+
+---
+
+$$Y=\beta_{0} + \beta_{1} X+\varepsilon \qquad \qquad \text { Data }=\text { Model }+\text { Error }$$
+
+<center>
+<img src="images/residual-deviations.png" width="90%" height="60%"> 
+</center>
+
+---
+
+# R: Calories Vs. Sugars
+
+.pull-left[
+```{r}
+library(Lock5Data)
+mod <- lm(Calories~Sugars, data = Cereal)
+anova(mod)
+```
+]
+
+.pull-right[
+```{r}
+ggplot(Cereal, aes(x = Sugars, y = Calories)) +
+  geom_point() +
+  geom_smooth(method="lm", se = FALSE)
+```
+
+
+]
+
+---
+
+# $R^2$ in Regression
+
+
+.pull-left[
+```{r}
+library(Lock5Data)
+mod <- lm(Calories~Sugars, data = Cereal)
+anova(mod)
+```
+]
+
+.pull-right[
+.blockquote[
+\begin{align*}
+R^{2}=\frac{\text { Variabilit y explained by Model }}{\text { Total variability in } \mathrm{Y}}
+\end{align*}
+
+\begin{align*}
+R^{2}=\frac{\text { SSModel }}{\text { SSTotal }}
+\end{align*}
+
+\begin{align*}
+R^{2}=
+\end{align*}
+]
+]
+
+---
+
+# R: Calories Vs. Sugars
+
+```{r}
+mod <- lm(Calories~Sugars, data = Cereal)
+summary(mod)
+```
+
+
+---
+
+# ANOVA for Regression
+
+.pull-left-40[
+.blockquote[
+\begin{align*}
+H_0 :& \beta_1 = 0 \\
+H_a :& \beta_1 \neq 0
+\end{align*}
+]
+]
+
+.pull-right-60[
+.blockquote[
+\begin{align*}
+H_{0}& : \text{ The model is ineffective}\\
+H_{a}& : \text{ The model is effective}
+\end{align*}
+]
+]
+
+<br>
+
+Source | df | Sum of Squares   | Mean Square | F-statistic | p-value
+-------- | ------------- | ----------- | ----------- | -------------- |
+Model | 1 |  SSModel | $\frac{SSModel}{1}$  | $F = \frac{MSModel}{MSE}$ | $F_{1,n-2}$
+Error | n - 2  | SSE  | $\frac{SSE}{n-2}$ |  |   
+Total |  n-1| SSTotal  | | | 
+
+
+---
+
+# P-value for Regression ANOVA
+
+\begin{align*}
+F=\frac{\text { MSModel }}{M S E}
+\end{align*}
+
+.out-t[How do we know when the F-statistic is “significant”?]
+
+.blockquote[
+To find a $p$-value for the ANOVA $F$-statistic:
+- Create a randomization distribution, OR
+- Use a theoretical distribution
+
+For a randomization distribution, we need to obtain samples where $\mathrm{H}_{0}: \beta_{1}=0$ is true:
+- Randomly scramble the response $(Y)$ values
+- Compute the ANOVA F-statistic for each sample
+]
+
+---
+
+# Randomization distribution
+
+<center>
+<img src="images/F-randomization.png" width="80%" height="60%"> 
+</center>
+
+
+---
+
+# Theoretical Distribution: F-distribution
+
+.blockquote[
+For testing an F-statistic (which is a ratio of variances)
+- Use an F-distribution, specifying the degrees of freedom for both the numerator and the denominator.
+]
+
+<br>
+
+.blockquote[
+When performing an ANOVA for Regression with a single predictor:
+- 1 df (numerator)
+- $n-2$ df (denominator)
+- Then use the upper tail beyond the $F$-statistic
+]
+
+---
+
+# F-distribution: Stat-key
+
+<center>
+<img src="images/F-statkey.png" width="80%" height="60%"> 
+</center>
+
+
+---
+
+# Std. Dev. of Error in Regression
+
+.blockquote[
+\begin{align*}
+Y=\beta_{0}+\beta_{1} X+\varepsilon
+\end{align*}
+
+Condition: The random errors $(\varepsilon)$ have a common standard deviation, $\sigma_{\varepsilon}$
+
+Estimation:
+
+\begin{align*}
+S_{\varepsilon}=\sqrt{\frac{\sum(y-\hat{y})^{2}}{n-2}}=\sqrt{\frac{S S E}{n-2}}=\sqrt{M S E}
+\end{align*}
+]
+
+
+For Calorie model:
+\begin{align*}
+S_{\varepsilon}=
+\end{align*}
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the remaining activity 
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`

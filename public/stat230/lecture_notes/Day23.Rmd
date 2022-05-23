@@ -482,7 +482,7 @@ class: middle
 
 .blockquote[
 .bold[Probability:]
-- This assumption implies that the probability $\pi\left(\right.$area$\left._{i}\right)$ of extinction on island $i$ is the same for all at risk species on island $i$.
+- This assumption implies that the probability $\pi\left(area_{i}\right)$ of extinction on island $i$ is the same for all at risk species on island $i$.
 - This could be violated if, for example, species living primarily on the interior of the island had a lower chance of extinction than species living on the coastal region.
 ]
 
