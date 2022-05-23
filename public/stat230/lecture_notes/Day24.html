@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Poisson regression model</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Poisson regression model]
+
+### .fancy[Stat 230]
+
+ May 23 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day24_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+Poisson responses
+
+GLM: Poisson regression
+
+EDA
+
+Estimation and inference
+]
+
+]
+
+---
+
+# Poisson responses
+
+.blockquote-list[Poisson counts are defined as
+- `\(Y_{i}=\)` number of successes/events that occur in a fixed period of time or region of space
+]
+
+&lt;br&gt;
+
+.blockquote.font80[
+.bold[Examples]
+- Number of possum species per plot
+- Number of COVID cases in Rice County in a week
+- Number of earthquakes, per year, in the US
+- Number of photons emitted per second from an extra-galactic source
+- Number of arrests resulting from 911 calls
+]
+
+---
+
+# Poisson response distribution
+
+.blockquote[
+- If `\(Y\)` has a Poisson distribution, the probability that we observed `\(y\)` successes is
+
+`\begin{align*}
+P(Y=y)=\frac{e^{-\mu} \mu^{y}}{y !} \text { for any } y=0,1,2, \ldots \text { and } \mu&gt;0
+\end{align*}`
+
+- Expected number (or mean number) of successes is
+
+`\begin{align*}
+E(Y)=\mu
+\end{align*}`
+
+- SD in the number of successes is
+
+`\begin{align*}
+S D(Y)=\sqrt{\mu}
+\end{align*}`
+
+- If `\(Y\)` has a Poisson distribution, we write
+
+`\begin{align*}
+Y \sim \operatorname{Poisson}(\mu)
+\end{align*}`
+
+]
+
+---
+
+class: middle
+
+# Poisson regression assumptions
+
+`\begin{align*}
+Y \sim \operatorname{Poisson}(\mu)
+\end{align*}`
+.bold[Goal:] Model `\(\mu\)` as a function of predictors `\(x_1\)`, `\(x_2\)`, `\(\cdots\)` `\(x_p\)`!
+
+.blockquote.font90[
+Assumption of Poisson regression:
+1. .bold[Poisson Response] The response variable is a count per unit of time or space, described by a Poisson distribution.
+2. .bold[Independence] The observations must be independent of one another.
+3. .bold[Mean=Variance] By definition, the mean of a Poisson random variable must be equal to its variance.
+4. .bold[Linearity] The log of the mean rate, log($\lambda$), must be a linear function of x.
+]
+
+---
+
+class: middle
+
+# Poisson model as a GLM
+
+.blockquote[
+The kernel mean function defines the expected value (mean `\(\mu_{y \mid x}\)` ) of `\(Y\)` as a function of `\(\eta=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}\)`.
+
+- .bold[MLR Kernel Mean:] `\(-\infty&lt;\mu&lt;\infty\)`
+`\begin{align*}
+\mu_{y \mid x}=\eta=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}`
+- .bold[Binary Logistic Kernel Mean:] `\(0&lt;\pi&lt;1\)`
+`\begin{align*}
+\mu_{y \mid x}=\pi(x)=\frac{e^{\eta}}{1+e^{\eta}}=\frac{e^{\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}}}{1+e^{\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}}}
+\end{align*}`
+- .bold[Poisson Kernel Mean:] `\(\mu&gt;0\)`
+`\begin{align*}
+\mu_{y \mid x}=e^{\eta}=e^{\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}}
+\end{align*}`
+]
+
+---
+
+class: middle
+
+# Poisson model as a GLM
+
+.blockquote[
+The link function defines the linear combination `\(\eta=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}\)` as a function of `\(\mu_{y \mid x}\)`.
+- .bold[MLR logit (identity) function:] `\(-\infty&lt;\eta&lt;\infty\)`
+`\begin{align*}
+\eta=\mu_{y \mid x}=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}`
+- .bold[Binary Logit Link function:] `\(-\infty&lt;\eta&lt;\infty\)`
+`\begin{align*}
+\eta=\ln \left(\frac{\pi(x)}{1-\pi(x)}\right)=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}`
+- .bold[Poisson "log-linear" link function:] `\(-\infty&lt;\eta&lt;\infty\)`
+`\begin{align*}
+\eta=\ln \mu_{y \mid x}=\beta_{0}+\beta_{1} x_{1}+\cdots \beta_{p} x_{p}
+\end{align*}`
+]
+
+
+---
+
+class: middle
+
+# Poisson Regression model
+
+.blockquote[
+`\begin{align*}
+Y_{i} \mid X_{i} \stackrel{\text { indep. }}{\sim} \operatorname{Pois}\left(\mu\left(Y_{i} \mid X_{i}\right)\right)
+\end{align*}`
+- Changes in `\(x\)` affect the log-mean response ("log-linear" model)
+`\begin{align*}
+\ln \left(\mu\left(Y_{i} \mid X_{i}\right)\right)=\eta_{i}=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{align*}`
+- The mean response is
+`\begin{align*}
+\mu\left(Y_{i} \mid X_{i}\right)=e^{\eta_{i}}=e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}
+\end{align*}`
+]
+
+---
+
+
+# Poisson Regression model example
+
+&lt;img src="Day24_files/figure-html/unnamed-chunk-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Poisson Regression model example
+
+&lt;img src="Day24_files/figure-html/unnamed-chunk-3-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+class: middle
+
+# Poisson Regression model: estimation
+
+.blockquote[
+- GLM: estimate `\(\beta_{i}\)` using maximum likelihood estimation with likelihood function
+`\begin{align*}
+L(\beta ; d a t a)=\prod_{i=1}^{n} \frac{e^{-\mu\left(X_{i}\right)} \mu\left(X_{i}\right)^{y_{i}}}{y_{i} !}
+\end{align*}`
+- MLE theory: `\(\hat{\beta}_{i}\)` approximately normally distributed when `\(\mathbf{n}\)` is large enough or when `\(\mu\left(X_{i}\right)\)` (estimated means) are large enough.
+]
+
+---
+
+# Poisson Regression model: Inference
+
+.blockquote.font90[
+Usual Wald (MLE) inference using `\(N(0,1)\)` :
+- A `\(C \%\)` CI for `\(\beta: \hat{\beta} \pm z^{*} S E(\hat{\beta})\)`
+- Test `\(H_{0}: \beta=0\)` with test stat `\(z=\frac{\hat{\beta}-0}{S E(\hat{\beta})}\)`
+- Usual GLM Drop-in-deviance using Poisson (residual) deviance
+`\begin{align*}
+G^{2}=2\left[\ln L\left(\bar{\mu}_{i}\right)-\ln L\left(\hat{\mu}\left(X_{i}\right)\right)\right]=2 \sum_{i=1}^{n}\left[y_{i} \ln \left(\frac{y_{i}}{\hat{\mu}\left(X_{i}\right)}\right)-\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right)\right]
+\end{align*}`
+- `\(L\left(\hat{\mu}\left(X_{i}\right)\right)\)` is the Poisson model likelihood where `\(\hat{\mu}\left(X_{i}\right)\)` are estimated from the model.
+- `\(L\left(\bar{\mu}_{i}\right)\)` is the saturated model likelihood where `\(\bar{\mu}_{i}=y_{i}\)`.
+]
+
+---
+
+# Poisson Regression model: Interpretation
+
+`\begin{align*}
+\mu\left(Y_{i} \mid X_{i}\right)=e^{\eta_{i}}=e^{\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}}
+\end{align*}`
+
+.blockquote[
+.bold[Unlogged] predictor `\(x_{1}:\)`
+- A one unit change in `\(x_{1}\)` is associated with a `\(e^{\beta_{1}}\)` multiplicative change in the mean response.
+
+.bold[Logged] predictor `\(\ln \left(x_{1}\right)\)` :
+- A multiplicative change of `\(m\)` in `\(x_{1}\)` is associated with a `\(m^{\beta_{1}}\)` multiplicative change in the mean response.
+]
+
+---
+
+# Example: Australian Possums
+
+.blockquote[
+.bold[Goal:] what factors are associated with good habitat for possums?
+- Specifically, how is bark quality associated with possum numbers?
+- `\(n=1513\)`-hectare sites in Australia
+- `\(Y=\)` number of possum species found on the site
+- `\(X=\)` bark quality index, higher values indicate better quality
+]
+
+--
+
+.out-t[Why fit a Poisson GLM instead of a SLR? instead of a logistic?]
+---
+
+class: middle
+
+# EDA for Poisson counts
+
+.blockquote[
+`\begin{align*}
+\ln \left(\mu\left(Y_{i} \mid X_{i}\right)\right)=\beta_{0}+\beta_{1} x_{1, i}+\cdots+\beta_{p} x_{p, i}
+\end{align*}`
+- EDA: Scatterplot of `\(\ln (Y)\)` or `\(\ln (Y+0.5)\)` against `\(x\)` should be approximately linear
+- Variance does not need to be constant
+- If `\(Y\)` contains 0 counts, plot `\(\ln (Y+0.5)\)` against `\(x\)`
+]
+
+
+---
+
+# Example: Australian Possums
+
+.font90[
+
+```r
+possums &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/possums.csv")
+glimpse(possums)
+```
+
+```
+Rows: 151
+Columns: 7
+$ Acacia  &lt;int&gt; 32, 5, 9, 17, 21, 32, 17, 18, 1, 9, 9, 10, 12, 1, 26, 17, 8, 2…
+$ Bark    &lt;int&gt; 30, 13, 27, 17, 12, 7, 11, 5, 14, 10, 4, 4, 12, 15, 9, 14, 18,…
+$ Habitat &lt;int&gt; 10, 3, 3, 9, 9, 11, 9, 9, 4, 2, 3, 7, 2, 8, 2, 8, 2, 10, 9, 10…
+$ Shrubs  &lt;int&gt; 7, 6, 8, 7, 6, 4, 7, 14, 6, 9, 12, 17, 9, 10, 5, 10, 12, 9, 5,…
+$ Stags   &lt;int&gt; 13, 16, 7, 15, 17, 17, 10, 21, 8, 5, 7, 6, 5, 7, 5, 11, 7, 12,…
+$ Stumps  &lt;int&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ y       &lt;int&gt; 3, 2, 1, 2, 3, 2, 3, 2, 0, 0, 1, 1, 0, 4, 2, 3, 1, 3, 3, 1, 2,…
+```
+]
+
+---
+
+
+count: false
+ 
+# Example: Australian Possums
+.panel1-add-offset-auto[
+
+```r
+*library(dplyr)
+```
+]
+ 
+.panel2-add-offset-auto[
+
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-add-offset-auto[
+
+```r
+library(dplyr)
+*possums &lt;- possums
+```
+]
+ 
+.panel2-add-offset-auto[
+
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-add-offset-auto[
+
+```r
+library(dplyr)
+possums &lt;- possums %&gt;%
+*mutate(log_y = log(y + 0.5))
+```
+]
+ 
+.panel2-add-offset-auto[
+
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-add-offset-auto[
+
+```r
+library(dplyr)
+possums &lt;- possums %&gt;%
+ mutate(log_y = log(y + 0.5))
+
+*ggplot(possums, aes(x = Bark, y = log_y))
+```
+]
+ 
+.panel2-add-offset-auto[
+&lt;img src="Day24_files/figure-html/add-offset_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-add-offset-auto[
+
+```r
+library(dplyr)
+possums &lt;- possums %&gt;%
+ mutate(log_y = log(y + 0.5))
+
+ggplot(possums, aes(x = Bark, y = log_y)) +
+*geom_jitter(height = 0.05, width = 0.1)
+```
+]
+ 
+.panel2-add-offset-auto[
+&lt;img src="Day24_files/figure-html/add-offset_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-add-offset-auto[
+
+```r
+library(dplyr)
+possums &lt;- possums %&gt;%
+ mutate(log_y = log(y + 0.5))
+
+ggplot(possums, aes(x = Bark, y = log_y)) +
+ geom_jitter(height = 0.05, width = 0.1) +
+*geom_smooth(se = FALSE)
+```
+]
+ 
+.panel2-add-offset-auto[
+&lt;img src="Day24_files/figure-html/add-offset_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-add-offset-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel2-add-offset-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel3-add-offset-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+.out-t[At least 25% of plots have 0 species recorded, so EDA needs to add 0.5 to all cases to avoid log of 0.]
+
+---
+
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-y-auto[
+
+```r
+# can achieve the same thing with y transformation
+*ggplot(possums, aes(x = Bark, y = y))
+```
+]
+ 
+.panel2-transform-y-auto[
+&lt;img src="Day24_files/figure-html/transform-y_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-y-auto[
+
+```r
+# can achieve the same thing with y transformation
+ggplot(possums, aes(x = Bark, y = y)) +
+*geom_jitter(height = 0.05, width = 0.1)
+```
+]
+ 
+.panel2-transform-y-auto[
+&lt;img src="Day24_files/figure-html/transform-y_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-y-auto[
+
+```r
+# can achieve the same thing with y transformation
+ggplot(possums, aes(x = Bark, y = y)) +
+ geom_jitter(height = 0.05, width = 0.1) +
+*geom_smooth(se = FALSE)
+```
+]
+ 
+.panel2-transform-y-auto[
+&lt;img src="Day24_files/figure-html/transform-y_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-y-auto[
+
+```r
+# can achieve the same thing with y transformation
+ggplot(possums, aes(x = Bark, y = y)) +
+ geom_jitter(height = 0.05, width = 0.1) +
+ geom_smooth(se = FALSE) +
+*scale_y_continuous(trans = "log1p")# log(1+y)  # log(1+y)
+```
+]
+ 
+.panel2-transform-y-auto[
+&lt;img src="Day24_files/figure-html/transform-y_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-transform-y-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel2-transform-y-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel3-transform-y-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-xy-auto[
+
+```r
+*possums &lt;- possums
+```
+]
+ 
+.panel2-transform-xy-auto[
+
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-xy-auto[
+
+```r
+possums &lt;- possums %&gt;%
+*mutate(log_y = log(y + 0.5))
+```
+]
+ 
+.panel2-transform-xy-auto[
+
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-xy-auto[
+
+```r
+possums &lt;- possums %&gt;%
+ mutate(log_y = log(y + 0.5))
+
+*ggplot(possums, aes(x = log(Bark), y = log_y))
+```
+]
+ 
+.panel2-transform-xy-auto[
+&lt;img src="Day24_files/figure-html/transform-xy_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-xy-auto[
+
+```r
+possums &lt;- possums %&gt;%
+ mutate(log_y = log(y + 0.5))
+
+ggplot(possums, aes(x = log(Bark), y = log_y)) +
+*geom_jitter(height = 0.05, width = 0.1)
+```
+]
+ 
+.panel2-transform-xy-auto[
+&lt;img src="Day24_files/figure-html/transform-xy_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-transform-xy-auto[
+
+```r
+possums &lt;- possums %&gt;%
+ mutate(log_y = log(y + 0.5))
+
+ggplot(possums, aes(x = log(Bark), y = log_y)) +
+ geom_jitter(height = 0.05, width = 0.1) +
+*geom_smooth(se = FALSE)
+```
+]
+ 
+.panel2-transform-xy-auto[
+&lt;img src="Day24_files/figure-html/transform-xy_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-transform-xy-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel2-transform-xy-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel3-transform-xy-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+class: middle
+
+# Poisson model in R
+
+.blockquote.gont90[
+`\(\operatorname{glm}(y \sim x 1+x 2\)`, family `\(=\)` poisson, data `\(=)\)`
+-  We don't use log of `\(\mathrm{Y}\)` as the response, the Poisson model will convert it to the log mean scale automatically
+- Get the fitted values `\(\hat{\mu}=\hat{y}\)` for each case in the data
+  - `fitted(my_glm)`
+  - `augment(my_glm, type.predict = "response")`
+  - `predict(my_glm, type = "response")`
+]
+
+---
+
+# Example: Australian Possums
+
+.code70[
+
+```r
+pos_glm &lt;- glm(y ~ log(Bark), # model form
+ family = poisson, # poisson model
+ data = possums) # data
+summary(pos_glm)
+
+Call:
+glm(formula = y ~ log(Bark), family = poisson, data = possums)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.18523  -1.26246  -0.07764   0.55078   2.11368  
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -0.8801     0.3027  -2.907  0.00365 ** 
+log(Bark)     0.5945     0.1335   4.453 8.45e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 187.49  on 150  degrees of freedom
+Residual deviance: 167.51  on 149  degrees of freedom
+AIC: 452.31
+
+Number of Fisher Scoring iterations: 5
+```
+]
+
+---
+
+# Example: Australian Possums
+
+
+```r
+library(broom)
+tidy(pos_glm, conf.int = TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic    p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   -0.880     0.303     -2.91 0.00365      -1.48     -0.295
+2 log(Bark)      0.594     0.133      4.45 0.00000845    0.333     0.856
+```
+
+.blockquote.font90[
+- What is the estimated mean number of species as a function of bark index?
+
+- What is the effect of doubling the bark index on the mean number of possum species?
+  - assess the stat significant of this effect
+  - get a CI for this effect.
+]
+
+---
+
+# Example: Australian Possums
+
+
+```r
+tidy(pos_glm, conf.int = TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic    p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   -0.880     0.303     -2.91 0.00365      -1.48     -0.295
+2 log(Bark)      0.594     0.133      4.45 0.00000845    0.333     0.856
+```
+
+.blockquote.font90[
+- What is the estimated mean number of species as a function of bark index?
+`\begin{align*}
+\hat{\mu}(Y \mid x)=e^{-0.880+0.594 \ln (\text { Bark })}=e^{-0.880} \text { Bark }^{0.594}
+\end{align*}`
+]
+
+---
+
+# Example: Australian Possums
+
+
+```r
+tidy(pos_glm, conf.int = TRUE)
+# A tibble: 2 × 7
+  term        estimate std.error statistic    p.value conf.low conf.high
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)   -0.880     0.303     -2.91 0.00365      -1.48     -0.295
+2 log(Bark)      0.594     0.133      4.45 0.00000845    0.333     0.856
+```
+
+.blockquote.font90[
+- What is the effect of doubling the bark index on the mean number of possum species?
+- The effect of (log) bark is statistically significant ( `\(\mathrm{z}=4.45, \mathrm{p}&lt;0.0001\)` ).
+`\begin{align*}
+2^{0.594}=1.51 \quad 2^{0.333}=1.26 \quad 2^{0.856}=1.81
+\end{align*}`
+- We are `\(95 \%\)` confident that a doubling of bark index is associated with an increase in mean number of species by `\(26 \%\)` to `\(81 \%\)`.
+]
+
+---
+
+count: false
+ 
+# Example: Australian Possums
+.panel1-glm-auto[
+
+```r
+*ggplot(possums, aes(x = Bark, y = y))
+```
+]
+ 
+.panel2-glm-auto[
+&lt;img src="Day24_files/figure-html/glm_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-glm-auto[
+
+```r
+ggplot(possums, aes(x = Bark, y = y)) +
+*geom_jitter(height = .05)
+```
+]
+ 
+.panel2-glm-auto[
+&lt;img src="Day24_files/figure-html/glm_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-glm-auto[
+
+```r
+ggplot(possums, aes(x = Bark, y = y)) +
+ geom_jitter(height = .05) +
+* scale_x_log10()
+```
+]
+ 
+.panel2-glm-auto[
+&lt;img src="Day24_files/figure-html/glm_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# Example: Australian Possums
+.panel1-glm-auto[
+
+```r
+ggplot(possums, aes(x = Bark, y = y)) +
+ geom_jitter(height = .05) +
+  scale_x_log10() +
+*geom_smooth(method="glm",
+*            method.args = list(family=poisson),
+*            se=FALSE)
+```
+]
+ 
+.panel2-glm-auto[
+&lt;img src="Day24_files/figure-html/glm_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-glm-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 90%
+}
+.panel2-glm-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 90%
+}
+.panel3-glm-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 90%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+# Example: Australian Possums with more predictors
+
+
+```r
+possums$stumps &lt;- dplyr::recode(possums$Stumps, `0`="none",`1`="present")
+pos_glm_bigger &lt;- glm(y ~ sqrt(Acacia) + log(Bark) + Habitat + 
+                        log(Shrubs) + log(Stags) + stumps, 
+                      family=poisson, data=possums)
+tidy(pos_glm_bigger)
+```
+
+```
+# A tibble: 7 × 5
+  term          estimate std.error statistic     p.value
+  &lt;chr&gt;            &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+1 (Intercept)   -1.98       0.400    -4.95   0.000000730
+2 sqrt(Acacia)   0.0893     0.0704    1.27   0.205      
+3 log(Bark)      0.415      0.161     2.57   0.0101     
+4 Habitat        0.0588     0.0395    1.49   0.137      
+5 log(Shrubs)    0.00583    0.118     0.0496 0.960      
+6 log(Stags)     0.404      0.118     3.41   0.000651   
+7 stumpspresent -0.251      0.276    -0.909  0.363      
+```
+
+---
+
+# Residuals and influence analysis
+
+&lt;img src="Day24_files/figure-html/unnamed-chunk-10-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+.out-t[Residuals and influential analysis is mostly good!]
+
+---
+
+# Example: Australian Possums
+
+.out-t[Can we remove all insignificant terms from the full model?]
+
+
+```
+Analysis of Deviance Table
+
+Model 1: y ~ log(Bark) + log(Stags)
+Model 2: y ~ sqrt(Acacia) + log(Bark) + Habitat + log(Shrubs) + log(Stags) + 
+    stumps
+  Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)  
+1       148     135.61                       
+2       144     124.65  4   10.959  0.02703 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+--
+
+.out-t[No! At least one removed term is statistically significant (drop-in-deviance = 10.96, df = 4, p-value = 0.027)]
+
+---
+
+# Example: Australian Possums
+
+
+
+```r
+car::vif(pos_glm_bigger)
+sqrt(Acacia)    log(Bark)      Habitat  log(Shrubs)   log(Stags)       stumps 
+    1.770968     1.357957     2.262461     1.356994     1.655739     1.064056 
+```
+
+--
+
+.yellow-h[Add `habitat` back in (some collinearity with other terms)]
+
+--
+
+
+```r
+pos_glm_red &lt;- glm(y ~ log(Bark) + Habitat + log(Stags), family="poisson", data = possums)
+anova(pos_glm_red, pos_glm_bigger, test="Chisq")
+Analysis of Deviance Table
+
+Model 1: y ~ log(Bark) + Habitat + log(Stags)
+Model 2: y ~ sqrt(Acacia) + log(Bark) + Habitat + log(Shrubs) + log(Stags) + 
+    stumps
+  Resid. Df Resid. Dev Df Deviance Pr(&gt;Chi)
+1       147     127.09                     
+2       144     124.65  3   2.4463   0.4851
+```
+
+.out-t[We can remove acacia (area of acacia at the site), shrubs (number of
+shrubs), and stumps (presence of stumps from logging)]
+
+---
+
+# Example: Australian Possums
+
+.blockquote[
+The statistically significant terms are bark quality, habitat score (higher is better), and stags (number of hollow trees)
+]
+
+
+```r
+tidy(pos_glm_red)
+# A tibble: 4 × 5
+  term        estimate std.error statistic     p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
+1 (Intercept)  -1.75      0.344      -5.09 0.000000358
+2 log(Bark)     0.394     0.139       2.83 0.00460    
+3 Habitat       0.0877    0.0307      2.86 0.00425    
+4 log(Stags)    0.370     0.109       3.40 0.000675   
+```
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Go over the class activity in your group
+]
+]
+
+<div class="countdown" id="timer_628baa9f" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
