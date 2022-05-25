@@ -1,0 +1,567 @@
+---
+title: "Poisson regression diagnostics"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Poisson regression diagnostics]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+# load library ggplot2
+library(ggplot2)
+set.seed(1234)
+
+reps <- 50000
+nexps <- 5
+rate <- 0.1
+x1 <- replicate(reps, sum(rexp(n=nexps, rate=rate)))
+ggplot(data.frame(x1), aes(x1)) + 
+  geom_histogram(aes(y=..density..,), col="lightblue") +
+  stat_function(fun=function(x)dgamma(x, shape=nexps, scale=1/rate),
+                color="orange", size=1)+
+  theme(legend.position = "none")
+```
+
+]
+
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+.blockquote-list[
+Residuals and case influence
+
+GOF and Poisson assumptions
+
+Quasi-poisson model
+]
+
+]
+
+---
+
+class: middle
+
+# Residuals
+
+.blockquote[
+- Similar to .bold[logistic regression]!
+- Pearson and deviance: similar in values and pattern
+- Plot vs predictors and look for a "null" plot
+- When $\hat{\mu}_{i}$'s are large (at least 5), both types of residuals should be $N(0,1)$ distribution (approximately).
+]
+
+
+---
+
+class: middle
+
+
+# Pearson Residuals
+
+
+.blockquote[
+Pearson residuals are basically response residuals standardized based on the Poisson SD:
+
+\begin{align*}
+p r_{i}=\frac{y_{i}-\hat{\mu}\left(X_{i}\right)}{\sqrt{\hat{\mu}\left(X_{i}\right)}}
+\end{align*}
+- `resid(my_glm, type = "pearson")`
+- `augment(my_glm, type.residuals = "pearson")`
+]
+
+---
+
+class: middle
+
+# Deviance Residuals
+
+.blockquote[
+Deviance residuals are .bold[each case's] contribution to the residual deviance:
+
+\begin{align*}
+\operatorname{Dres}_{i}=\operatorname{sign}\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right) \sqrt{2\left[y_{i} \ln \left(\frac{y_{i}}{\hat{\mu}\left(X_{i}\right)}\right)-\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right)\right]}
+\end{align*}
+
+- `resid(my_glm, type $=$ "deviance")`
+- `augment(my_glm, type.residuals = "deviance")`
+
+]
+
+---
+
+class: middle
+
+# Case influence stats
+
+.blockquote[
+In a GLM, .bold[leverage] measures
+- both a cases's "extremeness" in terms of it's predictor values and the size of a case's weight
+- in a Poisson GLM, a case's weight is given by $\hat{\mu}\left(X_{i}\right)$
+
+.bold[Cook's distance] also takes into account a cases leverage (measured both by predictor values and it's estimated mean) and a case's residual value.
+]
+
+---
+
+# Australian Possums
+
+```{r}
+possums <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/possums.csv")
+pos_glm <- glm(y ~ log(Bark), family = poisson, data = possums) 
+possums_aug <- augment(pos_glm, data=possums, type.predict = "response")
+possums_aug_log <- augment(pos_glm, data=possums) # in log scale
+summary(possums_aug$.fitted)
+```
+
+
+.blockquote[
+- Fitted values $\hat{\mu}$ are all less than 5 .
+- residuals won't be approximately normal
+- issues trusting GOF test 
+]
+
+---
+
+### Augmented data
+
+.scroll-box-20[
+
+.code60[
+```{r, echo=FALSE}
+datatable(round(possums_aug %>% select(-.sigma),2), fillContainer = FALSE, options = list(pageLength=6), 
+          height = 32)
+```
+]
+]
+
+---
+
+### Augmented data (logged)
+
+.scroll-box-20[
+
+.code60[
+```{r, echo=FALSE}
+datatable(round(possums_aug_log %>% select(-.sigma),2), fillContainer = FALSE, options = list(pageLength=6), 
+          height = 32)
+```
+]
+]
+
+
+
+---
+
+## Australian Possums
+
+```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center', echo=FALSE, collapse=TRUE}
+resid_xpanel(pos_glm, type = "deviance")
+```
+
+.blockquote.font90[
+Why the "line" pattern?
+- Looks "null" enough (the lines are due to the discrete count nature of the data- these cases share the same response but have different bark values)
+]
+
+
+---
+
+## Australian Possums
+
+.pull-left[
+```{r, echo=FALSE}
+plot(pos_glm, which = 4, id.n = 5, lab.cex = .2)
+```
+]
+.pull-right[
+
+```{r, echo=FALSE}
+plot(pos_glm, which = 5, id.n = 5, lab.cex = .2)
+```
+]
+
+.out-t[Highest Cook's D: Case 3 has little effect on the model (fit with and without)]
+
+---
+
+### Original fit
+
+```{r, fig.width=8.5, fig.height=5, out.width="90%", fig.align='center', echo=FALSE, collapse=TRUE}
+library(ggrepel)
+possums_aug <- possums_aug %>% mutate(ID = row_number())
+p1 <- ggplot(possums_aug, aes(x = Bark, y = .fitted)) +
+    scale_x_log10() +
+  geom_point(aes(color = .hat, size = .hat)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE) +
+  labs(x = "Bark (log scale)")
+  
+p1 +  geom_text_repel(aes(label = ID),
+                  box.padding   = 0.15, 
+                  point.padding = 1e-06,
+                  segment.color = 'grey50')
+```
+
+---
+
+### Logged fit
+
+```{r, fig.width=8.5, fig.height=5, out.width="90%", fig.align='center', echo=FALSE, collapse=TRUE}
+library(ggrepel)
+possums_aug_log <- possums_aug_log %>% mutate(ID = row_number())
+p12 <- ggplot(possums_aug_log, aes(x = Bark, y = .fitted)) +
+    scale_x_log10() +
+  geom_point(aes(color = .hat, size = .hat)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE) +
+  labs(x = "Bark (log scale)")
+  
+p12 +  geom_text_repel(aes(label = ID),
+                  box.padding   = 0.15, 
+                  point.padding = 1e-06,
+                  segment.color = 'grey50')
+```
+
+
+
+---
+
+### Original fit
+
+```{r, fig.width=8.5, fig.height=5, out.width="90%", fig.align='center', echo=FALSE, collapse=TRUE}
+library(ggrepel)
+possums_aug <- possums_aug %>% mutate(ID = row_number())
+p2 <- ggplot(possums_aug, aes(x = Bark, y = .fitted)) +
+  scale_x_log10() +
+  geom_point(aes(color = .cooksd, size = .cooksd)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE) + 
+    labs(x = "Bark (log scale)")
+
+  
+p2 +  geom_text_repel(aes(label = ID),
+                   box.padding   = 0.15, 
+                  point.padding = 1e-06,
+                  segment.color = 'grey50')
+```
+
+
+---
+
+### Logged fit
+
+```{r, fig.width=8.5, fig.height=5, out.width="90%", fig.align='center', echo=FALSE, collapse=TRUE}
+library(ggrepel)
+p21 <- ggplot(possums_aug_log, aes(x = Bark, y = .fitted)) +
+  scale_x_log10() +
+  geom_point(aes(color = .cooksd, size = .cooksd)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE) + 
+    labs(x = "Bark (log scale)")
+
+  
+p21 +  geom_text_repel(aes(label = ID),
+                   box.padding   = 0.15, 
+                  point.padding = 1e-06,
+                  segment.color = 'grey50')
+```
+
+
+
+---
+
+class: middle
+
+# Assessing Poisson model assumptions
+
+.blockquote[
+.bold[Log-mean linearity:]
+- plot of log-response against quantitative predictors
+- plot of residuals against quantitative predictors
+
+.bold[Cases are independent:]
+- understanding of how the data was collected
+]
+
+---
+
+class: middle
+
+# Assessing Poisson model assumptions
+
+.blockquote[
+.bold[counts of events] $Y_{i}$ has a .bold[Poisson distribution] with mean and variance $\mu_{y \mid x}$
+- Check residuals, should have equal scatter and spread around the 0line given any $\mathrm{x}$ value.
+- Check goodness-of-fit test, compare sample means and variances of similar groups
+]
+
+---
+
+# Assessing Poisson model assumptions
+
+.out-t[When might your response count NOT follow a Poisson distribution?]
+
+.blockquote.font80[
+The events do NOT occur independently
+- could be clustering of "successes" in time or space
+- clustering of event occurrences induces more variation in our responses than our Poisson model assumes.
+]
+
+--
+
+<br>
+
+.blockquote.font80[
+Bad mean function
+- Missing explanatory variables
+- Incorrect mean function form (missing transformations, interactions, etc)
+]
+
+--
+
+.out-t[These issues can induce overdispersion, or extra-Poisson variation, in your response, resulting in SEs that are too small.]
+
+---
+
+class: middle
+
+# Goodness-of-fit test
+
+.blockquote[
+\begin{align*}
+H_{0}& : \text{ Poisson model }\\
+H_{A}& : \text{ saturated model }
+\end{align*}
+
+- The test statistic is the model's deviance $G^{2}$
+
+\begin{align*}
+G^{2}=2\left[\ln L\left(y_{i}\right)-\ln L(\hat{\mu}(X))\right]
+\end{align*}
+- When $\hat{\mu}_{i}$ 's are large ( $\left.>5\right)$, p-value is approximately
+\begin{align*}
+\text {p-value }=1-P\left(\chi^{2}>G^{2}\right)=1-p c h i s q\left(G^{2}, d f=n-(p+1)\right)
+\end{align*}
+]
+
+
+---
+
+## Australian Possums
+
+```{r, collapse=TRUE}
+summary(pos_glm)
+```
+
+---
+
+
+## Australian Possums
+
+GOF test for the possums model (only using log bark):
+
+```{r, collapse=TRUE}
+1 - pchisq(167.51, df = 149)
+```
+
+--
+
+.out-t[Can we trust this test?]
+
+--
+
+> No! The chi-square model won't be a good approximation for the distribution of $G^{2}$ when data counts and model mean counts are small
+
+```{r}
+summary(possums_aug$.fitted) # all < 5
+```
+
+
+---
+
+class: middle
+
+# GOF alternative visualization
+
+.blockquote[
+What if we can't use a GOF test?
+- plot mean count vs. mean variance for similar (same) predictor values
+- Poisson model assumes mean and variance are the same value!
+]
+
+---
+
+`r chunk_reveal("mean-var", widths= c(0.5,0.5), font_size_code="85%", title = "# GOF alternative visualization")`
+
+```{r mean-var, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
+pos_byBark <- possums %>%
+ mutate(Bark_grp = ntile(Bark, n=12)) %>%
+ group_by(Bark_grp) %>%
+ summarize(meanY = mean(y), varY = var(y))
+
+ggplot(pos_byBark, aes(x = meanY, y = varY)) +
+ geom_point() +
+ geom_abline(intercept = 0, slope = 1, linetype = 2)
+```
+
+
+---
+
+# Quasi-Poisson model
+
+.blockquote[
+What if we reject our GOF test or find visual evidence of extra-Poisson variation?
+- Quasi-Poisson model
+
+\begin{align*}
+Y_{i} \mid x_{i} & \sim \operatorname{Poisson}\left(\mu_{i}\right) \\
+E\left(Y_{i} \mid x_{i}\right) &=\mu_{i} \\
+V\left(Y_{i} \mid x_{i}\right) &=\psi \mu_{i}
+\end{align*}
+
+]
+<br>
+.blockquote[
+- A quasi-poisson model and drop-in-deviance:
+
+`glm(y ~ x1 + x2, family = quasipoisson, data = mydata)`
+
+`anova(red_quasi, full_quasi, test = "F")`
+]
+
+---
+
+## Estimating the dispersion parameter $\psi$
+
+.blockquote[
+For a GLM, the dispersion parameter $\psi$ ("psi") is estimated from the deviance $G^{2}$ from the regular GLM:
+
+\begin{align*}
+\hat{\psi}=\frac{G^{2}}{n-(p+1)}
+\end{align*}
+
+- $\hat{\psi}>1$ : overdispersion (responses are more variable than expected)
+- $\hat{\psi}<1$ : underdispersion (responses are less variable than expected)
+]
+
+---
+
+# Quasi-Poisson model
+
+.blockquote[
+- Conduct "z"-inference (Wald tests/CI) using SEs equal to $S E_{\text {quasi }}\left(\hat{\beta}_{i}\right)$
+- Compare quasi-poisson models using a F-test stat equal to
+
+\begin{align*}
+F=\frac{\left(G_{\text {reduced }}^{2}-G_{\text {full }}^{2}\right) /(\# \text { terms tested })}{\hat{\psi}}
+\end{align*}
+
+using an F-distribution with degrees of freedom equal to the number of terms tested and $n-(p+1) . G^{2}$ is the model deviance from fitting the usual Poisson model for two competing models.
+]
+
+

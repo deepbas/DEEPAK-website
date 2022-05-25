@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Poisson regression diagnostics</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <script src="libs/jquery/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Poisson regression diagnostics]
+
+### .fancy[Stat 230]
+
+ May 25 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day25_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+Residuals and case influence
+
+GOF and Poisson assumptions
+
+Quasi-poisson model
+]
+
+]
+
+---
+
+class: middle
+
+# Residuals
+
+.blockquote[
+- Similar to .bold[logistic regression]!
+- Pearson and deviance: similar in values and pattern
+- Plot vs predictors and look for a "null" plot
+- When `\(\hat{\mu}_{i}\)`'s are large (at least 5), both types of residuals should be `\(N(0,1)\)` distribution (approximately).
+]
+
+
+---
+
+class: middle
+
+
+# Pearson Residuals
+
+
+.blockquote[
+Pearson residuals are basically response residuals standardized based on the Poisson SD:
+
+`\begin{align*}
+p r_{i}=\frac{y_{i}-\hat{\mu}\left(X_{i}\right)}{\sqrt{\hat{\mu}\left(X_{i}\right)}}
+\end{align*}`
+- `resid(my_glm, type = "pearson")`
+- `augment(my_glm, type.residuals = "pearson")`
+]
+
+---
+
+class: middle
+
+# Deviance Residuals
+
+.blockquote[
+Deviance residuals are .bold[each case's] contribution to the residual deviance:
+
+`\begin{align*}
+\operatorname{Dres}_{i}=\operatorname{sign}\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right) \sqrt{2\left[y_{i} \ln \left(\frac{y_{i}}{\hat{\mu}\left(X_{i}\right)}\right)-\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right)\right]}
+\end{align*}`
+
+- `resid(my_glm, type `\(=\)` "deviance")`
+- `augment(my_glm, type.residuals = "deviance")`
+
+]
+
+---
+
+class: middle
+
+# Case influence stats
+
+.blockquote[
+In a GLM, .bold[leverage] measures
+- both a cases's "extremeness" in terms of it's predictor values and the size of a case's weight
+- in a Poisson GLM, a case's weight is given by `\(\hat{\mu}\left(X_{i}\right)\)`
+
+.bold[Cook's distance] also takes into account a cases leverage (measured both by predictor values and it's estimated mean) and a case's residual value.
+]
+
+---
+
+# Australian Possums
+
+
+```r
+possums &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/possums.csv")
+pos_glm &lt;- glm(y ~ log(Bark), family = poisson, data = possums) 
+possums_aug &lt;- augment(pos_glm, data=possums, type.predict = "response")
+possums_aug_log &lt;- augment(pos_glm, data=possums) # in log scale
+summary(possums_aug$.fitted)
+```
+
+```
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.4147  1.2033  1.4277  1.4768  1.6302  3.1325 
+```
+
+
+.blockquote[
+- Fitted values `\(\hat{\mu}\)` are all less than 5 .
+- residuals won't be approximately normal
+- issues trusting GOF test 
+]
+
+---
+
+### Augmented data
+
+.scroll-box-20[
+
+.code60[
+<div id="htmlwidget-030ce55779598c006ab0" style="width:100%;height:32px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-030ce55779598c006ab0">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151"],[32,5,9,17,21,32,17,18,1,9,9,10,12,1,26,17,8,24,20,14,22,24,1,17,21,6,2,34,4,5,18,14,14,4,13,14,21,16,16,12,12,2,28,16,16,24,18,14,10,5,17,3,23,18,13,12,4,5,8,1,4,40,12,24,29,20,18,25,21,21,6,4,20,20,20,21,17,6,4,13,12,4,18,18,17,8,1,1,5,4,22,21,8,25,22,16,14,20,2,17,1,26,17,25,14,1,1,1,2,8,2,10,8,18,21,6,16,14,24,24,6,9,5,5,17,1,10,6,5,20,1,20,5,18,9,8,5,2,1,4,16,14,24,13,1,1,1,18,26,17,1],[30,13,27,17,12,7,11,5,14,10,4,4,12,15,9,14,18,9,8,13,6,10,16,17,17,15,19,5,23,12,12,18,10,24,10,6,7,8,10,8,8,6,9,10,6,6,12,10,6,9,8,6,10,4,7,8,11,16,9,7,5,8,8,7,7,11,7,8,6,5,6,8,9,7,15,8,13,5,8,10,9,9,5,15,13,19,6,7,6,6,8,7,6,10,10,6,6,4,7,3,1,7,10,7,6,6,19,4,4,4,4,6,8,17,11,14,6,5,9,7,5,16,10,6,8,4,5,7,5,7,6,7,6,6,4,5,8,9,6,5,5,11,5,4,6,3,1,7,6,5,7],[10,3,3,9,9,11,9,9,4,2,3,7,2,8,2,8,2,10,9,10,11,9,2,3,9,3,1,10,11,3,10,8,8,5,9,5,10,9,7,7,4,2,9,3,8,6,4,4,2,4,8,2,8,2,2,5,2,3,3,3,3,8,6,7,5,8,7,6,7,9,5,4,4,8,8,9,7,4,3,4,5,4,5,5,8,6,4,3,7,7,8,10,5,7,4,4,6,8,5,4,2,7,6,6,6,3,5,4,5,3,3,5,7,9,7,7,6,8,11,8,5,9,9,6,7,5,6,6,6,7,3,7,5,7,5,7,6,2,4,7,8,9,3,8,3,2,3,7,4,3,3],[7,6,8,7,6,4,7,14,6,9,12,17,9,10,5,10,12,9,5,9,2,4,4,6,4,5,6,3,7,2,6,4,6,22,6,4,5,4,3,7,12,12,6,6,4,6,11,16,9,6,10,8,9,4,1,12,12,11,9,7,5,3,6,3,2,9,2,2,1,3,8,6,4,1,8,4,7,1,5,9,5,6,2,7,5,9,5,3,8,8,2,3,8,2,6,1,3,2,2,1,15,1,9,4,4,5,16,1,3,3,1,2,2,10,6,11,4,3,3,1,12,13,11,8,2,4,3,4,2,2,8,4,7,3,2,4,7,12,10,2,2,7,6,9,7,3,6,5,5,6,5],[13,16,7,15,17,17,10,21,8,5,7,6,5,7,5,11,7,12,12,5,17,9,11,10,8,11,16,6,8,11,12,9,9,4,15,6,9,15,12,3,2,2,8,3,8,8,2,7,9,7,7,6,7,1,1,3,1,2,4,3,3,7,4,5,4,5,6,3,4,5,5,3,3,11,17,11,5,4,3,3,3,3,4,2,7,9,3,5,13,14,4,15,3,5,1,3,4,15,30,3,5,7,4,9,5,8,21,5,12,6,2,3,28,25,10,19,4,21,26,5,5,31,25,9,5,7,6,4,6,3,4,6,8,5,6,5,5,2,5,24,26,32,1,9,5,5,2,4,2,2,5],[1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0],[3,2,1,2,3,2,3,2,0,0,1,1,0,4,2,3,1,3,3,1,2,2,2,3,4,2,1,1,2,3,3,3,2,3,4,0,2,0,2,1,0,0,3,0,2,2,1,2,1,1,2,1,1,0,1,0,0,1,3,1,1,2,1,2,3,1,0,2,1,2,1,1,1,2,5,1,1,1,1,1,0,1,1,1,0,0,0,2,3,0,2,4,2,2,0,1,0,2,2,0,0,3,1,2,1,0,3,1,0,2,1,0,2,5,2,1,2,1,4,2,0,4,5,3,0,1,0,2,0,2,0,0,2,0,0,1,0,0,3,0,3,3,1,2,0,0,1,2,1,0,0],[3.13,1.91,2.94,2.23,1.82,1.32,1.73,1.08,1.99,1.63,0.95,0.95,1.82,2.07,1.53,1.99,2.31,1.53,1.43,1.91,1.2,1.63,2.16,2.23,2.23,2.07,2.39,1.08,2.67,1.82,1.82,2.31,1.63,2.74,1.63,1.2,1.32,1.43,1.63,1.43,1.43,1.2,1.53,1.63,1.2,1.2,1.82,1.63,1.2,1.53,1.43,1.2,1.63,0.95,1.32,1.43,1.73,2.16,1.53,1.32,1.08,1.43,1.43,1.32,1.32,1.73,1.32,1.43,1.2,1.08,1.2,1.43,1.53,1.32,2.07,1.43,1.91,1.08,1.43,1.63,1.53,1.53,1.08,2.07,1.91,2.39,1.2,1.32,1.2,1.2,1.43,1.32,1.2,1.63,1.63,1.2,1.2,0.95,1.32,0.8,0.41,1.32,1.63,1.32,1.2,1.2,2.39,0.95,0.95,0.95,0.95,1.2,1.43,2.23,1.73,1.99,1.2,1.08,1.53,1.32,1.08,2.16,1.63,1.2,1.43,0.95,1.08,1.32,1.08,1.32,1.2,1.32,1.2,1.2,0.95,1.08,1.43,1.53,1.2,1.08,1.08,1.73,1.08,0.95,1.2,0.8,0.41,1.32,1.2,1.08,1.32],[-0.08,0.07,-1.31,-0.16,0.8,0.55,0.88,0.79,-2,-1.81,0.06,0.06,-1.91,1.18,0.36,0.66,-0.97,1.05,1.14,-0.72,0.66,0.28,-0.11,0.49,1.06,-0.05,-1.02,-0.08,-0.43,0.8,0.8,0.43,0.28,0.15,1.56,-1.55,0.55,-1.69,0.28,-0.38,-1.69,-1.55,1.05,-1.81,0.66,0.66,-0.66,0.28,-0.19,-0.46,0.45,-0.19,-0.53,-1.38,-0.29,-1.69,-1.86,-0.88,1.05,-0.29,-0.08,0.45,-0.38,0.55,1.25,-0.6,-1.62,0.45,-0.19,0.79,-0.19,-0.38,-0.46,0.55,1.72,-0.38,-0.72,-0.08,-0.38,-0.53,-1.75,-0.46,-0.08,-0.83,-1.95,-2.19,-1.55,0.55,1.37,-1.55,0.45,1.87,0.66,0.28,-1.81,-0.19,-1.55,0.94,0.55,-1.26,-0.91,1.25,-0.53,0.55,-0.19,-1.55,0.38,0.06,-1.38,0.94,0.06,-1.55,0.45,1.59,0.2,-0.78,0.66,-0.08,1.66,0.55,-1.47,1.12,2.11,1.37,-1.69,0.06,-1.47,0.55,-1.47,0.55,-1.55,-1.62,0.66,-1.55,-1.38,-0.08,-1.69,-1.75,1.37,-1.47,1.51,0.88,-0.08,0.94,-1.55,-1.26,0.77,0.55,-0.19,-1.47,-1.62],[-0.08,0.07,-1.37,-0.16,0.81,0.55,0.88,0.8,-2.01,-1.81,0.06,0.06,-1.92,1.19,0.36,0.67,-0.99,1.05,1.15,-0.73,0.67,0.28,-0.11,0.49,1.08,-0.05,-1.03,-0.08,-0.44,0.81,0.81,0.44,0.28,0.16,1.57,-1.56,0.55,-1.7,0.28,-0.38,-1.7,-1.56,1.05,-1.81,0.67,0.67,-0.67,0.28,-0.19,-0.46,0.45,-0.19,-0.53,-1.39,-0.29,-1.7,-1.87,-0.89,1.05,-0.29,-0.08,0.45,-0.38,0.55,1.26,-0.6,-1.63,0.45,-0.19,0.8,-0.19,-0.38,-0.46,0.55,1.73,-0.38,-0.73,-0.08,-0.38,-0.53,-1.76,-0.46,-0.08,-0.84,-1.96,-2.22,-1.56,0.55,1.38,-1.56,0.45,1.88,0.67,0.28,-1.81,-0.19,-1.56,0.95,0.55,-1.28,-0.93,1.26,-0.53,0.55,-0.19,-1.56,0.39,0.06,-1.39,0.95,0.06,-1.56,0.45,1.61,0.2,-0.78,0.67,-0.08,1.66,0.55,-1.48,1.13,2.12,1.38,-1.7,0.06,-1.48,0.55,-1.48,0.55,-1.56,-1.63,0.67,-1.56,-1.39,-0.08,-1.7,-1.76,1.38,-1.48,1.52,0.88,-0.08,0.95,-1.56,-1.28,0.78,0.55,-0.19,-1.48,-1.63],[0.09,0.01,0.07,0.03,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.02,0.01,0.02,0.01,0.02,0.03,0.01,0.01,0.01,0.01,0.01,0.02,0.03,0.03,0.02,0.03,0.01,0.05,0.01,0.01,0.03,0.01,0.06,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.03,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.04,0.01,0.01,0.01,0.01,0.01,0.03,0.02,0.02,0.02,0.02,0.01,0.01,0.03,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.04,0.01,0.01,0.01,0.01],[0,0,0.06,0,0,0,0,0,0.02,0.01,0,0,0.01,0.02,0,0,0.01,0,0.01,0,0,0,0,0,0.02,0,0.01,0,0,0,0,0,0,0,0.01,0.01,0,0,0,0,0,0.01,0,0.01,0,0,0,0,0,0,0,0,0,0.01,0,0,0.01,0.01,0,0,0,0,0,0,0.01,0,0.01,0,0,0,0,0,0,0,0.04,0,0,0,0,0,0.01,0,0,0.01,0.01,0.04,0.01,0,0.01,0.01,0,0.02,0,0,0.01,0,0.01,0.01,0,0.01,0.01,0.01,0,0,0,0.01,0,0,0.01,0.01,0,0.01,0,0.05,0,0,0,0,0.01,0,0.01,0.02,0.03,0.01,0,0,0.01,0,0.01,0,0.01,0.01,0,0.01,0.01,0,0,0.01,0.01,0.01,0.02,0,0,0.01,0.01,0.01,0.02,0,0,0.01,0.01]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Acacia<\/th>\n      <th>Bark<\/th>\n      <th>Habitat<\/th>\n      <th>Shrubs<\/th>\n      <th>Stags<\/th>\n      <th>Stumps<\/th>\n      <th>y<\/th>\n      <th>.fitted<\/th>\n      <th>.resid<\/th>\n      <th>.std.resid<\/th>\n      <th>.hat<\/th>\n      <th>.cooksd<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+]
+]
+
+---
+
+### Augmented data (logged)
+
+.scroll-box-20[
+
+.code60[
+<div id="htmlwidget-a0d1d72cb89043af8fcc" style="width:100%;height:32px;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a0d1d72cb89043af8fcc">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151"],[32,5,9,17,21,32,17,18,1,9,9,10,12,1,26,17,8,24,20,14,22,24,1,17,21,6,2,34,4,5,18,14,14,4,13,14,21,16,16,12,12,2,28,16,16,24,18,14,10,5,17,3,23,18,13,12,4,5,8,1,4,40,12,24,29,20,18,25,21,21,6,4,20,20,20,21,17,6,4,13,12,4,18,18,17,8,1,1,5,4,22,21,8,25,22,16,14,20,2,17,1,26,17,25,14,1,1,1,2,8,2,10,8,18,21,6,16,14,24,24,6,9,5,5,17,1,10,6,5,20,1,20,5,18,9,8,5,2,1,4,16,14,24,13,1,1,1,18,26,17,1],[30,13,27,17,12,7,11,5,14,10,4,4,12,15,9,14,18,9,8,13,6,10,16,17,17,15,19,5,23,12,12,18,10,24,10,6,7,8,10,8,8,6,9,10,6,6,12,10,6,9,8,6,10,4,7,8,11,16,9,7,5,8,8,7,7,11,7,8,6,5,6,8,9,7,15,8,13,5,8,10,9,9,5,15,13,19,6,7,6,6,8,7,6,10,10,6,6,4,7,3,1,7,10,7,6,6,19,4,4,4,4,6,8,17,11,14,6,5,9,7,5,16,10,6,8,4,5,7,5,7,6,7,6,6,4,5,8,9,6,5,5,11,5,4,6,3,1,7,6,5,7],[10,3,3,9,9,11,9,9,4,2,3,7,2,8,2,8,2,10,9,10,11,9,2,3,9,3,1,10,11,3,10,8,8,5,9,5,10,9,7,7,4,2,9,3,8,6,4,4,2,4,8,2,8,2,2,5,2,3,3,3,3,8,6,7,5,8,7,6,7,9,5,4,4,8,8,9,7,4,3,4,5,4,5,5,8,6,4,3,7,7,8,10,5,7,4,4,6,8,5,4,2,7,6,6,6,3,5,4,5,3,3,5,7,9,7,7,6,8,11,8,5,9,9,6,7,5,6,6,6,7,3,7,5,7,5,7,6,2,4,7,8,9,3,8,3,2,3,7,4,3,3],[7,6,8,7,6,4,7,14,6,9,12,17,9,10,5,10,12,9,5,9,2,4,4,6,4,5,6,3,7,2,6,4,6,22,6,4,5,4,3,7,12,12,6,6,4,6,11,16,9,6,10,8,9,4,1,12,12,11,9,7,5,3,6,3,2,9,2,2,1,3,8,6,4,1,8,4,7,1,5,9,5,6,2,7,5,9,5,3,8,8,2,3,8,2,6,1,3,2,2,1,15,1,9,4,4,5,16,1,3,3,1,2,2,10,6,11,4,3,3,1,12,13,11,8,2,4,3,4,2,2,8,4,7,3,2,4,7,12,10,2,2,7,6,9,7,3,6,5,5,6,5],[13,16,7,15,17,17,10,21,8,5,7,6,5,7,5,11,7,12,12,5,17,9,11,10,8,11,16,6,8,11,12,9,9,4,15,6,9,15,12,3,2,2,8,3,8,8,2,7,9,7,7,6,7,1,1,3,1,2,4,3,3,7,4,5,4,5,6,3,4,5,5,3,3,11,17,11,5,4,3,3,3,3,4,2,7,9,3,5,13,14,4,15,3,5,1,3,4,15,30,3,5,7,4,9,5,8,21,5,12,6,2,3,28,25,10,19,4,21,26,5,5,31,25,9,5,7,6,4,6,3,4,6,8,5,6,5,5,2,5,24,26,32,1,9,5,5,2,4,2,2,5],[1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0],[3,2,1,2,3,2,3,2,0,0,1,1,0,4,2,3,1,3,3,1,2,2,2,3,4,2,1,1,2,3,3,3,2,3,4,0,2,0,2,1,0,0,3,0,2,2,1,2,1,1,2,1,1,0,1,0,0,1,3,1,1,2,1,2,3,1,0,2,1,2,1,1,1,2,5,1,1,1,1,1,0,1,1,1,0,0,0,2,3,0,2,4,2,2,0,1,0,2,2,0,0,3,1,2,1,0,3,1,0,2,1,0,2,5,2,1,2,1,4,2,0,4,5,3,0,1,0,2,0,2,0,0,2,0,0,1,0,0,3,0,3,3,1,2,0,0,1,2,1,0,0],[1.14,0.64,1.08,0.8,0.6,0.28,0.55,0.08,0.69,0.49,-0.06,-0.06,0.6,0.73,0.43,0.69,0.84,0.43,0.36,0.64,0.19,0.49,0.77,0.8,0.8,0.73,0.87,0.08,0.98,0.6,0.6,0.84,0.49,1.01,0.49,0.19,0.28,0.36,0.49,0.36,0.36,0.19,0.43,0.49,0.19,0.19,0.6,0.49,0.19,0.43,0.36,0.19,0.49,-0.06,0.28,0.36,0.55,0.77,0.43,0.28,0.08,0.36,0.36,0.28,0.28,0.55,0.28,0.36,0.19,0.08,0.19,0.36,0.43,0.28,0.73,0.36,0.64,0.08,0.36,0.49,0.43,0.43,0.08,0.73,0.64,0.87,0.19,0.28,0.19,0.19,0.36,0.28,0.19,0.49,0.49,0.19,0.19,-0.06,0.28,-0.23,-0.88,0.28,0.49,0.28,0.19,0.19,0.87,-0.06,-0.06,-0.06,-0.06,0.19,0.36,0.8,0.55,0.69,0.19,0.08,0.43,0.28,0.08,0.77,0.49,0.19,0.36,-0.06,0.08,0.28,0.08,0.28,0.19,0.28,0.19,0.19,-0.06,0.08,0.36,0.43,0.19,0.08,0.08,0.55,0.08,-0.06,0.19,-0.23,-0.88,0.28,0.19,0.08,0.28],[-0.08,0.07,-1.31,-0.16,0.8,0.55,0.88,0.79,-2,-1.81,0.06,0.06,-1.91,1.18,0.36,0.66,-0.97,1.05,1.14,-0.72,0.66,0.28,-0.11,0.49,1.06,-0.05,-1.02,-0.08,-0.43,0.8,0.8,0.43,0.28,0.15,1.56,-1.55,0.55,-1.69,0.28,-0.38,-1.69,-1.55,1.05,-1.81,0.66,0.66,-0.66,0.28,-0.19,-0.46,0.45,-0.19,-0.53,-1.38,-0.29,-1.69,-1.86,-0.88,1.05,-0.29,-0.08,0.45,-0.38,0.55,1.25,-0.6,-1.62,0.45,-0.19,0.79,-0.19,-0.38,-0.46,0.55,1.72,-0.38,-0.72,-0.08,-0.38,-0.53,-1.75,-0.46,-0.08,-0.83,-1.95,-2.19,-1.55,0.55,1.37,-1.55,0.45,1.87,0.66,0.28,-1.81,-0.19,-1.55,0.94,0.55,-1.26,-0.91,1.25,-0.53,0.55,-0.19,-1.55,0.38,0.06,-1.38,0.94,0.06,-1.55,0.45,1.59,0.2,-0.78,0.66,-0.08,1.66,0.55,-1.47,1.12,2.11,1.37,-1.69,0.06,-1.47,0.55,-1.47,0.55,-1.55,-1.62,0.66,-1.55,-1.38,-0.08,-1.69,-1.75,1.37,-1.47,1.51,0.88,-0.08,0.94,-1.55,-1.26,0.77,0.55,-0.19,-1.47,-1.62],[-0.08,0.07,-1.37,-0.16,0.81,0.55,0.88,0.8,-2.01,-1.81,0.06,0.06,-1.92,1.19,0.36,0.67,-0.99,1.05,1.15,-0.73,0.67,0.28,-0.11,0.49,1.08,-0.05,-1.03,-0.08,-0.44,0.81,0.81,0.44,0.28,0.16,1.57,-1.56,0.55,-1.7,0.28,-0.38,-1.7,-1.56,1.05,-1.81,0.67,0.67,-0.67,0.28,-0.19,-0.46,0.45,-0.19,-0.53,-1.39,-0.29,-1.7,-1.87,-0.89,1.05,-0.29,-0.08,0.45,-0.38,0.55,1.26,-0.6,-1.63,0.45,-0.19,0.8,-0.19,-0.38,-0.46,0.55,1.73,-0.38,-0.73,-0.08,-0.38,-0.53,-1.76,-0.46,-0.08,-0.84,-1.96,-2.22,-1.56,0.55,1.38,-1.56,0.45,1.88,0.67,0.28,-1.81,-0.19,-1.56,0.95,0.55,-1.28,-0.93,1.26,-0.53,0.55,-0.19,-1.56,0.39,0.06,-1.39,0.95,0.06,-1.56,0.45,1.61,0.2,-0.78,0.67,-0.08,1.66,0.55,-1.48,1.13,2.12,1.38,-1.7,0.06,-1.48,0.55,-1.48,0.55,-1.56,-1.63,0.67,-1.56,-1.39,-0.08,-1.7,-1.76,1.38,-1.48,1.52,0.88,-0.08,0.95,-1.56,-1.28,0.78,0.55,-0.19,-1.48,-1.63],[0.09,0.01,0.07,0.03,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.02,0.01,0.02,0.01,0.02,0.03,0.01,0.01,0.01,0.01,0.01,0.02,0.03,0.03,0.02,0.03,0.01,0.05,0.01,0.01,0.03,0.01,0.06,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.03,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.04,0.01,0.01,0.01,0.01,0.01,0.03,0.02,0.02,0.02,0.02,0.01,0.01,0.03,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.02,0.01,0.02,0.04,0.01,0.01,0.01,0.01],[0,0,0.06,0,0,0,0,0,0.02,0.01,0,0,0.01,0.02,0,0,0.01,0,0.01,0,0,0,0,0,0.02,0,0.01,0,0,0,0,0,0,0,0.01,0.01,0,0,0,0,0,0.01,0,0.01,0,0,0,0,0,0,0,0,0,0.01,0,0,0.01,0.01,0,0,0,0,0,0,0.01,0,0.01,0,0,0,0,0,0,0,0.04,0,0,0,0,0,0.01,0,0,0.01,0.01,0.04,0.01,0,0.01,0.01,0,0.02,0,0,0.01,0,0.01,0.01,0,0.01,0.01,0.01,0,0,0,0.01,0,0,0.01,0.01,0,0.01,0,0.05,0,0,0,0,0.01,0,0.01,0.02,0.03,0.01,0,0,0.01,0,0.01,0,0.01,0.01,0,0.01,0.01,0,0,0.01,0.01,0.01,0.02,0,0,0.01,0.01,0.01,0.02,0,0,0.01,0.01]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Acacia<\/th>\n      <th>Bark<\/th>\n      <th>Habitat<\/th>\n      <th>Shrubs<\/th>\n      <th>Stags<\/th>\n      <th>Stumps<\/th>\n      <th>y<\/th>\n      <th>.fitted<\/th>\n      <th>.resid<\/th>\n      <th>.std.resid<\/th>\n      <th>.hat<\/th>\n      <th>.cooksd<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+]
+]
+
+
+
+---
+
+## Australian Possums
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-5-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+.blockquote.font90[
+Why the "line" pattern?
+- Looks "null" enough (the lines are due to the discrete count nature of the data- these cases share the same response but have different bark values)
+]
+
+
+---
+
+## Australian Possums
+
+.pull-left[
+&lt;img src="Day25_files/figure-html/unnamed-chunk-6-1.svg" width="100%" /&gt;
+]
+.pull-right[
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-7-1.svg" width="100%" /&gt;
+]
+
+.out-t[Highest Cook's D: Case 3 has little effect on the model (fit with and without)]
+
+---
+
+### Original fit
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-8-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Logged fit
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-9-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+### Original fit
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-10-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Logged fit
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-11-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+class: middle
+
+# Assessing Poisson model assumptions
+
+.blockquote[
+.bold[Log-mean linearity:]
+- plot of log-response against quantitative predictors
+- plot of residuals against quantitative predictors
+
+.bold[Cases are independent:]
+- understanding of how the data was collected
+]
+
+---
+
+class: middle
+
+# Assessing Poisson model assumptions
+
+.blockquote[
+.bold[counts of events] `\(Y_{i}\)` has a .bold[Poisson distribution] with mean and variance `\(\mu_{y \mid x}\)`
+- Check residuals, should have equal scatter and spread around the 0line given any `\(\mathrm{x}\)` value.
+- Check goodness-of-fit test, compare sample means and variances of similar groups
+]
+
+---
+
+# Assessing Poisson model assumptions
+
+.out-t[When might your response count NOT follow a Poisson distribution?]
+
+.blockquote.font80[
+The events do NOT occur independently
+- could be clustering of "successes" in time or space
+- clustering of event occurrences induces more variation in our responses than our Poisson model assumes.
+]
+
+--
+
+&lt;br&gt;
+
+.blockquote.font80[
+Bad mean function
+- Missing explanatory variables
+- Incorrect mean function form (missing transformations, interactions, etc)
+]
+
+--
+
+.out-t[These issues can induce overdispersion, or extra-Poisson variation, in your response, resulting in SEs that are too small.]
+
+---
+
+class: middle
+
+# Goodness-of-fit test
+
+.blockquote[
+`\begin{align*}
+H_{0}&amp; : \text{ Poisson model }\\
+H_{A}&amp; : \text{ saturated model }
+\end{align*}`
+
+- The test statistic is the model's deviance `\(G^{2}\)`
+
+`\begin{align*}
+G^{2}=2\left[\ln L\left(y_{i}\right)-\ln L(\hat{\mu}(X))\right]
+\end{align*}`
+- When `\(\hat{\mu}_{i}\)` 's are large ( `\(\left.&gt;5\right)\)`, p-value is approximately
+`\begin{align*}
+\text {p-value }=1-P\left(\chi^{2}&gt;G^{2}\right)=1-p c h i s q\left(G^{2}, d f=n-(p+1)\right)
+\end{align*}`
+]
+
+
+---
+
+## Australian Possums
+
+
+```r
+summary(pos_glm)
+
+Call:
+glm(formula = y ~ log(Bark), family = poisson, data = possums)
+
+Deviance Residuals: 
+     Min        1Q    Median        3Q       Max  
+-2.18523  -1.26246  -0.07764   0.55078   2.11368  
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -0.8801     0.3027  -2.907  0.00365 ** 
+log(Bark)     0.5945     0.1335   4.453 8.45e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 187.49  on 150  degrees of freedom
+Residual deviance: 167.51  on 149  degrees of freedom
+AIC: 452.31
+
+Number of Fisher Scoring iterations: 5
+```
+
+---
+
+
+## Australian Possums
+
+GOF test for the possums model (only using log bark):
+
+
+```r
+1 - pchisq(167.51, df = 149)
+[1] 0.1425203
+```
+
+--
+
+.out-t[Can we trust this test?]
+
+--
+
+&gt; No! The chi-square model won't be a good approximation for the distribution of `\(G^{2}\)` when data counts and model mean counts are small
+
+
+```r
+summary(possums_aug$.fitted) # all &lt; 5
+```
+
+```
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.4147  1.2033  1.4277  1.4768  1.6302  3.1325 
+```
+
+
+---
+
+class: middle
+
+# GOF alternative visualization
+
+.blockquote[
+What if we can't use a GOF test?
+- plot mean count vs. mean variance for similar (same) predictor values
+- Poisson model assumes mean and variance are the same value!
+]
+
+---
+
+count: false
+ 
+# GOF alternative visualization
+.panel1-mean-var-auto[
+
+```r
+*pos_byBark &lt;- possums
+```
+]
+ 
+.panel2-mean-var-auto[
+
+]
+
+---
+count: false
+ 
+# GOF alternative visualization
+.panel1-mean-var-auto[
+
+```r
+pos_byBark &lt;- possums %&gt;%
+*mutate(Bark_grp = ntile(Bark, n=12))
+```
+]
+ 
+.panel2-mean-var-auto[
+
+]
+
+---
+count: false
+ 
+# GOF alternative visualization
+.panel1-mean-var-auto[
+
+```r
+pos_byBark &lt;- possums %&gt;%
+ mutate(Bark_grp = ntile(Bark, n=12)) %&gt;%
+*group_by(Bark_grp)
+```
+]
+ 
+.panel2-mean-var-auto[
+
+]
+
+---
+count: false
+ 
+# GOF alternative visualization
+.panel1-mean-var-auto[
+
+```r
+pos_byBark &lt;- possums %&gt;%
+ mutate(Bark_grp = ntile(Bark, n=12)) %&gt;%
+ group_by(Bark_grp) %&gt;%
+*summarize(meanY = mean(y), varY = var(y))
+```
+]
+ 
+.panel2-mean-var-auto[
+
+]
+
+---
+count: false
+ 
+# GOF alternative visualization
+.panel1-mean-var-auto[
+
+```r
+pos_byBark &lt;- possums %&gt;%
+ mutate(Bark_grp = ntile(Bark, n=12)) %&gt;%
+ group_by(Bark_grp) %&gt;%
+ summarize(meanY = mean(y), varY = var(y))
+
+*ggplot(pos_byBark, aes(x = meanY, y = varY))
+```
+]
+ 
+.panel2-mean-var-auto[
+&lt;img src="Day25_files/figure-html/mean-var_auto_05_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# GOF alternative visualization
+.panel1-mean-var-auto[
+
+```r
+pos_byBark &lt;- possums %&gt;%
+ mutate(Bark_grp = ntile(Bark, n=12)) %&gt;%
+ group_by(Bark_grp) %&gt;%
+ summarize(meanY = mean(y), varY = var(y))
+
+ggplot(pos_byBark, aes(x = meanY, y = varY)) +
+*geom_point()
+```
+]
+ 
+.panel2-mean-var-auto[
+&lt;img src="Day25_files/figure-html/mean-var_auto_06_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+# GOF alternative visualization
+.panel1-mean-var-auto[
+
+```r
+pos_byBark &lt;- possums %&gt;%
+ mutate(Bark_grp = ntile(Bark, n=12)) %&gt;%
+ group_by(Bark_grp) %&gt;%
+ summarize(meanY = mean(y), varY = var(y))
+
+ggplot(pos_byBark, aes(x = meanY, y = varY)) +
+ geom_point() +
+*geom_abline(intercept = 0, slope = 1, linetype = 2)
+```
+]
+ 
+.panel2-mean-var-auto[
+&lt;img src="Day25_files/figure-html/mean-var_auto_07_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-mean-var-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel2-mean-var-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+.panel3-mean-var-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 85%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+# Quasi-Poisson model
+
+.blockquote[
+What if we reject our GOF test or find visual evidence of extra-Poisson variation?
+- Quasi-Poisson model
+
+`\begin{align*}
+Y_{i} \mid x_{i} &amp; \sim \operatorname{Poisson}\left(\mu_{i}\right) \\
+E\left(Y_{i} \mid x_{i}\right) &amp;=\mu_{i} \\
+V\left(Y_{i} \mid x_{i}\right) &amp;=\psi \mu_{i}
+\end{align*}`
+
+]
+&lt;br&gt;
+.blockquote[
+- A quasi-poisson model and drop-in-deviance:
+
+`glm(y ~ x1 + x2, family = quasipoisson, data = mydata)`
+
+`anova(red_quasi, full_quasi, test = "F")`
+]
+
+---
+
+## Estimating the dispersion parameter `\(\psi\)`
+
+.blockquote[
+For a GLM, the dispersion parameter `\(\psi\)` ("psi") is estimated from the deviance `\(G^{2}\)` from the regular GLM:
+
+`\begin{align*}
+\hat{\psi}=\frac{G^{2}}{n-(p+1)}
+\end{align*}`
+
+- `\(\hat{\psi}&gt;1\)` : overdispersion (responses are more variable than expected)
+- `\(\hat{\psi}&lt;1\)` : underdispersion (responses are less variable than expected)
+]
+
+---
+
+# Quasi-Poisson model
+
+.blockquote[
+- Conduct "z"-inference (Wald tests/CI) using SEs equal to `\(S E_{\text {quasi }}\left(\hat{\beta}_{i}\right)\)`
+- Compare quasi-poisson models using a F-test stat equal to
+
+`\begin{align*}
+F=\frac{\left(G_{\text {reduced }}^{2}-G_{\text {full }}^{2}\right) /(\# \text { terms tested })}{\hat{\psi}}
+\end{align*}`
+
+using an F-distribution with degrees of freedom equal to the number of terms tested and `\(n-(p+1) . G^{2}\)` is the model deviance from fitting the usual Poisson model for two competing models.
+]
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
