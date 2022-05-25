@@ -187,7 +187,7 @@ Deviance residuals are .bold[each case's] contribution to the residual deviance:
 \operatorname{Dres}_{i}=\operatorname{sign}\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right) \sqrt{2\left[y_{i} \ln \left(\frac{y_{i}}{\hat{\mu}\left(X_{i}\right)}\right)-\left(y_{i}-\hat{\mu}\left(X_{i}\right)\right)\right]}
 \end{align*}
 
-- `resid(my_glm, type $=$ "deviance")`
+- `resid(my_glm, type = "deviance")`
 - `augment(my_glm, type.residuals = "deviance")`
 
 ]
@@ -259,15 +259,15 @@ datatable(round(possums_aug_log %>% select(-.sigma),2), fillContainer = FALSE, o
 
 ## Australian Possums
 
-```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center', echo=FALSE, collapse=TRUE}
+```{r, fig.width=5, fig.height=3, out.width="55%", fig.align='center', echo=FALSE, collapse=TRUE}
 resid_xpanel(pos_glm, type = "deviance")
 ```
 
 .blockquote.font90[
 Why the "line" pattern?
-- Looks "null" enough (the lines are due to the discrete count nature of the data- these cases share the same response but have different bark values)
+- Looks "null" enough (the lines are due to the discrete count nature of the data
+- these cases share the same response but have different bark values)
 ]
-
 
 ---
 
@@ -404,7 +404,7 @@ class: middle
 
 # Assessing Poisson model assumptions
 
-.out-t[When might your response count NOT follow a Poisson distribution?]
+.out-t[When might your response count .bold[NOT] follow a Poisson distribution?]
 
 .blockquote.font80[
 The events do NOT occur independently
@@ -417,7 +417,7 @@ The events do NOT occur independently
 <br>
 
 .blockquote.font80[
-Bad mean function
+.bold[Bad] mean function
 - Missing explanatory variables
 - Incorrect mean function form (missing transformations, interactions, etc)
 ]
@@ -490,7 +490,7 @@ class: middle
 
 .blockquote[
 What if we can't use a GOF test?
-- plot mean count vs. mean variance for similar (same) predictor values
+- plot .bold[mean count vs. mean variance] for similar (same) predictor values
 - Poisson model assumes mean and variance are the same value!
 ]
 
@@ -500,7 +500,7 @@ What if we can't use a GOF test?
 
 ```{r mean-var, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
 pos_byBark <- possums %>%
- mutate(Bark_grp = ntile(Bark, n=12)) %>%
+ mutate(Bark_grp = ntile(Bark, n=20)) %>%
  group_by(Bark_grp) %>%
  summarize(meanY = mean(y), varY = var(y))
 
@@ -536,6 +536,8 @@ V\left(Y_{i} \mid x_{i}\right) &=\psi \mu_{i}
 
 ---
 
+class: middle
+
 ## Estimating the dispersion parameter $\psi$
 
 .blockquote[
@@ -550,6 +552,8 @@ For a GLM, the dispersion parameter $\psi$ ("psi") is estimated from the devianc
 ]
 
 ---
+
+class: middle
 
 # Quasi-Poisson model
 
