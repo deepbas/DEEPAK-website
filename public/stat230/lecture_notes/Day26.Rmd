@@ -1,0 +1,519 @@
+---
+title: "Quasi-binomial model"
+subtitle: "<br/> STAT 230"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = FALSE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Quasi-binomial model]
+
+### .fancy[Stat 230]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Overview
+
+.pull-left[
+```{r, echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="100%"}
+sample <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Sample4.csv")
+
+# load library ggplot2
+library(ggplot2)
+
+# Plot Predicted data and original data points
+ggplot(sample, aes(x=Predictor, y=Class)) + geom_point() +
+	stat_smooth(method="glm", color="orange", se=FALSE,
+				method.args = list(family=binomial))+
+  geom_hline(yintercept = 0.5, linetype = "dashed", col = "grey") +
+  theme_void()
+```
+
+]
+
+.pull-right[
+
+Today: 
+<br>
+<br>
+.blockquote-list[
+Quasi models
+
+Fitting in R
+]
+
+]
+
+---
+
+class: middle
+
+# GLM model
+
+.blockquote[
+- GLM assumes
+$Y \mid x \sim$ some probability distribution where
+
+$$\begin{align*}
+\begin{array}{l}
+E(Y \mid x)=f\left(x ; \beta_{0}, \ldots, \beta_{p}\right) \quad(\text { kernel mean })\\
+V(Y \mid x)=\sigma^{2}(x) \quad(\text { some function that may depend on } \mathrm{x})
+\end{array}
+\end{align*}$$
+]
+
+---
+
+class: middle
+
+# Over (or under) dispersion
+
+.blockquote[
+But what if our model's mean function is well modeled, but our variance is off
+
+$Y \mid x \sim$ some probability distribution where 
+
+$E(Y \mid x)=f\left(x ; \beta_{0}, \ldots, \beta_{p}\right)$ (kernel mean)
+
+$V(Y \mid x) \neq \sigma^{2}(x) \quad$ (some function that could involve $\mathrm{x}$ )
+]
+
+<br>
+
+.blockquote[
+E.g. in a binomial logistic model, this means the variance of our response doesn't equal that of a binomial probability model:
+
+$$\begin{align*}
+\begin{aligned}
+Y \mid x & \sim \operatorname{Binom}\left(m_{i}, \pi\left(x_{i}\right)\right) \\
+E(Y \mid x) &=m_{i} \pi\left(x_{i}\right) \\
+V\left(Y_{i} \mid x_{i}\right) & \neq m_{i} \pi\left(x_{i}\right)\left(1-\pi\left(x_{i}\right)\right)
+\end{aligned}
+\end{align*}$$
+]
+
+---
+
+class: middle
+
+# Estimating the dispersion parameter $\psi$
+
+.blockquote[
+- For a GLM, the dispersion parameter $\psi$ ("psi") is estimated from the deviance $G^{2}$ from the regular GLM:
+
+$$\begin{align*}
+\hat{\psi}=\frac{G^{2}}{n-(p+1)}
+\end{align*}$$
+
+- $\hat{\psi}>1$ : overdispersion (responses are more variable than expected)
+- $\hat{\psi}<1$ : underdispersion (responses are less variable than expected)
+- e.g. for a quasi-binomial model, $G^{2}$ is the (residual) deviance from a regular binomial logistic model.
+]
+
+---
+
+class: middle
+
+# Estimating with a quasi-GLM
+
+.blockquote[
+- Parameter estimates for $\beta$ are from the regular GLM model.
+- e.g. $\hat{\beta}$ from a regular binomial logistic model
+- Quasi model Standard errors for $\hat{\beta}^{\prime}$ s are adjusted versions of the regular GLM SE:
+$$\begin{align*}
+S E_{q u a s i}\left(\hat{\beta}_{i}\right)=\sqrt{\hat{\psi}} S E_{G L M}\left(\hat{\beta}_{i}\right)
+\end{align*}$$
+- e.g. for a quasi-binomial model, $S E_{\text {binom }}\left(\hat{\beta}_{i}\right)$ are the usual SE from a regular binomial logistic model.
+]
+
+
+---
+
+class: middle
+
+# Inference with a quasi-GLM
+
+.blockquote[
+- Conduct "z"-inference (Wald tests/CI) using SEs equal to $S E_{q u a s i}\left(\hat{\beta}_{i}\right)$
+- Compare quasi-binomial models using a F-test stat equal to
+
+$$\begin{align*}
+F=\frac{\left(G_{\text {reduced }}^{2}-G_{\text {full }}^{2}\right) /(\# \text { terms tested })}{\hat{\psi}}
+\end{align*}$$
+
+using an $\mathrm{F}$-distribution with degrees of freedom equal to the number of terms tested and $n-(p+1)$. $G^{2}$ is the model deviance from fitting the usual binomial model for two competing models.
+]
+
+---
+
+class: middle
+
+# R: Quasi-binomial model
+
+.blockquote[
+- A quasi-binomial model is fit with
+
+`glm(y/m ~ x1 + x2, family = quasibinomial, weights = m, data = mydata)`
+
+- Model comparisons with a quasi-binomial model are done with anova:
+
+`anova(red_quasi, full_quasi, test = "F")`
+]
+
+---
+
+# Example: Rake data
+
+.blockquote[
+The USGS monitors submersed aquatic vegetation (SAV) in the Mississippi by using a long-handled rake
+(from a boat) to pull SAV from the river bottom.
+]
+
+```{r}
+RakeData <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/RakeData.csv")
+glimpse(RakeData)
+```
+
+---
+
+class: middle
+
+# Data description
+
+.blockquote[
+- Cases $=27$ sites that contain SAV
+- $\mathrm{m}=$ SiteM $=6$ locations (quadrats) raked per site
+- $\mathrm{Y}=$ SiteRake $=\#$ locations with SAV detected per site
+- $\mathrm{X}=$ total site biomass, average water depth, substrate (soil type: silt or sand)
+- $\pi(X)=$ Probability the rake detects SAV at a site with predictors $X$
+]
+
+---
+
+class: middle
+
+# Binomial logistic regression
+
+```{r}
+rake_glm <- glm(SiteRake/SiteM ~ log(SiteBiom+1) + SiteDepth + SiteSub,
+                family = binomial,
+                weights = SiteM,
+                data = RakeData)
+```
+
+---
+
+class: middle
+
+# Binomial logistic regression
+
+.code70[
+```{r}
+summary(rake_glm)
+```
+]
+
+---
+
+# Goodness-of-fit
+
+$$\begin{align*}
+H_{0}& : \text{ logistic model }\\
+H_{A}& : \text{ saturated model }
+\end{align*}$$
+
+```{r}
+1 - pchisq(50.44, df = 23)
+```
+
+.blockquote[The GOF p-value for this model is 0.0008, which suggests that there is enough evidence to say the model is not adequate]
+
+
+---
+
+# Residual analysis
+
+```{r, echo=FALSE}
+rake_glm_aug_d <- augment(rake_glm, type.residuals = "deviance", type.predict = "link") %>%
+  mutate(ID = row_number())
+rake_glm_aug_p <- augment(rake_glm, type.residuals = "pearson", type.predict = "link") %>%
+  mutate(ID = row_number())
+```
+
+
+```{r, fig.width=5, fig.height=3, out.width="60%", fig.align='center', echo=FALSE, collapse=TRUE}
+library(ggrepel)
+plot <- ggplot(rake_glm_aug_d, aes(x=.fitted, y=.resid)) +
+geom_point() +
+geom_hline(yintercept = 0) +
+labs(title="Deviance residual plot")
+plot +  geom_text_repel(aes(label = ID),
+                   box.padding   = 0.15, 
+                  point.padding = 1e-06,
+                  segment.color = 'grey50')
+```
+
+---
+
+## Leverage and Cook's distance
+
+.pull-left[
+
+```{r, echo=FALSE}
+library(ggrepel)
+library(broom)
+
+p1 <- ggplot(rake_glm_aug_d, aes(x = .fitted, y = .resid)) +
+  geom_point(aes(color = .cooksd, size = .cooksd)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE)
+  
+p1 +  geom_text_repel(aes(label = ID),
+                   box.padding   = 0.15, 
+                  point.padding = 1e-06,
+                  segment.color = 'grey50')
+```
+
+]
+
+
+.pull-right[
+```{r, echo=FALSE}
+p2 <- ggplot(rake_glm_aug_d, aes(x = .fitted, y = .resid)) +
+  geom_point(aes(color = .hat, size = .hat)) +  # size of the points
+  scale_color_continuous(low = "green", high = "red") +   
+  guides( size = FALSE)
+  
+p2 +  geom_text_repel(aes(label = ID),
+                   box.padding   = 0.15, 
+                  point.padding = 1e-06,
+                  segment.color = 'grey50')
+```
+]
+
+---
+
+class: middle
+
+# Estimate the dispersion parameter
+
+
+
+```r
+ Null deviance: 118.36  on 26  degrees of freedom
+Residual deviance:  50.44  on 23  degrees of freedom
+```
+
+
+$$\begin{align*}
+\hat{\psi}=\frac{50.44}{23} \approx 2.1
+\end{align*}$$
+
+.out-t[The dispersion parameter is estimated as 2.14]
+
+---
+
+class: middle
+
+# Fit the quasi-binomial model
+
+```{r}
+rake_quasi_glm <- glm(SiteRake/SiteM ~ log(SiteBiom+1) + SiteDepth + SiteSub,
+                      family = quasibinomial,
+                      weights = SiteM,
+                      data = RakeData)
+```
+
+
+---
+
+# Quasi-binomial logistic regression
+
+.code70[
+```{r}
+summary(rake_quasi_glm)
+```
+]
+
+---
+
+# Standard errors
+
+.pull-left[
+.yellow-h[Binomial Model]
+.font70[
+```r
+Coefficients:
+                  Estimate Std. Error z value Pr(>|z|)    
+(Intercept)        -1.8528     0.8319  -2.227   0.0259 *  
+log(SiteBiom + 1)   0.7475     0.1157   6.461 1.04e-10 ***
+SiteDepth          -1.2472     0.8175  -1.526   0.1271    
+SiteSubsilt         0.4691     0.4545   1.032   0.3020
+```
+]
+]
+.pull-right[
+.yellow-h[Quasi-binomial Model]
+.font70[
+```r
+Coefficients:
+                  Estimate Std. Error t value Pr(>|t|)    
+(Intercept)        -1.8528     1.2168  -1.523 0.141474    
+log(SiteBiom + 1)   0.7475     0.1692   4.417 0.000199 ***
+SiteDepth          -1.2472     1.1958  -1.043 0.307814    
+SiteSubsilt         0.4691     0.6648   0.706 0.487527
+```
+]
+]
+
+<br>
+
+$$\begin{align*}
+S E\left(\hat{\beta}_{i}^{quasi}\right)=\sqrt{2.139552} \times SE (\hat{\beta}_{i})
+\end{align*}$$
+
+---
+
+# Quasi-binomial F-test
+
+```{r}
+anova(rake_glm)
+```
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+
+.blockquote[
+Complete (1a-c):
+
+Test the hypotheses (1d):
+
+$$\begin{align*}
+H_{0}& : \beta_{2}=\beta_{3}=0\\
+H_A&: \text{ at least one } \beta_2, \beta_3 \neq 0
+\end{align*}$$
+
+
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+class: middle
+
+# Compare models using `anova` with the `F` test in R
+
+```{r, collapse=TRUE}
+rake_quasi_glm_red <- update(rake_quasi_glm, ~ . - SiteDepth - SiteSub)
+anova(rake_quasi_glm_red, rake_quasi_glm, test = "F")
+```
+
+
+.out-t[The p-value is from an F-distribution with 2 and 25 degrees of freedom. The test results suggest that neither
+depth nor substrate are statistically significant (F = 0.854, p-value=0.439).]

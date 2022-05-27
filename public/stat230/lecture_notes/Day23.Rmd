@@ -5,7 +5,7 @@ author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
 output:
   xaringan::moon_reader:
-    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    css: ["default"]
     lib_dir: libs
     chakra: libs/remark-latest.min.js
     seal: false

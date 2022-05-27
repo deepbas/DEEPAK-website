@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Quasi-binomial model</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Quasi-binomial model]
+
+### .fancy[Stat 230]
+
+ May 27 2022
+
+---
+
+# Overview
+
+.pull-left[
+&lt;img src="Day26_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+Today: 
+&lt;br&gt;
+&lt;br&gt;
+.blockquote-list[
+Quasi models
+
+Fitting in R
+]
+
+]
+
+---
+
+class: middle
+
+# GLM model
+
+.blockquote[
+- GLM assumes
+`\(Y \mid x \sim\)` some probability distribution where
+
+`$$\begin{align*}
+\begin{array}{l}
+E(Y \mid x)=f\left(x ; \beta_{0}, \ldots, \beta_{p}\right) \quad(\text { kernel mean })\\
+V(Y \mid x)=\sigma^{2}(x) \quad(\text { some function that may depend on } \mathrm{x})
+\end{array}
+\end{align*}$$`
+]
+
+---
+
+class: middle
+
+# Over (or under) dispersion
+
+.blockquote[
+But what if our model's mean function is well modeled, but our variance is off
+
+`\(Y \mid x \sim\)` some probability distribution where 
+
+`\(E(Y \mid x)=f\left(x ; \beta_{0}, \ldots, \beta_{p}\right)\)` (kernel mean)
+
+`\(V(Y \mid x) \neq \sigma^{2}(x) \quad\)` (some function that could involve `\(\mathrm{x}\)` )
+]
+
+&lt;br&gt;
+
+.blockquote[
+E.g. in a binomial logistic model, this means the variance of our response doesn't equal that of a binomial probability model:
+
+`$$\begin{align*}
+\begin{aligned}
+Y \mid x &amp; \sim \operatorname{Binom}\left(m_{i}, \pi\left(x_{i}\right)\right) \\
+E(Y \mid x) &amp;=m_{i} \pi\left(x_{i}\right) \\
+V\left(Y_{i} \mid x_{i}\right) &amp; \neq m_{i} \pi\left(x_{i}\right)\left(1-\pi\left(x_{i}\right)\right)
+\end{aligned}
+\end{align*}$$`
+]
+
+---
+
+class: middle
+
+# Estimating the dispersion parameter `\(\psi\)`
+
+.blockquote[
+- For a GLM, the dispersion parameter `\(\psi\)` ("psi") is estimated from the deviance `\(G^{2}\)` from the regular GLM:
+
+`$$\begin{align*}
+\hat{\psi}=\frac{G^{2}}{n-(p+1)}
+\end{align*}$$`
+
+- `\(\hat{\psi}&gt;1\)` : overdispersion (responses are more variable than expected)
+- `\(\hat{\psi}&lt;1\)` : underdispersion (responses are less variable than expected)
+- e.g. for a quasi-binomial model, `\(G^{2}\)` is the (residual) deviance from a regular binomial logistic model.
+]
+
+---
+
+class: middle
+
+# Estimating with a quasi-GLM
+
+.blockquote[
+- Parameter estimates for `\(\beta\)` are from the regular GLM model.
+- e.g. `\(\hat{\beta}\)` from a regular binomial logistic model
+- Quasi model Standard errors for `\(\hat{\beta}^{\prime}\)` s are adjusted versions of the regular GLM SE:
+`$$\begin{align*}
+S E_{q u a s i}\left(\hat{\beta}_{i}\right)=\sqrt{\hat{\psi}} S E_{G L M}\left(\hat{\beta}_{i}\right)
+\end{align*}$$`
+- e.g. for a quasi-binomial model, `\(S E_{\text {binom }}\left(\hat{\beta}_{i}\right)\)` are the usual SE from a regular binomial logistic model.
+]
+
+
+---
+
+class: middle
+
+# Inference with a quasi-GLM
+
+.blockquote[
+- Conduct "z"-inference (Wald tests/CI) using SEs equal to `\(S E_{q u a s i}\left(\hat{\beta}_{i}\right)\)`
+- Compare quasi-binomial models using a F-test stat equal to
+
+`$$\begin{align*}
+F=\frac{\left(G_{\text {reduced }}^{2}-G_{\text {full }}^{2}\right) /(\# \text { terms tested })}{\hat{\psi}}
+\end{align*}$$`
+
+using an `\(\mathrm{F}\)`-distribution with degrees of freedom equal to the number of terms tested and `\(n-(p+1)\)`. `\(G^{2}\)` is the model deviance from fitting the usual binomial model for two competing models.
+]
+
+---
+
+class: middle
+
+# R: Quasi-binomial model
+
+.blockquote[
+- A quasi-binomial model is fit with
+
+`glm(y/m ~ x1 + x2, family = quasibinomial, weights = m, data = mydata)`
+
+- Model comparisons with a quasi-binomial model are done with anova:
+
+`anova(red_quasi, full_quasi, test = "F")`
+]
+
+---
+
+# Example: Rake data
+
+.blockquote[
+The USGS monitors submersed aquatic vegetation (SAV) in the Mississippi by using a long-handled rake
+(from a boat) to pull SAV from the river bottom.
+]
+
+
+```r
+RakeData &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/RakeData.csv")
+glimpse(RakeData)
+```
+
+```
+Rows: 27
+Columns: 6
+$ X         &lt;int&gt; 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 20, …
+$ SiteRake  &lt;int&gt; 6, 6, 2, 6, 5, 6, 6, 2, 2, 4, 6, 6, 1, 6, 6, 2, 6, 6, 6, 0, …
+$ SiteM     &lt;int&gt; 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, …
+$ SiteBiom  &lt;dbl&gt; 287.5731, 118.0538, 118.0381, 1064.3720, 254.8879, 225.2125,…
+$ SiteDepth &lt;dbl&gt; 0.1000000, 0.4000000, 0.6000000, 0.8000000, 1.0833333, 0.500…
+$ SiteSub   &lt;chr&gt; "sand", "silt", "silt", "sand", "silt", "sand", "silt", "san…
+```
+
+---
+
+class: middle
+
+# Data description
+
+.blockquote[
+- Cases `\(=27\)` sites that contain SAV
+- `\(\mathrm{m}=\)` SiteM `\(=6\)` locations (quadrats) raked per site
+- `\(\mathrm{Y}=\)` SiteRake `\(=\#\)` locations with SAV detected per site
+- `\(\mathrm{X}=\)` total site biomass, average water depth, substrate (soil type: silt or sand)
+- `\(\pi(X)=\)` Probability the rake detects SAV at a site with predictors `\(X\)`
+]
+
+---
+
+class: middle
+
+# Binomial logistic regression
+
+
+```r
+rake_glm &lt;- glm(SiteRake/SiteM ~ log(SiteBiom+1) + SiteDepth + SiteSub,
+                family = binomial,
+                weights = SiteM,
+                data = RakeData)
+```
+
+---
+
+class: middle
+
+# Binomial logistic regression
+
+.code70[
+
+```r
+summary(rake_glm)
+```
+
+```
+
+Call:
+glm(formula = SiteRake/SiteM ~ log(SiteBiom + 1) + SiteDepth + 
+    SiteSub, family = binomial, data = RakeData, weights = SiteM)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.2516  -0.3863   0.8381   1.0709   1.7355  
+
+Coefficients:
+                  Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)        -1.8528     0.8319  -2.227   0.0259 *  
+log(SiteBiom + 1)   0.7475     0.1157   6.461 1.04e-10 ***
+SiteDepth          -1.2472     0.8175  -1.526   0.1271    
+SiteSubsilt         0.4691     0.4545   1.032   0.3020    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 118.36  on 26  degrees of freedom
+Residual deviance:  50.44  on 23  degrees of freedom
+AIC: 82.189
+
+Number of Fisher Scoring iterations: 4
+```
+]
+
+---
+
+# Goodness-of-fit
+
+`$$\begin{align*}
+H_{0}&amp; : \text{ logistic model }\\
+H_{A}&amp; : \text{ saturated model }
+\end{align*}$$`
+
+
+```r
+1 - pchisq(50.44, df = 23)
+```
+
+```
+[1] 0.0008063917
+```
+
+.blockquote[The GOF p-value for this model is 0.0008, which suggests that there is enough evidence to say the model is not adequate]
+
+
+---
+
+# Residual analysis
+
+
+
+
+&lt;img src="Day26_files/figure-html/unnamed-chunk-7-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Leverage and Cook's distance
+
+.pull-left[
+
+&lt;img src="Day26_files/figure-html/unnamed-chunk-8-1.svg" width="100%" /&gt;
+
+]
+
+
+.pull-right[
+&lt;img src="Day26_files/figure-html/unnamed-chunk-9-1.svg" width="100%" /&gt;
+]
+
+---
+
+class: middle
+
+# Estimate the dispersion parameter
+
+
+
+```r
+ Null deviance: 118.36  on 26  degrees of freedom
+Residual deviance:  50.44  on 23  degrees of freedom
+```
+
+
+`$$\begin{align*}
+\hat{\psi}=\frac{50.44}{23} \approx 2.1
+\end{align*}$$`
+
+.out-t[The dispersion parameter is estimated as 2.14]
+
+---
+
+class: middle
+
+# Fit the quasi-binomial model
+
+
+```r
+rake_quasi_glm &lt;- glm(SiteRake/SiteM ~ log(SiteBiom+1) + SiteDepth + SiteSub,
+                      family = quasibinomial,
+                      weights = SiteM,
+                      data = RakeData)
+```
+
+
+---
+
+# Quasi-binomial logistic regression
+
+.code70[
+
+```r
+summary(rake_quasi_glm)
+```
+
+```
+
+Call:
+glm(formula = SiteRake/SiteM ~ log(SiteBiom + 1) + SiteDepth + 
+    SiteSub, family = quasibinomial, data = RakeData, weights = SiteM)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-3.2516  -0.3863   0.8381   1.0709   1.7355  
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        -1.8528     1.2168  -1.523 0.141474    
+log(SiteBiom + 1)   0.7475     0.1692   4.417 0.000199 ***
+SiteDepth          -1.2472     1.1958  -1.043 0.307814    
+SiteSubsilt         0.4691     0.6648   0.706 0.487527    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for quasibinomial family taken to be 2.139552)
+
+    Null deviance: 118.36  on 26  degrees of freedom
+Residual deviance:  50.44  on 23  degrees of freedom
+AIC: NA
+
+Number of Fisher Scoring iterations: 4
+```
+]
+
+---
+
+# Standard errors
+
+.pull-left[
+.yellow-h[Binomial Model]
+.font70[
+```r
+Coefficients:
+                  Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)        -1.8528     0.8319  -2.227   0.0259 *  
+log(SiteBiom + 1)   0.7475     0.1157   6.461 1.04e-10 ***
+SiteDepth          -1.2472     0.8175  -1.526   0.1271    
+SiteSubsilt         0.4691     0.4545   1.032   0.3020
+```
+]
+]
+.pull-right[
+.yellow-h[Quasi-binomial Model]
+.font70[
+```r
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)        -1.8528     1.2168  -1.523 0.141474    
+log(SiteBiom + 1)   0.7475     0.1692   4.417 0.000199 ***
+SiteDepth          -1.2472     1.1958  -1.043 0.307814    
+SiteSubsilt         0.4691     0.6648   0.706 0.487527
+```
+]
+]
+
+&lt;br&gt;
+
+`$$\begin{align*}
+S E\left(\hat{\beta}_{i}^{quasi}\right)=\sqrt{2.139552} \times SE (\hat{\beta}_{i})
+\end{align*}$$`
+
+---
+
+# Quasi-binomial F-test
+
+
+```r
+anova(rake_glm)
+```
+
+```
+Analysis of Deviance Table
+
+Model: binomial, link: logit
+
+Response: SiteRake/SiteM
+
+Terms added sequentially (first to last)
+
+                  Df Deviance Resid. Df Resid. Dev
+NULL                                 26    118.357
+log(SiteBiom + 1)  1   64.263        25     54.094
+SiteDepth          1    2.571        24     51.522
+SiteSub            1    1.083        23     50.440
+```
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+Complete (1a-c):
+
+Test the hypotheses (1d):
+
+`$$\begin{align*}
+H_{0}&amp; : \beta_{2}=\beta_{3}=0\\
+H_A&amp;: \text{ at least one } \beta_2, \beta_3 \neq 0
+\end{align*}$$`
+
+
+]
+]
+
+<div class="countdown" id="timer_62915766" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: middle
+
+# Compare models using `anova` with the `F` test in R
+
+
+```r
+rake_quasi_glm_red &lt;- update(rake_quasi_glm, ~ . - SiteDepth - SiteSub)
+anova(rake_quasi_glm_red, rake_quasi_glm, test = "F")
+Analysis of Deviance Table
+
+Model 1: SiteRake/SiteM ~ log(SiteBiom + 1)
+Model 2: SiteRake/SiteM ~ log(SiteBiom + 1) + SiteDepth + SiteSub
+  Resid. Df Resid. Dev Df Deviance     F Pr(&gt;F)
+1        25     54.094                         
+2        23     50.440  2   3.6542 0.854 0.4388
+```
+
+
+.out-t[The p-value is from an F-distribution with 2 and 25 degrees of freedom. The test results suggest that neither
+depth nor substrate are statistically significant (F = 0.854, p-value=0.439).]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
