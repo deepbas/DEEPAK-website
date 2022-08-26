@@ -15,9 +15,8 @@ education:
 email: ""
 highlight_name: true
 interests:
-- Machine Learning
+- Machine Learning/Data Science
 - Applied Statistics
-- Data Science
 organizations:
 - name: Carleton College
   url: https://www.carleton.edu/
@@ -46,6 +45,6 @@ title: Deepak Bastola
 
 ---
 
-Deepak Bastola is a visiting assistant professor of statistics at Carleton College. His research interests include bayesian statistics, time series methodology, and statistical computation. 
+Deepak Bastola is a visiting assistant professor of statistics at Carleton College. His research interests include Bayesian statistics, time series methodology, and statistical computation. 
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/resume.pdf" "newtab" >}}resumé{{< /staticref >}}.

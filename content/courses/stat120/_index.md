@@ -6,8 +6,6 @@ title: "\U0001F4CA STAT 120: Introduction to Statistics"
 type: book
 ---
 
-
-
 ## Meet your instructor
 
 {{< mention "admin" >}}
