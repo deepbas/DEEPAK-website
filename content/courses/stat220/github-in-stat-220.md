@@ -1,6 +1,6 @@
 ---
 title: GitHub Classroom Guide for Students in Stat 220
-date: "2022-01-05"
+date: "2022-09-10"
 draft: false  
 toc: false  
 type: book  

@@ -3,7 +3,7 @@ title: "Software in Stat 220"
 description: |
   This guide describes the key software we will use this term
   in Stat 220.
-date: "2022-01-05"
+date: "2022-09-10"
 ---
 
 ```{r setup, include=FALSE}

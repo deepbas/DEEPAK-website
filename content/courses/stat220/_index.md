@@ -1,12 +1,12 @@
 ---
-date: "2021-01-24"
+date: "2021-09-10"
 linkTitle: Data Science
 summary: A course focusing on the computational side of data analysis
 title: "\U0001F4CA STAT 220: Introduction to Data Science"
 type: book
 ---
 
-{{< figure src="featured.jpg" >}}
+{{< figure src="datascience.jpeg" >}}
 
 {{< toc hide_on="xl" >}}
 
@@ -36,14 +36,14 @@ If you took Stat 120, 230, or 250 at Carleton, then you are in good shape. It is
 
 ## Course Requirements
 
-1)	Group Assignments (5%)
-2)  Individual assignments (20%)
+1)	Class activities (5%)
+2)  Individual assignments (15%)
 3)	Paired projects (10%)
-4)	Midterm Exams (45%)
-5)	Final Project (20%)
+4)	Midterm Exams (55%)
+5)	Final Project (15%)
 
 
-{{% staticref "pdf/STAT_220_Syllabus.pdf" "newtab" %}}VIEW THE SYLLABUS{{% /staticref %}}
+[//] {{% staticref "pdf/STAT_220_Syllabus.pdf" "newtab" %}}VIEW THE SYLLABUS{{% /staticref %}}
 
 
 ## Meet your instructor

@@ -1,6 +1,6 @@
 ---
 title: Assignments in Stat 220
-date: "2022-01-05"
+date: "2022-09-11"
 draft: false  
 toc: false  
 type: book  
