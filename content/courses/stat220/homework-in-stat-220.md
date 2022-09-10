@@ -1,23 +1,12 @@
 ---
 title: Assignments in Stat 220
-date: "2022-09-11"
+date: "2022-09-10"
 draft: false  
 toc: false  
 type: book  
 weight: 20
 ---
 
-## Do’s and Don’t of collaboration for group assignments
-
--   All group members should contribute to each question.
--   Don’t delegate questions among group members.
--   If a group member didn’t contribute sufficiently to an assignment,
-    please let me know via email.
--   If you aren’t able to contribute sufficiently to an assignment,
-    please send me an email explaining your situation. An isolated
-    “miss” of group work due to personal issues is understandable, but
-    you will lose points from your (individual) group grade if I see a
-    pattern of multiple misses without a reasonable explanation.
 
 ## Do’s and Don’t of collaboration for individual assignments
 
