@@ -32,7 +32,10 @@ Everyone needs to connect Git and GitHub by doing the following:
     using a username that incorporates your name (e.g., dbastola). Please use
     your Carleton email with this account.
 
-2.  Setup options in Git by running the following code chunk in your
+2.  If you haven’t done so already, accept the invite to the class organization [DataScienceFall22](https://github.com/DataScienceFall22). This organization is where all course homework, activity files, and project repositories will live.
+
+
+3.  Setup options in Git by running the following code chunk in your
     console:
 
     ``` r
@@ -43,38 +46,43 @@ Everyone needs to connect Git and GitHub by doing the following:
     changing the first two lines to your own name and email (this should
     be the email associated with your GitHub account).
 
-3.  (Optional) This step explains how to use GitHub on RStudio without
-    having to enter your password every time to connect. This is an
-    optional step since you can still use GitHub without setting up a
-    SSH key or caching credentials, you will just need to enter your
-    password every time you push or pull with GitHub. Pick one method
-    below: cache credentials for HTTPS or SSH. GitHub recommends HTTPS,
-    so I recommend trying that first.
 
-    -   **Strongly recommended:** Cache credential using a HTTPS linked
-        project.
+4. In order to push changes to github (i.e. to track changes and submit homework), you will need to prove that you have permission to change a Github repo. This is done with a personal access token (PAT). Note that you will need to install the packages usethis and gitcreds to do this.
 
-        Complete the steps in [Section 9.3 of Happy Git with
-        R](https://happygitwithr.com/https-pat.html) to get a
-        personal access token (you will need to install the `usethis`
-        package first). Then, follow the directions in [Section 9.4.1
-        of Happy Git with
-        R](https://happygitwithr.com/https-pat.html#call-an-r-function-to-store-your-credentials)
-        (I've had good luck with the `gitcreds` package, and it is
-        installed on maize.)
+    ```r
+    usethis::create_github_token()
+    ```
+    
+    ```r
+     Call `gitcreds::gitcreds_set()` to register this token in the local Git credential store
+     It is also a great idea to store this token in any password-management software that you use
+     ✓ Opening URL 'https://github.com/settings/tokens/new?scopes=repo,user,gist,workflow&description=R:GITHUB_PAT'
+    ```
+    
+    "Generate token" and store your tokens somewhere safe in your local computer as you will need this again in the future. You can additionally add PAT to your `.Renviron` file as well. Copy it and paste it into your .Renviron file as system variable GITHUB_PAT using
+    
+    ```r
+    usethis::edit_r_environ()
+    ```
+    Add to the file and save. You can also set the PAT token in R using the following.
 
-    -   A second method is to generate a SSH key. First check to see if
-        you have a SSH key. Go into the shell (again, through RStudio
-        `Tools -> Shell`) and complete on this page
-        <http://happygitwithr.com/ssh-keys.html>, which is Chapter 11 in
-        Happy Git with R.
-
-4.  (optional) Follow the instructions here
-    (<http://happygitwithr.com/push-pull-github.html>) to ensure you can
-    connect to GitHub from your computer. If you can't get this command
-    line push/pull to work that is fine. Try connecting to GitHub via
-    RStudio, as detailed next. If you can't connect via RStudio then
-    talk to me in student hours.
+    ```r
+    library(gitcreds)
+    gitcreds::gitcreds_set()
+    ```
+    
+    You can check that you’ve stored a credential with `gitcreds_get()`:
+    
+    ```r
+    gitcreds::gitcreds_get()
+    #> <gitcreds>
+    #>   protocol: https
+    #>   host    : github.com
+    #>   username: PersonalAccessToken
+    #>   password: <-- hidden -->
+    ```
+    
+  **Treat your PAT token like a password!** For details, follow the step in Section 9.1 on this page to do this: https://happygitwithr.com/https-pat.html.
 
 
 ## Individual assignments
@@ -90,7 +98,7 @@ repository will contain assignment details (README, .Rmd).
 ### Creating an individual assignment repo and project
 
 1.  Go to our course GitHub organization page
-    (<https://github.com/stat220/>) and find your homework repo, such as `hw-1-username` (where your username is attached).
+    (<https://github.com/DataScienceFall22/>) and find your homework repo, such as `hw-1-username` (where your username is attached).
     
 2.  Enter the online assignment repository on GitHub. Click the green
     **"Code"** button. Most of you should just use the default setting
@@ -102,30 +110,17 @@ repository will contain assignment details (README, .Rmd).
     
 3.  Now open up RStudio and create a project as follows:
 
--   Click the **Project** button in the upper right corner of your
-    RStudio window and select **New Project...**.
-
-
+    -   Click the **Project** button in the upper right corner of your RStudio window and select **New Project...**.
 ![](/img/maize_project.png)
-
--   Select **Version Control** and then **New Project**
-
+    -   Select **Version Control** and then **New Project**
 ![](/img/maize_version.png)
-
 ![](/img/maize_git.png)
-
--   Paste the link you just copied into the Repository URL box. Leave
+    -   Paste the link you just copied into the Repository URL box. Leave
     the Project directory name blank (or keep the auto-filled name). Use
     the **Browse** button to find your **assignments** folder, then
     click **Create Project**
 
 ![](/img/maize_clone.png)
-
-**Warning:** If you received an error in the above steps, you may have
-to clone with HTTPS instead of SSH (or vice versa). You can do this by
-again clicking on the "Clone or Download" button in the repository page,
-then clicking "Use HTTPS" in the top right of the pop-up box. Now copy
-the link and repeat this step.
 
 ### Working on your assignment
 
@@ -193,7 +188,7 @@ Collaborative Github assignments are pretty similar to individual assignments.
 
 ### Creating a group/partner assignment repo and project
 
-Go to our course GitHub organization page(<https://github.com/stat220/>) and find the repo for your group, for example if your group name is "team01" the you might find the `mp1-team01` repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).
+Go to our course GitHub organization page(<https://github.com/DataScienceFall22/>) and find the repo for your group, for example if your group name is "team01" the you might find the `mp1-team01` repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).
 
 #### Working with collaborative repos
 

@@ -830,6 +830,9 @@ using a username that incorporates your name (e.g., dbastola). Please use
 your Carleton email with this account.</p>
 </li>
 <li>
+<p>If you haven’t done so already, accept the invite to the class organization <a href="https://github.com/DataScienceFall22" target="_blank" rel="noopener">DataScienceFall22</a>. This organization is where all course homework, activity files, and project repositories will live.</p>
+</li>
+<li>
 <p>Setup options in Git by running the following code chunk in your
 console:</p>
 <pre><code class="language-r">library(usethis)
@@ -839,44 +842,31 @@ use_git_config(user.name = &quot;Jane Doe&quot;, user.email = &quot;jane@example
 be the email associated with your GitHub account).</p>
 </li>
 <li>
-<p>(Optional) This step explains how to use GitHub on RStudio without
-having to enter your password every time to connect. This is an
-optional step since you can still use GitHub without setting up a
-SSH key or caching credentials, you will just need to enter your
-password every time you push or pull with GitHub. Pick one method
-below: cache credentials for HTTPS or SSH. GitHub recommends HTTPS,
-so I recommend trying that first.</p>
-<ul>
-<li>
-<p><strong>Strongly recommended:</strong> Cache credential using a HTTPS linked
-project.</p>
-<p>Complete the steps in <a href="https://happygitwithr.com/https-pat.html" target="_blank" rel="noopener">Section 9.3 of Happy Git with
-R</a> to get a
-personal access token (you will need to install the <code>usethis</code>
-package first). Then, follow the directions in <a href="https://happygitwithr.com/https-pat.html#call-an-r-function-to-store-your-credentials" target="_blank" rel="noopener">Section 9.4.1
-of Happy Git with
-R</a>
-(I&rsquo;ve had good luck with the <code>gitcreds</code> package, and it is
-installed on maize.)</p>
-</li>
-<li>
-<p>A second method is to generate a SSH key. First check to see if
-you have a SSH key. Go into the shell (again, through RStudio
-<code>Tools -&gt; Shell</code>) and complete on this page
-<a href="http://happygitwithr.com/ssh-keys.html" target="_blank" rel="noopener">http://happygitwithr.com/ssh-keys.html</a>, which is Chapter 11 in
-Happy Git with R.</p>
-</li>
-</ul>
-</li>
-<li>
-<p>(optional) Follow the instructions here
-(<a href="http://happygitwithr.com/push-pull-github.html" target="_blank" rel="noopener">http://happygitwithr.com/push-pull-github.html</a>) to ensure you can
-connect to GitHub from your computer. If you can&rsquo;t get this command
-line push/pull to work that is fine. Try connecting to GitHub via
-RStudio, as detailed next. If you can&rsquo;t connect via RStudio then
-talk to me in student hours.</p>
+<p>In order to push changes to github (i.e. to track changes and submit homework), you will need to prove that you have permission to change a Github repo. This is done with a personal access token (PAT). Note that you will need to install the packages usethis and gitcreds to do this.</p>
+<pre><code class="language-r">usethis::create_github_token()
+</code></pre>
+<pre><code class="language-r"> Call `gitcreds::gitcreds_set()` to register this token in the local Git credential store
+ It is also a great idea to store this token in any password-management software that you use
+ ✓ Opening URL 'https://github.com/settings/tokens/new?scopes=repo,user,gist,workflow&amp;description=R:GITHUB_PAT'
+</code></pre>
+<p>&ldquo;Generate token&rdquo; and store your tokens somewhere safe in your local computer as you will need this again in the future. You can additionally add PAT to your <code>.Renviron</code> file as well. Copy it and paste it into your .Renviron file as system variable GITHUB_PAT using</p>
+<pre><code class="language-r">usethis::edit_r_environ()
+</code></pre>
+<p>Add to the file and save. You can also set the PAT token in R using the following.</p>
+<pre><code class="language-r">library(gitcreds)
+gitcreds::gitcreds_set()
+</code></pre>
+<p>You can check that you’ve stored a credential with <code>gitcreds_get()</code>:</p>
+<pre><code class="language-r">gitcreds::gitcreds_get()
+#&gt; &lt;gitcreds&gt;
+#&gt;   protocol: https
+#&gt;   host    : github.com
+#&gt;   username: PersonalAccessToken
+#&gt;   password: &lt;-- hidden --&gt;
+</code></pre>
 </li>
 </ol>
+<p><strong>Treat your PAT token like a password!</strong> For details, follow the step in Section 9.1 on this page to do this: <a href="https://happygitwithr.com/https-pat.html" target="_blank" rel="noopener">https://happygitwithr.com/https-pat.html</a>.</p>
 <h2 id="individual-assignments">Individual assignments</h2>
 <p>If you followed the suggestions in the <a href="https://deepbas.io/courses/stat220/rstudio-in-stat-220/" target="_blank" rel="noopener">Using Rstudio in Stat
 220</a> page, then you should already have an
@@ -888,7 +878,7 @@ repository will contain assignment details (README, .Rmd).</p>
 <ol>
 <li>
 <p>Go to our course GitHub organization page
-(<a href="https://github.com/stat220/" target="_blank" rel="noopener">https://github.com/stat220/</a>) and find your homework repo, such as <code>hw-1-username</code> (where your username is attached).</p>
+(<a href="https://github.com/DataScienceFall22/" target="_blank" rel="noopener">https://github.com/DataScienceFall22/</a>) and find your homework repo, such as <code>hw-1-username</code> (where your username is attached).</p>
 </li>
 <li>
 <p>Enter the online assignment repository on GitHub. Click the green
@@ -901,13 +891,9 @@ box to your clipboard.)</p>
 </li>
 <li>
 <p>Now open up RStudio and create a project as follows:</p>
-</li>
-</ol>
 <ul>
-<li>Click the <strong>Project</strong> button in the upper right corner of your
-RStudio window and select <strong>New Project&hellip;</strong>.</li>
-</ul>
-<p>
+<li>Click the <strong>Project</strong> button in the upper right corner of your RStudio window and select <strong>New Project&hellip;</strong>.
+
 
 
 
@@ -927,11 +913,9 @@ RStudio window and select <strong>New Project&hellip;</strong>.</li>
   <div class="d-flex justify-content-center">
     <div class="w-100" ><img src="/img/maize_project.png" alt="" loading="lazy" data-zoomable /></div>
   </div></figure>
-</p>
-<ul>
-<li>Select <strong>Version Control</strong> and then <strong>New Project</strong></li>
-</ul>
-<p>
+</li>
+<li>Select <strong>Version Control</strong> and then <strong>New Project</strong>
+
 
 
 
@@ -951,8 +935,8 @@ RStudio window and select <strong>New Project&hellip;</strong>.</li>
   <div class="d-flex justify-content-center">
     <div class="w-100" ><img src="/img/maize_version.png" alt="" loading="lazy" data-zoomable /></div>
   </div></figure>
-</p>
-<p>
+
+
 
 
 
@@ -972,13 +956,14 @@ RStudio window and select <strong>New Project&hellip;</strong>.</li>
   <div class="d-flex justify-content-center">
     <div class="w-100" ><img src="/img/maize_git.png" alt="" loading="lazy" data-zoomable /></div>
   </div></figure>
-</p>
-<ul>
+</li>
 <li>Paste the link you just copied into the Repository URL box. Leave
 the Project directory name blank (or keep the auto-filled name). Use
 the <strong>Browse</strong> button to find your <strong>assignments</strong> folder, then
 click <strong>Create Project</strong></li>
 </ul>
+</li>
+</ol>
 <p>
 
 
@@ -1000,11 +985,6 @@ click <strong>Create Project</strong></li>
     <div class="w-100" ><img src="/img/maize_clone.png" alt="" loading="lazy" data-zoomable /></div>
   </div></figure>
 </p>
-<p><strong>Warning:</strong> If you received an error in the above steps, you may have
-to clone with HTTPS instead of SSH (or vice versa). You can do this by
-again clicking on the &ldquo;Clone or Download&rdquo; button in the repository page,
-then clicking &ldquo;Use HTTPS&rdquo; in the top right of the pop-up box. Now copy
-the link and repeat this step.</p>
 <h3 id="working-on-your-assignment">Working on your assignment</h3>
 <p>An RStudio project should now open, which will allow you to start
 working on your homework assignment. You should see the project
@@ -1078,7 +1058,7 @@ files to Github by the deadline.</p>
 <h2 id="group-work">Group work</h2>
 <p>Collaborative Github assignments are pretty similar to individual assignments.</p>
 <h3 id="creating-a-grouppartner-assignment-repo-and-project">Creating a group/partner assignment repo and project</h3>
-<p>Go to our course GitHub organization page(<a href="https://github.com/stat220/" target="_blank" rel="noopener">https://github.com/stat220/</a>) and find the repo for your group, for example if your group name is &ldquo;team01&rdquo; the you might find the <code>mp1-team01</code> repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).</p>
+<p>Go to our course GitHub organization page(<a href="https://github.com/DataScienceFall22/" target="_blank" rel="noopener">https://github.com/DataScienceFall22/</a>) and find the repo for your group, for example if your group name is &ldquo;team01&rdquo; the you might find the <code>mp1-team01</code> repo. Clone this repo to your computer/maize account using the same steps done for an individual assignment (see steps 2-3).</p>
 <h4 id="working-with-collaborative-repos">Working with collaborative repos</h4>
 <p>For group homework, I suggest that only the <em>recorder</em> edit the group-homework-x.Rmd file to avoid merge conflicts! Other group members can create a new Markdown doc to run and save commands. Only the recorder needs to <strong>push</strong> changes (answers) to the Github repo and all others can then <strong>pull</strong> these changes (i.e. the final answers) after the HW is submitted.</p>
 <p>When you are working together on a Github project, you should commit and push your modifications frequently. You will also need to frequently <strong>pull</strong> updates from Github down to your local version of RStudio. These updates are changes that your teammates have made since your last pull.  To pull in changes, click the &ldquo;Down&rdquo;  <strong>Pull</strong> arrow in the Git tab (shown above).</p>
