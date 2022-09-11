@@ -43,7 +43,7 @@ If you took Stat 120, 230, or 250 at Carleton, then you are in good shape. It is
 5)	Final Project (20%)
 
 
-<!-- {{% staticref "stat220/STAT_220_Syllabus_Fall22.pdf" "newtab" %}}VIEW THE SYLLABUS{{% /staticref %}} -->
+{{% staticref "stat220/STAT_220_Syllabus_Fall22.pdf" "newtab" %}}VIEW THE SYLLABUS{{% /staticref %}} 
 
 
 ## Meet your instructor
