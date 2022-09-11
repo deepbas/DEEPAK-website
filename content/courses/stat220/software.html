@@ -1,9 +1,11 @@
 ---
 title: "Software in Stat 220"
-description: |
-  This guide describes the key software we will use this term
-  in Stat 220.
 date: "2022-09-10"
+draft: no
+output: pdf_document
+type: book
+weight: 20
+toc: no
 ---
 
 
@@ -19,58 +21,44 @@ RStudio:</p>
 server version is that all of your work will be stored in the cloud,
 where it is automatically saved and backed up. This means that you
 can access your work from any computer on campus using a web
-browser. The downside is that you have to share limited
-computational resources with each other! This limitation is
-especially pronounced this term when classes are being taught
-remotely. We are unsure what type of load will be placed on maize,
-so if you can download a local version of R and RStudio, I recommend
-you do so. Use your Carleton credentials to access your account and
-you need to be running the Carleton VPN (below) to access this
-server.</p></li>
+browser. This server may run slow during peak days/hours. I also recommend
+you to download a local version of R server in your computer in case of rare outages.</p></li>
 <li><p>A <strong>local version</strong> of RStudio installed on your machine. This
 option is highly recommended due to the computational resources this
-course demands. The downside to this approach is that your work is
-only stored locally, but I get around this problem by keeping all of
-my work on GitHub. You will learn how to use GitHub throughout the
-course. Both R and RStudio are free and open-source.</p>
-<p><strong>Installing R/RStudio (not needed if you are using the maize
-server)</strong></p>
-<ul>
-<li><p>Download the latest version of R: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></p></li>
-<li><p>Download the free Rstudio desktop version:
-<a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></p></li>
+course demands. Using this version you can only store your files in your local machine. Additionally, we can save our work on GitHub. We will learn how to use GitHub in the beginning of the course. Both R and RStudio are free and open-source. Please make sure that you have recently updated both R and RStudio.</p></li>
 </ul>
-<p>Use the default download and install options for each. For R,
-download the “precompiled binary” distribution rather than the
-source code</p>
-<p><strong>Updating R/RStudio (not needed if you are using the maize
-server)</strong></p>
-<p>If you have used a local version of R/RStudio before and it is still
-installed on your machine, then you should make sure that you have
-the most recent versions of each program.</p>
+<div id="installing-rrstudio-not-needed-if-you-are-using-the-maize-server" class="section level3">
+<h3><strong>Installing R/RStudio (not needed if you are using the maize server)</strong></h3>
+<blockquote>
+<p>Download the latest version of R: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>
+Download the free Rstudio desktop version: <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></p>
+</blockquote>
+<p>Use the default download and install options for each. For R, download the “precompiled binary” distribution rather than the source code</p>
+<p><strong>Updating R/RStudio (not needed if you are using the maize server)</strong></p>
+<p>If you have used a local version of R/RStudio before and it is still installed on your machine, then you should make sure that you have the most recent versions of each program.</p>
 <ul>
-<li><p>To check your version of R, run the command <code>getRversion()</code> and
-compare your version to the newest version posted on
-<a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>. If you need an update, then
-install the newer version using the installation directions
-above.</p></li>
-<li><p>In RStudio, check for updates with the menu option
-<code>Help &gt; Check for updates</code>. Follow directions if an update is
-needed.</p></li>
+<li><p>To check your version of R, run the command <code>getRversion()</code> and compare your version to the newest version posted on <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>. If you need an update, then install the newer version using the installation directions above.</p></li>
+<li><p>In RStudio, check for updates with the menu option <code>Help &gt; Check for updates</code>. Follow directions if an update is needed.</p></li>
 </ul>
-<h3 id="did-it-work-a-sanity-check-after-your-installupdate">Did it work? (A sanity check after your install/update)</h3>
+<p>** Did it work? (A sanity check after your install/update) **</p>
 <p>Do whatever is appropriate for your operating system to launch
 RStudio. You should get a window similar to the screenshot you see
 <a href="https://www.rstudio.com/wp-content/uploads/2014/04/rstudio-workbench.png">here</a>,
 but yours will be more boring because you haven’t written any code
 or made any figures yet!</p>
-<p>Put your cursor in the pane labeled Console, which is where you
+<p>Put your cursor in the pane labeled <em>Console</em>, which is where you
 interact with the live R process. Create a simple object with code
 like <code>x &lt;- 2 * 4</code> (followed by enter or return). Then inspect the
 <code>x</code> object by typing <code>x</code> followed by enter or return. You should see
-the value 8 printed. If this happened, you’ve succeeded in
-installing R and RStudio!</p></li>
-</ul>
+the value <code>8</code> printed. If this happened, you’ve succeeded in
+installing R and RStudio!</p>
+</div>
+</div>
+<div id="vpn" class="section level2">
+<h2>VPN</h2>
+<p>If you plan to do any work off campus this term, you need to install Carleton’s VPN. This will allow you to access the <strong>maize</strong> server (if needed).</p>
+<p><strong>Installing the GlobalProtect VPN</strong></p>
+<p>Follow the directions <a href="https://wiki.carleton.edu/display/itskb/GlobalProtect+VPN">here</a> to install VPN.</p>
 </div>
 <div id="git-and-github" class="section level2">
 <h2>Git and GitHub</h2>
@@ -88,19 +76,19 @@ install Git.</p>
 <p><strong>Installing Git</strong></p>
 <p>Directions for both Windows &amp; Mac here:
 <a href="http://happygitwithr.com/install-git.html" class="uri">http://happygitwithr.com/install-git.html</a>.</p>
-<ul>
-<li><p>If you are using <strong>maize</strong>, then there is nothing you need to
-install.</p></li>
-<li><p>Windows users should follow Option 1 in 6.2.</p></li>
-<li><p>Mac users can follow Option 1 in 6.3 if comfortable, otherwise
-follow Option 2</p></li>
-<li><p>Linux users can follow 6.4.</p></li>
-</ul>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>If you are using <strong>maize</strong>, then there is nothing you need to install.</li>
+<li>Windows users should follow Option 1 in 6.2.</li>
+<li>Mac users can follow Option 1 in 6.3 if comfortable, otherwise follow Option 2</li>
+<li>Linux users can follow 6.4.</li>
+</ol>
+</blockquote>
 <p><img src="/img/maize_gittab.png" /></p>
 </div>
 <div id="slack" class="section level2">
 <h2>Slack</h2>
-<p>We will use Slack for all course communication. <a href="https://join.slack.com/t/stat220datasc-wmz5924/shared_invite/zt-110xuf0zq-0Ap9EaQAp46YiilE4Jvc~A">Sign up for our course
+<p>We will use Slack for all course communication. <a href="https://join.slack.com/t/datasciencefall22/shared_invite/zt-1fiwi30yr-MysFDWn0uuQZbS39X~5KTw">Sign up for our course
 Slack team
 here</a>!
 You will need to create an account with a username, and log in to read
@@ -118,31 +106,20 @@ communications into topics. You can learn more about Slack features
 <p>Several channels have been set up for specific parts of the course. Feel
 free to ask questions anytime. You can browse the available channels in
 our team by clicking on “Channels” on the left-hand panel.</p>
-<p>There is also an #anonymous channel that you can use if you’d like to
-ask a question or provide a comment anonymously. To have a post appear
-anonymously in this channel, compose a direct message to yourself (by
-clicking on your username in the ‘Direct Messages’ menu on the left
-panel) that begins with /anon #anonymous your question. Then the text
-your question will be sent to the #anonymous channel by the anonymous
-bot. Zoom For synchronous class meeting and office hours we will use the
-Zoom video conferencing software. I recommend downloading the Zoom app
-for your operating system.</p>
 </div>
 <div id="latex" class="section level2">
 <h2>LaTeX</h2>
-<p>If you want to render R Markdown documents to PDFs, then you need to
-install LaTeX. Below are the recommended installers for Windows and Mac:</p>
+<p>You need a Latex compiler to create a pdf document from a R Markdown file. If you use the maize server, you don’t need to install anything. If you are using a local RStudio, you should install a Latex compiler. Below are the recommended installers for Windows and Mac:</p>
 <ul>
 <li><p><a href="https://www.tug.org/mactex/">MacTeX</a> for Mac (3.2GB)</p></li>
 <li><p><a href="https://miktex.org/download">MiKTeX</a> for Windows (190MB)</p></li>
 <li><p>Alternatively, you can install the <code>tinytex</code> R package by running
 <code>install.packages("tinytex")</code> in the console.</p></li>
 </ul>
-<p>If you are using maize, then there is nothing you need to install.</p>
 </div>
 <div id="acknowledgements" class="section level2 appendix">
 <h2>Acknowledgements</h2>
-<p>This installation guide is based on the guide from Adam Loy.</p>
+<p>This installation guide is based on the guide from Adam Loy and Katie St. Clair.</p>
 </div>
 <div id="resuse" class="section level2 appendix">
 <h2>Resuse</h2>

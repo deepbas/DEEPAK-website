@@ -7,10 +7,6 @@
   10pt,
   ignorenonframetext,
 ]{beamer}
-\title{Introduction to Data Science}
-\author{Stat 220 Bastola}
-\date{2022-01-04}
-
 \usepackage{pgfpages}
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{caption label separator}{: }
@@ -79,18 +75,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Introduction to Data Science},
-  pdfauthor={Stat 220 Bastola},
-  colorlinks=true,
-  linkcolor={Maroon},
-  filecolor={Maroon},
-  citecolor={Blue},
-  urlcolor={blue},
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \newif\ifbibliography
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -193,9 +177,26 @@
 \preto{\@verbatim}{\topsep=1pt \partopsep=1pt }
 \makeatother
 
+\usepackage{amsmath}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Introduction to Data Science},
+  pdfauthor={Stat 220 Bastola},
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Introduction to Data Science}
+\author{Stat 220 Bastola}
+\date{2022-09-10}
 
 \begin{document}
 \frame{\titlepage}

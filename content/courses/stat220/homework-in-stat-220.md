@@ -79,7 +79,6 @@ regarding equitable access and reasonable accommodations.
 follow Carleton’s academic integrity policy. The use of textbook
 solution manuals (physical or online solutions), homework, reports or
 exams done by past students are not allowed. Look at the College’s
-[Writing Across the
-Curriculum](https://www.carleton.edu/writing/plagiarism/) website for
+[Writing Across the Curriculum](https://www.carleton.edu/writing/plagiarism/) website for
 additional guidance on plagiarism and how to avoid plagiarism in their
 writing.

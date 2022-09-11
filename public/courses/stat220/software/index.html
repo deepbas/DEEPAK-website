@@ -635,81 +635,183 @@
   </div>
 
   <div class="page-body">
-    <article class="article">
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-  
-  
-<div class="article-container pt-3">
-  <h1>Software in Stat 220</h1>
-
-  
-
-  
     
 
 
-<div class="article-metadata">
+
+
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          Data Science
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+  <button class="form-control sidebar-search js-search d-none d-md-flex">
+    <i class="fas fa-search pr-2"></i>
+    <span class="sidebar-search-text">Search...</span>
+    <span class="sidebar-search-shortcut">/</span>
+  </button>
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
 
   
   
+    
+
+    
+      
+
+      <ul class="nav docs-sidenav">
+        <li><a href="/courses/"><i class="fas fa-arrow-left pr-1"></i>Courses</a></li>
+      </ul>
+
+      
+      
+        
+          
+        
+      
+
 
   
-  <span class="article-date">
+    
+    
     
     
       
     
-    Sep 10, 2022
-  </span>
-  
-
-  
-
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-  
-
-</div>
-
     
 
-
-
-
-
-  
-</div>
-
-
-
-  <div class="article-container">
-
-    <div class="article-style">
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/courses/stat220/">Data Science</a>
+    
       
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/courses/stat220/week1/">Week 1</a></li>
+
+
+
+  <li class=""><a href="/courses/stat220/homework-in-stat-220/">Assignments in Stat 220</a></li>
+
+
+
+  <li class=""><a href="/courses/stat220/github-in-stat-220/">GitHub Guide for Students in Stat 220</a></li>
+
+
+
+  <li class="active"><a href="/courses/stat220/software/">Software in Stat 220</a></li>
+
+
+
+  <li class=""><a href="/courses/stat220/rstudio-in-stat-220/">Using Rstudio in Stat 220</a></li>
+
+
+
+  <li class=""><a href="/courses/stat220/cheatsheets/">Cheatsheets</a></li>
+
+
+
+  <li class=""><a href="/courses/stat220/data/">Datasets</a></li>
+
+
+
+  <li class=""><a href="/courses/stat220/pat/">Cache credentials for RStudio and GitHub</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+    
+  
+</nav>
+
+    </div>
+
+    
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          
+            
+  <nav class="d-none d-md-flex" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      
+  
+  
+  
+
+  <li class="breadcrumb-item">
+    <a href="/">
+      
+        Home
+      
+    </a>
+  </li>
+
+
+  <li class="breadcrumb-item">
+    <a href="/courses/">
+      
+        Courses
+      
+    </a>
+  </li>
+
+
+  <li class="breadcrumb-item">
+    <a href="/courses/stat220/">
+      
+        Data Science
+      
+    </a>
+  </li>
+
+
+      <li class="breadcrumb-item active" aria-current="page">
+        Software in Stat 220
+      </li>
+    </ol>
+  </nav>
+
+
+          
+
+          <h1>Software in Stat 220</h1>
+
+          <div class="article-style">
+            
 
 
 <div id="rrstudio" class="section level2">
@@ -723,58 +825,44 @@ RStudio:</p>
 server version is that all of your work will be stored in the cloud,
 where it is automatically saved and backed up. This means that you
 can access your work from any computer on campus using a web
-browser. The downside is that you have to share limited
-computational resources with each other! This limitation is
-especially pronounced this term when classes are being taught
-remotely. We are unsure what type of load will be placed on maize,
-so if you can download a local version of R and RStudio, I recommend
-you do so. Use your Carleton credentials to access your account and
-you need to be running the Carleton VPN (below) to access this
-server.</p></li>
+browser. This server may run slow during peak days/hours. I also recommend
+you to download a local version of R server in your computer in case of rare outages.</p></li>
 <li><p>A <strong>local version</strong> of RStudio installed on your machine. This
 option is highly recommended due to the computational resources this
-course demands. The downside to this approach is that your work is
-only stored locally, but I get around this problem by keeping all of
-my work on GitHub. You will learn how to use GitHub throughout the
-course. Both R and RStudio are free and open-source.</p>
-<p><strong>Installing R/RStudio (not needed if you are using the maize
-server)</strong></p>
-<ul>
-<li><p>Download the latest version of R: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a></p></li>
-<li><p>Download the free Rstudio desktop version:
-<a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></p></li>
+course demands. Using this version you can only store your files in your local machine. Additionally, we can save our work on GitHub. We will learn how to use GitHub in the beginning of the course. Both R and RStudio are free and open-source. Please make sure that you have recently updated both R and RStudio.</p></li>
 </ul>
-<p>Use the default download and install options for each. For R,
-download the “precompiled binary” distribution rather than the
-source code</p>
-<p><strong>Updating R/RStudio (not needed if you are using the maize
-server)</strong></p>
-<p>If you have used a local version of R/RStudio before and it is still
-installed on your machine, then you should make sure that you have
-the most recent versions of each program.</p>
+<div id="installing-rrstudio-not-needed-if-you-are-using-the-maize-server" class="section level3">
+<h3><strong>Installing R/RStudio (not needed if you are using the maize server)</strong></h3>
+<blockquote>
+<p>Download the latest version of R: <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>
+Download the free Rstudio desktop version: <a href="https://www.rstudio.com/products/rstudio/download/" class="uri">https://www.rstudio.com/products/rstudio/download/</a></p>
+</blockquote>
+<p>Use the default download and install options for each. For R, download the “precompiled binary” distribution rather than the source code</p>
+<p><strong>Updating R/RStudio (not needed if you are using the maize server)</strong></p>
+<p>If you have used a local version of R/RStudio before and it is still installed on your machine, then you should make sure that you have the most recent versions of each program.</p>
 <ul>
-<li><p>To check your version of R, run the command <code>getRversion()</code> and
-compare your version to the newest version posted on
-<a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>. If you need an update, then
-install the newer version using the installation directions
-above.</p></li>
-<li><p>In RStudio, check for updates with the menu option
-<code>Help &gt; Check for updates</code>. Follow directions if an update is
-needed.</p></li>
+<li><p>To check your version of R, run the command <code>getRversion()</code> and compare your version to the newest version posted on <a href="https://cran.r-project.org/" class="uri">https://cran.r-project.org/</a>. If you need an update, then install the newer version using the installation directions above.</p></li>
+<li><p>In RStudio, check for updates with the menu option <code>Help &gt; Check for updates</code>. Follow directions if an update is needed.</p></li>
 </ul>
-<h3 id="did-it-work-a-sanity-check-after-your-installupdate">Did it work? (A sanity check after your install/update)</h3>
+<p>** Did it work? (A sanity check after your install/update) **</p>
 <p>Do whatever is appropriate for your operating system to launch
 RStudio. You should get a window similar to the screenshot you see
 <a href="https://www.rstudio.com/wp-content/uploads/2014/04/rstudio-workbench.png">here</a>,
 but yours will be more boring because you haven’t written any code
 or made any figures yet!</p>
-<p>Put your cursor in the pane labeled Console, which is where you
+<p>Put your cursor in the pane labeled <em>Console</em>, which is where you
 interact with the live R process. Create a simple object with code
 like <code>x &lt;- 2 * 4</code> (followed by enter or return). Then inspect the
 <code>x</code> object by typing <code>x</code> followed by enter or return. You should see
-the value 8 printed. If this happened, you’ve succeeded in
-installing R and RStudio!</p></li>
-</ul>
+the value <code>8</code> printed. If this happened, you’ve succeeded in
+installing R and RStudio!</p>
+</div>
+</div>
+<div id="vpn" class="section level2">
+<h2>VPN</h2>
+<p>If you plan to do any work off campus this term, you need to install Carleton’s VPN. This will allow you to access the <strong>maize</strong> server (if needed).</p>
+<p><strong>Installing the GlobalProtect VPN</strong></p>
+<p>Follow the directions <a href="https://wiki.carleton.edu/display/itskb/GlobalProtect+VPN">here</a> to install VPN.</p>
 </div>
 <div id="git-and-github" class="section level2">
 <h2>Git and GitHub</h2>
@@ -792,19 +880,19 @@ install Git.</p>
 <p><strong>Installing Git</strong></p>
 <p>Directions for both Windows &amp; Mac here:
 <a href="http://happygitwithr.com/install-git.html" class="uri">http://happygitwithr.com/install-git.html</a>.</p>
-<ul>
-<li><p>If you are using <strong>maize</strong>, then there is nothing you need to
-install.</p></li>
-<li><p>Windows users should follow Option 1 in 6.2.</p></li>
-<li><p>Mac users can follow Option 1 in 6.3 if comfortable, otherwise
-follow Option 2</p></li>
-<li><p>Linux users can follow 6.4.</p></li>
-</ul>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>If you are using <strong>maize</strong>, then there is nothing you need to install.</li>
+<li>Windows users should follow Option 1 in 6.2.</li>
+<li>Mac users can follow Option 1 in 6.3 if comfortable, otherwise follow Option 2</li>
+<li>Linux users can follow 6.4.</li>
+</ol>
+</blockquote>
 <p><img src="/img/maize_gittab.png" /></p>
 </div>
 <div id="slack" class="section level2">
 <h2>Slack</h2>
-<p>We will use Slack for all course communication. <a href="https://join.slack.com/t/stat220datasc-wmz5924/shared_invite/zt-110xuf0zq-0Ap9EaQAp46YiilE4Jvc~A">Sign up for our course
+<p>We will use Slack for all course communication. <a href="https://join.slack.com/t/datasciencefall22/shared_invite/zt-1fiwi30yr-MysFDWn0uuQZbS39X~5KTw">Sign up for our course
 Slack team
 here</a>!
 You will need to create an account with a username, and log in to read
@@ -822,140 +910,73 @@ communications into topics. You can learn more about Slack features
 <p>Several channels have been set up for specific parts of the course. Feel
 free to ask questions anytime. You can browse the available channels in
 our team by clicking on “Channels” on the left-hand panel.</p>
-<p>There is also an #anonymous channel that you can use if you’d like to
-ask a question or provide a comment anonymously. To have a post appear
-anonymously in this channel, compose a direct message to yourself (by
-clicking on your username in the ‘Direct Messages’ menu on the left
-panel) that begins with /anon #anonymous your question. Then the text
-your question will be sent to the #anonymous channel by the anonymous
-bot. Zoom For synchronous class meeting and office hours we will use the
-Zoom video conferencing software. I recommend downloading the Zoom app
-for your operating system.</p>
 </div>
 <div id="latex" class="section level2">
 <h2>LaTeX</h2>
-<p>If you want to render R Markdown documents to PDFs, then you need to
-install LaTeX. Below are the recommended installers for Windows and Mac:</p>
+<p>You need a Latex compiler to create a pdf document from a R Markdown file. If you use the maize server, you don’t need to install anything. If you are using a local RStudio, you should install a Latex compiler. Below are the recommended installers for Windows and Mac:</p>
 <ul>
 <li><p><a href="https://www.tug.org/mactex/">MacTeX</a> for Mac (3.2GB)</p></li>
 <li><p><a href="https://miktex.org/download">MiKTeX</a> for Windows (190MB)</p></li>
 <li><p>Alternatively, you can install the <code>tinytex</code> R package by running
 <code>install.packages("tinytex")</code> in the console.</p></li>
 </ul>
-<p>If you are using maize, then there is nothing you need to install.</p>
 </div>
 <div id="acknowledgements" class="section level2 appendix">
 <h2>Acknowledgements</h2>
-<p>This installation guide is based on the guide from Adam Loy.</p>
+<p>This installation guide is based on the guide from Adam Loy and Katie St. Clair.</p>
 </div>
 <div id="resuse" class="section level2 appendix">
 <h2>Resuse</h2>
 <p>This work is licensed under the CC BY-NC 3.0 Creative Commons License.</p>
 </div>
 
-    </div>
+          </div>
 
-    
-
-
+          
 
 
 
-
-
-
-<div class="share-box">
-  <ul class="share">
-    
-      
-      
-      
-        
-      
-      
-      
-      <li>
-        <a href="https://twitter.com/intent/tweet?url=https://deepbas.netlify.app/courses/stat220/software/&amp;text=Software%20in%20Stat%20220" target="_blank" rel="noopener" class="share-btn-twitter" aria-label="twitter">
-          <i class="fab fa-twitter"></i>
-        </a>
-      </li>
-    
-      
-      
-      
-        
-      
-      
-      
-      <li>
-        <a href="https://www.facebook.com/sharer.php?u=https://deepbas.netlify.app/courses/stat220/software/&amp;t=Software%20in%20Stat%20220" target="_blank" rel="noopener" class="share-btn-facebook" aria-label="facebook">
-          <i class="fab fa-facebook"></i>
-        </a>
-      </li>
-    
-      
-      
-      
-        
-      
-      
-      
-      <li>
-        <a href="mailto:?subject=Software%20in%20Stat%20220&amp;body=https://deepbas.netlify.app/courses/stat220/software/" target="_blank" rel="noopener" class="share-btn-email" aria-label="envelope">
-          <i class="fas fa-envelope"></i>
-        </a>
-      </li>
-    
-      
-      
-      
-        
-      
-      
-      
-      <li>
-        <a href="https://www.linkedin.com/shareArticle?url=https://deepbas.netlify.app/courses/stat220/software/&amp;title=Software%20in%20Stat%20220" target="_blank" rel="noopener" class="share-btn-linkedin" aria-label="linkedin-in">
-          <i class="fab fa-linkedin-in"></i>
-        </a>
-      </li>
-    
-      
-      
-      
-        
-      
-      
-      
-      <li>
-        <a href="whatsapp://send?text=Software%20in%20Stat%20220%20https://deepbas.netlify.app/courses/stat220/software/" target="_blank" rel="noopener" class="share-btn-whatsapp" aria-label="whatsapp">
-          <i class="fab fa-whatsapp"></i>
-        </a>
-      </li>
-    
-      
-      
-      
-        
-      
-      
-      
-      <li>
-        <a href="https://service.weibo.com/share/share.php?url=https://deepbas.netlify.app/courses/stat220/software/&amp;title=Software%20in%20Stat%20220" target="_blank" rel="noopener" class="share-btn-weibo" aria-label="weibo">
-          <i class="fab fa-weibo"></i>
-        </a>
-      </li>
-    
-  </ul>
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/courses/stat220/github-in-stat-220/" rel="next">GitHub Guide for Students in Stat 220</a>
+  </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/courses/stat220/rstudio-in-stat-220/" rel="prev">Using Rstudio in Stat 220</a>
+  </div>
+  
 </div>
 
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Last updated on Sep 10, 2022</p>
+
+          
 
 
 
 
 
+          
 
 
 
+
+          
 
 
   
@@ -963,142 +984,10 @@ install LaTeX. Below are the recommended installers for Windows and Mac:</p>
 
 
 
-  
-  
-  
-    
-  
-  
-  
-  <div class="media author-card content-widget-hr">
-    
-      
-      <a href="https://deepbas.netlify.app/"><img class="avatar mr-3 avatar-circle" src="/author/deepak-bastola/avatar_hua6f338ad0e16d11b4a73fbcaceb7bb4d_322460_270x270_fill_q75_lanczos_center.jpg" alt="Deepak Bastola"></a>
-    
+        </div>
 
-    <div class="media-body">
-      <h5 class="card-title"><a href="https://deepbas.netlify.app/">Deepak Bastola</a></h5>
-      <h6 class="card-subtitle">Visiting Assistant Professor of Statistics</h6>
-      <p class="card-text">My research interests include Bayesian statistics and machine learning.</p>
-      <ul class="network-icon" aria-hidden="true">
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="/#contact" >
-        <i class="fas fa-envelope"></i>
-      </a>
-    </li>
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="https://twitter.com/aphsansar" target="_blank" rel="noopener">
-        <i class="fab fa-twitter"></i>
-      </a>
-    </li>
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="https://scholar.google.com/citations?user=9JtQBSEAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener">
-        <i class="fas fa-graduation-cap"></i>
-      </a>
-    </li>
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="https://github.com/deepbas" target="_blank" rel="noopener">
-        <i class="fab fa-github"></i>
-      </a>
-    </li>
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="https://www.linkedin.com/in/deepakbastola/" target="_blank" rel="noopener">
-        <i class="fab fa-linkedin"></i>
-      </a>
-    </li>
-  
-</ul>
+      </article>
 
-    </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-</article>
-  </div>
-
-  <div class="page-footer">
-    
-    
-    <div class="container">
       <footer class="site-footer">
 
   
@@ -1138,7 +1027,15 @@ install LaTeX. Below are the recommended installers for Windows and Mac:</p>
   </p>
 </footer>
 
-    </div>
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
     
   </div>
 
@@ -1211,6 +1108,11 @@ install LaTeX. Below are the recommended installers for Windows and Mac:</p>
     
 
     
+    
+    <script src="https://cdn.jsdelivr.net/gh/bryanbraun/anchorjs@4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
     
 
     

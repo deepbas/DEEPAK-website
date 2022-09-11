@@ -1,9 +1,11 @@
 ---
 title: "Software in Stat 220"
-description: |
-  This guide describes the key software we will use this term
-  in Stat 220.
 date: "2022-09-10"
+draft: no
+output: pdf_document
+type: book
+weight: 20
+toc: no
 ---
 
 ```{r setup, include=FALSE}
@@ -22,65 +24,51 @@ RStudio:
     server version is that all of your work will be stored in the cloud,
     where it is automatically saved and backed up. This means that you
     can access your work from any computer on campus using a web
-    browser. The downside is that you have to share limited
-    computational resources with each other! This limitation is
-    especially pronounced this term when classes are being taught
-    remotely. We are unsure what type of load will be placed on maize,
-    so if you can download a local version of R and RStudio, I recommend
-    you do so. Use your Carleton credentials to access your account and
-    you need to be running the Carleton VPN (below) to access this
-    server.
+    browser. This server may run slow during peak days/hours. I also recommend
+    you to download a local version of R server in your computer in case of rare outages.
 
 -   A **local version** of RStudio installed on your machine. This
     option is highly recommended due to the computational resources this
-    course demands. The downside to this approach is that your work is
-    only stored locally, but I get around this problem by keeping all of
-    my work on GitHub. You will learn how to use GitHub throughout the
-    course. Both R and RStudio are free and open-source.
+    course demands. Using this version you can only store your files in your local machine. Additionally, we can save our work on GitHub. We will learn how to use GitHub in the beginning of the course. Both R and RStudio are free and open-source. Please make sure that you have recently updated both R and RStudio.
 
-    **Installing R/RStudio (not needed if you are using the maize
-    server)**
+###  **Installing R/RStudio (not needed if you are using the maize server)**
 
-    -   Download the latest version of R: <https://cran.r-project.org/>
+> Download the latest version of R: <https://cran.r-project.org/>
+> Download the free Rstudio desktop version: <https://www.rstudio.com/products/rstudio/download/>
 
-    -   Download the free Rstudio desktop version:
-        <https://www.rstudio.com/products/rstudio/download/>
+Use the default download and install options for each. For R, download the "precompiled binary" distribution rather than the source code
 
-    Use the default download and install options for each. For R,
-    download the "precompiled binary" distribution rather than the
-    source code
+**Updating R/RStudio (not needed if you are using the maize server)**
 
-    **Updating R/RStudio (not needed if you are using the maize
-    server)**
+If you have used a local version of R/RStudio before and it is still installed on your machine, then you should make sure that you have the most recent versions of each program.
 
-    If you have used a local version of R/RStudio before and it is still
-    installed on your machine, then you should make sure that you have
-    the most recent versions of each program.
+-   To check your version of R, run the command `getRversion()` and compare your version to the newest version posted on  <https://cran.r-project.org/>. If you need an update, then install the newer version using the installation directions above.
 
-    -   To check your version of R, run the command `getRversion()` and
-        compare your version to the newest version posted on
-        <https://cran.r-project.org/>. If you need an update, then
-        install the newer version using the installation directions
-        above.
+-   In RStudio, check for updates with the menu option `Help > Check for updates`. Follow directions if an update is needed.
 
-    -   In RStudio, check for updates with the menu option
-        `Help > Check for updates`. Follow directions if an update is
-        needed.
+** Did it work? (A sanity check after your install/update) **
 
-    ### Did it work? (A sanity check after your install/update)
-
-    Do whatever is appropriate for your operating system to launch
+  Do whatever is appropriate for your operating system to launch
     RStudio. You should get a window similar to the screenshot you see
     [here](https://www.rstudio.com/wp-content/uploads/2014/04/rstudio-workbench.png),
     but yours will be more boring because you haven't written any code
     or made any figures yet!
 
-    Put your cursor in the pane labeled Console, which is where you
+  Put your cursor in the pane labeled *Console*, which is where you
     interact with the live R process. Create a simple object with code
     like `x <- 2 * 4` (followed by enter or return). Then inspect the
     `x` object by typing `x` followed by enter or return. You should see
-    the value 8 printed. If this happened, you've succeeded in
+    the value `8` printed. If this happened, you've succeeded in
     installing R and RStudio!
+
+
+## VPN
+
+If you plan to do any work off campus this term, you need to install Carleton’s VPN. This will allow you to access the **maize** server (if needed).
+
+**Installing the GlobalProtect VPN**
+
+Follow the directions [here](https://wiki.carleton.edu/display/itskb/GlobalProtect+VPN) to install VPN.
 
 
 ## Git and GitHub
@@ -104,15 +92,11 @@ install Git.
 Directions for both Windows & Mac here:
 <http://happygitwithr.com/install-git.html>.
 
--   If you are using **maize**, then there is nothing you need to
-    install.
-
--   Windows users should follow Option 1 in 6.2.
-
--   Mac users can follow Option 1 in 6.3 if comfortable, otherwise
-    follow Option 2
-
--   Linux users can follow 6.4.
+> 
+1. If you are using **maize**, then there is nothing you need to install.
+2. Windows users should follow Option 1 in 6.2.
+3. Mac users can follow Option 1 in 6.3 if comfortable, otherwise follow Option 2
+4. Linux users can follow 6.4.
 
 ![](/img/maize_gittab.png)
 
@@ -120,7 +104,7 @@ Directions for both Windows & Mac here:
 
 We will use Slack for all course communication. [Sign up for our course
 Slack team
-here](https://join.slack.com/t/stat220datasc-wmz5924/shared_invite/zt-110xuf0zq-0Ap9EaQAp46YiilE4Jvc~A)!
+here](https://join.slack.com/t/datasciencefall22/shared_invite/zt-1fiwi30yr-MysFDWn0uuQZbS39X~5KTw)!
 You will need to create an account with a username, and log in to read
 and post. You can download a
 standalone Slack application to your
@@ -138,21 +122,10 @@ Several channels have been set up for specific parts of the course. Feel
 free to ask questions anytime. You can browse the available channels in
 our team by clicking on "Channels" on the left-hand panel.
 
-There is also an \#anonymous channel that you can use if you'd like to
-ask a question or provide a comment anonymously. To have a post appear
-anonymously in this channel, compose a direct message to yourself (by
-clicking on your username in the 'Direct Messages' menu on the left
-panel) that begins with /anon \#anonymous your question. Then the text
-your question will be sent to the \#anonymous channel by the anonymous
-bot. Zoom For synchronous class meeting and office hours we will use the
-Zoom video conferencing software. I recommend downloading the Zoom app
-for your operating system.
-
 
 ## LaTeX
 
-If you want to render R Markdown documents to PDFs, then you need to
-install LaTeX. Below are the recommended installers for Windows and Mac:
+You need a Latex compiler to create a pdf document from a R Markdown file. If you use the maize server, you don’t need to install anything. If you are using a local RStudio, you should install a Latex compiler. Below are the recommended installers for Windows and Mac:
 
 -   [MacTeX](https://www.tug.org/mactex/) for Mac (3.2GB)
 
@@ -161,11 +134,10 @@ install LaTeX. Below are the recommended installers for Windows and Mac:
 -   Alternatively, you can install the `tinytex` R package by running
     `install.packages("tinytex")` in the console.
 
-If you are using maize, then there is nothing you need to install.
 
 ## Acknowledgements {.appendix}
 
-This installation guide is based on the guide from Adam Loy.
+This installation guide is based on the guide from Adam Loy and Katie St. Clair.
 
 ## Resuse {.appendix}
 

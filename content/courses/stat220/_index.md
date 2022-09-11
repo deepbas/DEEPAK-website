@@ -14,9 +14,9 @@ type: book
 
 - Data wrangling and formatting {{<hl>}}Using the tidyverse set of libraries{{</hl>}}
 - Exploratory data analysis {{<hl>}}including data visualization using ggplot2{{</hl>}} 
-- Data acquisition {{<hl>}}using web-scraping and APIs{{</hl>}} 
+- Data acquisition {{<hl>}}using web-scraping{{</hl>}} 
 - Statistical learning {{<hl>}}basics of supervised and unsupervised learning{{</hl>}}
-- Text mining and language processing
+- Regular Expression and Text mining 
 - Reproducible research and dynamic programming {{<hl>}}using R/RStudio/RShiny{{</hl>}}
 
 ## Course overview 

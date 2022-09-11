@@ -7,21 +7,18 @@ type: book
 weight: 20
 ---
 
-Key points
+## Key points
 
-There will be a lot of Rstudio content thrown your way this term, most
-in the form of .Rmd Markdown files. To stay organized, I *strongly*
-suggest you create a **stat220** folder that contains the following
-subfolders:
+You will work with many .Rmd Markdown files in this course. These include class activities, homework template, project helper files etc. To stay organized, I *strongly* suggest you create a **stat220** folder that contains the following subfolders:
 
 -   **stat220** folder
     -   **Assignments:** This folder will contain subfolders for each
-        assignment. Each assignment subfolder (e.g. homework1,
+        assignment. Each assignment subfolder (e.g. homework1,
         homework2, …) will be a Github connected RStudio project that
         you will create **once an assignment is posted.**
 
     -   **Content:** This folder should be used to save any
-        non-assignment files (e.g. slides, examples) for this class. You
+        non-assignment files (e.g. slides, examples) for this class. You
         will create this subfolder by creating an RStudio project (see
         step 5 below).
 
@@ -36,13 +33,15 @@ can navigate this file system using unix commands, but I assume that
 most or all of you will just use Rstudio to access your files on this
 server.
 
--   **1.** In Rstudio, click the **Files** *tab* in the lower right-hand
+>
+**1.** In Rstudio, click the **Files** *tab* in the lower right-hand
     window. Note: this is **not** the same as the **File** *menu*
     option.
 
 ![](/img/maize_files.png)
 
--   **2.** Verify that you are in your **HOME** folder (should simply
+> 
+**2.** Verify that you are in your **HOME** folder (should simply
     say Home right under the New Folder button). To navigate to your
     Home folder (if somehow you are not in it), click the **…** button
     (far right side of the **Files** tab) and enter a \~ (tilde) symbol
@@ -83,7 +82,7 @@ server.
 -   **d.** You should now have a new folder called **content** in your
     **stat220** folder and this folder will contain an RStudio project
     `.Rproj`. Feel free to add subfolders to this **content** folder
-    (e.g. slides, examples, etc).
+    (e.g. slides, examples, etc).
 
 ![](/img/maize_Rproj.png)
 
@@ -134,8 +133,6 @@ Project…** option shown in step 5 above.
     gmail, downloading, editing a doc, then uploading it back to
     drive/dropbox is another great way to lose work.
 -   Avoid [this](https://xkcd.com/1459/) and [this](http://phdcomics.com/comics.php?f=1531).
-
-
 
 # Acknowledgments {.appendix}
 This installation guide is based on the guide from Katie St. Clair

@@ -1,5 +1,5 @@
 ---
-title: GitHub Classroom Guide for Students in Stat 220
+title: GitHub Guide for Students in Stat 220
 date: "2022-09-10"
 draft: false  
 toc: false  
@@ -17,7 +17,6 @@ projects.
 
 I will host all of our course materials on GitHub, and you will use
 GitHub to submit homework and collaborate on projects.
-
 
 
 ## Getting setup with Git and GitHub
