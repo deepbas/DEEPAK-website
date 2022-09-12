@@ -216,7 +216,7 @@ class: clear
 
 # Gendered language in professor reviews
 
-.footnote[ Click [here](Gendered language in professor reviews) to go to the app]
+.footnote[ Click [here](http://benschmidt.org/profGender/) to go to the app]
 
 
 
