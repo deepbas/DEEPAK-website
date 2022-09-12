@@ -1,0 +1,149 @@
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700);
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap');
+
+
+body { font-family: 'Droid Sans', "Frutiger", 'Book Antiqua', Palatino, 'Microsoft YaHei', 'Songti SC', sans-serif;
+  font-size: 3030pt
+}
+
+
+h1 {
+  font-family: "Frutiger", 'Open Sans-Serif';
+  font-size: 36pt;
+}
+
+h2 {
+  font-family: "Frutiger", 'Open Sans-Serif';
+  font-size: 34pt;
+}
+
+h3 {
+  font-family: "Frutiger", 'Open Sans-Serif';
+  font-size: 32pt;
+}
+
+
+.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace; font-size: 90%}
+
+
+
+/* source-code-pro-regular - latin */
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/source-code-pro-v20-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('../fonts/source-code-pro-v20-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/source-code-pro-v20-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/source-code-pro-v20-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/source-code-pro-v20-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/source-code-pro-v20-latin-regular.svg#SourceCodePro') format('svg'); /* Legacy iOS */
+}
+
+
+.mjx-chtml{ font-size: 100% !important; }
+
+
+
+.remark-slide-content { font-size:22px; }
+.remark-slide-content p, 
+.remark-slide-content li {
+  line-height: 1.4;
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+
+.footnote {
+  position: absolute;
+  bottom: 0;
+  padding-right: 8em; /* to avoid the page numbering */ 
+}
+/* footnote identifier use: .fn[1] */
+.fn {
+  vertical-align: super;
+  font-size: 60%;
+}
+.footnote {
+  font-size: 0.7em;
+}
+.remark-slide-content .footnote  p, 
+.remark-slide-content .footnote li {
+  font-size: 0.7em!important;
+}
+.footnote .remark-code, 
+.footnote .remark-inline-code{ font-size: 0.8em!important; }
+
+/* code higlighting */
+.remark-code-string-highlighted, 
+.remark-code-line-highlighted {
+    background-color: yellow;
+}
+
+
+.remark-slide-number{
+  font-size: 16px!important;
+  bottom: 8px;
+  right: 16px;
+}
+/************************
+ * Font size and colours
+ ************************/
+
+/*      LaTeX style       */
+.Large       , .Large .remark-code, .Large .remark-inline-code { font-size: 144%; }
+.large       , .large .remark-code, .large .remark-inline-code { font-size: 120%; }
+.small       , .small .remark-code, .small .remark-inline-code { font-size: 90%; }
+.footnotesize, .footnotesize .remark-code, .footnotesize .remark-inline-code { font-size: 80%; }
+.scriptsize  , .scriptsize .remark-code, .scriptsize .remark-inline-code { font-size: 70%; }
+.tiny        , .tiny .remark-code, .tiny .remark-inline-code { font-size: 60%; }
+
+/* or you can be more specific */
+.font10 , .code10 .remark-code, .code10 .remark-inline-code{ font-size: 10%; }
+.font20 , .code20 .remark-code, .code20 .remark-inline-code{ font-size: 20%; }
+.font30 , .code30 .remark-code, .code30 .remark-inline-code{ font-size: 30%; }
+.font40 , .code40 .remark-code, .code40 .remark-inline-code{ font-size: 40%; }
+.font50 , .code50 .remark-code, .code50 .remark-inline-code{ font-size: 50%; }
+.font60 , .code60 .remark-code, .code60 .remark-inline-code{ font-size: 60%; }
+.font70 , .code70 .remark-code, .code70 .remark-inline-code{ font-size: 70%; }
+.font75 , .code75 .remark-code, .code75 .remark-inline-code{ font-size: 75%; }
+.font80 , .code80 .remark-code, .code80 .remark-inline-code{ font-size: 80%; }
+.font90 , .code90 .remark-code, .code90 .remark-inline-code{ font-size: 90%; }
+.font100, .code100 .remark-code, .code100 .remark-inline-code{ font-size: 100%; }
+.font110, .code110 .remark-code, .code110 .remark-inline-code{ font-size: 110%; }
+.font120, .code120 .remark-code, .code120 .remark-inline-code{ font-size: 120%; }
+.font130, .code130 .remark-code, .code130 .remark-inline-code{ font-size: 130%; }
+.font140, .code140 .remark-code, .code140 .remark-inline-code{ font-size: 140%; }
+.font150, .code150 .remark-code, .code150 .remark-inline-code{ font-size: 150%; }
+.font160, .code160 .remark-code, .code160 .remark-inline-code{ font-size: 160%; }
+.font170, .code170 .remark-code, .code170 .remark-inline-code{ font-size: 170%; }
+.font175, .code175 .remark-code, .code175 .remark-inline-code{ font-size: 175%; }
+.font180, .code180 .remark-code, .code180 .remark-inline-code{ font-size: 180%; }
+.font190, .code190 .remark-code, .code190 .remark-inline-code{ font-size: 190%; }
+.font200, .code200 .remark-code, .code200 .remark-inline-code{ font-size: 200%; }
+
+.brand-red { color: #e64626; }
+.brand-blue { color: #0148A4; }
+.brand-yellow { color: #FFB800; }
+.brand-charcoal {color: #424242; }
+.brand-gray {color: #F1F1F1;}
+.brand-grey {color: #F1F1F1;}
+.black { color: black; }
+.white { color: white; }
+.red { color: red; }
+.blue { color: blue; }
+.green { color: green; }
+.yellow { color: yellow; }
+.orange { color: orange; }
+.purple { color: purple; }
+.gray { color: gray; }
+.grey { color: gray; }
+.brown { color:brown;}
+.ggplotblue{ color: #619CFF}
+
+.b { font-weight: bold; }
+.bb { font-weight: bolder; }
+

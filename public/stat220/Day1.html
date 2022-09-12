@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to Data Science</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Introduction to Data Science]
+
+### .fancy[Fall 2022]
+
+ September 12 2022
+
+---
+
+class: middle
+
+# Something about me
+
+.pull-left[
+
+.bq[
+- Second year at Carleton
+- Originally from Nepal
+- Research in Bayesian computation and machine learning
+- Avid learner and traveler
+]
+]
+
+.pull-right[
+
+
+&lt;center&gt;
+&lt;img src="images/austria.jpg" width="80%" height="60%"&gt; &lt;br&gt;
+&lt;a&gt;On top of Nordkette in Innsbruck, Austria&lt;/a&gt;
+&lt;/center&gt;
+
+
+]
+
+---
+
+class: middle
+
+# What is data science?
+
+.bql[
+Data science is the application of **computational** and **statistical** techniques to gain insight into some problem in the real world
+]
+
+&lt;!-- Data science is an exciting discipline that allows you to turn raw data into understanding, insight, and knowledge. --&gt;
+
+$$
+`\begin{align*}
+\text{Data Science} &amp;= \text{scientific inquiry } +\\
+&amp; \quad  \text{ data collection } +\\
+&amp; \quad  \text{ data processing } +\\
+&amp; \quad  \text{ visualization } +\\
+&amp; \quad  \text{ statistics } +\\
+&amp; \quad  \text{ machine learning } +\\
+&amp; \quad  \text{ communication }
+\end{align*}`
+$$
+
+---
+
+background-image: url("images/glassdoor.png")
+background-position: center
+background-size: 60%
+class: clear
+
+# One of the best jobs
+
+.footnote[ Source: Click [here](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm)]
+
+
+
+---
+
+background-image: url("images/ds-cycle.png")
+background-position: center
+background-size: 80%
+class: clear
+
+# Data Science in a nutshell
+
+.footnote[ Image adapted from work of Joe Blitzstein, Hanspeter Pfister, and Hadley Wickham]
+
+---
+
+class: middle
+
+# Stat 220: Introduction to Data Science
+
+.out-t[Focus on the “soup to nuts” approach to problem solving]
+
+.bql.font80[
+
+- data wrangling
+
+  + reshaping, cleaning, gathering
+  
+- learning from data
+
+  + EDA tools
+  + statistical learning methods
+  + network data, spatial data
+  
+- communication
+
+  + reproducibility
+  + effective visualization
+]
+
+
+---
+
+background-image: url("images/flexible.png")
+background-position: center
+background-size: 64%
+class: clear
+
+# Gendered language in professor reviews
+
+.footnote[ Click [here](Gendered language in professor reviews) to go to the app]
+
+
+
+
+
+
+---
+
+
+class: middle
+
+# How to make friends and succeed in Data Science?
+
+.bq.font90[
+1. Actively follow along! RMarkdown (.Rmd) documents will be provided for you
+each week 
+
+  - use these to take notes and run code “live” in class.
+  
+2. Ask questions! 
+
+  - This is new for everyone, no question is a bad question.
+
+3. When you don’t know if something will work, try it! 
+
+  - experimentation is key in this class.
+]
+
+---
+
+class: middle
+
+# Tell me something about yourself!
+
+.pull-left[
+.bq[
+- Your name?
+- Gender Pronouns?
+- Why are you interested in data science?
+- Your favorite media personality?
+]
+]
+
+.pull-right[
+
+![](https://media.giphy.com/media/1QhkRAFtcjO90zNZFi/giphy.gif)
+
+
+]
+
+
+---
+
+class: middle
+
+# Class Pipelines
+
+.font140.center[[https://deepbas.io/courses/stat220/](https://deepbas.io/courses/stat220/)]
+
+
+.bq[
+
+- Please bookmark this page: should be checked multiple times a day
+- Most of the course information and schedule will be posted here in advance
+- Use moodle for submitting class activity and accessing solutions
+- Use Github for homework and projects
+]
+
+
+---
+
+class: middle
+
+# Necessary skills to be mastered
+
+.bq[
+- programming with data
+- statistical modeling
+- domain knowledge
+- communication
+]
+
+---
+
+class: middle
+
+# What will a typical day/week look like?
+
+.bql[
+
+Before class:
+- Some reading/video to introduce some topics
+- Work on homework/projects, come with questions
+
+During class:
+- Mini lectures
+- Class activities 
+]
+
+
+---
+
+class: middle
+
+#  What you need to do ..
+
+.bq[
+- read the [Rstudio for Stat220](https://deepbas.io/courses/stat220/rstudio-in-stat-220/) page
+- read the [GitHub for Stat220](https://deepbas.io/courses/stat220/github-in-stat-220/) page
+- read the [Software for Stat220](https://deepbas.io/courses/stat220/software/) page
+]
+
+
+
+---
+
+# R Vs Python for data science
+
+.out-t["R is written by statisticians, for statisticians," 
+.right[Norm Matloff, Author of The Art of R Programmming, Prof. of Computer Science, UC Davis]]
+&lt;br&gt;
+.bq[
+.brown[Advantages of R over Python]:
+- Not so steep learning curve as Python
+- R has many generic functions that are universal, e.g. `print()`, `plot()`, `summary()`
+- R Comprehensive R Archive Network (CRAN) has many user-friendly packages
+- R's basic `help()` and `example()` functions are much more informative than Python's counterparts
+- R community champions for inclusiveness. The `reticulate` package enables seamless, high-performance interoperability between R and Python
+]
+
+---
+
+background-image: url("images/RStudio Anatomy.svg")
+background-position: center
+background-size: 96%
+class: clear
+
+
+.footnote[ Click [here](https://buzzrbeeline.blog/2018/07/04/rstudio-anatomy/) for source]
+
+---
+
+# Using R Markdown for data science
+
+.bql.font80[
+- You will use R Markdown for all work in this class
+
+- A Markdown (.Rmd) file contains
+
+  + R code
+  +  answers, description of results, report, etc.
+  
+- The Markdown file is knit to generate an output document
+
+  + pdf, html, word
+  + presentations (html, beamer pdf)
+  + dashboards, interactive graphics (html)
+  
+- Markdown is designed for reproducibility!
+
+- The slides I produce for this class are made using R Markdown’s [Xaringan](https://github.com/yihui/xaringan) presentation
+
+]
+
+
+
+---
+
+# Version Control using Git and GitHub
+
+.pull-left-60[
+.bq.font80[
+- _User:_ A Github account for you (e.g., deepbas).
+- _Organization:_ The Github account for one or more user (e.g., DataScienceFall22).
+- _Repository:_ A folder within the organization that includes files dedicated to a project.
+- _Local Github:_ Copies of Github files located your computer.
+- _Remote Github:_ Github files located on the https://github.com website.
+- _Clone:_ Process of making a local copy of a remote Github repository. 
+- _Pull:_ Copy changes on the remote Github repository to your local Github repository.
+- _Push:_ Save local changes to remote Github
+]
+]
+
+.pull-right-40[
+
+&lt;center&gt;
+&lt;img src="images/gitcycle.png" width="95%" height="100%"&gt; &lt;br&gt;
+&lt;a&gt;Git Cycle&lt;/a&gt;
+&lt;/center&gt;
+
+]
+
+.footnote[Source: Click [here](http://ohi-science.org/data-science-training/)]
+
+---
+
+class: middle
+
+# Using GitHub and Rstudio for data science
+
+
+.bq[
+Rstudio lets you create git controlled projects
+- create a GitHub repo
+- make a Rstudio project using your cloned repo
+- edit/create files (.rmd, .r, .csv, . . . )
+- commit changes to your local computer using git
+- push changes to the GitHub repo (online)
+- pull changes made by others to your computer
+]
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Work on the class-activity-1.Rmd file
+- You can get the file either from [Github organization repo](https://github.com/DataScienceFall22) or from [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Ask me questions
+- Submit your compiled .pdf file to moodle
+]
+]
+
+<div class="countdown" id="timer_571cc607" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

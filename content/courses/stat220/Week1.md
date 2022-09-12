@@ -12,5 +12,5 @@ weight: 20
 
 Welcome!
 
-<!-- {{% staticref "pdf/Day1/Day1.pdf" "newtab" %}}Day 1 Slides{{% /staticref %}} -->
+Day 1 Slides ({{% staticref "stat220/Day1.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day1.html" "newtab" %}}html{{% /staticref %}})
 
