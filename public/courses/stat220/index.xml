@@ -20,6 +20,9 @@
       <description>&lt;h2 id=&#34;monday-0912&#34;&gt;Monday, 09/12&lt;/h2&gt;
 &lt;p&gt;Welcome!&lt;/p&gt;
 &lt;p&gt;Day 1 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day1.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day1.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;h3 id=&#34;before-next-class&#34;&gt;Before next class&lt;/h3&gt;
+&lt;p&gt;Students are expected to open a GitHub account, verify it, and connect RStudio with that account using personal access token (PAT) credential methods. Once this step is finished, students should clone a git repository on their local machines using git version control methods (&lt;a href=&#34;https://deepbas.io/courses/stat220/github-in-stat-220/#creating-an-individual-assignment-repo-and-project&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tutorial&lt;/a&gt;), modify the files, save, commit, and push the changes to the remote repository associated with their GitHub username. Here is one useful video about Git and Github, &lt;a href=&#34;https://www.youtube.com/watch?v=BCQHnlnPusY&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Introduction to Git and Github&lt;/a&gt;.&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/BCQHnlnPusY&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
 </description>
     </item>
     
