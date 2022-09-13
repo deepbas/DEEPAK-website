@@ -20,7 +20,7 @@ Students are expected to open a GitHub account, verify it, and connect RStudio w
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BCQHnlnPusY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Also, please read through all the course set-up modules and test your R skills by doing the test-assignment named hw0-username accessible here shortly, [Stat 220 Organization GitHub page](https://github.com/DataScienceFall22/).If you can successfully push your modifications, then you should be set up for this course, technically. Please try to achieve this by Friday. We will also do a live demo in class on Wednesday.
+Also, please read through all the course set-up modules and test your R skills by doing the test-assignment named hw0-username accessible here shortly, [Stat 220 Organization GitHub page](https://github.com/DataScienceFall22/).It will be useful to go over [how to connect Github and Rstudio](https://deepbas.io/courses/stat220/github-in-stat-220/#individual-assignments) again. If you can successfully push your modifications, then you should be set up for this course, technically. Please try to achieve this by Friday. We will also do a live demo in class on Wednesday.
 
 
 ## Wednesday, 09/14

@@ -98,7 +98,7 @@ repository will contain assignment details (README, .Rmd).
 ### Creating an individual assignment repo and project
 
 1.  Go to our course GitHub organization page
-    (<https://github.com/DataScienceFall22/>) and find your homework repo, such as `hw-1-username` (where your username is attached).
+    (<https://github.com/DataScienceFall22/>) and find your homework repo, such as `hw1-username` (where your username is attached).
     
 2.  Enter the online assignment repository on GitHub. Click the green
     **"Code"** button. Most of you should just use the default setting
