@@ -40,3 +40,6 @@ Please read [GW RMarkdown](https://r4ds.had.co.nz/r-markdown.html#r-markdown), [
 
 Day 2 Slides ({{% staticref "stat220/Day2.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day2.html" "newtab" %}}html{{% /staticref %}})
 
+Optional (if you need more review):
+
+If it has been a LONG time since you took STAT 120 or used R, then this crash course is helpful: [programming basics primer from RStudio](https://rstudio.cloud/learn/primers/1.2). These resources are also useful if you feel like you are starting from scratch: [R and RStudio Basics](https://ismayc.github.io/rbasics-book/3-rstudiobasics.html) and [R Markdown](https://ismayc.github.io/rbasics-book/4-rmarkdown.html)
