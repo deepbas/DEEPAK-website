@@ -23,7 +23,7 @@
 &lt;h3 id=&#34;before-next-class&#34;&gt;Before next class&lt;/h3&gt;
 &lt;p&gt;Students are expected to open a GitHub account, verify it, and connect RStudio with that account using personal access token (PAT) credential methods. Once this step is finished, students should clone a git repository on their local machines using git version control methods (&lt;a href=&#34;https://deepbas.io/courses/stat220/github-in-stat-220/#creating-an-individual-assignment-repo-and-project&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tutorial&lt;/a&gt;), modify the files, save, commit, and push the changes to the remote repository associated with their GitHub username. Here is one useful video about Git and Github, &lt;a href=&#34;https://www.youtube.com/watch?v=BCQHnlnPusY&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Introduction to Git and Github&lt;/a&gt;.&lt;/p&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/BCQHnlnPusY&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
-&lt;p&gt;Also, please read through all the course set-up modules and test your R skills by doing the test-assignment named hw0-username accessible here shortly, &lt;a href=&#34;https://github.com/DataScienceFall22/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Stat 220 Organization GitHub page&lt;/a&gt;.It will be useful to go over &lt;a href=&#34;https://deepbas.io/courses/stat220/github-in-stat-220/#individual-assignments&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;how to connect Github and Rstudio&lt;/a&gt; again. If you can successfully push your modifications, then you should be set up for this course, technically. Please try to achieve this by Friday. We will also do a live demo in class on Wednesday.&lt;/p&gt;
+&lt;p&gt;Also, please read through all the course set-up modules and test your R skills by doing the test-assignment named hw0-username accessible here shortly, &lt;a href=&#34;https://github.com/DataScienceFall22/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Stat 220 Organization GitHub page&lt;/a&gt;. It will be useful to go over &lt;a href=&#34;https://deepbas.io/courses/stat220/github-in-stat-220/#individual-assignments&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;how to connect Github and Rstudio&lt;/a&gt; again. If you can successfully push your modifications, then you should be set up for this course, technically. Please try to achieve this by Friday. We will also do a live demo in class on Wednesday.&lt;/p&gt;
 &lt;h2 id=&#34;wednesday-0914&#34;&gt;Wednesday, 09/14&lt;/h2&gt;
 &lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
@@ -37,6 +37,7 @@
 &lt;li&gt;Getting up and running with R markdown&lt;/li&gt;
 &lt;li&gt;Basic R-codes and Github practice&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;Day 2 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day2.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day2.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
