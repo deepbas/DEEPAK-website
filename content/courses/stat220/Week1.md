@@ -8,7 +8,8 @@ type: book
 weight: 20
 ---
 
-## Monday, 09/12
+<span style="color:orange">**Monday, 09/12**</span>
+
 
 Welcome!
 
@@ -20,10 +21,10 @@ Students are expected to open a GitHub account, verify it, and connect RStudio w
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/BCQHnlnPusY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Also, please read through all the course set-up modules and test your R skills by doing the test-assignment named hw0-username accessible here shortly, [Stat 220 Organization GitHub page](https://github.com/DataScienceFall22/). It will be useful to go over [how to connect Github and Rstudio](https://deepbas.io/courses/stat220/github-in-stat-220/#individual-assignments) again. If you can successfully push your modifications, then you should be set up for this course, technically. Please try to achieve this by Friday. We will also do a live demo in class on Wednesday.
+Also, please read through all the course set-up modules and test your R skills by doing the test-assignment named hw0-username accessible here, [Stat 220 Organization GitHub page](https://github.com/DataScienceFall22/). It will be useful to go over [how to connect Github and Rstudio](https://deepbas.io/courses/stat220/github-in-stat-220/#individual-assignments) again. If you can successfully push your modifications, then you should be set up for this course, technically. Please try to achieve this by Friday. We will also do a live demo in class on Wednesday.
 
 
-## Wednesday, 09/14
+<span style="color:orange">**Wednesday, 09/14**</span>
 
 ### Before Class
 
@@ -37,9 +38,20 @@ Please read [GW RMarkdown](https://r4ds.had.co.nz/r-markdown.html#r-markdown), [
 - Getting up and running with R markdown
 - Basic R-codes and Github practice
 
-
 Day 2 Slides ({{% staticref "stat220/Day2.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day2.html" "newtab" %}}html{{% /staticref %}})
 
-Optional (if you need more review):
+_Optional_ (if you need more review):
 
 If it has been a LONG time since you took STAT 120 or used R, then this crash course is helpful: [programming basics primer from RStudio](https://rstudio.cloud/learn/primers/1.2). These resources are also useful if you feel like you are starting from scratch: [R and RStudio Basics](https://ismayc.github.io/rbasics-book/3-rstudiobasics.html) and [R Markdown](https://ismayc.github.io/rbasics-book/4-rmarkdown.html)
+
+
+<span style="color:orange">**Friday, 09/16**</span>
+
+
+### Before Class
+
+{{% callout note %}}
+TBD{{% /callout %}}
+
+
+Please start to work on HW1 that will be due at 10 PM on Monday, 09/19. You are required to submit the HW via GitHub (i.e., push your submission to the GitHub repo named 'hw1-username' under the class GitHub organization, [Stat220](https://github.com/orgs/stat220/)). Please do not forget to knit your final .Rmd file to .pdf before pushing.
