@@ -58,3 +58,11 @@ It is useful to go over this interesting video on [Basics of ggplot2](https://ww
 <iframe width="560" height="315" src="https://www.youtube.com/embed/FdVy57oGJuc?start=43" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Please start to work on HW1 that will be due at 10 PM on Monday, 09/19. You are required to submit the HW via GitHub (i.e., push your submission to the GitHub repo named 'hw1-username' under the class GitHub organization, [Stat220](https://github.com/orgs/stat220/)). Please do not forget to knit your final .Rmd file to .pdf before pushing.
+
+
+### In Class
+
+- Basic R Objects
+- Basic Visualizations with `ggplot2`
+
+Day 3 Slides ({{% staticref "stat220/Day3.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day3.html" "newtab" %}}html{{% /staticref %}})
