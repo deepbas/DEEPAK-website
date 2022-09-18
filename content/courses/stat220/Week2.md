@@ -1,6 +1,6 @@
 ---
-title: Week 1 
-linktitle: Week 1
+title: Week 2 
+linktitle: Week 2
 lastmod: "2022-09-12"
 draft: false  
 toc: false  
