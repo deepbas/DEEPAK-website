@@ -8,7 +8,6 @@ type: book
 weight: 20
 ---
 
-
 <span style="color:orange">**Mondaay, 09/19**</span>
 
 
@@ -25,4 +24,4 @@ Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#i
 - Common `ggplot2` layers
 - Advanced visualizations
 
-<!-- Day 4 Slides ({{% staticref "pdf/Day4/Day4.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day4/Day4.html" "newtab" %}}html{{% /staticref %}}) -->
+Day 4 Slides ({{% staticref "stat220/Day4.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day4.html" "newtab" %}}html{{% /staticref %}}) 

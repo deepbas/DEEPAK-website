@@ -1,0 +1,470 @@
+---
+title: "Graphics with ggplot2"
+subtitle: "<br/> Fall 2022"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%",
+                      prompt = FALSE
+                      )
+
+# load necessary packages
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+library(ggrepel)
+
+
+select <- dplyr::select
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+yt <- 0
+
+hate_crimes <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/HateCrime.csv")
+
+base <- ggplot(hate_crimes, aes(x=median_household_income,
+                                y=hate_crimes_per_100k_splc)) 
+
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Graphics with ggplot2]
+
+### .fancy[Fall 2022]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+class: middle
+
+# Layered Grammar of Graphics
+
+.pull-left[
+.bq[
+- Essentials
+
+  - Data
+  - **Aesthetic mappings**
+  - **Geometric objects**
+  ]
+]
+
+.pull-right[
+.bq[
+- Additional elements
+
+  - Facets
+  - **Coordinate system**
+  - **Statistical transformations**
+  - **Position adjustments**
+  - Scales
+  - Theme
+]
+]
+
+---
+
+class: middle
+
+# Common **ggplot2** options 
+
+```
+ggplot(data) +    # data
+  <geometry_funs>(aes(<variables>)) + # aesthetic variable mapping
+  <label_funs> +  # add context
+  <facet_funs> +  # add facets (optional)
+  <coordinate_funs> +  # play with coords (optional)
+  <scale_funs> + # play with scales (optional)
+  <theme_funs> # play with axes, colors, etc (optional)
+```
+
+.footnote[See the [Rstudio cheatsheets](https://rstudio.com/resources/cheatsheets/) for more details]
+
+---
+
+# Hate Crime and income inequality
+
+.font80[A FiveThirtyEight article published in 2017 claimed that higher rates of hate crimes were tied to greater income inequality.]
+
+.code90[
+```{r,  warning=FALSE, message=FALSE, echo=-2}
+hate_crimes <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/HateCrime.csv")
+glimpse(hate_crimes)
+```
+]
+
+---
+
+`r chunk_reveal("layering-geoms", font_size_code="70%", width= c(0.5, 0.5), title = "## Layering geoms")`
+
+```{r layering-geoms, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+base <- ggplot(hate_crimes, aes(x=median_household_income,
+                                y=hate_crimes_per_100k_splc)) 
+base
+```
+
+<!-- When you are iteratively building plots, it's useful to store the .yellow-h[base plot] as an object] -->
+
+---
+
+`r chunk_reveal("layering-geoms1", font_size_code="70%", width= c(0.5, 0.5), title = "## Layering geoms")`
+
+```{r layering-geoms1, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+base + 
+  geom_point()
+```
+
+---
+
+`r chunk_reveal("layering-geoms2", font_size_code="60%", width= c(0.4, 0.6), title = "## A better plot")`
+
+```{r layering-geoms2, fig.align='center', echo=FALSE, out.width="120%", eval=FALSE}
+base + 
+  geom_text_repel(aes(label=state_code, color=region), 
+                  size = 2) 
+```
+
+
+---
+
+# `mpg` dataset
+
+```{r}
+glimpse(mpg)
+```
+
+---
+
+class: middle
+
+# Labeling your graphics
+
+> In `ggplot2` you can add/change the title, subtitle, caption, and x- and y-axis labels by adding a `labs()` layer. Below is an example illustrating it’s use:
+
+```{r eval=FALSE}
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy)) + labs(
+    title = "Put your informative title here",
+    subtitle = "and your subtitle here",
+    x = "New x label",
+    y = "New y label",
+    caption = "Put a caption here"
+  )
+```
+
+---
+
+
+`r chunk_reveal("plotting-variables", font_size_code="70%", width= c(0.5, 0.5), title = "## Plotting variables")`
+
+```{r plotting-variables, fig.align='center', echo=FALSE, out.width="120%", eval=FALSE}
+ggplot(data = mtcars, aes(x=mpg, y=cyl)) + 
+  geom_point(aes(col=as.factor(cyl), pch=as.factor(cyl))) +
+  labs(x='Miles per gallon', y='Number of cylinders') + 
+  guides(col="none", pch="none")
+```
+
+
+---
+
+# Statistical transformations: Default stats
+
+Common geom | stat 
+---------------|-----------------
+`geom_histogram()`|`stat_bin()`     
+`geom_bar()`|`stat_count()`     
+`geom_smooth()`|`stat_smooth()`  
+`geom_boxplot()`|`stat_boxplot()` 
+`geom_density()`|`stat_density()`   
+
+--
+
+<br>
+
+.bq[
+- Every geom has a default stat
+
+- Often no need to explicitly specify the stat
+
+- Check help files: `?geom_bar`
+]
+
+---
+
+`r chunk_reveal("mpg-barplot", font_size_code="70%", width= c(0.45, 0.55), title = "## Barplots")`
+
+```{r mpg-barplot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(data = mpg) +
+  geom_bar(mapping = aes(x = class, fill = class )) +
+  theme(axis.text.x = element_text(angle = 45, 
+                                   vjust = 0.5, 
+                                   hjust=1))
+```
+
+---
+
+# Weather Dataset
+
+.font80[The data set `Weather` contains data on weather-related variables for several world cities.]
+
+.font70[
+```{r}
+#install.packages(mosaicData)
+library(mosaicData)
+data(Weather)
+glimpse(Weather)
+```
+]
+
+---
+
+
+`r chunk_reveal("weather-patterns1", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns1, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Weather, aes(y=avg_temp)) + 
+  geom_boxplot()
+```
+
+---
+
+`r chunk_reveal("weather-patterns2", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns2, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Weather, aes(y=avg_temp, group=city)) + 
+  geom_boxplot(aes(color=city))
+```
+
+---
+
+`r chunk_reveal("weather-patterns3", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns3, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Weather, aes(x=date, y=avg_temp)) +
+  geom_point()
+```
+
+---
+
+`r chunk_reveal("weather-patterns4", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns4, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Weather, aes(x=date, y=avg_temp)) + 
+  geom_point(aes(color=city))
+```
+
+---
+
+`r chunk_reveal("weather-patterns5", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r, echo=FALSE}
+Chicago <- Weather %>% filter(city=='Chicago')
+```
+
+```{r weather-patterns5, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+Chicago <- Weather %>% filter(city=='Chicago')
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_point(color='blue')
+```
+
+---
+
+`r chunk_reveal("weather-patterns6", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns6, fig.align='center', echo=FALSE, out.width="120%", eval=FALSE}
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  geom_point(aes(color=events)) +
+  theme(legend.spacing.y = unit(0.5, "cm"),
+        legend.key.size = unit(0.5, "cm"))
+```
+
+---
+
+`r chunk_reveal("weather-patterns7", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns7, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=date, y=avg_temp)) + 
+  ylim(0,90) +
+  geom_smooth() + 
+  geom_point()
+```
+
+---
+
+`r chunk_reveal("weather-patterns9", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns9, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
+  geom_point(aes(color=month))
+```
+
+---
+
+`r chunk_reveal("weather-patterns10", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns10, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
+  geom_point(aes(color=as.factor(month)))
+```
+
+---
+
+`r chunk_reveal("weather-patterns11", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns11, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_histogram() 
+```
+
+---
+
+`r chunk_reveal("weather-patterns12", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns12, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_histogram(bins = 50) 
+```
+
+---
+
+`r chunk_reveal("weather-patterns13", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns13, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_density(fill='lightblue')
+```
+
+---
+
+`r chunk_reveal("weather-patterns14", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns14, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=avg_temp)) + 
+  geom_density(fill='lightblue', alpha=0.5)
+```
+
+---
+
+`r chunk_reveal("weather-patterns16", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns16, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=avg_temp, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
+  facet_wrap(~month, nrow=3)
+```
+
+---
+
+`r chunk_reveal("weather-patterns17", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
+
+```{r weather-patterns17, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(Chicago, aes(x=avg_vis, group=month)) +
+  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
+  facet_wrap(~month, nrow=3)
+```
+
+
+---
+
+
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Get the class activity 4 file
+- Please work on the problems 
+- Ask me questions
+- Any other hw questions?
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
