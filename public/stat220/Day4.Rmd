@@ -382,7 +382,9 @@ ggplot(Chicago, aes(x=low_temp, y=high_temp)) +
 
 ```{r weather-patterns10, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
-  geom_point(aes(color=as.factor(month)))
+  geom_point(aes(color=as.factor(month))) +
+  theme(legend.spacing.y = unit(0.5, "cm"),
+        legend.key.size = unit(0.5, "cm"))
 ```
 
 ---
@@ -418,7 +420,10 @@ ggplot(Chicago, aes(x=avg_temp)) +
 
 ```{r weather-patterns14, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 ggplot(Chicago, aes(x=avg_temp)) + 
-  geom_density(fill='lightblue', alpha=0.5)
+  geom_density(fill='lightblue', 
+               alpha=0.5) +
+  theme(legend.spacing.y = unit(0.5, "cm"),
+        legend.key.size = unit(0.5, "cm"))
 ```
 
 ---
@@ -427,8 +432,12 @@ ggplot(Chicago, aes(x=avg_temp)) +
 
 ```{r weather-patterns16, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 ggplot(Chicago, aes(x=avg_temp, group=month)) +
-  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
-  facet_wrap(~month, nrow=3)
+  geom_density(aes(color=as.factor(month),
+                   fill=as.factor(month)), 
+               alpha=0.5) +
+  facet_wrap(~month, nrow=3) +
+  theme(legend.spacing.y = unit(0.5, "cm"),
+        legend.key.size = unit(0.5, "cm"))
 ```
 
 ---
@@ -437,8 +446,12 @@ ggplot(Chicago, aes(x=avg_temp, group=month)) +
 
 ```{r weather-patterns17, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 ggplot(Chicago, aes(x=avg_vis, group=month)) +
-  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
-  facet_wrap(~month, nrow=3)
+  geom_density(aes(color=as.factor(month), 
+                   fill=as.factor(month)), 
+               alpha=0.5) +
+  facet_wrap(~month, nrow=3) +
+  theme(legend.spacing.y = unit(0.5, "cm"),
+        legend.key.size = unit(0.5, "cm")) 
 ```
 
 
