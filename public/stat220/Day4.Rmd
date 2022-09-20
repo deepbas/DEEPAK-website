@@ -457,8 +457,6 @@ ggplot(Chicago, aes(x=avg_vis, group=month)) +
 
 ---
 
-
-
 class: action, middle
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    

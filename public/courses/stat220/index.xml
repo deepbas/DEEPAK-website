@@ -64,7 +64,7 @@
       <link>https://deepbas.netlify.app/courses/stat220/week2/</link>
       <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat220/week2/</guid>
-      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Mondaay, 09/19&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 09/19&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
 &lt;p&gt;We will delve deeply into &lt;code&gt;ggplot2&lt;/code&gt;, learn about advanced visualization in this class, and do some fun activity in this class.&lt;/p&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
@@ -78,6 +78,22 @@
 &lt;li&gt;Advanced visualizations&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Day 4 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day4.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 09/21&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Go over previous in-class activities, lectures.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please skim through &lt;a href=&#34;https://clauswilke.com/dataviz/coordinate-systems-axes.html&#34;&gt;Coordinate Systems and Axes&lt;/a&gt; and &lt;a href=&#34;https://clauswilke.com/dataviz/geospatial-data.html&#34;&gt;Visualizing Spatial Data&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;in-class-1&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Some more useful aesthetics&lt;/li&gt;
+&lt;li&gt;More advanced maps&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- Day 5 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day5/Day5.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day5/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;) --&gt;
 </description>
     </item>
     

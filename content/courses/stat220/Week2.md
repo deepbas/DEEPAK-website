@@ -8,7 +8,7 @@ type: book
 weight: 20
 ---
 
-<span style="color:orange">**Mondaay, 09/19**</span>
+<span style="color:orange">**Monday, 09/19**</span>
 
 
 ### Before Class
@@ -25,3 +25,21 @@ Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#i
 - Advanced visualizations
 
 Day 4 Slides ({{% staticref "stat220/Day4.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day4.html" "newtab" %}}html{{% /staticref %}}) 
+
+
+<span style="color:orange">**Wednesday, 09/21**</span>
+
+
+### Before Class
+
+- Go over previous in-class activities, lectures.
+
+{{% callout note %}}
+Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html) and [Visualizing Spatial Data](https://clauswilke.com/dataviz/geospatial-data.html){{% /callout %}}
+
+### In Class
+
+- Some more useful aesthetics
+- More advanced maps
+
+<!-- Day 5 Slides ({{% staticref "pdf/Day5/Day5.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day5/Day5.html" "newtab" %}}html{{% /staticref %}}) -->
