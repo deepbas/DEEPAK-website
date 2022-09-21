@@ -13,7 +13,7 @@ weight: 20
 
 ### Before Class
 
-We will delve deeply into `ggplot2`, learn about advanced visualization in this class, and do some fun activity in this class.
+We will delve deeply into `ggplot2`, learn about advanced visualization, and do some fun activity in this class.
 
 {{% callout note %}}
 Continue reading [GW Chapter 3](https://r4ds.had.co.nz/data-visualisation.html#introduction-1), [GW Chapter 28](https://r4ds.had.co.nz/graphics-for-communication.html), and [Irizarry Chapter 10](https://rafalab.github.io/dsbook/data-visualization-principles.html){{% /callout %}}
@@ -32,7 +32,7 @@ Day 4 Slides ({{% staticref "stat220/Day4.pdf" "newtab" %}}pdf{{% /staticref %}}
 
 ### Before Class
 
-- Go over previous in-class activities, lectures.
+- Go over previous in-class activities, lectures. Also, start working on HW2 that is due at 10 PM this Saturday, $24^{th}$.
 
 {{% callout note %}}
 Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz/coordinate-systems-axes.html) and [Visualizing Spatial Data](https://clauswilke.com/dataviz/geospatial-data.html){{% /callout %}}
@@ -40,6 +40,6 @@ Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz
 ### In Class
 
 - Some more useful aesthetics
-- More advanced maps
+- More advanced visualization including maps
 
-<!-- Day 5 Slides ({{% staticref "pdf/Day5/Day5.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day5/Day5.html" "newtab" %}}html{{% /staticref %}}) -->
+Day 5 Slides ({{% staticref "stat220/Day5.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day5.html" "newtab" %}}html{{% /staticref %}}) 
