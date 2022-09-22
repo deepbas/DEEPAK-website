@@ -43,3 +43,24 @@ Please skim through [Coordinate Systems and Axes](https://clauswilke.com/dataviz
 - More advanced visualization including maps
 
 Day 5 Slides ({{% staticref "stat220/Day5.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day5.html" "newtab" %}}html{{% /staticref %}}) 
+
+
+<span style="color:orange">**Friday, 09/23**</span>
+
+
+### Before Class
+
+{{% callout note %}}
+Please read [GW Chapter 5](https://r4ds.had.co.nz/transform.html), [Irizarry Sections 4.1-4.11](https://rafalab.github.io/dsbook/tidyverse.html)(optional), and start working on individual HW2.{{% /callout %}}
+
+Also, it may be useful to go over this short video on the [basics of `dplyr`](https://www.youtube.com/watch?v=BaFkbNOaof8) before class.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BaFkbNOaof8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+### In Class
+
+- Basic data wrangling
+- Implementation of the five verbs
+
+
