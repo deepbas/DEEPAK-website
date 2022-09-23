@@ -1,0 +1,629 @@
+---
+title: "Data wrangling with **dplyr**"
+subtitle: "<br/> Fall 2022"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%",
+                      prompt = FALSE
+                      )
+
+# load necessary packages
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+library(ggrepel)
+
+
+# specific packages
+library(maps)
+library(maptools)
+library(polite)
+library(rvest)
+
+select <- dplyr::select
+
+# Set ggplot theme
+# theme_set(theme_stata(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Data wrangling with **dplyr**]
+
+### .fancy[Fall 2022]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Data Wrangling 
+
+.blockquote[the process of .out-t[cleaning and unifying messy and complex data sets for easy access and analysis]]
+
+<br>
+
+.pull-left[
+.bq[
+- .yellow-h["data janitor work"]
+- importing data
+- cleaning data
+- changing shape of data
+]
+]
+.pull-right[
+.bq[
+- fixing errors and poorly formatted data elements
+- transforming columns and rows
+- filtering, subsetting
+]
+]
+
+
+
+---
+
+background-image: url("images/dplyr.png")
+background-position: 100% 100% 
+background-size: 100% 100%
+
+
+---
+
+class: middle
+
+# The Five Verbs
+
+Most of the operations on a data table can be achieved with
+
+.bq[
+- *select()* : extract a subset of columns
+- *filter()* : extract a subset of rows
+- *mutate()* : create new columns
+- *arrange()* : order the rows from smallest to largest (or largest to smallest)
+- *summarize()* : compute a table of summary statistics
+]
+
+---
+
+class: middle
+
+# Find a subset of the columns using *select()*:
+
+- `select()`: take a .yellow-h[subset of the columns (variables/features)]
+
+```{r}
+library(babynames)
+babynames %>%
+  select(year, name, n) %>% #<<
+  head()
+```
+
+
+---
+
+# Using **%>%**
+
+.bq[
+- `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+--
+
+```{r, eval=FALSE}
+babynames %>%                   # dataframe first and then... #<<
+  select(year, name, n) %>%
+  head()
+```
+
+---
+
+# Using **%>%**
+
+.bq[
+- `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+
+```{r, eval=FALSE}
+babynames %>%                   # dataframe first and then... 
+  select(year, name, n) %>%     # select columns `year`, `name`, and `n` #<<
+  head()                    
+```
+
+---
+
+# Using **%>%**
+
+.bq[
+- `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+
+```{r, eval=FALSE}
+babynames %>%                   # dataframe first and then... 
+  select(year, name, n) %>%     # select columns year, name, and n 
+  head()                        # display header of the data frame #<<
+```
+
+
+---
+
+# Using **%>%**
+
+.bq[
+- `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+
+```{r, eval=FALSE}
+babynames %>%                   # dataframe first and then... 
+  select(year, name, n) %>%     # select columns year, name, and n 
+  head()                        # display header of the data frame #<<
+```
+
+
+```{r, echo=FALSE}
+babynames %>%
+  select(year, name, n) %>%
+  head()
+```
+
+---
+
+# **select()** helpers
+
+.pull-left[
+`:` select range of columns
+```{r eval=FALSE}
+select(gapminder, income:population)
+```
+
+
+
+`-` select every column but
+```{r eval=FALSE}
+select(gapminder, -c(income,population))
+```
+
+
+
+`starts_with()` select columns that start with...
+```{r eval=FALSE}
+select(gapminder, starts_with("p"))
+```
+]
+
+
+--
+
+.pull-right[
+
+`ends_with()` select columns that end with...
+```{r eval=FALSE}
+select(gapminder, ends_with("y"))
+```
+
+
+
+`contains()` select columns whose names contain...
+```{r eval=FALSE}
+select(gapminder, contains("e"))
+```
+
+]
+
+
+
+---
+
+class: middle
+
+# Find a subset of the rows using *filter()*:
+
+- `filter()`: take a .yellow-h[subset of the rows (observations)]
+
+```{r}
+babynames %>%
+  filter(name == "Bella") %>%
+  head()
+```
+
+
+---
+
+
+# Use both *filter()* and *select()*
+
+
+```{r}
+bella <- babynames %>%
+  filter(name == "Bella") %>%
+  select(year, name, sex, n)
+
+```
+
+--
+
+.pull-left[
+
+```{r}
+head(bella)
+```
+
+]
+
+
+.pull-right[
+```{r}
+dim(bella)
+```
+
+]
+
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Get the class activity 6.Rmd file
+- Work on problems 1-3
+- Ask me questions
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+class: middle
+
+# Some Operators
+
+Operator|Definition                   
+---|---
+`<`| less than                    
+`<=`|	less than or equal to
+`>`| greater than
+`>=`|	greater than or equal to 
+`==`|	exactly equal to 
+`!=`|	not equal to 
+`x & y`| `x` AND `y`                  
+`x %in% y`| test if `x` is in `y`   
+
+
+---
+
+
+# *summarize()* or *summarise()*
+
+If we want to .yellow-h[compare summary statistics], we might use `summarize()`.
+
+```{r}
+babynames %>% 
+  filter(name == "Bella", sex == "F") %>% 
+  summarise(total = sum(n), max = max(n), mean = mean(n)) #<<
+```
+
+---
+
+class: middle
+
+# *summarize()* 
+
+.pull-left[
+```{r}
+babynames %>% 
+  filter(name == "Bella", sex == "F") %>% 
+  summarize(n = n()) #<<
+```
+]
+
+.pull-right[
+```{r}
+babynames %>% 
+  summarize(nname = n_distinct(name)) #<<
+```
+]
+
+
+---
+
+# Using *group_by()*
+
+```{r}
+babynames %>% 
+  group_by(year, sex) #<<
+```
+
+---
+
+
+# Using *group_by()* along with *summarize()*
+
+```{r}
+babynames %>%
+  group_by(year) %>%  #<<
+  summarise(total = sum(n)) #<<
+```
+
+---
+
+
+# *mutate()*
+
+- `mutate()` lets us .yellow-h[create new variables based on manipulations of the old variables]
+
+
+```{r}
+babynames <- babynames %>%
+  group_by(year) %>%
+  mutate(percent = prop * 100) #<<
+head(babynames)
+```
+
+---
+
+# *arrange()*
+
+.yellow-h[Order rows from smallest to largest]
+
+```{r}
+arrange(babynames, n)
+```
+
+---
+
+# *desc()*
+
+Changes ordering from largest to smallest.
+
+
+```{r}
+arrange(babynames, desc(n)) #<<
+```
+
+---
+
+# Most common names in 1990
+
+```{r}
+babynames %>%
+  filter(year == 1990) %>% #<<
+  arrange(desc(prop))  #<<
+```
+
+---
+
+# *top_n()* 
+
+Most common name in each year
+
+```{r}
+babynames %>%
+  group_by(year) %>% #<<
+  top_n(1, prop)     #<<
+
+```
+
+---
+
+class: middle
+
+# *min_rank()* : A go to ranking function (ties share the lowest rank)
+
+```{r}
+min_rank(c(50, 100, 1000))
+```
+
+```{r}
+min_rank(desc(c(50, 100, 1000)))
+```
+
+
+---
+
+class: middle
+
+# Slicing and selecting data
+
+.bq[
+The slice_ operators let you slice (subset) rows:
+
+- `slice_head(n=5)` : view the first 5 rows
+
+- `slice_tail(n=5)` : view the last 5 rows
+
+- `slice_sample(n=5)` : view 5 random rows
+
+- `slice_min(column, n=5)` : view the 5 smallest values of a column
+
+- `slice_max(column, n=5)` : view the 5 largest values of a column
+]
+
+---
+
+## *slice()*
+
+.code80[
+```{r}
+library(gapminder)
+slice(gapminder, 1:5)
+```
+]
+
+--
+
+## *slice_max()*
+
+.code80[
+```{r}
+gapminder %>% slice_max(gdpPercap, n=6)
+```
+]
+
+---
+
+# *summarize()* vs. *mutate()*
+
+*summarize()* : summarize collapses all variable values down to one number (by group)
+
+```{r}
+gapminder %>% 
+  group_by(continent) %>% 
+  summarize(avg_life_expectancy = mean(lifeExp)) #<<
+```
+
+---
+
+# *summarize()* vs. *mutate()*
+
+*mutate()* : transforms all variable values but preserves the variable length (by group)
+
+```{r}
+gapminder %>%
+  group_by(continent) %>%
+  mutate(meanPop = mean(pop)/1000000) #<<
+```
+
+---
+
+# *group_by()*
+
+```{r}
+gapminder %>% 
+  group_by(continent, year) %>% 
+  summarise(avg_life_expectancy = mean(lifeExp)) %>% 
+  slice_max(avg_life_expectancy, n = 1)
+```
+
+---
+
+# *ungroup()*
+
+Any further mutations called on it would not use the grouping for aggregate statistics.
+
+```{r}
+gapminder %>% 
+  group_by(continent, year) %>% 
+  summarise(avg_life_expectancy = mean(lifeExp)) %>% 
+  ungroup() %>% #<<
+  slice_max(avg_life_expectancy, n = 1)
+
+```
+
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Work on problem 4
+- Ask me questions
+- Any hw-related questions? 
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+

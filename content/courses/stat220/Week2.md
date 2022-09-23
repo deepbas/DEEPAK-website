@@ -63,4 +63,5 @@ Also, it may be useful to go over this short video on the [basics of `dplyr`](ht
 - Basic data wrangling
 - Implementation of the five verbs
 
+Day 6 Slides ({{% staticref "stat220/Day6.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day6.html" "newtab" %}}html{{% /staticref %}}) 
 
