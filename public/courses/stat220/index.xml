@@ -13,6 +13,15 @@
     </image>
     
     <item>
+      <title>Week 3</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week3/</link>
+      <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week3/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 09/26&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 1</title>
       <link>https://deepbas.netlify.app/courses/stat220/week1/</link>
       <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
@@ -28,7 +37,7 @@
 &lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please read &lt;a href=&#34;https://r4ds.had.co.nz/r-markdown.html#r-markdown&#34;&gt;GW RMarkdown&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/introduction.html&#34;&gt;GW Chapter 1&lt;/a&gt; and &lt;a href=&#34;https://r4ds.had.co.nz/vectors.html&#34;&gt;GW Chapter 20&lt;/a&gt; to prepare for the class.
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/r-markdown.html#r-markdown&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW RMarkdown&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/introduction.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 1&lt;/a&gt; and &lt;a href=&#34;https://r4ds.had.co.nz/vectors.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 20&lt;/a&gt; to prepare for the class.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
@@ -44,7 +53,7 @@
 &lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please skim &lt;a href=&#34;https://rafalab.github.io/dsbook/r-basics.html&#34;&gt;Rafalab Chapter 2&lt;/a&gt;,  &lt;a href=&#34;https://r4ds.had.co.nz/data-visualisation.html#introduction-1&#34;&gt;GW Chapter 3&lt;/a&gt; and &lt;a href=&#34;https://r4ds.had.co.nz/graphics-for-communication.html&#34;&gt;GW Chapter 28&lt;/a&gt;
+    Please skim &lt;a href=&#34;https://rafalab.github.io/dsbook/r-basics.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Rafalab Chapter 2&lt;/a&gt;,  &lt;a href=&#34;https://r4ds.had.co.nz/data-visualisation.html#introduction-1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 3&lt;/a&gt; and &lt;a href=&#34;https://r4ds.had.co.nz/graphics-for-communication.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 28&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;It is useful to go over this interesting video on &lt;a href=&#34;https://www.youtube.com/watch?v=FdVy57oGJuc&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Basics of ggplot2&lt;/a&gt; before class.&lt;/p&gt;
@@ -69,7 +78,7 @@
 &lt;p&gt;We will delve deeply into &lt;code&gt;ggplot2&lt;/code&gt;, learn about advanced visualization, and do some fun activity in this class.&lt;/p&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Continue reading &lt;a href=&#34;https://r4ds.had.co.nz/data-visualisation.html#introduction-1&#34;&gt;GW Chapter 3&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/graphics-for-communication.html&#34;&gt;GW Chapter 28&lt;/a&gt;, and &lt;a href=&#34;https://rafalab.github.io/dsbook/data-visualization-principles.html&#34;&gt;Irizarry Chapter 10&lt;/a&gt;
+    Continue reading &lt;a href=&#34;https://r4ds.had.co.nz/data-visualisation.html#introduction-1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 3&lt;/a&gt;, &lt;a href=&#34;https://r4ds.had.co.nz/graphics-for-communication.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 28&lt;/a&gt;, and &lt;a href=&#34;https://rafalab.github.io/dsbook/data-visualization-principles.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Irizarry Chapter 10&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
@@ -85,7 +94,7 @@
 &lt;/ul&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please skim through &lt;a href=&#34;https://clauswilke.com/dataviz/coordinate-systems-axes.html&#34;&gt;Coordinate Systems and Axes&lt;/a&gt; and &lt;a href=&#34;https://clauswilke.com/dataviz/geospatial-data.html&#34;&gt;Visualizing Spatial Data&lt;/a&gt;
+    Please skim through &lt;a href=&#34;https://clauswilke.com/dataviz/coordinate-systems-axes.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Coordinate Systems and Axes&lt;/a&gt; and &lt;a href=&#34;https://clauswilke.com/dataviz/geospatial-data.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Visualizing Spatial Data&lt;/a&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;h3 id=&#34;in-class-1&#34;&gt;In Class&lt;/h3&gt;
@@ -98,7 +107,7 @@
 &lt;h3 id=&#34;before-class-2&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please read &lt;a href=&#34;https://r4ds.had.co.nz/transform.html&#34;&gt;GW Chapter 5&lt;/a&gt;, &lt;a href=&#34;https://rafalab.github.io/dsbook/tidyverse.html&#34;&gt;Irizarry Sections 4.1-4.11&lt;/a&gt;(optional), and start working on individual HW2.
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/transform.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 5&lt;/a&gt;, &lt;a href=&#34;https://rafalab.github.io/dsbook/tidyverse.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Irizarry Sections 4.1-4.11&lt;/a&gt;(optional), and start working on individual HW2.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;Also, it may be useful to go over this short video on the &lt;a href=&#34;https://www.youtube.com/watch?v=BaFkbNOaof8&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;basics of &lt;code&gt;dplyr&lt;/code&gt;&lt;/a&gt; before class.&lt;/p&gt;
