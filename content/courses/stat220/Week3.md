@@ -13,7 +13,7 @@ weight: 20
 
 ### Before Class
 
-Start working on HW3 by 10 PM. The first midterm will be held in class this Friday, 09/30.
+Start working on HW3 due by 10 PM this Wednesday. This will also be a nice practice for your midterm. The first midterm will be held in class this Friday, 09/30.
 
 {{% callout note %}}
 Please read [R Style Guide Chapters 2,4, and 5](https://style.tidyverse.org/),  [Irizarry Chapter 23](https://rafalab.github.io/dsbook/joining-tables.html), [GW Chapter 13](https://r4ds.had.co.nz/relational-data.html#introduction-7)(optional){{% /callout %}}
