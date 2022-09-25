@@ -1,7 +1,7 @@
 ---
 title: Week 2 
 linktitle: Week 2
-lastmod: "2022-09-12"
+lastmod: "2022-09-19"
 draft: false  
 toc: false  
 type: book  
