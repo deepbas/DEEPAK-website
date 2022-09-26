@@ -10,7 +10,6 @@ weight: 20
 
 <span style="color:orange">**Monday, 09/26**</span>
 
-
 ### Before Class
 
 Start working on HW3 due by 10 PM this Wednesday. This will also be a nice practice for your midterm. The first midterm will be held in class this Friday, 09/30.
@@ -26,3 +25,5 @@ It would also be nice to go over this short video in [joining data with `dplyr`]
 
 - More data wrangling
 - Basic data joins (two-table verbs)
+
+Day 7 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}}) 
