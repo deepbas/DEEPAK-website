@@ -27,3 +27,20 @@ It would also be nice to go over this short video in [joining data with `dplyr`]
 - Basic data joins (two-table verbs)
 
 Day 7 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}}) 
+
+
+
+<span style="color:orange">**Wednesday, 09/28**</span>
+
+### Before Class
+
+{{% callout note %}}
+
+Please read [GW Chapter 12](https://r4ds.had.co.nz/tidy-data.html) on tidy data and reshaping data. {{% /callout %}}
+
+### In Class
+
+- Wide Vs Long data
+- Some more data cleaning tools
+
+<!-- Day 7 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}}) -->
