@@ -44,4 +44,4 @@ Please read [GW Chapter 12](https://r4ds.had.co.nz/tidy-data.html) on tidy data 
 - Some more data cleaning tools
 - Simple intro to date manipulations
 
-<!-- Day 7 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}}) -->
+Day 8 Slides ({{% staticref "stat220/Day8.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day8.html" "newtab" %}}html{{% /staticref %}}) 
