@@ -42,5 +42,6 @@ Please read [GW Chapter 12](https://r4ds.had.co.nz/tidy-data.html) on tidy data 
 
 - Wide Vs Long data
 - Some more data cleaning tools
+- Simple intro to date manipulations
 
 <!-- Day 7 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}}) -->
