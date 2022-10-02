@@ -13,6 +13,26 @@
     </image>
     
     <item>
+      <title>Week 4</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week4/</link>
+      <pubDate>Sat, 01 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week4/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 10/03&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/data-import.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 11&lt;/a&gt; and skim through &lt;a href=&#34;https://rafalab.github.io/dsbook/importing-data.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;IDS Chapter 5&lt;/a&gt; on importing data. If you need more indepth description of dates/times in lubridate, read &lt;a href=&#34;https://r4ds.had.co.nz/dates-and-times.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 16&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Data Import tools&lt;/li&gt;
+&lt;li&gt;More on lubridate&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 3</title>
       <link>https://deepbas.netlify.app/courses/stat220/week3/</link>
       <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
