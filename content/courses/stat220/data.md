@@ -14,3 +14,5 @@ weight: 30
 {{% staticref "data/mild-1.csv" "newtab" %}}Medium Data file{{% /staticref %}}
 
 {{% staticref "data/tricky-1.csv" "newtab" %}}Tricky Data file{{% /staticref %}}
+
+{{% staticref "data/tricky-2.csv" "newtab" %}}More Tricky Data file{{% /staticref %}}
