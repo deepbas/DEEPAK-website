@@ -1,0 +1,659 @@
+---
+title: "Data Imports"
+subtitle: "<br/> Fall 2022"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+header-includes:
+    - \usepackage{caption}
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%",
+                      prompt = FALSE,
+                      rows.print=7
+                      )
+
+# load necessary packages
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+library(ggrepel)
+library(lubridate)
+
+# specific packages
+library(maps)
+library(maptools)
+library(polite)
+library(rvest)
+library(stringr)
+select <- dplyr::select
+
+# Set ggplot theme
+# theme_set(theme_stata(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+desserts <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv")
+
+energy <- readr::read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/energy.csv",
+                    col_type = cols(
+                     .default = col_double(), 
+                      Timestamp = col_datetime(format = ""),
+                      dayWeek = col_factor(levels=c("Mon","Tues","Wed","Thurs","Fri","Sat","Sun"))
+                     ))
+
+energy_narrow <- energy %>%
+  pivot_longer(
+    cols = `100_Nevada_Street`:Wilson_House, 
+    names_to = "building",
+    values_to = "energyKWH"
+  )
+
+
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Data Imports]
+
+### .fancy[Fall 2022]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+
+# Working Directories
+
+The working directory is where R looks for files and saves files by default.
+
+```{r, eval=FALSE, echo=TRUE}
+getwd() # see working directory
+setwd() # change your working directory
+````
+
+To set working directory to your **STAT 220** course folder
+
+```{r, eval=FALSE}
+setwd("path/to/stat220-folder/")  # set
+getwd()     # check
+```
+
+
+Useful Terminal Commands:
+
+```r
+$ cd   # change directory
+$ ls   # unix command to list files
+$ pwd  # present working directory
+```
+
+---
+
+class: middle
+
+# Web Imports
+
+To your working environment:
+
+```{r}
+url <- "https://raw.githubusercontent.com/deepbas/statdatasets/main/murders.csv"
+dat <- read_csv(url)
+```
+
+
+To download file to working folder:
+
+```{r}
+download.file(url, "murders.csv")
+```
+
+---
+
+background-image: url(https://raw.githubusercontent.com/tidyverse/readr/master/man/figures/logo.png)
+background-position: 85% 40%
+background-size: 30%
+
+class: left, middle
+
+# readr
+
+.pull-left-60[
+.bq[
+- `readr` is a part of **tidyverse** library 
+
+- Includes functions for reading data stored in text file spreadsheets
+into R.
+
+- Functions in the package include `read_csv()`, `read_tsv()`, `read_delim()` and more.
+
+- These differ by the delimiter they use to split columns.
+]
+]
+
+
+---
+
+class: middle
+
+# `readr` functions
+
+function .hidden[XXXXXX] | reads
+:---------|:----------------------
+read_csv()   | Comma separated values
+read_csv2()  | Semi-colon separated values
+read_delim() | General delimited files
+read_fwf()   | Fixed width files
+read_log()   | Apache log files
+read_table() | Space separated
+read_tsv()   | Tab delimited values
+
+---
+
+
+class: middle
+
+# Basic syntax
+
+.font120[
+All `readr` functions share a common syntax
+
+```{r eval=FALSE}
+df <- read_csv(file = "path/to/file.csv", ...)
+```
+]
+
+
+
+---
+
+
+# Base R Imports
+
+.bq[
+- R-base import functions 
+  * `read.csv()`
+  * `read.table()`
+  * `read.delim()` 
+  
+- Generate data frames rather than tibbles 
+
+- Character variables are converted to factors
+  * Can be avoided by setting the argument `stringsAsFactors=FALSE`
+]
+
+---
+
+class: middle
+
+# Advantages of `readr`
+
+.bq[
+**`readr`** functions are:
+  * ~ 10 times faster
+  * Return tibbles
+  * Have more intuitive defaults.
+  * No row names, no strings as factors.
+]
+
+---
+
+# Data frames and tibbles Conversion
+
+<img src="images/09-tibble.png" width="50%" height="45%">
+
+- `as_tibble()` - convert a data frame to a tibble
+
+- `as.data.frame()` - convert a tibble to a data frame
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Get the class activity 10.Rmd file
+- Skim through problem 1
+]
+
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+
+# Did it work as expected?
+
+
+```{r echo=FALSE}
+glimpse(desserts)
+```
+
+--
+
+.out-t[We want `technical` to be numerical and `uk_airdate` to be date]
+
+---
+
+class: middle
+
+
+# The `col_types` argument
+
+By default, looks at first 1000 rows to guess variable data types (`guess_max`)
+
+.code100[
+```{r}
+desserts <- read_csv(
+  "https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv",
+  col_types = list( #<<
+    technical = col_number(), #<<
+    uk_airdate = col_date()   #<<
+  ) #<<
+)
+```
+]
+
+---
+
+# Looking for `problems`
+
+List of potential problems parsing the file
+
+```{r}
+problems(desserts)
+```
+
+---
+
+class: middle
+
+# Date formatting 
+
+.code100[
+```{r echo=FALSE}
+print(problems(desserts), n=5)
+```
+]
+
+ISO8601 format: `2021-10-04`
+
+What we have: `17 August 2010`
+
+---
+
+# Adding `format` instructions
+
+.code100[
+```{r}
+desserts <- read_csv(
+  "https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv",
+    col_types = list(
+    technical = col_number(), 
+    uk_airdate = col_date(format = "%d %B %Y")   #<<
+  ) 
+)
+```
+]
+
+.bq[
+- Year: `"%Y"` (4 digits). `"%y"` (2 digits)
+
+- Month: `"%m"` (2 digits), `"%b"` (abbreviated name in current locale), `"%B"` (full name in current locale).
+
+- Day: `"%d"` (2 digits), `"%e"` (optional leading space)
+]
+
+---
+
+class: middle
+
+
+# Looking for more `problems`
+
+List of potential problems parsing the file
+
+.code100[
+```{r}
+problems(desserts)
+```
+]
+
+---
+
+# Addressing missing values
+
+By default `na = c("", "NA")` are the recognized missing values
+
+.code108[
+```{r}
+desserts <- read_csv(
+  "https://raw.githubusercontent.com/deepbas/statdatasets/main/desserts.csv",
+  col_types = list(
+    technical = col_number(), 
+    uk_airdate = col_date(format = "%d %B %Y")
+  ),
+  na = c("", "NA", "N/A") #<<
+)
+```
+]
+
+--
+
+## No more `problems`
+
+```{r}
+problems(desserts)
+```
+
+
+---
+
+class: middle
+
+
+# The Dataset
+
+```{r echo=FALSE}
+desserts
+```
+
+---
+
+class: middle
+
+# Column casting functions
+
+.large[
+Type .hidden[XXXXXX] | `dplyr::glimpse()` .hidden[XX] | `readr::col_*()`
+-----|----------|------------
+logical   | `<lgl>`            | `col_logical`
+numeric   | `<int>` or `<dbl>` | `col_number`
+character | `<chr>`            | `col_character`
+factor    | `<fct>`            | `col_factor`
+date      | `<date>`           | `col_date`
+]
+
+---
+
+class: middle
+
+# `?read_csv`
+
+```{r eval=FALSE}
+read_csv(file, 
+         col_names = TRUE,
+         col_types = NULL,
+         locale = default_locale(),
+         na = c("", "NA"), 
+         quoted_na = TRUE,
+         quote = "\"", 
+         comment = "",
+         trim_ws = TRUE,
+         skip = 0,
+         n_max = Inf,
+         guess_max = min(1000, n_max),
+         progress = show_progress())
+```
+
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Work on problem 2 to fix some messy data
+- Ask me questions
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+# Another example
+
+```{r}
+energy <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/energy.csv",
+                    col_type = cols(
+                     .default = col_double(), 
+                      Timestamp = col_datetime(format = ""),
+                      dayWeek = col_factor(levels=c("Mon","Tues","Wed","Thurs","Fri","Sat","Sun"))
+                     ))
+
+```
+
+--
+
+```{r}
+energy %>% slice_max(n=2, order_by = Timestamp) 
+```
+
+
+
+---
+
+class: middle
+
+
+# Wide to Long 
+
+```{r}
+energy_narrow <- energy %>%
+  pivot_longer(names_to = "building", values_to = "energyKWH", cols = `100_Nevada_Street`:Wilson_House)
+```
+
+```{r}
+energy_narrow
+```
+
+---
+
+# More dates and times manipulation
+
+.pull-left[
+
+```{r}
+energy$Timestamp[1]
+## [1] "2015-09-01 UTC"
+as.numeric(energy$Timestamp[1])
+## [1] 1441065600
+
+# 5th timestamp
+( stamp5 <- energy$Timestamp[5] )
+
+```
+]
+
+--
+
+.pull-right[
+```{r}
+mdy("1/4/2021")
+
+dmy_hms("01/04/2020-01-30-23")
+```
+
+```{r}
+make_datetime(year = 2022,
+              month = 1, 
+              day = 5, 
+              hour = 10,
+              sec = 20)
+```
+]
+
+---
+
+class: middle
+
+# Measuring time
+
+.pull-left[
+```{r}
+first_day <- ymd_hm("2022-09-12 11:10")
+classtime <- now() - first_day
+classtime
+```
+
+```{r}
+as.period(classtime)
+as.duration(classtime)
+```
+]
+
+--
+
+.pull-right[
+
+```{r}
+diff1 <- first_day %--% now()
+diff1/dminutes(1)
+```
+
+```{r}
+diff2 <- interval(first_day, now())
+diff2/dminutes(1)
+```
+
+]
+
+
+---
+
+`r chunk_reveal("demo1", widths = c(60, 40), font_size_code="100%", title = "## Another example: top ten destination")`
+
+
+```{r demo1, eval=FALSE, echo=FALSE}
+data("flights", package = "nycflights13")
+
+flights %>%
+  count(dest) %>%
+  slice_max(n, n = 10)
+
+```
+
+---
+
+`r chunk_reveal("demo2", widths = c(60, 40), font_size_code="100%", title = "## Another example: duration using lubriate")`
+
+
+```{r, demo2, eval = FALSE, echo=FALSE}
+top_dest <- flights %>%
+  count(dest) %>%
+  slice_max(n, n = 10)
+
+flights %>% 
+  semi_join(top_dest) %>%
+  mutate(sch_datetime = make_datetime(  
+    year = year, month = month, 
+    day = day, hour = hour, 
+    min = minute)
+    ) %>%
+  select(dest, sch_datetime) %>%
+  group_by(dest) %>%     
+  arrange(sch_datetime) %>%    
+  mutate(
+    diff1 = (lag(sch_datetime) %--% 
+                    sch_datetime)/minutes(1),
+    diff2 = interval(lag(sch_datetime), 
+                    sch_datetime)/minutes(1)) %>%   
+  summarize(medianMins1 = median(diff1, 
+                                 na.rm=TRUE),
+            medianMins2 = median(diff2, 
+                                 na.rm=TRUE))
+
+```
+

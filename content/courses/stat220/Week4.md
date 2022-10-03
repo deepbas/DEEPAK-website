@@ -23,4 +23,4 @@ Please read [GW Chapter 11](https://r4ds.had.co.nz/data-import.html) and skim th
 - More on lubridate
 
 
-<!-- Day 7 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}}) -->
+Day 10 Slides ({{% staticref "stat220/Day10.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day10.html" "newtab" %}}html{{% /staticref %}}) 
