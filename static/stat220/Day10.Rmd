@@ -104,7 +104,6 @@ energy_narrow <- energy %>%
     values_to = "energyKWH"
   )
 
-
 ```
 
 

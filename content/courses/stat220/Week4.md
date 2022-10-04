@@ -24,3 +24,17 @@ Please read [GW Chapter 11](https://r4ds.had.co.nz/data-import.html) and skim th
 
 
 Day 10 Slides ({{% staticref "stat220/Day10.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day10.html" "newtab" %}}html{{% /staticref %}}) 
+
+<span style="color:orange">**Wednesday, 10/05**</span>
+
+
+{{% callout note %}}
+Please gently read [Irizarry Case Studies 1 and 2 from chapter 25](https://rafalab.github.io/dsbook/string-processing.html) on string parsing.{{% /callout %}}
+
+### In Class
+
+- Basic overview of `stringr`
+- String manipulation 
+
+<!-- Day 11 Slides ({{% staticref "stat220/Day11.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day11.html" "newtab" %}}html{{% /staticref %}}) -->
+
