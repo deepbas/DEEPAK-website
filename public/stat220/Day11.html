@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Basic String Manipulation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Basic String Manipulation]
+
+### .fancy[Fall 2022]
+
+ October 05 2022
+
+---
+
+# Kanye West tweets analysis
+
+.pull-left[
+
+&lt;img src="images/kanyewest.png" width="110%" height="110%"&gt; &lt;br&gt;
+.center[.blue[Kanye West Twitter Feed]]
+
+]
+
+--
+
+.pull-right[
+
+&lt;img src="images/kanye-word-cloud.png" width="110%" height="110%"&gt; &lt;br&gt;
+
+]
+
+---
+
+# Tweets that look like this ...
+
+
+```
+# A tibble: 5 × 1
+  text                                                                          
+  &lt;chr&gt;                                                                         
+1 "love is the absence of pride"                                                
+2 "Donda House 🙏👽👽 https://t.co/i4pfZiZmeN"                                  
+3 "enhance structure"                                                           
+4 "Film concept: a being purchases a Merriam-Webster’s dictionary from Walgreen…
+5 "Me Troy Justin and Scooter will have dinner and build on how we will make ou…
+```
+
+--
+
+# ... are changed to a cleaner version
+
+
+```r
+kanye %&gt;% select(text_clean) %&gt;% slice(1:5)
+# A tibble: 5 × 1
+  text_clean                                                                    
+  &lt;chr&gt;                                                                         
+1 love is the absence of pride                                                  
+2 donda house                                                                   
+3 enhance structure                                                             
+4 film concept a being purchases a merriam webster s dictionary from walgreens …
+5 me troy justin and scooter will have dinner and build on how we will make our…
+```
+
+
+---
+
+
+# Let's Define Strings
+
+.bql[
+- A string is any sequence of characters
+- Define a string by surrounding text with either single quotes or double quotes.
+]
+
+--
+
+
+```r
+s &lt;- "Hello!"    # double quotes define a string
+s &lt;- 'Hello!'    # single quotes define a string  
+```
+  
+--
+
+  * The `cat()` or `writeLines()` function displays a string as it is represented inside R.
+
+.pull-left[
+
+```r
+cat(s)
+Hello!
+```
+]
+.pull-right[
+
+```r
+writeLines(s)
+Hello!
+```
+]
+
+
+--
+
+```r
+s &lt;- `Hello`    # backquotes do not define a string
+s &lt;- "10""    # error - unclosed quotes
+```
+
+
+---
+
+class: middle
+
+# String Parsing
+
+.large.out-t[pulling apart some text or `string` to do something with it]
+
+&lt;!-- manipulate (or parse) textual data by looking for patterns in a string --&gt;
+.bq.font80[
+- .Large[The most common tasks in string processing include:]
+  + .yellow-h[extracting] numbers from strings, e.g. .yellow-h["12%"]
+  + .yellow-h[removing] unwanted characters from text, e.g. .yellow-h["New Jersey_* "]
+  + .yellow-h[finding and replacing] characters, e.g. .yellow-h["2,150"]
+  + .yellow-h[extracting] specific parts of strings, e.g. .yellow-h["Temp 40 F$"]
+  + .yellow-h[splitting] strings into multiple values, e.g. .yellow-h["Boston, MA"]
+]
+
+---
+
+class: middle
+
+# Regular expressions: Regex
+
+  &lt;!-- Use **regular expressions (regex)** to process strings. --&gt;
+
+.large.out-t[Regular expressions are a language for expressing patterns in strings]
+
+
+&lt;!-- - A way to describe a specific pattern of characters of text. --&gt;
+
+.bql.font80[
+
+- Regex can include special characters unlike a regular string 
+
+- To use regex in R, you need to use the **stringr** package
+
+]
+
+
+---
+
+class: middle
+
+# `stringr` package
+
+&lt;!-- add a picture --&gt;
+
+
+.pull-left-60[
+&lt;br&gt;
+&lt;br&gt;
+
+&lt;!-- The main types of string processing tasks are --&gt;
+.bq[
+  + detecting, locating, extracting and replacing elements of strings.
+  
+&lt;!-- The **stringr** package from the **tidyverse** includes a variety of string processing functions that --&gt;  
+
+  +  begin with `str_` and take the string as the first argument
+  ]
+&lt;!-- which makes them compatible with the pipe. --&gt;
+]
+.pull-right-40[
+
+&lt;img src="images/stringr.png" width="80%" height="40%"&gt; &lt;br&gt;
+
+
+]
+
+.footnote[stringr [cheatsheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf)]
+
+---
+
+
+# Special characters
+  
+  * .yellow-h[The "escape" backslash \ is used to escape the special use of certain characters ]
+
+
+```r
+writeLines("\"")
+"
+writeLines("\\")
+\
+writeLines("Math\\Stats")
+Math\Stats
+```
+
+--
+
+  * .yellow-h[To include both single and double quotes in string, escape with \]
+  
+&lt;!--  To include a double quote inside a string, use single quotes on the outside. To include a single quote inside a string, use double quotes on the outside. --&gt;
+
+--
+
+
+```r
+s &lt;- '5\'10"'    # outer single quote
+writeLines(s)
+5'10"
+```
+
+--
+
+
+```r
+s &lt;- "5'10\""    # outer double quote
+writeLines(s)
+5'10"
+```
+
+---
+
+
+#  Combining strings
+
+
+.pull-left-60[
+
+```r
+str_c("iron", "wine")
+[1] "ironwine"
+str_flatten(c("iron", "wine"), collapse = " and ")
+[1] "iron and wine"
+```
+]
+.pull-right-40[
+
+
+```r
+a &lt;- c("a", "b", "c")
+b &lt;- c("A", "B", "C")
+str_c(a, b) 
+[1] "aA" "bB" "cC"
+```
+]
+
+
+--
+
+
+```r
+building &lt;- "CMC"
+room &lt;- "102"
+begin_time &lt;- "11:10 a.m."
+end_time &lt;- "12:20 p.m."
+days &lt;- "MWF"
+class &lt;- "STAT 220"
+```
+
+--
+
+
+```r
+str_c(class, "meets from", begin_time, "to", end_time, 
+      days, "in", building, room, sep = " ")
+[1] "STAT 220 meets from 11:10 a.m. to 12:20 p.m. MWF in CMC 102"
+```
+
+
+---
+
+class: middle
+
+# Lengths of strings
+
+.bq[
+.large[We can manage the lengths of strings using the following set of functions:]
+
+.font120[
+
+- `str_length()`
+
+- `str_pad()`
+
+- `str_trunc()`
+
+- `str_trim()`
+
+]
+]
+---
+
+class: middle
+
+# `str_length()`
+
+.font120[
+&gt; tells you how many characters are in each entry of a character vector
+]
+
+.code100[
+
+```r
+gapminder %&gt;% names()
+[1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
+```
+]
+
+
+.code120[
+
+```r
+# length of each column names 
+gapminder %&gt;% names() %&gt;% str_length()
+[1] 7 9 4 7 3 9
+```
+
+]
+
+
+---
+
+class: middle
+
+# `str_pad()`
+
+.font120[
+&gt; standardizes the length of strings in a character vector by padding it on the left or right ends with a specified character (by default, a space)
+]
+
+
+```r
+gapminder %&gt;% names() %&gt;%
+  str_pad(width = 9, # minimum width of the string to fill/pad positions up to
+          side = "both", # side to insert the extra characters on 
+          pad = "+")
+[1] "+country+" "continent" "++year+++" "+lifeExp+" "+++pop+++" "gdpPercap"
+```
+
+
+---
+
+class: middle
+
+# `str_trunc()`
+
+.font120[
+&gt; standardizes string lengths by controlling the maximum width and truncating strings longer than this
+]
+
+
+```r
+gapminder %&gt;% names() %&gt;%
+  str_trunc(width = 7, #the maximum width to allow for strings
+          side= "right", 
+          # entries which have been truncated will show this 
+          # to indicate that something has been removed
+          ellipsis = "...") 
+[1] "country" "cont..." "year"    "lifeExp" "pop"     "gdpP..."
+```
+
+
+---
+
+class: middle
+
+# `str_trim()`
+
+.font120[
+&gt;  removes empty spaces on the ends of a string
+]
+
+
+```r
+#add some whitespace
+padded_names &lt;- gapminder %&gt;% names() %&gt;% str_pad(12, "both")
+padded_names
+[1] "  country   " " continent  " "    year    " "  lifeExp   " "    pop     "
+[6] " gdpPercap  "
+```
+
+
+
+```r
+#remove it
+str_trim(padded_names)
+[1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
+```
+
+
+---
+
+class: middle
+
+# `str_glue()`
+
+&gt; .large[allows one to interpolate strings and values that have been assigned to names in R]
+
+
+.pull-left[
+
+
+```r
+y &lt;- Sys.Date() # current date
+str_glue("today is {y}")
+today is 2022-10-05
+```
+
+
+```r
+nm &lt;- "Alex"
+str_glue("Hi, my name is {nm}.")
+Hi, my name is Alex.
+```
+
+]
+
+.pull-right[
+
+
+```r
+# base R equivalent
+paste0("today is ", y)
+[1] "today is 2022-10-05"
+```
+
+
+```r
+a &lt;- 5
+str_glue("a = {a}")
+a = 5
+```
+
+]
+
+---
+
+
+# `str_sub()`
+
+&gt; Extract and replace substrings from a character vector
+
+.code110[
+
+```r
+phrase &lt;- "cellar door"
+str_sub(phrase, start = 1, end = 6)
+[1] "cellar"
+```
+]
+
+--
+
+.code110[
+
+```r
+str_sub(phrase, start = c(1,8), end = c(6,11))
+[1] "cellar" "door"  
+```
+]
+
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Get the class activity 11.Rmd file
+- Work on problem 1
+- Ask me questions
+]
+
+]
+
+<div class="countdown" id="timer_d09be175" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+
+class: middle
+
+# More Special Characters
+
+.bq[
+- The .yellow-h[|] symbol inside a regex means `"or"`.
+
+- Use .yellow-h[`\\n`] to matche a newline character
+
+- Use .yellow-h[`\\s`] to match white space characters (spaces, tabs, and newlines)
+
+- Use .yellow-h[`\\w`] to match alphanumeric characters (letters and numbers)
+  - can also use .out-t[`[:alpha:]`] 
+
+- Use .yellow-h[`\\d`] to represent digits (numbers)
+  - can also use .out-t[`[:digit:]`]
+
+]
+&lt;!-- The backlash is used to distinguish it from the character `'d'`. --&gt;
+
+.footnote[Click [here](https://www.jetbrains.com/help/objc/regular-expression-syntax-reference.html#regex-syntax-reference) for extensive lists]
+
+---
+
+## More Special Characters
+
+.bql.font80[
+- .out-t[`^`] = start of a string
+
+- .out-t[`$`] = end of a string
+
+- .out-t[`.`] = any character
+]
+
+--
+
+## Quantifiers
+
+.bq.font80[
+- .out-t[`*`] = matches the preceding character any number of times
+
+- .out-t[`+`] = matches the preceding character once
+
+- .out-t[`?`] = matches the preceding character at most once (i.e. optionally)
+
+- .out-t[{n}] = matches the preceding character exactly n times
+]
+
+.footnote[Try more regexes [here](https://regexr.com/)]
+
+---
+
+
+# `str_detect()`
+
+
+```r
+days &lt;- c("Monday", "Tuesday", "Wednesday", 
+              "Thursday", "Friday", "Saturday", "Sunday")
+```
+
+--
+
+
+```r
+str_detect(days, "^[Ss]un.*")
+[1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE
+```
+
+--
+
+
+```r
+days %&gt;% 
+* str_which("^T")  # indices of matching entries
+[1] 2 4
+```
+
+
+---
+
+
+# `str_subset()`
+
+&gt; returns all values in a vector which match a pattern
+
+
+```r
+gapminder$country %&gt;% 
+  unique() %&gt;% 
+  str_subset("^[CU].*a$")
+[1] "Cambodia"   "Canada"     "China"      "Colombia"   "Costa Rica"
+[6] "Croatia"    "Cuba"       "Uganda"    
+```
+
+--
+
+
+```r
+# columns with names starting with "c"
+gapminder %&gt;% 
+  names() %&gt;% 
+  str_subset("^c")
+[1] "country"   "continent"
+```
+
+
+---
+
+## `str_sub()`
+
+
+.bq.font80[extracts parts of strings based on their position with the start and end arguments]
+
+
+```r
+gapminder %&gt;% 
+  names() %&gt;% 
+* str_sub(start = 1, end = 6) # return the 1st 6 characters of each column name
+[1] "countr" "contin" "year"   "lifeEx" "pop"    "gdpPer"
+```
+
+--
+
+
+## `str_extract()` 
+
+
+.bq.font80[extract just the part of the string matching the specified regex instead of the entire entry]
+
+
+```r
+name_phone &lt;- c("Moly: 250-999-8878", 
+       "Ali: 416-908-2044", 
+       "Eli: 204-192-9829", 
+       "May: 250-209-7047")
+str_extract(name_phone, "[:alpha:]*") 
+[1] "Moly" "Ali"  "Eli"  "May" 
+```
+
+
+---
+
+
+# `str_split()`
+
+&gt; splits a string into a list or matrix of pieces based on a supplied pattern
+
+
+
+```r
+str_split(c("a_3", "d_4"), pattern = "_") # returns a list
+[[1]]
+[1] "a" "3"
+
+[[2]]
+[1] "d" "4"
+```
+
+--
+
+
+```r
+str_split(c("a_3", "d_4"), pattern = "_", simplify = TRUE) # returns a matrix
+     [,1] [,2]
+[1,] "a"  "3" 
+[2,] "d"  "4" 
+```
+
+
+---
+
+class: middle
+
+# `str_replace()`
+
+&gt; `str_replace()` replaces the first instance of the detected pattern with a specified string.
+
+
+```r
+gap_names &lt;- gapminder %&gt;% names
+
+str_replace(gap_names, 
+            pattern = "^.{3}", # match the 1st 3 characters of each string in the vector
+            replacement = "X_")
+[1] "X_ntry"   "X_tinent" "X_r"      "X_eExp"   "X_"       "X_Percap"
+```
+
+---
+
+# `str_replace_all()`
+
+
+
+
+.code80[
+
+```r
+head(murders, 2)
+# A tibble: 2 × 4
+  state   population total murder_rate
+  &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;
+1 Alabama 4,853,875  348           7.2
+2 Alaska  737,709    59            8  
+```
+]
+.code80[
+
+```r
+# detect whether a comma is present
+*murders %&gt;% mutate(population = str_replace_all(population, ",", ""),
+*                  total = str_replace_all(total, ",", "")) %&gt;% mutate_at(vars(2:3), as.double)
+# A tibble: 51 × 4
+   state                population total murder_rate
+   &lt;chr&gt;                     &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 Alabama                 4853875   348         7.2
+ 2 Alaska                   737709    59         8  
+ 3 Arizona                 6817565   309         4.5
+ 4 Arkansas                2977853   181         6.1
+ 5 California             38993940  1861         4.8
+ 6 Colorado                5448819   176         3.2
+ 7 Connecticut             3584730   117         3.3
+ 8 Delaware                 944076    63         6.7
+ 9 District of Columbia     670377   162        24.2
+10 Florida                20244914  1041         5.1
+# … with 41 more rows
+```
+]
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Go back to the activity file
+- Work on problems 2-3
+- Ask me questions
+]
+
+]
+
+<div class="countdown" id="timer_b3a28473" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">08</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

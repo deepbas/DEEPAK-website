@@ -33,7 +33,7 @@
 &lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 10/05&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please gently read &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 25&lt;/a&gt; on string parsing.
+    Please gently read &lt;a href=&#34;https://rafalab.github.io/dsbook/string-processing.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Irizarry Case Studies 1 and 2 from chapter 25&lt;/a&gt; on string parsing. Also, skim through &lt;a href=&#34;https://r4ds.had.co.nz/strings.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 14&lt;/a&gt; on strings and regular expressions.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;h3 id=&#34;in-class-1&#34;&gt;In Class&lt;/h3&gt;
@@ -41,7 +41,7 @@
 &lt;li&gt;Basic overview of &lt;code&gt;stringr&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;String manipulation&lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- Day 11 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;) --&gt;
+&lt;p&gt;Day 11 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
