@@ -42,6 +42,18 @@
 &lt;li&gt;String manipulation&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Day 11 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Friday, 10/07&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Continue reading &lt;a href=&#34;https://r4ds.had.co.nz/strings.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW Chapter 14&lt;/a&gt; on strings and regular expressions. Also, go over &lt;a href=&#34;https://r4ds.had.co.nz/factors.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW chapter 15&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;in-class-2&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Factors with &lt;em&gt;forcats&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;String manipulation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- Day 11 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;) --&gt;
 </description>
     </item>
     
