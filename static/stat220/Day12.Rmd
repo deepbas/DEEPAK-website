@@ -128,7 +128,6 @@ class: title-slide, middle
 - Important for visualization, statistical modeling (i.e. for `lm()`), and creating tables
 
 ]
-
 ]
 
 .footnote[See [`forcats` cheatsheet](http://www.flutterbys.com.au/stats/downloads/slides/figure/factors.pdf)
