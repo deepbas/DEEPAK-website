@@ -131,8 +131,8 @@ class: title-slide, middle
 
 ]
 
-.footnote[See [`forcats` cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/factors.pdf)
-and [`forcats` vignette]()]
+.footnote[See [`forcats` cheatsheet](http://www.flutterbys.com.au/stats/downloads/slides/figure/factors.pdf)
+and [`forcats` vignette](https://forcats.tidyverse.org/)]
 
 ---
 
