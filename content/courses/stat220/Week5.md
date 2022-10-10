@@ -14,8 +14,6 @@ weight: 20
 ### Before Class
 
 {{% callout note %}}
-
-
 Please read [IDS Chapter 26](http://rafalab.dfci.harvard.edu/dsbook/text-mining.html#case-study-trump-tweets). Also, read [this article](http://varianceexplained.org/r/trump-tweets/) by David Robinson and skim through [this tutorial](https://www.rexegg.com/regex-lookarounds.html).{{% /callout %}}
 
 ### In Class
@@ -23,8 +21,9 @@ Please read [IDS Chapter 26](http://rafalab.dfci.harvard.edu/dsbook/text-mining.
 - advanced text mining
 - analyze tweets
 
+Day 13 Slides ({{% staticref "stat220/Day13.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day13.html" "newtab" %}}html{{% /staticref %}}) 
+
 <!--
-Day 10 Slides ({{% staticref "stat220/Day10.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day10.html" "newtab" %}}html{{% /staticref %}}) 
 
 <span style="color:orange">**Wednesday, 10/05**</span>
 

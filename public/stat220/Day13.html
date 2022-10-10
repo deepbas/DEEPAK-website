@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced String Manipulation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/str_view/str_view.css" rel="stylesheet" />
+    <script src="libs/str_view-binding/str_view.js"></script>
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Advanced String Manipulation]
+
+### .fancy[Fall 2022]
+
+ October 10 2022
+
+---
+
+
+# Let's start with some positivity ...
+
+.code110[
+
+```r
+str_to_lower("BEAUTY is in the EYE of the BEHOLDER")
+[1] "beauty is in the eye of the beholder"
+```
+]
+
+--
+
+.code110[
+
+```r
+str_to_upper("one small step for man, one giant leap for mankind")
+[1] "ONE SMALL STEP FOR MAN, ONE GIANT LEAP FOR MANKIND"
+```
+]
+
+--
+
+.code110[
+
+```r
+str_to_title("Aspire to inspire before we expire")
+[1] "Aspire To Inspire Before We Expire"
+```
+]
+
+--
+
+.code110[
+
+```r
+str_to_sentence("everything you can imagine is real")
+[1] "Everything you can imagine is real"
+```
+]
+
+
+---
+
+# Some more regexes
+
+.code120[
+
+```r
+aboutMe &lt;- c("My phone number is 236-748-4508.")
+```
+]
+
+--
+
+.code[
+
+```r
+str_view_all(aboutMe, "\\.") # literal period "."
+```
+
+<div id="htmlwidget-2b96bbb837bb41836962" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2b96bbb837bb41836962">{"x":{"html":"<ul>\n  <li>My phone number is 236-748-4508<span class='match'>.<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+--
+
+.code120[
+
+```r
+str_view_all(aboutMe, "[^(\\d)(\\s)(\\-)(\\.)]") # everything except
+```
+
+<div id="htmlwidget-b74a209f4cca772f1c94" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b74a209f4cca772f1c94">{"x":{"html":"<ul>\n  <li><span class='match'>M<\/span><span class='match'>y<\/span> <span class='match'>p<\/span><span class='match'>h<\/span><span class='match'>o<\/span><span class='match'>n<\/span><span class='match'>e<\/span> <span class='match'>n<\/span><span class='match'>u<\/span><span class='match'>m<\/span><span class='match'>b<\/span><span class='match'>e<\/span><span class='match'>r<\/span> <span class='match'>i<\/span><span class='match'>s<\/span> 236-748-4508.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+
+# Alternates: OR
+
+.code120[
+
+```r
+aboutMe &lt;- c("My phone number is 236-748-4508.")
+```
+]
+
+--
+
+
+.pull-left[
+.code120[
+
+```r
+str_view(aboutMe,"8|6-")  
+```
+
+<div id="htmlwidget-b9de9242169d48c4333a" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b9de9242169d48c4333a">{"x":{"html":"<ul>\n  <li>My phone number is 23<span class='match'>6-<\/span>748-4508.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+]
+.pull-right[
+.code120[
+
+```r
+str_view(aboutMe,"(8|6-)")  
+```
+
+<div id="htmlwidget-79cb66065e64e0b9fcf9" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-79cb66065e64e0b9fcf9">{"x":{"html":"<ul>\n  <li>My phone number is 23<span class='match'>6-<\/span>748-4508.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+]
+
+&lt;br&gt;
+--
+
+.code120[
+
+```r
+str_view_all(aboutMe,"(8|6)-")  
+```
+
+<div id="htmlwidget-eef40856a4f4aceb8c9c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-eef40856a4f4aceb8c9c">{"x":{"html":"<ul>\n  <li>My phone number is 23<span class='match'>6-<\/span>74<span class='match'>8-<\/span>4508.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+]
+
+
+---
+
+
+# More Duplicating Groups
+
+.code100[
+
+```r
+foo &lt;- c("addidas", "missim")
+```
+]
+
+
+.pull-left[
+.code100[
+
+```r
+# anything then repeat anything
+str_view(foo, "(.)\\1") 
+```
+
+<div id="htmlwidget-851a4f2cf750ef008742" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-851a4f2cf750ef008742">{"x":{"html":"<ul>\n  <li>a<span class='match'>dd<\/span>idas<\/li>\n  <li>mi<span class='match'>ss<\/span>im<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+]
+.pull-right[
+.code100[
+
+```r
+# strings like `xyzzyx`
+str_view(foo, "(.)(.)(.)\\3\\2\\1")
+```
+
+<div id="htmlwidget-1226f745c851ee61ca42" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1226f745c851ee61ca42">{"x":{"html":"<ul>\n  <li>addidas<\/li>\n  <li><span class='match'>missim<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+]
+
+--
+
+&lt;br&gt;
+
+
+```r
+str_view(foo, "(.)(.)\\1")
+```
+
+<div id="htmlwidget-a61c5891454812c55a9a" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a61c5891454812c55a9a">{"x":{"html":"<ul>\n  <li>ad<span class='match'>did<\/span>as<\/li>\n  <li>missim<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+
+# Finding patterns
+
+.pull-left[
+
+
+```r
+# find the last word in a sentence
+str_view_all("it's a goat.", 
+             "[a-z]+\\.")
+```
+
+<div id="htmlwidget-6baa1f78880ced592250" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6baa1f78880ced592250">{"x":{"html":"<ul>\n  <li>it's a <span class='match'>goat.<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
+.pull-right[
+
+
+```r
+# find word with  `'s`
+str_view_all("it's a goat.", 
+             "[a-z]+\\'\\w")
+```
+
+<div id="htmlwidget-b0823111f97fd1228483" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b0823111f97fd1228483">{"x":{"html":"<ul>\n  <li><span class='match'>it's<\/span> a goat.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+]
+
+--
+
+&lt;br&gt;
+
+
+```r
+# find a single letter word separated by spaces
+str_view_all("it's a goat.", 
+             "(\\s)(\\w)\\s")
+```
+
+<div id="htmlwidget-b14501a203b8be3f07e3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b14501a203b8be3f07e3">{"x":{"html":"<ul>\n  <li>it's<span class='match'> a <\/span>goat.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Get the class activity 13.Rmd file
+- Work on activity 1
+- Knit to .html as .pdf won't work
+]
+
+]
+
+<div class="countdown" id="timer_27dcec19" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">06</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: inverse, middle
+
+# .Large[Look ahead and look behind !!]
+
+
+---
+
+
+&lt;!-- 
+  .out-t[`(?=)`] = look ahead, e.g. `i(?=e)` = .bold[i] when it comes before .bold[e]
+
+- .out-t[`(?!)`] = negative look ahead, e.g. `i(?!e)` .bold[i] when it comes before something that isn’t .bold[e]
+
+- .out-t[`(?&lt;)`] = look behind, e.g. `(?&lt;=e)i` = .bold[i] when it follows .bold[e]
+
+- .out-t[`(?&lt;!)`] = negative look behind, e.g. `(?&lt;!e)i` = .bold[i] when it does not follow .bold[e]
+
+--&gt;
+
+# What are these?
+
+&lt;br&gt;
+
+&lt;img src="images/lookaround.png" width="100%" height="100%"&gt; &lt;br&gt;
+
+
+.footnote[Source: click [here](https://www.rexegg.com/regex-lookarounds.html#nav)]
+---
+
+# Look ahead example
+
+.font110[
+&gt; .bold[Positive look ahead] operator `x(?=[y])` will find `x` when it comes before `y`
+
+&gt; .bold[Negative] version is `x(?![y])` (`x` when it comes before something that isn’t `y`)
+]
+
+
+```r
+str_view_all("it's a goat.", "t(?=[\\.])") # t before a period
+```
+
+<div id="htmlwidget-e706610c6e8c4d6ecc6d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e706610c6e8c4d6ecc6d">{"x":{"html":"<ul>\n  <li>it's a goa<span class='match'>t<\/span>.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# Look ahead example
+
+.font110[
+&gt; .bold[Positive look ahead] operator `x(?=[y])` will find `x` when it comes before `y`
+
+&gt; .bold[Negative] version is `x(?![y])` (`x` when it comes before something that isn’t `y`)
+]
+
+
+
+
+```r
+str_view_all("it's a goat.","[a-z]+(?=[\\.])") # 1+ letters before a period
+```
+
+<div id="htmlwidget-011ce9046341fa5b4d57" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-011ce9046341fa5b4d57">{"x":{"html":"<ul>\n  <li>it's a <span class='match'>goat<\/span>.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+# Look behind example
+
+.font110[
+&gt; .bold[Positive look behind] operator `(?&lt;=[x])y` will find `y` when it follows `x`
+
+&gt; .bold[Negative] version is `(?&lt;![x])y` (`y` when it does not follow `x`)
+]
+
+
+
+```r
+str_view_all("that is a top cat.","(?&lt;=[a-z])t+") # one or more t, if preceded by a letter
+```
+
+<div id="htmlwidget-9910a944b5374d940d25" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9910a944b5374d940d25">{"x":{"html":"<ul>\n  <li>tha<span class='match'>t<\/span> is a top ca<span class='match'>t<\/span>.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+# Look behind example
+
+.font110[
+&gt; .bold[Positive look behind] operator `(?&lt;=[x])y` will find `y` when it follows `x`
+
+&gt; .bold[Negative] version is `(?&lt;![x])y` (`y` when it does not follow `x`)
+]
+
+
+
+```r
+# t and one or more letter not preceded by a letter
+str_view_all("that is a top cat.","(?&lt;![a-z])t[a-z]+") 
+```
+
+<div id="htmlwidget-b8845d6f6a62818d073b" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b8845d6f6a62818d073b">{"x":{"html":"<ul>\n  <li><span class='match'>that<\/span> is a <span class='match'>top<\/span> cat.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+.font120.bq[
+- Go back to the activity file
+- Continue working on activity 3
+- Ask me questions
+]
+
+]
+
+<div class="countdown" id="timer_2a58ccb1" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">08</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+
+# Analyzing Trump tweets
+
+.font120[
+&gt; What proportion of tweets (text) mention “Hillary” or “Clinton”?
+]
+
+--
+
+
+```r
+tweets %&gt;% 
+  summarize(prop = mean(str_detect(str_to_lower(text),"hillary|clinton"))) 
+# A tibble: 1 × 1
+   prop
+  &lt;dbl&gt;
+1 0.174
+```
+
+--
+.font120[
+- About 17.4% of these tweets mention Hillary or Clinton.
+]
+---
+
+# Analyzing Trump tweets
+
+.font120[
+&gt; What proportion of these tweets include “crooked”?
+]
+
+--
+
+
+```r
+tweets %&gt;%   
+  filter(str_detect(str_to_lower(text), "hillary|clinton")) %&gt;%
+  summarize(prop = mean(str_detect(str_to_lower(text), "crooked"))) 
+# A tibble: 1 × 1
+   prop
+  &lt;dbl&gt;
+1 0.540
+```
+
+--
+.font120[
+- Of the Hillary/Clinton tweets, about 54% of include the word “crooked.”
+]
+
+---
+
+count: false
+ 
+## How are the hashtags used?
+.panel1-demo1-auto[
+
+```r
+*tweets
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 1,512 × 22
+    ...1 text        favor…¹ favor…² reply…³ created             trunc…⁴ reply…⁵
+   &lt;dbl&gt; &lt;chr&gt;       &lt;lgl&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;              &lt;lgl&gt;   &lt;lgl&gt;  
+ 1     1 "My econom… FALSE      9214 &lt;NA&gt;    2016-08-08 15:20:44 FALSE   NA     
+ 2     2 "Join me i… FALSE      6981 &lt;NA&gt;    2016-08-08 13:28:20 FALSE   NA     
+ 3     3 "#ICYMI: \… FALSE     15724 &lt;NA&gt;    2016-08-08 00:05:54 FALSE   NA     
+ 4     4 "Michael M… FALSE     19837 &lt;NA&gt;    2016-08-07 23:09:08 FALSE   NA     
+ 5     5 "The media… FALSE     34051 &lt;NA&gt;    2016-08-07 21:31:46 FALSE   NA     
+ 6     6 "I see whe… FALSE     29831 &lt;NA&gt;    2016-08-07 13:49:29 FALSE   NA     
+ 7     7 "Thank you… FALSE     19223 &lt;NA&gt;    2016-08-07 02:19:37 FALSE   NA     
+ 8     8 ".@Larry_K… FALSE     19543 &lt;NA&gt;    2016-08-07 02:03:39 FALSE   NA     
+ 9     9 "I am not … FALSE     75488 &lt;NA&gt;    2016-08-07 01:53:45 FALSE   NA     
+10    10 "#CrookedH… FALSE     23661 &lt;NA&gt;    2016-08-06 20:04:08 FALSE   NA     
+# … with 1,502 more rows, 14 more variables: id &lt;dbl&gt;, replyToUID &lt;dbl&gt;,
+#   statusSource &lt;chr&gt;, source &lt;chr&gt;, screenName &lt;chr&gt;, retweetCount &lt;dbl&gt;,
+#   isRetweet &lt;lgl&gt;, retweeted &lt;lgl&gt;, longitude &lt;dbl&gt;, latitude &lt;dbl&gt;,
+#   text2 &lt;chr&gt;, charCount &lt;dbl&gt;, nWords &lt;dbl&gt;, nRealWords &lt;dbl&gt;, and
+#   abbreviated variable names ¹​favorited, ²​favoriteCount, ³​replyToSN,
+#   ⁴​truncated, ⁵​replyToSID
+```
+]
+
+---
+count: false
+ 
+## How are the hashtags used?
+.panel1-demo1-auto[
+
+```r
+tweets %&gt;%
+* mutate(ct = str_count(text, "#"))
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 1,512 × 23
+    ...1 text        favor…¹ favor…² reply…³ created             trunc…⁴ reply…⁵
+   &lt;dbl&gt; &lt;chr&gt;       &lt;lgl&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;dttm&gt;              &lt;lgl&gt;   &lt;lgl&gt;  
+ 1     1 "My econom… FALSE      9214 &lt;NA&gt;    2016-08-08 15:20:44 FALSE   NA     
+ 2     2 "Join me i… FALSE      6981 &lt;NA&gt;    2016-08-08 13:28:20 FALSE   NA     
+ 3     3 "#ICYMI: \… FALSE     15724 &lt;NA&gt;    2016-08-08 00:05:54 FALSE   NA     
+ 4     4 "Michael M… FALSE     19837 &lt;NA&gt;    2016-08-07 23:09:08 FALSE   NA     
+ 5     5 "The media… FALSE     34051 &lt;NA&gt;    2016-08-07 21:31:46 FALSE   NA     
+ 6     6 "I see whe… FALSE     29831 &lt;NA&gt;    2016-08-07 13:49:29 FALSE   NA     
+ 7     7 "Thank you… FALSE     19223 &lt;NA&gt;    2016-08-07 02:19:37 FALSE   NA     
+ 8     8 ".@Larry_K… FALSE     19543 &lt;NA&gt;    2016-08-07 02:03:39 FALSE   NA     
+ 9     9 "I am not … FALSE     75488 &lt;NA&gt;    2016-08-07 01:53:45 FALSE   NA     
+10    10 "#CrookedH… FALSE     23661 &lt;NA&gt;    2016-08-06 20:04:08 FALSE   NA     
+# … with 1,502 more rows, 15 more variables: id &lt;dbl&gt;, replyToUID &lt;dbl&gt;,
+#   statusSource &lt;chr&gt;, source &lt;chr&gt;, screenName &lt;chr&gt;, retweetCount &lt;dbl&gt;,
+#   isRetweet &lt;lgl&gt;, retweeted &lt;lgl&gt;, longitude &lt;dbl&gt;, latitude &lt;dbl&gt;,
+#   text2 &lt;chr&gt;, charCount &lt;dbl&gt;, nWords &lt;dbl&gt;, nRealWords &lt;dbl&gt;, ct &lt;int&gt;, and
+#   abbreviated variable names ¹​favorited, ²​favoriteCount, ³​replyToSN,
+#   ⁴​truncated, ⁵​replyToSID
+```
+]
+
+---
+count: false
+ 
+## How are the hashtags used?
+.panel1-demo1-auto[
+
+```r
+tweets %&gt;%
+  mutate(ct = str_count(text, "#")) %&gt;%
+* select(ct, text)
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 1,512 × 2
+      ct text                                                                   
+   &lt;int&gt; &lt;chr&gt;                                                                  
+ 1     0 "My economic policy speech will be carried live at 12:15 P.M. Enjoy!"  
+ 2     0 "Join me in Fayetteville, North Carolina tomorrow evening at 6pm. Tick…
+ 3     1 "#ICYMI: \"Will Media Apologize to Trump?\" https://t.co/ia7rKBmioA"   
+ 4     0 "Michael Morell, the lightweight former Acting Director of C.I.A., and…
+ 5     0 "The media is going crazy. They totally distort so many things on purp…
+ 6     0 "I see where Mayor Stephanie Rawlings-Blake of Baltimore is pushing Cr…
+ 7     2 "Thank you Windham, New Hampshire! #TrumpPence16 #MAGA https://t.co/ZL…
+ 8     0 ".@Larry_Kudlow - 'Donald Trump Is the middle-class growth candidate'\…
+ 9     0 "I am not just running against Crooked Hillary Clinton, I am running a…
+10     2 "#CrookedHillary is not fit to be our next president! #TrumpPence16 \r…
+# … with 1,502 more rows
+```
+]
+
+---
+count: false
+ 
+## How are the hashtags used?
+.panel1-demo1-auto[
+
+```r
+tweets %&gt;%
+  mutate(ct = str_count(text, "#")) %&gt;%
+  select(ct, text) %&gt;%
+* summarize(prop = mean(ct &gt; 0))
+```
+]
+ 
+.panel2-demo1-auto[
+
+```
+# A tibble: 1 × 1
+   prop
+  &lt;dbl&gt;
+1 0.283
+```
+]
+
+&lt;style&gt;
+.panel1-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel2-demo1-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+.panel3-demo1-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 100%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+# Finding URLs
+
+.font120[
+&gt; URLs in tweets start with https://t.co/ followed by a string of letters or numbers
+]
+
+
+```r
+link &lt;- "https://t.co/[A-Za-z\\d]+"
+tweets$text[992]
+[1] "I LOVE NEW YORK! #NewYorkValues \r\nhttps://t.co/dbTDhYAX1v"
+```
+
+--
+
+
+```r
+str_view(tweets$text[992], link)
+```
+
+<div id="htmlwidget-b73a9aa73301e8a955a3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b73a9aa73301e8a955a3">{"x":{"html":"<ul>\n  <li>I LOVE NEW YORK! #NewYorkValues \r\n<span class='match'>https://t.co/dbTDhYAX1v<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+# What proportion of tweets have links?
+
+--
+
+
+```r
+tweets %&gt;%
+  summarize(prop = mean(str_detect(text, link))) 
+# A tibble: 1 × 1
+   prop
+  &lt;dbl&gt;
+1 0.342
+```
+
+--
+
+.font120[
+- about 34.2% of tweets have a link.
+]
+
+---
+
+# Removing links from tweets
+
+.code120[
+
+```r
+tw_noLink &lt;- tweets %&gt;%
+  mutate(textNoLink = str_replace_all(text, link, "")) 
+```
+]
+
+--
+
+
+```r
+tw_noLink$text[992]
+[1] "I LOVE NEW YORK! #NewYorkValues \r\nhttps://t.co/dbTDhYAX1v"
+tw_noLink$textNoLink[992]
+[1] "I LOVE NEW YORK! #NewYorkValues \r\n"
+```
+
+
+---
+
+# Get the tweets with links
+
+
+```r
+tweets %&gt;% 
+  filter(str_detect(text, link)) %&gt;% 
+  select(text)
+# A tibble: 517 × 1
+   text                                                                         
+   &lt;chr&gt;                                                                        
+ 1 "Join me in Fayetteville, North Carolina tomorrow evening at 6pm. Tickets no…
+ 2 "#ICYMI: \"Will Media Apologize to Trump?\" https://t.co/ia7rKBmioA"         
+ 3 "Thank you Windham, New Hampshire! #TrumpPence16 #MAGA https://t.co/ZL4Q01Q4…
+ 4 ".@Larry_Kudlow - 'Donald Trump Is the middle-class growth candidate'\r\nhtt…
+ 5 "#CrookedHillary is not fit to be our next president! #TrumpPence16 \r\nhttp…
+ 6 "Good luck #TeamUSA\r\n#OpeningCeremony #Rio2016 https://t.co/mS8qsQpJPh"    
+ 7 "'Trump is right about violent crime: It\x92s on the rise in major cities'\r…
+ 8 "Thank you Green Bay, Wisconsin! Governor @Mike_Pence and I will be back soo…
+ 9 "DON'T LET HILLARY CLINTON DO IT AGAIN!\r\n#TrumpPence16\r\nhttps://t.co/1mG…
+10 "Thank you Des Moines, Iowa! Governor @Mike_Pence and I appreciate your supp…
+# … with 507 more rows
+```
+
+
+---
+
+# Extract all tweets with links
+
+.scroll-box-20[
+
+
+```r
+tweets %&gt;% select(text) %&gt;%
+  str_extract_all(link)
+[[1]]
+  [1] "https://t.co/Z80d4MYIg8" "https://t.co/ia7rKBmioA"
+  [3] "https://t.co/ZL4Q01Q49s" "https://t.co/YbqkhWNm0g"
+  [5] "https://t.co/I0zJO2sZKk" "https://t.co/mS8qsQpJPh"
+  [7] "https://t.co/XbnZ5vktGk" "https://t.co/qsYbyrm3UR"
+  [9] "https://t.co/1mGkPNZPKF" "https://t.co/gr6tGqqmcm"
+ [11] "https://t.co/5yuLKyh8Q6" "https://t.co/3EzG620fpT"
+ [13] "https://t.co/jsAMGO3s4P" "https://t.co/3Hcnzj0Slx"
+ [15] "https://t.co/sEwLWkn1Sz" "https://t.co/UODSMp0oTo"
+ [17] "https://t.co/oVfF28rWL5" "https://t.co/RhblAXkNPw"
+ [19] "https://t.co/hr4O8Xgq2R" "https://t.co/Iui1F2z9ca"
+ [21] "https://t.co/3Hcnzj0Slx" "https://t.co/sEwLWkn1Sz"
+ [23] "https://t.co/0Ei3EdQdXB" "https://t.co/xrTQjt9WOC"
+ [25] "https://t.co/VSnBoQYoZs" "https://t.co/Al5bZlRFYk"
+ [27] "https://t.co/QoxJf4Xzbc" "https://t.co/IAcLfXe463"
+ [29] "https://t.co/QySC5PLFMy" "https://t.co/vVcAzY2zcp"
+ [31] "https://t.co/d0LfyiBlvX" "https://t.co/I5fF3didZs"
+ [33] "https://t.co/xe0I0EmxMa" "https://t.co/jbOS2s4qGI"
+ [35] "https://t.co/XSF1kp7R54" "https://t.co/SPgFIFuSO7"
+ [37] "https://t.co/9inCh1BVwM" "https://t.co/FsrUGByuuD"
+ [39] "https://t.co/jQTQYBFpdb" "https://t.co/RbuXfDZ5w9"
+ [41] "https://t.co/rJjYUbwiLL" "https://t.co/zfxeNbr1nq"
+ [43] "https://t.co/EHRiLkQDWD" "https://t.co/gJYSSXtpaz"
+ [45] "https://t.co/iYM3CCWS2z" "https://t.co/vMf1EPJp4r"
+ [47] "https://t.co/WUdY7feRvV" "https://t.co/4nLjRGyFYw"
+ [49] "https://t.co/oHI6xrDJU0" "https://t.co/VZLDFy707K"
+ [51] "https://t.co/y9WJoUaaql" "https://t.co/xyoPFJmByp"
+ [53] "https://t.co/28G3RVbFsn" "https://t.co/4nLjRGyFYw"
+ [55] "https://t.co/DDg0AUsqRq" "https://t.co/VmSLBvL43l"
+ [57] "https://t.co/yI4Q8FHRjp" "https://t.co/glxTQYAQiN"
+ [59] "https://t.co/wK02fWzJey" "https://t.co/6a7Ef12giZ"
+ [61] "https://t.co/LPk1OkwH9P" "https://t.co/HgFW7IRtz9"
+ [63] "https://t.co/aE5P9jNcFC" "https://t.co/VgMaAsZBep"
+ [65] "https://t.co/WdHbnhhCbW" "https://t.co/nmlRJqzA7S"
+ [67] "https://t.co/5gDeluaBXG" "https://t.co/Pw7GS8R9Gg"
+ [69] "https://t.co/DvP8p7ueNU" "https://t.co/RNW3ED2ifR"
+ [71] "https://t.co/ezrqVqPtta" "https://t.co/JeXFnO6e3s"
+ [73] "https://t.co/X3xHtjhHpB" "https://t.co/A5IF0QHnic"
+ [75] "https://t.co/xymiA0Az7x" "https://t.co/xtcOnA8cw1"
+ [77] "https://t.co/bVAj52fA3Y" "https://t.co/ruEvMGx4C9"
+ [79] "https://t.co/lwi9gqDEHE" "https://t.co/bbv3EhGs5x"
+ [81] "https://t.co/bbroAGTdMw" "https://t.co/UEZorOQhTw"
+ [83] "https://t.co/1noCe9W6Ru" "https://t.co/mXovx0TLPC"
+ [85] "https://t.co/daR2xIhCEs" "https://t.co/LKc7e4VZkB"
+ [87] "https://t.co/eoNTWK6I8y" "https://t.co/mSZYKnWswQ"
+ [89] "https://t.co/KRCdV77BQp" "https://t.co/ERNRrksikq"
+ [91] "https://t.co/zmGZauCnQF" "https://t.co/4FTydj8s9U"
+ [93] "https://t.co/7zMKhhMmhp" "https://t.co/NOF9Td9BHs"
+ [95] "https://t.co/WPMBkYjuIm" "https://t.co/rwxXhfFsn1"
+ [97] "https://t.co/HwqI2iGPDu" "https://t.co/4O4yjh7X4O"
+ [99] "https://t.co/cptBaZbV1v" "https://t.co/EXsoUOsEP4"
+[101] "https://t.co/3ji7a14GSw" "https://t.co/gCzHX1nyxD"
+[103] "https://t.co/0FFeKTsuJn" "https://t.co/KH2ZFHUHGP"
+[105] "https://t.co/E6ZtVjSQZa" "https://t.co/yqcIsBUdAi"
+[107] "https://t.co/bdox6JcrAp" "https://t.co/gobSNWughP"
+[109] "https://t.co/swsAKE11F0" "https://t.co/S7IHXDrmsJ"
+[111] "https://t.co/qL9rjb7OsD" "https://t.co/TZT3XcKp1c"
+[113] "https://t.co/EE7C6XKDkt" "https://t.co/946U6bgREQ"
+[115] "https://t.co/k2Poy3gGvQ" "https://t.co/cv3I3xRSOK"
+[117] "https://t.co/PvdTA8HTCC" "https://t.co/uzBOm21Pug"
+[119] "https://t.co/bsUp4MSysD" "https://t.co/mYBjp03XYf"
+[121] "https://t.co/xlB2C1cpKp" "https://t.co/5Kv03luMZW"
+[123] "https://t.co/QniZIsGrG8" "https://t.co/Kvq6r6WkQ1"
+[125] "https://t.co/TNJMUKImpK" "https://t.co/iFdqRvaL3q"
+[127] "https://t.co/lZH7qw9qmu" "https://t.co/pPNrzG8kEa"
+[129] "https://t.co/3KWOl2ibaW" "https://t.co/miT4atHxQz"
+[131] "https://t.co/aVH9c5QRwc" "https://t.co/teoVCYXKOR"
+[133] "https://t.co/BcoPrwqFMe" "https://t.co/M1yzgyeEdY"
+[135] "https://t.co/6XkUQ0W4QS" "https://t.co/Jmkah9wGaA"
+[137] "https://t.co/gva0MbgnuO" "https://t.co/PE1jdqZysc"
+[139] "https://t.co/lTjLVKkzh1" "https://t.co/6qi7KTW43O"
+[141] "https://t.co/lb5ViCDH0g" "https://t.co/roVn7pAVfy"
+[143] "https://t.co/qVwfjgCHU7" "https://t.co/XB7RMwesMK"
+[145] "https://t.co/4FuPpL5WOM" "https://t.co/Jj9TmSEoOd"
+[147] "https://t.co/Rq6YRHlpib" "https://t.co/Mi87Vmw06H"
+[149] "https://t.co/WmqvcYG4r3" "https://t.co/m0AJWlV8nm"
+[151] "https://t.co/P0GleHEmJy" "https://t.co/mwzYU98yTt"
+[153] "https://t.co/PPsyxGPdFc" "https://t.co/fxlVgfAA1l"
+[155] "https://t.co/zkmPywMDxg" "https://t.co/sryJgRyd56"
+[157] "https://t.co/4LJBpSm8xa" "https://t.co/Xv8Q1GuWiH"
+[159] "https://t.co/KO64IAMDgj" "https://t.co/8CBSfNpl2l"
+[161] "https://t.co/SLdqNhD4Tm" "https://t.co/a6f6xZNrym"
+[163] "https://t.co/MYG45LxGmH" "https://t.co/97R0cQdnGI"
+[165] "https://t.co/PKQhYhMmIX" "https://t.co/sqe12D0MBJ"
+[167] "https://t.co/iEcnnlJ728" "https://t.co/Vd2A747L29"
+[169] "https://t.co/lK3UW4fY2q" "https://t.co/QDQhRRuBbG"
+[171] "https://t.co/ravfFT5UBE" "https://t.co/XDGKaj0ico"
+[173] "https://t.co/Cv1HzKVbiT" "https://t.co/zauQ6kb9Hj"
+[175] "https://t.co/gFtspBViXe" "https://t.co/mO9QrmYXRD"
+[177] "https://t.co/S80xxdeHfG" "https://t.co/h0Av3TAIiM"
+[179] "https://t.co/y4n4nERPFr" "https://t.co/7LAPewxE05"
+[181] "https://t.co/dL5ahNcwZb" "https://t.co/5mtwkOvQnd"
+[183] "https://t.co/NpYI9i4iSG" "https://t.co/ENXliW2m77"
+[185] "https://t.co/pr3BSHJSxL" "https://t.co/lfUdXYnsgJ"
+[187] "https://t.co/hQ1JTMrUtG" "https://t.co/7ii4KUfsab"
+[189] "https://t.co/2GUKqOTHS5" "https://t.co/pNSgSjD5gW"
+[191] "https://t.co/KR7OnS8h6s" "https://t.co/YWd5lk5skG"
+[193] "https://t.co/dJL71jwK0g" "https://t.co/Audi8h85qu"
+[195] "https://t.co/tan8BmAuR8" "https://t.co/5EZ7X1ZZKh"
+[197] "https://t.co/iY4K7Wcw3C" "https://t.co/1COtt0RPY7"
+[199] "https://t.co/UTYOLo7wGF" "https://t.co/iFuf8MdTEH"
+[201] "https://t.co/VXjtSivvuU" "https://t.co/dIK3IyrYGC"
+[203] "https://t.co/W4z2eW5ay4" "https://t.co/QuTsSmeVdO"
+[205] "https://t.co/vN4K8FvQNT" "https://t.co/vhGwmhGCVR"
+[207] "https://t.co/m1EIra7YMU" "https://t.co/PVB6QX7VpK"
+[209] "https://t.co/hSaIurAfvD" "https://t.co/593p8uRPhq"
+[211] "https://t.co/TZf8uwQO4L" "https://t.co/NlF2Gcr915"
+[213] "https://t.co/uTCXPbWpve" "https://t.co/ORJyN4FsNI"
+[215] "https://t.co/PVB6QX7VpK" "https://t.co/B51r30Mazd"
+[217] "https://t.co/qp07UfnnjM" "https://t.co/ui9tSfMcS8"
+[219] "https://t.co/2iYArmM7oN" "https://t.co/nvHRnfi2N7"
+[221] "https://t.co/ksU8AGrFBS" "https://t.co/PVB6QX7VpK"
+[223] "https://t.co/2ToWwthEeF" "https://t.co/nvHRnfzEbH"
+[225] "https://t.co/Yd3f8xLpPl" "https://t.co/VXjtSivvuU"
+[227] "https://t.co/J777QHdYa3" "https://t.co/jaGeN4u50U"
+[229] "https://t.co/pQ4nSTnVrK" "https://t.co/dKBTP1QjH3"
+[231] "https://t.co/0nNKEBSd73" "https://t.co/fX0kXZUNqz"
+[233] "https://t.co/c7sCbHDAQh" "https://t.co/cVJvfcoGOt"
+[235] "https://t.co/bIIdYtvZYw" "https://t.co/R29WMGNLGG"
+[237] "https://t.co/UolRS3aT6W" "https://t.co/1JJ2Kn0ani"
+[239] "https://t.co/x3w1PHtLXP" "https://t.co/mXsxkfcstC"
+[241] "https://t.co/1JJ2Kn0ani" "https://t.co/cyARlHSEFU"
+[243] "https://t.co/T1fVcu3mEC" "https://t.co/t31ReRSzzy"
+[245] "https://t.co/DrVa65X9rI" "https://t.co/THKJwjNkaz"
+[247] "https://t.co/cITm8BPixD" "https://t.co/04qqpGylT7"
+[249] "https://t.co/SxU4yzCLQf" "https://t.co/Ye6IhOW6ZM"
+[251] "https://t.co/I2CJSqiKGN" "https://t.co/pvrBb7v4NG"
+[253] "https://t.co/aOvVsZfAW3" "https://t.co/rZ1MqUzpKU"
+[255] "https://t.co/nEPqAYw1G5" "https://t.co/kv624y9UOm"
+[257] "https://t.co/fX5bs8fzac" "https://t.co/zdOEle8wOL"
+[259] "https://t.co/I2CJSqAlyl" "https://t.co/6jk33orxXG"
+[261] "https://t.co/bwgL1ZXtC7" "https://t.co/COXEJ1In8D"
+[263] "https://t.co/gECLNtQizQ" "https://t.co/iulXLEANei"
+[265] "https://t.co/42OpVsjXjp" "https://t.co/zjWKGMDgzi"
+[267] "https://t.co/z4X1o5xHBh" "https://t.co/GusL2UPrX2"
+[269] "https://t.co/H6D25S1TR5" "https://t.co/wNOY8Pc2kM"
+[271] "https://t.co/osWzVxNkJx" "https://t.co/GbRTQdxIj4"
+[273] "https://t.co/pNqwOrY0ZB" "https://t.co/PgIYkHLGtI"
+[275] "https://t.co/MyJMOKdpJ9" "https://t.co/rOvTapLnWG"
+[277] "https://t.co/PyHiy7vjO6" "https://t.co/7Jk6voyzue"
+[279] "https://t.co/sRCF1H3rjg" "https://t.co/qdsLUy2hqD"
+[281] "https://t.co/od7vsDMlHY" "https://t.co/fMR8YYiiMz"
+[283] "https://t.co/zgopGvSEen" "https://t.co/suHERIUHo4"
+[285] "https://t.co/nFiydpTpPn" "https://t.co/8YtBU7j17m"
+[287] "https://t.co/jLQukR550J" "https://t.co/OrEhKJZ5Rd"
+[289] "https://t.co/t75Zxn9L6f" "https://t.co/jLQukR550J"
+[291] "https://t.co/Uds8OdH3A4" "https://t.co/W7xy7eXcii"
+[293] "https://t.co/km0rRYSDnO" "https://t.co/b08FcMlgkr"
+[295] "https://t.co/RCDeLvHQqD" "https://t.co/pfVXQ8NdZu"
+[297] "https://t.co/ZZl2sc29dn" "https://t.co/KKIgM4rNma"
+[299] "https://t.co/1cEZ8wG7Cy" "https://t.co/TVSPvxOmve"
+[301] "https://t.co/MMa07nwa44" "https://t.co/1NRj3zCuui"
+[303] "https://t.co/kTi6e1zyNI" "https://t.co/WjI8Rx11no"
+[305] "https://t.co/82l6TjA2lk" "https://t.co/hPQJc7eor0"
+[307] "https://t.co/SPJfMFyPjU" "https://t.co/AEShamhNVS"
+[309] "https://t.co/xfINxdRNiQ" "https://t.co/mmPck1HYrC"
+[311] "https://t.co/xGkVbxTamz" "https://t.co/A3Wus0cRIO"
+[313] "https://t.co/MAZK5bdZuD" "https://t.co/HnQbj3ipuS"
+[315] "https://t.co/aJ7s0aqqj0" "https://t.co/ygLUAl7gzx"
+[317] "https://t.co/vV31Pbpkmn" "https://t.co/Arw19Antpj"
+[319] "https://t.co/dQi3Cydckp" "https://t.co/Mk4YuuRf4s"
+[321] "https://t.co/kXhc2j94YF" "https://t.co/YZAdAndKXv"
+[323] "https://t.co/u8hhrRRFMp" "https://t.co/IC3pe5lRAS"
+[325] "https://t.co/hK1yqlp9ca" "https://t.co/qkK3LJPoQQ"
+[327] "https://t.co/xm45Ia1GTu" "https://t.co/SZyZ8GkF23"
+[329] "https://t.co/8yFd6qA4rD" "https://t.co/wpxojJnjbb"
+[331] "https://t.co/aRXPHAlCLC" "https://t.co/ytzesbCZas"
+[333] "https://t.co/nW0N3OO4mw" "https://t.co/R0NuOrZISX"
+[335] "https://t.co/hfHY9MdAc7" "https://t.co/hiDDT9hV0j"
+[337] "https://t.co/CLhqgybbYR" "https://t.co/RRma61oisz"
+[339] "https://t.co/iCGcF21fWY" "https://t.co/LhcIU6kmxs"
+[341] "https://t.co/lEGJyAinUh" "https://t.co/pndaZjsruy"
+[343] "https://t.co/hGbesTbQci" "https://t.co/zgzwxQ92wZ"
+[345] "https://t.co/3diVyaiw2Q" "https://t.co/lSDE7LHc95"
+[347] "https://t.co/2OWQIlNutu" "https://t.co/oroTbvsNdQ"
+[349] "https://t.co/ufoTeQd8yA" "https://t.co/k01Mc6CuDI"
+[351] "https://t.co/kv624y9UOm" "https://t.co/G4JlShRA6I"
+[353] "https://t.co/TI27thMZEI" "https://t.co/DT9WkYAGEK"
+[355] "https://t.co/tiExz8YhFT" "https://t.co/Hkt3YNccb0"
+[357] "https://t.co/OKaL5UI4oJ" "https://t.co/MBgGXSYluW"
+[359] "https://t.co/YPwDZ8Irch" "https://t.co/nMqeKxccv6"
+[361] "https://t.co/rj11BPzqDI" "https://t.co/xEBlvGrny1"
+[363] "https://t.co/PvhGP2HmbN" "https://t.co/j07c4oYryG"
+[365] "https://t.co/AeGyODb37O" "https://t.co/HtwD1FGn9e"
+[367] "https://t.co/tfW6B0eZDm" "https://t.co/ZiofZ2D6ck"
+[369] "https://t.co/mDGrmMmk5T" "https://t.co/O6ELhlae3h"
+[371] "https://t.co/hDzdDpZiRx" "https://t.co/shPWexfkVX"
+[373] "https://t.co/sto7CYV1fw" "https://t.co/uhDlyi82Ua"
+[375] "https://t.co/WAuI0nRNzX" "https://t.co/KL7VZbM1jP"
+[377] "https://t.co/ZttNAmk1QS" "https://t.co/GYeV6m1qOn"
+[379] "https://t.co/nAlgNIIdyo" "https://t.co/U1kbLMwhNI"
+[381] "https://t.co/TWQM8AV9p4" "https://t.co/mPGpPFiDl8"
+[383] "https://t.co/CMfcrZjHgM" "https://t.co/xhwhJuV3aa"
+[385] "https://t.co/2XWN52IpH2" "https://t.co/FJbNlidwJF"
+[387] "https://t.co/ndi8sZI1Gt" "https://t.co/RYWjgPh9Ja"
+[389] "https://t.co/Qva1QtmhpS" "https://t.co/CF9SYBqka7"
+[391] "https://t.co/V0d4CuS1xf" "https://t.co/GU3p28VMe0"
+[393] "https://t.co/oLC7mGgnZ9" "https://t.co/iNolBfFFRF"
+[395] "https://t.co/zVmhYsd4ir" "https://t.co/qLXTzQPbEj"
+[397] "https://t.co/ofhbM9bcOI" "https://t.co/GCtTKnNq06"
+[399] "https://t.co/qcuDCyBzCN" "https://t.co/5eZ5nVQbE9"
+[401] "https://t.co/OoQAAKWUUq" "https://t.co/Dsa2v9X3ol"
+[403] "https://t.co/aGUHmO98Xm" "https://t.co/1utaLLMfUa"
+[405] "https://t.co/Y3UBsxBQmg" "https://t.co/ie23QdsVTe"
+[407] "https://t.co/mWfLxYKPbk" "https://t.co/62DKEm5XVm"
+[409] "https://t.co/uJCqbQYYWR" "https://t.co/8rqI4mQ3Tw"
+[411] "https://t.co/FJXjkZAAQf" "https://t.co/0NQLzbwuFo"
+[413] "https://t.co/Uyq4sTYb0l" "https://t.co/dNeTdMENdV"
+[415] "https://t.co/JbJYYpEsmo" "https://t.co/73uCyV6ql4"
+[417] "https://t.co/pxvSL8cs3B" "https://t.co/2YT2Kxly9t"
+[419] "https://t.co/zqUdaaSaXD" "https://t.co/tK6mKZpFBl"
+[421] "https://t.co/vXiQru6HIE" "https://t.co/T1J0aUwMXl"
+[423] "https://t.co/SWxV3YCbqb" "https://t.co/EuFxefFu0D"
+[425] "https://t.co/BKoQu1mm4A" "https://t.co/Eu43S1wJN9"
+[427] "https://t.co/UdOZzisJhA" "https://t.co/KzGweIxaEo"
+[429] "https://t.co/PTKkrLeuCB" "https://t.co/VxVOG3c5RZ"
+[431] "https://t.co/F6JkPKb1hn" "https://t.co/yfJZUlDdCM"
+[433] "https://t.co/7WHS3vbXSw" "https://t.co/8IJ40zKS90"
+[435] "https://t.co/TrKj5lGXup" "https://t.co/249n3yLQxS"
+[437] "https://t.co/l5TyL8U4e8" "https://t.co/dbTDhYAX1v"
+[439] "https://t.co/2lyqnMRIGq" "https://t.co/AVTkCAne5w"
+[441] "https://t.co/kuvCXJXjcr" "https://t.co/WSVmdI8vfZ"
+[443] "https://t.co/IAOuSY5VDC" "https://t.co/WcItUuxej8"
+[445] "https://t.co/VGCdQubia1" "https://t.co/rY5zqUX9Wu"
+[447] "https://t.co/gLuMitRitg" "https://t.co/WLkmYjJJR9"
+[449] "https://t.co/wNXRqVl9Uu" "https://t.co/TvFgM4TqKj"
+[451] "https://t.co/zky3vlOJu4" "https://t.co/Q08Kp4esxl"
+[453] "https://t.co/yQmh3iSPBY" "https://t.co/NxYhzdcMS0"
+[455] "https://t.co/eKCEWRD0Ro" "https://t.co/3yFUZALNVn"
+[457] "https://t.co/ZcfT90hGEX" "https://t.co/4x9gw1RhWS"
+[459] "https://t.co/syGyqtOebs" "https://t.co/L0PmEwdRxn"
+[461] "https://t.co/oYpUYJmpKI" "https://t.co/uTSIiVqPkT"
+[463] "https://t.co/sziCGsvGbz" "https://t.co/alx0AY6E8J"
+[465] "https://t.co/PQHIM7AbvK" "https://t.co/kMuAoGF99S"
+[467] "https://t.co/oVm8ozIC8h" "https://t.co/JI5JqwHnMC"
+[469] "https://t.co/a0iKqNepD5" "https://t.co/L0PmEwdRxn"
+[471] "https://t.co/F7P4s6oAzN" "https://t.co/SULeDE2PYp"
+[473] "https://t.co/05SjuRJFbf" "https://t.co/iEbcYqyk3i"
+[475] "https://t.co/h78ESEgEYg" "https://t.co/aANxirUJJD"
+[477] "https://t.co/VlMynYN3sd" "https://t.co/ONDROBrDwr"
+[479] "https://t.co/09hTbBgPHf" "https://t.co/uJnmDnvkUv"
+[481] "https://t.co/4tymy651ZP" "https://t.co/IOBhOXeBiN"
+[483] "https://t.co/2GD1TT8fXc" "https://t.co/tr1ILOoLUb"
+[485] "https://t.co/MIq1iF2097" "https://t.co/XkbTWHpEvy"
+[487] "https://t.co/klUNUV2J5S" "https://t.co/Up8DhQulZ4"
+[489] "https://t.co/D8RBfufIwH" "https://t.co/PuqiM93zOS"
+[491] "https://t.co/fSgpKjwk2q" "https://t.co/ZWZkHrtRQN"
+[493] "https://t.co/EKU5QMgjd4" "https://t.co/sVUWI7JoGn"
+[495] "https://t.co/0w4ldD7dW3" "https://t.co/HQB8dl0fhn"
+[497] "https://t.co/N5815RS1At" "https://t.co/qbW2RjkINX"
+[499] "https://t.co/c3QEbexOwT" "https://t.co/pWjLW1QBKo"
+[501] "https://t.co/W2r6mOzgkb" "https://t.co/OoB38jypsD"
+[503] "https://t.co/5bvVEwMVF8" "https://t.co/MMPR0Omwog"
+[505] "https://t.co/Dgqky0JiHO" "https://t.co/VMCzxrryG8"
+[507] "https://t.co/kHigCSUnFC" "https://t.co/WzTDekWJAQ"
+[509] "https://t.co/NauXRQ2Q91" "https://t.co/bKruyYHFma"
+[511] "https://t.co/8mnY3GFRzw" "https://t.co/cGCIYE7yZB"
+[513] "https://t.co/5itxkQxrLF" "https://t.co/1cJ7OFbQiz"
+[515] "https://t.co/ESdiEftWGs" "https://t.co/HiOhRaTMbm"
+[517] "https://t.co/iOzGtcBbia" "https://t.co/2yYy6Nyta9"
+[519] "https://t.co/PTfFzFno9p" "https://t.co/vcfstc6Wnb"
+[521] "https://t.co/hd4wtDonIB" "https://t.co/nzhnLQXrZg"
+[523] "https://t.co/OoP4mls4lp" "https://t.co/wUJacOm32h"
+[525] "https://t.co/zyRctsFmSq" "https://t.co/kxrn0ev4UF"
+[527] "https://t.co/hXwAK3iyPk" "https://t.co/11rEMu99qc"
+[529] "https://t.co/qM1Mwq05j2" "https://t.co/MxVFHvHfS3"
+[531] "https://t.co/ZQ0osiFEJQ" "https://t.co/BuJ1YFkjvm"
+[533] "https://t.co/8B0J8Xt3dh" "https://t.co/jeaiAvgEEC"
+[535] "https://t.co/w7G5vJ511O" "https://t.co/hNkkRx66Hc"
+[537] "https://t.co/WvTkL8mMHY" "https://t.co/jOD54EGGmG"
+[539] "https://t.co/MnIlk2l9hP" "https://t.co/7y5RxLpZRQ"
+[541] "https://t.co/n43cPeJIqa" "https://t.co/GL5JiZbqIc"
+[543] "https://t.co/c6NHn6d6jX" "https://t.co/cCCLxnisSO"
+[545] "https://t.co/IWMxISjH6L" "https://t.co/KaHD0uENla"
+[547] "https://t.co/cYpx4eC9W"  "https://t.co/U1iTLmcbAc"
+[549] "https://t.co/fJw8Ax7E8P" "https://t.co/ZDbarevYAc"
+[551] "https://t.co/rnGoaprYuA" "https://t.co/oq8jmoep7i"
+[553] "https://t.co/zw4o1DJgfB" "https://t.co/cNe0skpB5i"
+[555] "https://t.co/kqx8un1jnw" "https://t.co/JGTD590pKE"
+[557] "https://t.co/JGmOd5gr5z" "https://t.co/OLg6N3Ug9U"
+[559] "https://t.co/ldJ5EFp3HM" "https://t.co/1K9u09CFQQ"
+[561] "https://t.co/jQed1P6SD9" "https://t.co/n83Cbs4jtA"
+[563] "https://t.co/6lMFR6z8xO" "https://t.co/eKGxNbG6wD"
+[565] "https://t.co/IbcE5tsRf7" "https://t.co/bHqg1rkFy3"
+[567] "https://t.co/RWEnPUJO23" "https://t.co/RT8Gmf6WHL"
+[569] "https://t.co/WwIVhIud06" "https://t.co/yxrRkJJSGG"
+[571] "https://t.co/Trv1hj9hRI" "https://t.co/zCTpSAjPvc"
+[573] "https://t.co/ndKu8m8RY2" "https://t.co/DhANDG8uBd"
+[575] "https://t.co/SzdZzYOnDG" "https://t.co/T2cBdktPbp"
+[577] "https://t.co/qygVFf6JFF" "https://t.co/jVI6Q6JH18"
+[579] "https://t.co/GC8kmWFxoM" "https://t.co/JGUopujRIk"
+[581] "https://t.co/sLTmwVVM5I" "https://t.co/FvIUXMkrjj"
+[583] "https://t.co/At5vOiLCSy" "https://t.co/in4raBhwqa"
+[585] "https://t.co/cZlNRrFtW3" "https://t.co/scdxT24Dye"
+[587] "https://t.co/IW9s9noxDT" "https://t.co/8KGOpqDb9t"
+[589] "https://t.co/mNbDUPrEeh" "https://t.co/mx5rxf4oHl"
+[591] "https://t.co/1JEdwPPCux" "https://t.co/56gkQTM7oc"
+[593] "https://t.co/aUSzSnOzlm" "https://t.co/bCRelzywxk"
+[595] "https://t.co/wHfraU67yX" "https://t.co/WqvxMwJk2S"
+[597] "https://t.co/U1HoDmuuH3" "https://t.co/4twxJ4blje"
+[599] "https://t.co/pIDqnY4IL3" "https://t.co/KayUN9rfIV"
+[601] "https://t.co/v96l7tUFWy" "https://t.co/uLuDOHEIB2"
+[603] "https://t.co/tIBB3BMUvp" "https://t.co/6618Oi6vle"
+[605] "https://t.co/jXYLRDayB7" "https://t.co/cykncrrSRE"
+[607] "https://t.co/9PGo56YTqt" "https://t.co/yZT3lSutt9"
+[609] "https://t.co/eiBCld77tV" "https://t.co/fFN9pisyQ4"
+[611] "https://t.co/VxyuDwZmC9" "https://t.co/rbFfcq8gQq"
+[613] "https://t.co/73aoZk8uMG" "https://t.co/BmZyKQOZJJ"
+[615] "https://t.co/8lREIqhIuN" "https://t.co/7S2f2GSMB8"
+[617] "https://t.co/9WwRWnvqiv" "https://t.co/pbt7gDaw7y"
+[619] "https://t.co/uZItWkqQZa" "https://t.co/BmZyKQOZJJ"
+[621] "https://t.co/1tZfqVETrX" "https://t.co/p4XCxNkXQO"
+[623] "https://t.co/pRpcxaZ7ov" "https://t.co/tRM7KUCrSU"
+[625] "https://t.co/oUg1ErD0j7" "https://t.co/9Hb7JO3wrZ"
+[627] "https://t.co/ndyHNiUdks" "https://t.co/oU1uUGnuWb"
+[629] "https://t.co/ANvTcZqfOq" "https://t.co/thNiQh0nY6"
+[631] "https://t.co/jaiRNIyYGL" "https://t.co/upAo2eDDVB"
+[633] "https://t.co/QYcedgsoV3" "https://t.co/5f7zFDiVsN"
+[635] "https://t.co/tykxcT5ZtG" "https://t.co/oc480lwVQg"
+[637] "https://t.co/TcN6Z3XwyU" "https://t.co/6rh849dlYZ"
+[639] "https://t.co/m98wooUwsG" "https://t.co/izBMhEZolh"
+[641] "https://t.co/hxdfy0mjVw" "https://t.co/Z1lQdxQvRL"
+[643] "https://t.co/GFYNUWWCYn" "https://t.co/dKuyzLRTZ3"
+[645] "https://t.co/3HmclWL9GT" "https://t.co/5CrP5zdXsz"
+[647] "https://t.co/6UsqSiaaj7" "https://t.co/EeQb8PDrUe"
+[649] "https://t.co/YO1Yi8QbZy" "https://t.co/uxUXWJ1Rbv"
+[651] "https://t.co/vLi1g2Ry7z" "https://t.co/ZDDDawwYVl"
+```
+]
+
+---
+
+# Unlist the list entries 
+
+.scroll-box-20[
+
+
+```r
+tweets %&gt;% select(text) %&gt;%
+  str_extract_all(link) %&gt;%
+* unlist()            # unlist and coerce into a vector
+  [1] "https://t.co/Z80d4MYIg8" "https://t.co/ia7rKBmioA"
+  [3] "https://t.co/ZL4Q01Q49s" "https://t.co/YbqkhWNm0g"
+  [5] "https://t.co/I0zJO2sZKk" "https://t.co/mS8qsQpJPh"
+  [7] "https://t.co/XbnZ5vktGk" "https://t.co/qsYbyrm3UR"
+  [9] "https://t.co/1mGkPNZPKF" "https://t.co/gr6tGqqmcm"
+ [11] "https://t.co/5yuLKyh8Q6" "https://t.co/3EzG620fpT"
+ [13] "https://t.co/jsAMGO3s4P" "https://t.co/3Hcnzj0Slx"
+ [15] "https://t.co/sEwLWkn1Sz" "https://t.co/UODSMp0oTo"
+ [17] "https://t.co/oVfF28rWL5" "https://t.co/RhblAXkNPw"
+ [19] "https://t.co/hr4O8Xgq2R" "https://t.co/Iui1F2z9ca"
+ [21] "https://t.co/3Hcnzj0Slx" "https://t.co/sEwLWkn1Sz"
+ [23] "https://t.co/0Ei3EdQdXB" "https://t.co/xrTQjt9WOC"
+ [25] "https://t.co/VSnBoQYoZs" "https://t.co/Al5bZlRFYk"
+ [27] "https://t.co/QoxJf4Xzbc" "https://t.co/IAcLfXe463"
+ [29] "https://t.co/QySC5PLFMy" "https://t.co/vVcAzY2zcp"
+ [31] "https://t.co/d0LfyiBlvX" "https://t.co/I5fF3didZs"
+ [33] "https://t.co/xe0I0EmxMa" "https://t.co/jbOS2s4qGI"
+ [35] "https://t.co/XSF1kp7R54" "https://t.co/SPgFIFuSO7"
+ [37] "https://t.co/9inCh1BVwM" "https://t.co/FsrUGByuuD"
+ [39] "https://t.co/jQTQYBFpdb" "https://t.co/RbuXfDZ5w9"
+ [41] "https://t.co/rJjYUbwiLL" "https://t.co/zfxeNbr1nq"
+ [43] "https://t.co/EHRiLkQDWD" "https://t.co/gJYSSXtpaz"
+ [45] "https://t.co/iYM3CCWS2z" "https://t.co/vMf1EPJp4r"
+ [47] "https://t.co/WUdY7feRvV" "https://t.co/4nLjRGyFYw"
+ [49] "https://t.co/oHI6xrDJU0" "https://t.co/VZLDFy707K"
+ [51] "https://t.co/y9WJoUaaql" "https://t.co/xyoPFJmByp"
+ [53] "https://t.co/28G3RVbFsn" "https://t.co/4nLjRGyFYw"
+ [55] "https://t.co/DDg0AUsqRq" "https://t.co/VmSLBvL43l"
+ [57] "https://t.co/yI4Q8FHRjp" "https://t.co/glxTQYAQiN"
+ [59] "https://t.co/wK02fWzJey" "https://t.co/6a7Ef12giZ"
+ [61] "https://t.co/LPk1OkwH9P" "https://t.co/HgFW7IRtz9"
+ [63] "https://t.co/aE5P9jNcFC" "https://t.co/VgMaAsZBep"
+ [65] "https://t.co/WdHbnhhCbW" "https://t.co/nmlRJqzA7S"
+ [67] "https://t.co/5gDeluaBXG" "https://t.co/Pw7GS8R9Gg"
+ [69] "https://t.co/DvP8p7ueNU" "https://t.co/RNW3ED2ifR"
+ [71] "https://t.co/ezrqVqPtta" "https://t.co/JeXFnO6e3s"
+ [73] "https://t.co/X3xHtjhHpB" "https://t.co/A5IF0QHnic"
+ [75] "https://t.co/xymiA0Az7x" "https://t.co/xtcOnA8cw1"
+ [77] "https://t.co/bVAj52fA3Y" "https://t.co/ruEvMGx4C9"
+ [79] "https://t.co/lwi9gqDEHE" "https://t.co/bbv3EhGs5x"
+ [81] "https://t.co/bbroAGTdMw" "https://t.co/UEZorOQhTw"
+ [83] "https://t.co/1noCe9W6Ru" "https://t.co/mXovx0TLPC"
+ [85] "https://t.co/daR2xIhCEs" "https://t.co/LKc7e4VZkB"
+ [87] "https://t.co/eoNTWK6I8y" "https://t.co/mSZYKnWswQ"
+ [89] "https://t.co/KRCdV77BQp" "https://t.co/ERNRrksikq"
+ [91] "https://t.co/zmGZauCnQF" "https://t.co/4FTydj8s9U"
+ [93] "https://t.co/7zMKhhMmhp" "https://t.co/NOF9Td9BHs"
+ [95] "https://t.co/WPMBkYjuIm" "https://t.co/rwxXhfFsn1"
+ [97] "https://t.co/HwqI2iGPDu" "https://t.co/4O4yjh7X4O"
+ [99] "https://t.co/cptBaZbV1v" "https://t.co/EXsoUOsEP4"
+[101] "https://t.co/3ji7a14GSw" "https://t.co/gCzHX1nyxD"
+[103] "https://t.co/0FFeKTsuJn" "https://t.co/KH2ZFHUHGP"
+[105] "https://t.co/E6ZtVjSQZa" "https://t.co/yqcIsBUdAi"
+[107] "https://t.co/bdox6JcrAp" "https://t.co/gobSNWughP"
+[109] "https://t.co/swsAKE11F0" "https://t.co/S7IHXDrmsJ"
+[111] "https://t.co/qL9rjb7OsD" "https://t.co/TZT3XcKp1c"
+[113] "https://t.co/EE7C6XKDkt" "https://t.co/946U6bgREQ"
+[115] "https://t.co/k2Poy3gGvQ" "https://t.co/cv3I3xRSOK"
+[117] "https://t.co/PvdTA8HTCC" "https://t.co/uzBOm21Pug"
+[119] "https://t.co/bsUp4MSysD" "https://t.co/mYBjp03XYf"
+[121] "https://t.co/xlB2C1cpKp" "https://t.co/5Kv03luMZW"
+[123] "https://t.co/QniZIsGrG8" "https://t.co/Kvq6r6WkQ1"
+[125] "https://t.co/TNJMUKImpK" "https://t.co/iFdqRvaL3q"
+[127] "https://t.co/lZH7qw9qmu" "https://t.co/pPNrzG8kEa"
+[129] "https://t.co/3KWOl2ibaW" "https://t.co/miT4atHxQz"
+[131] "https://t.co/aVH9c5QRwc" "https://t.co/teoVCYXKOR"
+[133] "https://t.co/BcoPrwqFMe" "https://t.co/M1yzgyeEdY"
+[135] "https://t.co/6XkUQ0W4QS" "https://t.co/Jmkah9wGaA"
+[137] "https://t.co/gva0MbgnuO" "https://t.co/PE1jdqZysc"
+[139] "https://t.co/lTjLVKkzh1" "https://t.co/6qi7KTW43O"
+[141] "https://t.co/lb5ViCDH0g" "https://t.co/roVn7pAVfy"
+[143] "https://t.co/qVwfjgCHU7" "https://t.co/XB7RMwesMK"
+[145] "https://t.co/4FuPpL5WOM" "https://t.co/Jj9TmSEoOd"
+[147] "https://t.co/Rq6YRHlpib" "https://t.co/Mi87Vmw06H"
+[149] "https://t.co/WmqvcYG4r3" "https://t.co/m0AJWlV8nm"
+[151] "https://t.co/P0GleHEmJy" "https://t.co/mwzYU98yTt"
+[153] "https://t.co/PPsyxGPdFc" "https://t.co/fxlVgfAA1l"
+[155] "https://t.co/zkmPywMDxg" "https://t.co/sryJgRyd56"
+[157] "https://t.co/4LJBpSm8xa" "https://t.co/Xv8Q1GuWiH"
+[159] "https://t.co/KO64IAMDgj" "https://t.co/8CBSfNpl2l"
+[161] "https://t.co/SLdqNhD4Tm" "https://t.co/a6f6xZNrym"
+[163] "https://t.co/MYG45LxGmH" "https://t.co/97R0cQdnGI"
+[165] "https://t.co/PKQhYhMmIX" "https://t.co/sqe12D0MBJ"
+[167] "https://t.co/iEcnnlJ728" "https://t.co/Vd2A747L29"
+[169] "https://t.co/lK3UW4fY2q" "https://t.co/QDQhRRuBbG"
+[171] "https://t.co/ravfFT5UBE" "https://t.co/XDGKaj0ico"
+[173] "https://t.co/Cv1HzKVbiT" "https://t.co/zauQ6kb9Hj"
+[175] "https://t.co/gFtspBViXe" "https://t.co/mO9QrmYXRD"
+[177] "https://t.co/S80xxdeHfG" "https://t.co/h0Av3TAIiM"
+[179] "https://t.co/y4n4nERPFr" "https://t.co/7LAPewxE05"
+[181] "https://t.co/dL5ahNcwZb" "https://t.co/5mtwkOvQnd"
+[183] "https://t.co/NpYI9i4iSG" "https://t.co/ENXliW2m77"
+[185] "https://t.co/pr3BSHJSxL" "https://t.co/lfUdXYnsgJ"
+[187] "https://t.co/hQ1JTMrUtG" "https://t.co/7ii4KUfsab"
+[189] "https://t.co/2GUKqOTHS5" "https://t.co/pNSgSjD5gW"
+[191] "https://t.co/KR7OnS8h6s" "https://t.co/YWd5lk5skG"
+[193] "https://t.co/dJL71jwK0g" "https://t.co/Audi8h85qu"
+[195] "https://t.co/tan8BmAuR8" "https://t.co/5EZ7X1ZZKh"
+[197] "https://t.co/iY4K7Wcw3C" "https://t.co/1COtt0RPY7"
+[199] "https://t.co/UTYOLo7wGF" "https://t.co/iFuf8MdTEH"
+[201] "https://t.co/VXjtSivvuU" "https://t.co/dIK3IyrYGC"
+[203] "https://t.co/W4z2eW5ay4" "https://t.co/QuTsSmeVdO"
+[205] "https://t.co/vN4K8FvQNT" "https://t.co/vhGwmhGCVR"
+[207] "https://t.co/m1EIra7YMU" "https://t.co/PVB6QX7VpK"
+[209] "https://t.co/hSaIurAfvD" "https://t.co/593p8uRPhq"
+[211] "https://t.co/TZf8uwQO4L" "https://t.co/NlF2Gcr915"
+[213] "https://t.co/uTCXPbWpve" "https://t.co/ORJyN4FsNI"
+[215] "https://t.co/PVB6QX7VpK" "https://t.co/B51r30Mazd"
+[217] "https://t.co/qp07UfnnjM" "https://t.co/ui9tSfMcS8"
+[219] "https://t.co/2iYArmM7oN" "https://t.co/nvHRnfi2N7"
+[221] "https://t.co/ksU8AGrFBS" "https://t.co/PVB6QX7VpK"
+[223] "https://t.co/2ToWwthEeF" "https://t.co/nvHRnfzEbH"
+[225] "https://t.co/Yd3f8xLpPl" "https://t.co/VXjtSivvuU"
+[227] "https://t.co/J777QHdYa3" "https://t.co/jaGeN4u50U"
+[229] "https://t.co/pQ4nSTnVrK" "https://t.co/dKBTP1QjH3"
+[231] "https://t.co/0nNKEBSd73" "https://t.co/fX0kXZUNqz"
+[233] "https://t.co/c7sCbHDAQh" "https://t.co/cVJvfcoGOt"
+[235] "https://t.co/bIIdYtvZYw" "https://t.co/R29WMGNLGG"
+[237] "https://t.co/UolRS3aT6W" "https://t.co/1JJ2Kn0ani"
+[239] "https://t.co/x3w1PHtLXP" "https://t.co/mXsxkfcstC"
+[241] "https://t.co/1JJ2Kn0ani" "https://t.co/cyARlHSEFU"
+[243] "https://t.co/T1fVcu3mEC" "https://t.co/t31ReRSzzy"
+[245] "https://t.co/DrVa65X9rI" "https://t.co/THKJwjNkaz"
+[247] "https://t.co/cITm8BPixD" "https://t.co/04qqpGylT7"
+[249] "https://t.co/SxU4yzCLQf" "https://t.co/Ye6IhOW6ZM"
+[251] "https://t.co/I2CJSqiKGN" "https://t.co/pvrBb7v4NG"
+[253] "https://t.co/aOvVsZfAW3" "https://t.co/rZ1MqUzpKU"
+[255] "https://t.co/nEPqAYw1G5" "https://t.co/kv624y9UOm"
+[257] "https://t.co/fX5bs8fzac" "https://t.co/zdOEle8wOL"
+[259] "https://t.co/I2CJSqAlyl" "https://t.co/6jk33orxXG"
+[261] "https://t.co/bwgL1ZXtC7" "https://t.co/COXEJ1In8D"
+[263] "https://t.co/gECLNtQizQ" "https://t.co/iulXLEANei"
+[265] "https://t.co/42OpVsjXjp" "https://t.co/zjWKGMDgzi"
+[267] "https://t.co/z4X1o5xHBh" "https://t.co/GusL2UPrX2"
+[269] "https://t.co/H6D25S1TR5" "https://t.co/wNOY8Pc2kM"
+[271] "https://t.co/osWzVxNkJx" "https://t.co/GbRTQdxIj4"
+[273] "https://t.co/pNqwOrY0ZB" "https://t.co/PgIYkHLGtI"
+[275] "https://t.co/MyJMOKdpJ9" "https://t.co/rOvTapLnWG"
+[277] "https://t.co/PyHiy7vjO6" "https://t.co/7Jk6voyzue"
+[279] "https://t.co/sRCF1H3rjg" "https://t.co/qdsLUy2hqD"
+[281] "https://t.co/od7vsDMlHY" "https://t.co/fMR8YYiiMz"
+[283] "https://t.co/zgopGvSEen" "https://t.co/suHERIUHo4"
+[285] "https://t.co/nFiydpTpPn" "https://t.co/8YtBU7j17m"
+[287] "https://t.co/jLQukR550J" "https://t.co/OrEhKJZ5Rd"
+[289] "https://t.co/t75Zxn9L6f" "https://t.co/jLQukR550J"
+[291] "https://t.co/Uds8OdH3A4" "https://t.co/W7xy7eXcii"
+[293] "https://t.co/km0rRYSDnO" "https://t.co/b08FcMlgkr"
+[295] "https://t.co/RCDeLvHQqD" "https://t.co/pfVXQ8NdZu"
+[297] "https://t.co/ZZl2sc29dn" "https://t.co/KKIgM4rNma"
+[299] "https://t.co/1cEZ8wG7Cy" "https://t.co/TVSPvxOmve"
+[301] "https://t.co/MMa07nwa44" "https://t.co/1NRj3zCuui"
+[303] "https://t.co/kTi6e1zyNI" "https://t.co/WjI8Rx11no"
+[305] "https://t.co/82l6TjA2lk" "https://t.co/hPQJc7eor0"
+[307] "https://t.co/SPJfMFyPjU" "https://t.co/AEShamhNVS"
+[309] "https://t.co/xfINxdRNiQ" "https://t.co/mmPck1HYrC"
+[311] "https://t.co/xGkVbxTamz" "https://t.co/A3Wus0cRIO"
+[313] "https://t.co/MAZK5bdZuD" "https://t.co/HnQbj3ipuS"
+[315] "https://t.co/aJ7s0aqqj0" "https://t.co/ygLUAl7gzx"
+[317] "https://t.co/vV31Pbpkmn" "https://t.co/Arw19Antpj"
+[319] "https://t.co/dQi3Cydckp" "https://t.co/Mk4YuuRf4s"
+[321] "https://t.co/kXhc2j94YF" "https://t.co/YZAdAndKXv"
+[323] "https://t.co/u8hhrRRFMp" "https://t.co/IC3pe5lRAS"
+[325] "https://t.co/hK1yqlp9ca" "https://t.co/qkK3LJPoQQ"
+[327] "https://t.co/xm45Ia1GTu" "https://t.co/SZyZ8GkF23"
+[329] "https://t.co/8yFd6qA4rD" "https://t.co/wpxojJnjbb"
+[331] "https://t.co/aRXPHAlCLC" "https://t.co/ytzesbCZas"
+[333] "https://t.co/nW0N3OO4mw" "https://t.co/R0NuOrZISX"
+[335] "https://t.co/hfHY9MdAc7" "https://t.co/hiDDT9hV0j"
+[337] "https://t.co/CLhqgybbYR" "https://t.co/RRma61oisz"
+[339] "https://t.co/iCGcF21fWY" "https://t.co/LhcIU6kmxs"
+[341] "https://t.co/lEGJyAinUh" "https://t.co/pndaZjsruy"
+[343] "https://t.co/hGbesTbQci" "https://t.co/zgzwxQ92wZ"
+[345] "https://t.co/3diVyaiw2Q" "https://t.co/lSDE7LHc95"
+[347] "https://t.co/2OWQIlNutu" "https://t.co/oroTbvsNdQ"
+[349] "https://t.co/ufoTeQd8yA" "https://t.co/k01Mc6CuDI"
+[351] "https://t.co/kv624y9UOm" "https://t.co/G4JlShRA6I"
+[353] "https://t.co/TI27thMZEI" "https://t.co/DT9WkYAGEK"
+[355] "https://t.co/tiExz8YhFT" "https://t.co/Hkt3YNccb0"
+[357] "https://t.co/OKaL5UI4oJ" "https://t.co/MBgGXSYluW"
+[359] "https://t.co/YPwDZ8Irch" "https://t.co/nMqeKxccv6"
+[361] "https://t.co/rj11BPzqDI" "https://t.co/xEBlvGrny1"
+[363] "https://t.co/PvhGP2HmbN" "https://t.co/j07c4oYryG"
+[365] "https://t.co/AeGyODb37O" "https://t.co/HtwD1FGn9e"
+[367] "https://t.co/tfW6B0eZDm" "https://t.co/ZiofZ2D6ck"
+[369] "https://t.co/mDGrmMmk5T" "https://t.co/O6ELhlae3h"
+[371] "https://t.co/hDzdDpZiRx" "https://t.co/shPWexfkVX"
+[373] "https://t.co/sto7CYV1fw" "https://t.co/uhDlyi82Ua"
+[375] "https://t.co/WAuI0nRNzX" "https://t.co/KL7VZbM1jP"
+[377] "https://t.co/ZttNAmk1QS" "https://t.co/GYeV6m1qOn"
+[379] "https://t.co/nAlgNIIdyo" "https://t.co/U1kbLMwhNI"
+[381] "https://t.co/TWQM8AV9p4" "https://t.co/mPGpPFiDl8"
+[383] "https://t.co/CMfcrZjHgM" "https://t.co/xhwhJuV3aa"
+[385] "https://t.co/2XWN52IpH2" "https://t.co/FJbNlidwJF"
+[387] "https://t.co/ndi8sZI1Gt" "https://t.co/RYWjgPh9Ja"
+[389] "https://t.co/Qva1QtmhpS" "https://t.co/CF9SYBqka7"
+[391] "https://t.co/V0d4CuS1xf" "https://t.co/GU3p28VMe0"
+[393] "https://t.co/oLC7mGgnZ9" "https://t.co/iNolBfFFRF"
+[395] "https://t.co/zVmhYsd4ir" "https://t.co/qLXTzQPbEj"
+[397] "https://t.co/ofhbM9bcOI" "https://t.co/GCtTKnNq06"
+[399] "https://t.co/qcuDCyBzCN" "https://t.co/5eZ5nVQbE9"
+[401] "https://t.co/OoQAAKWUUq" "https://t.co/Dsa2v9X3ol"
+[403] "https://t.co/aGUHmO98Xm" "https://t.co/1utaLLMfUa"
+[405] "https://t.co/Y3UBsxBQmg" "https://t.co/ie23QdsVTe"
+[407] "https://t.co/mWfLxYKPbk" "https://t.co/62DKEm5XVm"
+[409] "https://t.co/uJCqbQYYWR" "https://t.co/8rqI4mQ3Tw"
+[411] "https://t.co/FJXjkZAAQf" "https://t.co/0NQLzbwuFo"
+[413] "https://t.co/Uyq4sTYb0l" "https://t.co/dNeTdMENdV"
+[415] "https://t.co/JbJYYpEsmo" "https://t.co/73uCyV6ql4"
+[417] "https://t.co/pxvSL8cs3B" "https://t.co/2YT2Kxly9t"
+[419] "https://t.co/zqUdaaSaXD" "https://t.co/tK6mKZpFBl"
+[421] "https://t.co/vXiQru6HIE" "https://t.co/T1J0aUwMXl"
+[423] "https://t.co/SWxV3YCbqb" "https://t.co/EuFxefFu0D"
+[425] "https://t.co/BKoQu1mm4A" "https://t.co/Eu43S1wJN9"
+[427] "https://t.co/UdOZzisJhA" "https://t.co/KzGweIxaEo"
+[429] "https://t.co/PTKkrLeuCB" "https://t.co/VxVOG3c5RZ"
+[431] "https://t.co/F6JkPKb1hn" "https://t.co/yfJZUlDdCM"
+[433] "https://t.co/7WHS3vbXSw" "https://t.co/8IJ40zKS90"
+[435] "https://t.co/TrKj5lGXup" "https://t.co/249n3yLQxS"
+[437] "https://t.co/l5TyL8U4e8" "https://t.co/dbTDhYAX1v"
+[439] "https://t.co/2lyqnMRIGq" "https://t.co/AVTkCAne5w"
+[441] "https://t.co/kuvCXJXjcr" "https://t.co/WSVmdI8vfZ"
+[443] "https://t.co/IAOuSY5VDC" "https://t.co/WcItUuxej8"
+[445] "https://t.co/VGCdQubia1" "https://t.co/rY5zqUX9Wu"
+[447] "https://t.co/gLuMitRitg" "https://t.co/WLkmYjJJR9"
+[449] "https://t.co/wNXRqVl9Uu" "https://t.co/TvFgM4TqKj"
+[451] "https://t.co/zky3vlOJu4" "https://t.co/Q08Kp4esxl"
+[453] "https://t.co/yQmh3iSPBY" "https://t.co/NxYhzdcMS0"
+[455] "https://t.co/eKCEWRD0Ro" "https://t.co/3yFUZALNVn"
+[457] "https://t.co/ZcfT90hGEX" "https://t.co/4x9gw1RhWS"
+[459] "https://t.co/syGyqtOebs" "https://t.co/L0PmEwdRxn"
+[461] "https://t.co/oYpUYJmpKI" "https://t.co/uTSIiVqPkT"
+[463] "https://t.co/sziCGsvGbz" "https://t.co/alx0AY6E8J"
+[465] "https://t.co/PQHIM7AbvK" "https://t.co/kMuAoGF99S"
+[467] "https://t.co/oVm8ozIC8h" "https://t.co/JI5JqwHnMC"
+[469] "https://t.co/a0iKqNepD5" "https://t.co/L0PmEwdRxn"
+[471] "https://t.co/F7P4s6oAzN" "https://t.co/SULeDE2PYp"
+[473] "https://t.co/05SjuRJFbf" "https://t.co/iEbcYqyk3i"
+[475] "https://t.co/h78ESEgEYg" "https://t.co/aANxirUJJD"
+[477] "https://t.co/VlMynYN3sd" "https://t.co/ONDROBrDwr"
+[479] "https://t.co/09hTbBgPHf" "https://t.co/uJnmDnvkUv"
+[481] "https://t.co/4tymy651ZP" "https://t.co/IOBhOXeBiN"
+[483] "https://t.co/2GD1TT8fXc" "https://t.co/tr1ILOoLUb"
+[485] "https://t.co/MIq1iF2097" "https://t.co/XkbTWHpEvy"
+[487] "https://t.co/klUNUV2J5S" "https://t.co/Up8DhQulZ4"
+[489] "https://t.co/D8RBfufIwH" "https://t.co/PuqiM93zOS"
+[491] "https://t.co/fSgpKjwk2q" "https://t.co/ZWZkHrtRQN"
+[493] "https://t.co/EKU5QMgjd4" "https://t.co/sVUWI7JoGn"
+[495] "https://t.co/0w4ldD7dW3" "https://t.co/HQB8dl0fhn"
+[497] "https://t.co/N5815RS1At" "https://t.co/qbW2RjkINX"
+[499] "https://t.co/c3QEbexOwT" "https://t.co/pWjLW1QBKo"
+[501] "https://t.co/W2r6mOzgkb" "https://t.co/OoB38jypsD"
+[503] "https://t.co/5bvVEwMVF8" "https://t.co/MMPR0Omwog"
+[505] "https://t.co/Dgqky0JiHO" "https://t.co/VMCzxrryG8"
+[507] "https://t.co/kHigCSUnFC" "https://t.co/WzTDekWJAQ"
+[509] "https://t.co/NauXRQ2Q91" "https://t.co/bKruyYHFma"
+[511] "https://t.co/8mnY3GFRzw" "https://t.co/cGCIYE7yZB"
+[513] "https://t.co/5itxkQxrLF" "https://t.co/1cJ7OFbQiz"
+[515] "https://t.co/ESdiEftWGs" "https://t.co/HiOhRaTMbm"
+[517] "https://t.co/iOzGtcBbia" "https://t.co/2yYy6Nyta9"
+[519] "https://t.co/PTfFzFno9p" "https://t.co/vcfstc6Wnb"
+[521] "https://t.co/hd4wtDonIB" "https://t.co/nzhnLQXrZg"
+[523] "https://t.co/OoP4mls4lp" "https://t.co/wUJacOm32h"
+[525] "https://t.co/zyRctsFmSq" "https://t.co/kxrn0ev4UF"
+[527] "https://t.co/hXwAK3iyPk" "https://t.co/11rEMu99qc"
+[529] "https://t.co/qM1Mwq05j2" "https://t.co/MxVFHvHfS3"
+[531] "https://t.co/ZQ0osiFEJQ" "https://t.co/BuJ1YFkjvm"
+[533] "https://t.co/8B0J8Xt3dh" "https://t.co/jeaiAvgEEC"
+[535] "https://t.co/w7G5vJ511O" "https://t.co/hNkkRx66Hc"
+[537] "https://t.co/WvTkL8mMHY" "https://t.co/jOD54EGGmG"
+[539] "https://t.co/MnIlk2l9hP" "https://t.co/7y5RxLpZRQ"
+[541] "https://t.co/n43cPeJIqa" "https://t.co/GL5JiZbqIc"
+[543] "https://t.co/c6NHn6d6jX" "https://t.co/cCCLxnisSO"
+[545] "https://t.co/IWMxISjH6L" "https://t.co/KaHD0uENla"
+[547] "https://t.co/cYpx4eC9W"  "https://t.co/U1iTLmcbAc"
+[549] "https://t.co/fJw8Ax7E8P" "https://t.co/ZDbarevYAc"
+[551] "https://t.co/rnGoaprYuA" "https://t.co/oq8jmoep7i"
+[553] "https://t.co/zw4o1DJgfB" "https://t.co/cNe0skpB5i"
+[555] "https://t.co/kqx8un1jnw" "https://t.co/JGTD590pKE"
+[557] "https://t.co/JGmOd5gr5z" "https://t.co/OLg6N3Ug9U"
+[559] "https://t.co/ldJ5EFp3HM" "https://t.co/1K9u09CFQQ"
+[561] "https://t.co/jQed1P6SD9" "https://t.co/n83Cbs4jtA"
+[563] "https://t.co/6lMFR6z8xO" "https://t.co/eKGxNbG6wD"
+[565] "https://t.co/IbcE5tsRf7" "https://t.co/bHqg1rkFy3"
+[567] "https://t.co/RWEnPUJO23" "https://t.co/RT8Gmf6WHL"
+[569] "https://t.co/WwIVhIud06" "https://t.co/yxrRkJJSGG"
+[571] "https://t.co/Trv1hj9hRI" "https://t.co/zCTpSAjPvc"
+[573] "https://t.co/ndKu8m8RY2" "https://t.co/DhANDG8uBd"
+[575] "https://t.co/SzdZzYOnDG" "https://t.co/T2cBdktPbp"
+[577] "https://t.co/qygVFf6JFF" "https://t.co/jVI6Q6JH18"
+[579] "https://t.co/GC8kmWFxoM" "https://t.co/JGUopujRIk"
+[581] "https://t.co/sLTmwVVM5I" "https://t.co/FvIUXMkrjj"
+[583] "https://t.co/At5vOiLCSy" "https://t.co/in4raBhwqa"
+[585] "https://t.co/cZlNRrFtW3" "https://t.co/scdxT24Dye"
+[587] "https://t.co/IW9s9noxDT" "https://t.co/8KGOpqDb9t"
+[589] "https://t.co/mNbDUPrEeh" "https://t.co/mx5rxf4oHl"
+[591] "https://t.co/1JEdwPPCux" "https://t.co/56gkQTM7oc"
+[593] "https://t.co/aUSzSnOzlm" "https://t.co/bCRelzywxk"
+[595] "https://t.co/wHfraU67yX" "https://t.co/WqvxMwJk2S"
+[597] "https://t.co/U1HoDmuuH3" "https://t.co/4twxJ4blje"
+[599] "https://t.co/pIDqnY4IL3" "https://t.co/KayUN9rfIV"
+[601] "https://t.co/v96l7tUFWy" "https://t.co/uLuDOHEIB2"
+[603] "https://t.co/tIBB3BMUvp" "https://t.co/6618Oi6vle"
+[605] "https://t.co/jXYLRDayB7" "https://t.co/cykncrrSRE"
+[607] "https://t.co/9PGo56YTqt" "https://t.co/yZT3lSutt9"
+[609] "https://t.co/eiBCld77tV" "https://t.co/fFN9pisyQ4"
+[611] "https://t.co/VxyuDwZmC9" "https://t.co/rbFfcq8gQq"
+[613] "https://t.co/73aoZk8uMG" "https://t.co/BmZyKQOZJJ"
+[615] "https://t.co/8lREIqhIuN" "https://t.co/7S2f2GSMB8"
+[617] "https://t.co/9WwRWnvqiv" "https://t.co/pbt7gDaw7y"
+[619] "https://t.co/uZItWkqQZa" "https://t.co/BmZyKQOZJJ"
+[621] "https://t.co/1tZfqVETrX" "https://t.co/p4XCxNkXQO"
+[623] "https://t.co/pRpcxaZ7ov" "https://t.co/tRM7KUCrSU"
+[625] "https://t.co/oUg1ErD0j7" "https://t.co/9Hb7JO3wrZ"
+[627] "https://t.co/ndyHNiUdks" "https://t.co/oU1uUGnuWb"
+[629] "https://t.co/ANvTcZqfOq" "https://t.co/thNiQh0nY6"
+[631] "https://t.co/jaiRNIyYGL" "https://t.co/upAo2eDDVB"
+[633] "https://t.co/QYcedgsoV3" "https://t.co/5f7zFDiVsN"
+[635] "https://t.co/tykxcT5ZtG" "https://t.co/oc480lwVQg"
+[637] "https://t.co/TcN6Z3XwyU" "https://t.co/6rh849dlYZ"
+[639] "https://t.co/m98wooUwsG" "https://t.co/izBMhEZolh"
+[641] "https://t.co/hxdfy0mjVw" "https://t.co/Z1lQdxQvRL"
+[643] "https://t.co/GFYNUWWCYn" "https://t.co/dKuyzLRTZ3"
+[645] "https://t.co/3HmclWL9GT" "https://t.co/5CrP5zdXsz"
+[647] "https://t.co/6UsqSiaaj7" "https://t.co/EeQb8PDrUe"
+[649] "https://t.co/YO1Yi8QbZy" "https://t.co/uxUXWJ1Rbv"
+[651] "https://t.co/vLi1g2Ry7z" "https://t.co/ZDDDawwYVl"
+```
+]
+
+---
+
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;3&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Continue working on activity 3
+- Ask me questions
+]
+
+]
+
+<div class="countdown" id="timer_429aea5f" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">08</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
