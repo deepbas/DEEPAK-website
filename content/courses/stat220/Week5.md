@@ -23,23 +23,26 @@ Please read [IDS Chapter 26](http://rafalab.dfci.harvard.edu/dsbook/text-mining.
 
 Day 13 Slides ({{% staticref "stat220/Day13.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day13.html" "newtab" %}}html{{% /staticref %}}) 
 
-<!--
 
-<span style="color:orange">**Wednesday, 10/05**</span>
+<span style="color:orange">**Wednesday, 10/12**</span>
 
+
+### Before Class
 
 {{% callout note %}}
-Please gently read [Irizarry Case Studies 1 and 2 from chapter 25](https://rafalab.github.io/dsbook/string-processing.html) on string parsing. Also, skim through [GW Chapter 14](https://r4ds.had.co.nz/strings.html) on strings and regular expressions.{{% /callout %}}
+Please read [GW Chapter 19](https://r4ds.had.co.nz/functions.html) on writing functions in R. If you have no prior experience in writing functions, the following video would give you a nice overview (using R).{{% /callout %}}
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/p8tAQx7ijXE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### In Class
 
-- Basic overview of `stringr`
-- String manipulation 
+- Basic functions
+- Application to word cloud visualizations
+
+
+<!-- 
 
 Day 11 Slides ({{% staticref "stat220/Day11.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day11.html" "newtab" %}}html{{% /staticref %}}) 
-
-
-
 
 <span style="color:orange">**Friday, 10/07**</span>
 
