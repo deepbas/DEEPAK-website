@@ -40,9 +40,12 @@ Please read [GW Chapter 19](https://r4ds.had.co.nz/functions.html) on writing fu
 - Application to word cloud visualizations
 
 
+
+Day 14 Slides ({{% staticref "stat220/Day14.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day14.html" "newtab" %}}html{{% /staticref %}}) 
+
+
 <!-- 
 
-Day 11 Slides ({{% staticref "stat220/Day11.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day11.html" "newtab" %}}html{{% /staticref %}}) 
 
 <span style="color:orange">**Friday, 10/07**</span>
 
