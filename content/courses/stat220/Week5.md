@@ -44,19 +44,22 @@ Please read [GW Chapter 19](https://r4ds.had.co.nz/functions.html) on writing fu
 Day 14 Slides ({{% staticref "stat220/Day14.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day14.html" "newtab" %}}html{{% /staticref %}}) 
 
 
-<!-- 
 
 
-<span style="color:orange">**Friday, 10/07**</span>
+<span style="color:orange">**Friday, 10/14**</span>
 
+
+### Before Class
 
 {{% callout note %}}
-Continue reading [GW Chapter 14](https://r4ds.had.co.nz/strings.html) on strings and regular expressions. Also, go over [GW chapter 15](https://r4ds.had.co.nz/factors.html){{% /callout %}}
+Please read [GW 21.1-21.5](https://r4ds.had.co.nz/iteration.html) on iterations and functionals.{{% /callout %}}
+
 
 ### In Class
 
-- Factors with *forcats*
-- String manipulation
+- Iterations and functionals
+
+<!-- 
 
 Day 12 Slides ({{% staticref "stat220/Day12.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day12.html" "newtab" %}}html{{% /staticref %}}) 
 
