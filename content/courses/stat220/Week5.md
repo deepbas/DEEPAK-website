@@ -59,8 +59,4 @@ Please read [GW 21.1-21.5](https://r4ds.had.co.nz/iteration.html) on iterations 
 
 - Iterations and functionals
 
-<!-- 
-
-Day 12 Slides ({{% staticref "stat220/Day12.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day12.html" "newtab" %}}html{{% /staticref %}}) 
-
--->
+Day 15 Slides ({{% staticref "stat220/Day15.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day15.html" "newtab" %}}html{{% /staticref %}}) 
