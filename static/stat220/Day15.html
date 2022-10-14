@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Iteration and functionals</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Iterations and functionals]
+
+### .fancy[Fall 2022]
+
+ October 14 2022
+
+---
+
+class: middle
+
+# Why repeat ourselves?
+
+.pull-left[
+
+```r
+tinydata &lt;- tribble(
+  ~case, ~x, ~y, ~z, 
+  "a", 5, 3, -2,
+  "b", 7, 1, -5,
+  "c", 9, 12, -3
+)
+```
+
+
+```r
+tinydata
+# A tibble: 3 × 4
+  case      x     y     z
+  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 a         5     3    -2
+2 b         7     1    -5
+3 c         9    12    -3
+```
+]
+
+--
+
+.pull-right[
+
+.fancy[.bold[Find the mean of each columns]]
+
+
+```r
+mean(tinydata$x)
+[1] 7
+```
+
+
+```r
+mean(tinydata$y)
+[1] 5.333333
+```
+
+
+```r
+mean(tinydata$z)
+[1] -3.333333
+```
+
+]
+
+
+---
+
+class: middle
+
+# Iteration
+
+
+.out-t.font120[Iteration is the process of repeating the same action over and over again]
+
+&lt;bq&gt;
+&lt;bq&gt;
+&lt;bq&gt;
+
+.bq[
+
+.fancy[Multiple ways to do in R]
+
+  - .bold[loops] using `for`, `while`, etc
+  - .bold[vectorized] functions that apply the same function to every element of a vector
+  - .bold[functional] functions that apply the same function to elements in a vector, matrix, data frame, or list
+]
+
+---
+
+
+
+# `for` loop
+
+.font120[
+&gt; A way to iterate through a series of items stored as data object in R.
+]
+
+--
+
+
+```r
+items &lt;- c("grapes","bananas","chocolate","bread")
+for(i in items){
+  print(i)
+}
+[1] "grapes"
+[1] "bananas"
+[1] "chocolate"
+[1] "bread"
+```
+
+
+--
+
+.pull-left[
+
+```r
+i &lt;- items[1]
+print(i)
+[1] "grapes"
+```
+]
+
+.pull-right[
+
+
+```r
+i &lt;- items[2]
+print(i)
+[1] "bananas"
+```
+]
+
+---
+
+# `for` loop components
+
+
+.bq[
+the `for()` function is used to specify
+
+  - what object we're drawing from and
+  - what object we are writing to
+]
+
+
+
+```
+for( i  in  items  )
+     ^        ^
+     |        |___ object we are drawing from
+     |
+obj. we write each item to
+
+```
+---
+
+# `for` loop components
+
+.bq[
+The `brackets {}`
+  - Inside the brackets we house the code that is going to happen each iteration
+]
+
+&lt;br&gt;
+
+```
+for( i  in  items  ){
+  |~~~~~~~~~~~~~~~~|   
+  |~~~~~~~~~~~~~~~~|
+  |~~~~~~~~~~~~~~~~| code we need perform on each iteration.
+  |~~~~~~~~~~~~~~~~|
+  |~~~~~~~~~~~~~~~~|
+  }
+
+```
+
+---
+
+# `for` loops `tinydata`
+
+
+```r
+tinydata
+# A tibble: 3 × 4
+  case      x     y     z
+  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 a         5     3    -2
+2 b         7     1    -5
+3 c         9    12    -3
+```
+
+--
+
+- Let’s iterate calculation of column means:
+
+
+```r
+my_means &lt;- rep(NA, 3)   # initialize an empty vector
+my_means
+[1] NA NA NA
+```
+
+--
+
+
+```r
+for (i in 1:3) {  # three columns to get the mean for
+  my_means[i] &lt;- mean(tinydata[[i+1]])  # mean of col. i+1 (skip col. 1)
+}
+my_means
+[1]  7.000000  5.333333 -3.333333
+```
+
+---
+
+# For loops: index vector
+
+- `seq_along(df)` index based on columns of data frame
+
+
+```r
+seq_along(tinydata)
+[1] 1 2 3 4
+```
+
+--
+
+- Can also use
+
+
+
+```r
+1:ncol(tinydata)
+[1] 1 2 3 4
+```
+
+
+```r
+1:nrow(tinydata)
+[1] 1 2 3
+```
+
+---
+
+# Function for conditional evaluation
+
+- if x is numeric then standardize, else just return x
+
+.code80[
+
+```r
+standardize &lt;- function(x, ...){   # ... used for arbitrary number of arguments
+  if (is.numeric(x)){              # condition
+    (x - mean(x, ...))/sd(x, ...)  # if TRUE, standardize
+  } else{                          # else (FALSE)
+    x                              # return x unchanged
+  }
+}
+```
+]
+
+--
+
+.code80[
+
+```r
+standardize(c(2,4,6,8, 10))
+[1] -1.2649111 -0.6324555  0.0000000  0.6324555  1.2649111
+```
+]
+
+--
+
+.code80[
+
+```r
+standardize(c(2,4,6,8, "10"))
+[1] "2"  "4"  "6"  "8"  "10"
+```
+]
+
+--
+
+.code80[
+
+```r
+standardize(c(2,4,6,8, NA), na.rm = TRUE)
+[1] -1.1618950 -0.3872983  0.3872983  1.1618950         NA
+```
+]
+
+---
+
+# Standardizing tinydata
+
+
+.pull-left[
+.code80[
+
+```r
+# allocate storage in a new data frame
+scaled_tinydata &lt;- tinydata %&gt;%
+  mutate(
+    x = NA, 
+    y = NA, 
+    z = NA
+  )
+```
+]
+]
+
+.pull-right[
+.code80[
+
+```r
+scaled_tinydata
+# A tibble: 3 × 4
+  case  x     y     z    
+  &lt;chr&gt; &lt;lgl&gt; &lt;lgl&gt; &lt;lgl&gt;
+1 a     NA    NA    NA   
+2 b     NA    NA    NA   
+3 c     NA    NA    NA   
+```
+]
+]
+
+--
+
+.code80[
+
+```r
+for (i in seq_along(tinydata)){ 
+    scaled_tinydata[, i] &lt;- standardize(tinydata[[i]])
+}
+```
+]
+--
+
+.code80[
+
+```r
+scaled_tinydata
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+]
+---
+
+class: middle, inverse
+
+# Vectorization 
+
+.font120.bq[
+
+- A vectorized function will apply the same operation (function) to each element of a vector.
+
+  * avoid loops by applying operations to each element of a vector
+]
+
+---
+
+# Vectorization
+
+
+.code120[
+
+```r
+x &lt;- c(1, 10, 100, 1000, 10000, 100000)
+log10(x)   # log10 is a vectorized function
+[1] 0 1 2 3 4 5
+```
+]
+
+--
+
+- The `for` loop version
+
+.code120[
+
+```r
+out &lt;- rep(NA, length(x))
+for (i in 1:length(x)){ 
+  out[i] &lt;- log10(x[i]) 
+  }
+out
+[1] 0 1 2 3 4 5
+```
+]
+
+---
+
+
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Get the class activity 15.Rmd file
+- Work on activity 1
+- Ask me questions
+]
+
+]
+
+<div class="countdown" id="timer_32f46266" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+class: middle
+
+# Functionals
+
+
+
+.pull-left[
+&lt;br&gt;
+.bq[A .brand-red[functional] function will apply the same operation (function) to each element of a vector, matrix, data frame or list.
+
+  - base-R: `apply` family of commands
+  - `purrr` package: `map` family of commands
+]
+]
+.pull-right[
+&lt;img src="images/purrr.png" width=400&gt;
+]
+
+---
+
+# `apply` family of commands
+
+.bql[R has a family of commands that apply a function to different parts of a vector, matrix or data frame]
+
+&lt;br&gt;
+
+
+&lt;blockquote&gt;
+&lt;p style="color: #502090"&gt; .bold[lapply(X, FUN)]:&lt;/p&gt; applies the `FUN` to each element in the vector/list `X`. Returns a list with length equal to that of the vector
+&lt;/blockquote&gt;
+
+&lt;br&gt;
+
+&lt;blockquote&gt;
+&lt;p style="color: #404040"&gt; .bold[sapply(X, FUN)]:&lt;/p&gt; works like `lapply` but returns a vector (so `FUN` can only return one value)
+&lt;/blockquote&gt;
+&lt;br&gt;
+
+---
+
+# `apply` family of commands
+
+.bql[R has a family of commands that apply a function to different parts of a vector, matrix or data frame]
+
+&lt;br&gt;
+
+&lt;blockquote&gt;
+&lt;p style="color: #404040"&gt; .bold[apply(matrix, MARGIN, FUN)]:&lt;/p&gt; applies the function `FUN` to the matrix. `MARGIN` given (1=row, 2=column, c(1,2)=rows and cols). Returns an atomic .bold[vector] or .bold[matrix]
+&lt;/blockquote&gt;
+
+&lt;br&gt;
+
+&lt;blockquote&gt;
+&lt;p style="color: #404040"&gt; .bold[tapply(x,y,FUN))]:&lt;/p&gt;  applies `FUN` to atomic vector (variable) `x` for each group in categorical variable `y`. Returns an atomic .bold[vector] with a `dimnames` attribute
+&lt;/blockquote&gt;
+
+---
+
+class: middle
+
+
+# `purrr` package
+
+.bq.font120[
+powerful package for iteration with the same functionality as apply commands, but more readable (according to Hadley)
+]
+
+&lt;br&gt;
+&lt;img src="images/map.png" width=700 class="center"&gt;
+
+
+- map(.x, .f) maps the function .f to elements in the vector/list .x
+
+---
+
+# `lapply` with `tinydata`
+
+.pull-left[
+
+```r
+lapply(tinydata, FUN = mean)
+$case
+[1] NA
+
+$x
+[1] 7
+
+$y
+[1] 5.333333
+
+$z
+[1] -3.333333
+```
+
+- a 3x4 data frame is .bold[summarized] in a list of length 4.
+]
+
+--
+
+.pull-right[
+.bq.font90[
+- R sees tinydata as a list whose elements are column vectors (variables)
+
+- the FUN is applied to each list element 
+
+- a list is returned
+
+- length is the number of variables in the data frame
+]
+]
+
+---
+
+class: middle
+
+
+# `map`
+
+&gt; In `purrr`, the `map` function is equivalent to `lapply`
+
+
+```r
+library(purrr)
+map(tinydata, .f = mean)
+$case
+[1] NA
+
+$x
+[1] 7
+
+$y
+[1] 5.333333
+
+$z
+[1] -3.333333
+```
+
+
+---
+
+class: middle
+
+
+# `sapply` with `tinydata` 
+
+&gt; Output is an atomic vector (`s`implify)
+
+
+```r
+sapply(tinydata, FUN = mean)
+     case         x         y         z 
+       NA  7.000000  5.333333 -3.333333 
+```
+
+- a 3x4 data frame is .bold[summarized] in a vector of length 4.
+
+
+---
+
+class: middle
+
+
+# `map_dbl`
+
+&gt; `map_dbl` is equivalent to `sapply`
+
+.code120[
+
+```r
+map_dbl(tinydata, .f = mean)
+     case         x         y         z 
+       NA  7.000000  5.333333 -3.333333 
+```
+]
+
+---
+
+class: middle
+
+
+# `map_df`
+
+&gt; `map_df` returns a data frame instead of a vector
+
+
+```r
+map_df(tinydata, .f = mean)
+# A tibble: 1 × 4
+   case     x     y     z
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1    NA     7  5.33 -3.33
+```
+
+- No equivalency in base-R `apply`!
+
+
+---
+
+class: middle
+
+
+# Iterate or dplyr?!
+
+.bq[
+- `summarize_all`, `summarize_if`, `summarize_at` are all options that apply  `.funs` to .bold[columns] of a data frame
+- `if` option needs a logical function that determines which .bold[columns] to apply the `.funs` to 
+]
+
+
+```r
+tinydata %&gt;%
+* summarize_if(is.numeric, .funs = mean)
+# A tibble: 1 × 3
+      x     y     z
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     7  5.33 -3.33
+```
+
+---
+
+class: middle
+
+
+# functionals: single function that mutates
+
+.bq[`standardize` function gives us a list of standardized values]
+
+.pull-left[
+
+```r
+tinydata
+# A tibble: 3 × 4
+  case      x     y     z
+  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 a         5     3    -2
+2 b         7     1    -5
+3 c         9    12    -3
+```
+]
+.pull-right[
+
+```r
+lapply(tinydata, FUN = standardize)
+$case
+[1] "a" "b" "c"
+
+$x
+[1] -1  0  1
+
+$y
+[1] -0.3982161 -0.7395442  1.1377602
+
+$z
+[1]  0.8728716 -1.0910895  0.2182179
+```
+
+]
+- a 3x4 data frame is .bold[mutated] to a list of 4 vectors of length 3 each
+
+---
+
+class: middle
+
+
+# `lapply` with `tinydata`
+
+.bq[Using `dplyr::bind_cols` converts the list to a data frame with variables equal to list entries]
+
+.pull-left[
+
+```r
+tinydata
+# A tibble: 3 × 4
+  case      x     y     z
+  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 a         5     3    -2
+2 b         7     1    -5
+3 c         9    12    -3
+```
+
+]
+.pull-right[
+
+
+```r
+lapply(tinydata, FUN = standardize) %&gt;%
+* bind_cols()
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+]
+
+
+---
+
+class: middle
+
+
+# map_df
+
+&gt; In `purrr`, the `map_df` is equal to `lapply` + `bind_cols`:
+
+
+.pull-left[
+
+```r
+tinydata
+# A tibble: 3 × 4
+  case      x     y     z
+  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 a         5     3    -2
+2 b         7     1    -5
+3 c         9    12    -3
+```
+
+]
+.pull-right[
+
+
+```r
+map_df(tinydata, .f = standardize)
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+]
+
+
+- a 3x4 data frame is mutated to .bold[standardized] 3x4 data frame
+
+
+---
+
+class: middle
+
+
+# Iterate or dplyr?!
+
+.bq[
+- `mutate_all`, `mutate_if`, `mutate_at` are all options that apply `.funs` to columns of a data frame
+- if option needs a logical function that determines which columns to apply the `.funs` to
+]
+
+
+```r
+tinydata %&gt;%
+* mutate_if(is.numeric, .funs = standardize)
+# A tibble: 3 × 4
+  case      x      y      z
+  &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 a        -1 -0.398  0.873
+2 b         0 -0.740 -1.09 
+3 c         1  1.14   0.218
+```
+
+---
+
+# applying multiple functions
+
+- Let’s get the 0.1 and 0.9 quantile for variables in `tinydata`
+
+
+```r
+quantile(tinydata$x, probs = c(.1, .9))
+10% 90% 
+5.4 8.6 
+```
+
+
+```r
+quantile(tinydata$y, probs = c(.1, .9))
+ 10%  90% 
+ 1.4 10.2 
+```
+
+
+```r
+quantile(tinydata$z, probs = c(.1, .9))
+ 10%  90% 
+-4.6 -2.2 
+```
+
+--
+
+-  the function output is a vector of length 2 (same lengths as probs)
+
+---
+
+class: middle
+
+
+# `map_df`: getting quantiles
+
+
+
+```r
+tinydata %&gt;% 
+  select_if(is.numeric) %&gt;%   # only numeric columns
+  map_df(
+    .f = quantile,   # function to apply to cols
+    probs = c(.1, .9)) # extra function arguments
+# A tibble: 3 × 2
+  `10%` `90%`
+  &lt;dbl&gt; &lt;dbl&gt;
+1   5.4   8.6
+2   1.4  10.2
+3  -4.6  -2.2
+```
+
+---
+
+class: middle
+
+
+# `map_df`: getting quantiles
+
+&gt; Can use `.id` to record the variable names from tinydata:
+
+
+```r
+tinydata %&gt;% 
+  select_if(is.numeric) %&gt;% 
+  map_df(
+    .f = quantile, 
+    probs = c(.1, .9), 
+*   .id = "variable")
+# A tibble: 3 × 3
+  variable `10%` `90%`
+  &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
+1 x          5.4   8.6
+2 y          1.4  10.2
+3 z         -4.6  -2.2
+```
+
+---
+
+class: middle
+
+# `map_df` options
+
+
+.font120[
+.fancy.font120[There are two types of `map_df`]
+
+.bq[
+- `map_dfr`: row binds the list created by map
+  - entries in the list are rows in the data frame
+      
+- `map_dfc`: column binds the list created by map
+  - entries in the list are columns in the data frame
+]    
+
+]
+---
+
+# Iterate or dplyr?!
+
+.bq[
+- `summarize_all`, `summarize_if`, `summarize_at` can work with functions like `quantile` that return multiple values.
+
+- the .bold[form] of the output is a transposed version of `map_df`
+]
+
+--
+
+
+```r
+tinydata %&gt;% 
+*   summarize_if(is.numeric, .funs = quantile, probs = c(.1, .9))
+# A tibble: 2 × 3
+      x     y     z
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1   5.4   1.4  -4.6
+2   8.6  10.2  -2.2
+```
+
+- .bold[rows] = 0.1 and 0.9 quantiles
+- .bold[cols] = variables
+
+
+---
+
+class: middle
+
+
+# Iterate or dplyr?!
+
+.bq[
+We need to manually add a percentile variable to help us ID the value in each row
+]
+
+
+.code110[
+
+```r
+tinydata %&gt;% 
+    summarize_if(is.numeric, .funs = quantile, probs = c(.1, .9)) %&gt;%
+*   mutate(percentile = c(10,90))
+# A tibble: 2 × 4
+      x     y     z percentile
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;
+1   5.4   1.4  -4.6         10
+2   8.6  10.2  -2.2         90
+```
+]
+
+---
+
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Get the class activity 15.Rmd file
+- Work on activity 2
+- Ask me questions
+]
+
+]
+
+<div class="countdown" id="timer_26e743e4" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
