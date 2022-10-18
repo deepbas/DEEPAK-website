@@ -13,6 +13,55 @@
     </image>
     
     <item>
+      <title>Week 6</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week6/</link>
+      <pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week6/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 10/17&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;midterm-break&#34;&gt;Midterm Break!&lt;/h3&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 10/19&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://rafalab.github.io/dsbook/web-scraping.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Irizarry Chapter 24&lt;/a&gt; on web scraping.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Also, it may be useful to go over this short video on the &lt;a href=&#34;https://youtu.be/v8Yh_4oE-Fs&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;simple demonstration of web scraping&lt;/a&gt; before class. We will go over this in detail in class.&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/v8Yh_4oE-Fs&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Web Scraping Basics&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--
+
+Day 15 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;) 
+
+
+
+&lt;span style=&#34;color:orange&#34;&gt;**Friday, 10/14**&lt;/span&gt;
+
+
+### Before Class
+
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please read &lt;a href=&#34;https://r4ds.had.co.nz/iteration.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GW 21.1-21.5&lt;/a&gt; on iterations and functionals.
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+
+### In Class
+
+- Iterations and functionals
+
+Day 15 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;) 
+
+--&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 5</title>
       <link>https://deepbas.netlify.app/courses/stat220/week5/</link>
       <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
