@@ -31,11 +31,10 @@ Also, it may be useful to go over this short video on the [simple demonstration 
 
 - Web Scraping Basics
 
+
+Day 16 Slides ({{% staticref "stat220/Day16.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day16.html" "newtab" %}}html{{% /staticref %}}) 
+
 <!--
-
-Day 15 Slides ({{% staticref "stat220/Day15.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day15.html" "newtab" %}}html{{% /staticref %}}) 
-
-
 
 <span style="color:orange">**Friday, 10/14**</span>
 
