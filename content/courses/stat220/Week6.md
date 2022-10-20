@@ -31,10 +31,26 @@ Also, it may be useful to go over this short video on the [simple demonstration 
 
 - Web Scraping Basics
 
-
 Day 16 Slides ({{% staticref "stat220/Day16.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day16.html" "newtab" %}}html{{% /staticref %}}) 
 
+<span style="color:orange">**Friday, 10/21**</span>
+
+### Before Class
+
+{{% callout note %}}
+Please continue reading [Irizarry Chapter 24](https://rafalab.github.io/dsbook/web-scraping.html) on web scraping. Go over the slides and class activity from last class and practice using CSS Selector Gadget.{{% /callout %}}
+
+### In class
+
+- Scraping multiple pages
+- Some Interactive Plots and Data Tables
+
+
 <!--
+
+
+Day 17 Slides ({{% staticref "pdf/Day17/Day17.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day17/Day17.html" "newtab" %}}html{{% /staticref %}})
+
 
 <span style="color:orange">**Friday, 10/14**</span>
 

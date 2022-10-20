@@ -33,7 +33,23 @@
 &lt;li&gt;Web Scraping Basics&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Day 16 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day16.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day16.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Friday, 10/21&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Please continue reading &lt;a href=&#34;https://rafalab.github.io/dsbook/web-scraping.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Irizarry Chapter 24&lt;/a&gt; on web scraping. Go over the slides and class activity from last class and practice using CSS Selector Gadget.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;in-class-1&#34;&gt;In class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Scraping multiple pages&lt;/li&gt;
+&lt;li&gt;Some Interactive Plots and Data Tables&lt;/li&gt;
+&lt;/ul&gt;
 &lt;!--
+
+
+Day 17 Slides (&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day17/Day17.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/pdf/Day17/Day17.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
+
 
 &lt;span style=&#34;color:orange&#34;&gt;**Friday, 10/14**&lt;/span&gt;
 
