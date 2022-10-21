@@ -47,9 +47,7 @@ Please continue reading [Irizarry Chapter 24](https://rafalab.github.io/dsbook/w
 
 
 
-
-Day 17 Slides ({{% staticref "pdf/Day17/Day17.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "pdf/Day17/Day17.html" "newtab" %}}html{{% /staticref %}})
-
+Day 17 Slides ({{% staticref "stat220/Day17.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day17.html" "newtab" %}}html{{% /staticref %}})
 
 <!--
 <span style="color:orange">**Friday, 10/14**</span>
