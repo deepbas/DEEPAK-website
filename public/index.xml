@@ -13,6 +13,25 @@
     </image>
     
     <item>
+      <title>Week 7</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week7/</link>
+      <pubDate>Sat, 22 Oct 2022 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week7/</guid>
+      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 10/23&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Watch through a simple &lt;a href=&#34;https://youtu.be/Fg-Ha44i1IM&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;video&lt;/a&gt; on building a Shiny App below
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;It would be great if you could go through all of the video, but please go through until the 15 min mark. Here&amp;rsquo;s the video:&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/Fg-Ha44i1IM?start=36&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
+&lt;p&gt;We will see demonstrations of simple Shiny App. We will also go over Midterm II practice problems.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 6</title>
       <link>https://deepbas.netlify.app/courses/stat220/week6/</link>
       <pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate>
@@ -67,25 +86,6 @@
 Day 15 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;) 
 
 --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 7</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week7/</link>
-      <pubDate>Wed, 12 Oct 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week7/</guid>
-      <description>&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Monday, 10/23&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
-&lt;h3 id=&#34;before-class&#34;&gt;Before Class&lt;/h3&gt;
-&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Watch through a simple &lt;a href=&#34;https://youtu.be/Fg-Ha44i1IM&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;video&lt;/a&gt; on building a Shiny App below
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;It would be great if you could go through all of the video, but please go through until the 15 min mark. Here&amp;rsquo;s the video:&lt;/p&gt;
-&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/Fg-Ha44i1IM?start=36&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
-&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
-&lt;p&gt;We will see demonstrations of simple Shiny App. We will also go over Midterm II practice problems.&lt;/p&gt;
 </description>
     </item>
     

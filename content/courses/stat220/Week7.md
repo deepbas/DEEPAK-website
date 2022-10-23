@@ -1,7 +1,7 @@
 ---
 title: Week 7 
 linktitle: Week 7
-lastmod: "2022-10-12"
+lastmod: "2022-10-22"
 draft: false  
 toc: false  
 type: book  
