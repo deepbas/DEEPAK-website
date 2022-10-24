@@ -1,0 +1,243 @@
+---
+title: "Introduction to Shiny"
+subtitle: "<br/> Fall 2022"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+header-includes:
+    - \usepackage{caption}
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%",
+                      prompt = FALSE,
+                      rows.print=7
+                      )
+
+# load necessary packages
+library(tidyverse)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(ggrepel)
+library(lubridate)
+
+# specific packages
+library(plotly)
+library(polite)
+library(rvest)
+library(stringr)
+select <- dplyr::select
+
+# Set ggplot theme
+# theme_set(theme_stata(base_size = 10))
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+covid_data <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/covid_confirmed_usafacts.csv")
+#covid_data <- read_csv("data/covid_confirmed_usafacts.csv")
+
+MNdata <- covid_data %>% filter(State == "MN") %>% 
+  select(-countyFIPS, - StateFIPS, -State) %>% 
+  filter(!row_number() %in% c(1)) %>% 
+  pivot_longer(values_to = "Cases", names_to = "Dates", -1) %>% 
+  janitor::clean_names() %>% 
+  mutate(county_name = str_remove(county_name, " County")) %>% 
+  rename(Counties = county_name) %>%
+  mutate(dates = ymd(dates), Counties = as.factor(Counties))  %>%
+  mutate(month = month(dates), year = year(dates))
+
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Introduction to Shiny]
+
+### .fancy[Fall 2022]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+
+---
+
+class: middle
+
+# Shiny: Overview
+
+.bql[
+- Shiny is an R package that provides a fairly high-level framework for creating interactive graphics
+- Shiny web app allows us to build interactive dashboard that we will let Rstudio host for us with their servers
+- Rstudio makes it easy to create and even upload these graphs to the web
+- You can publish Shiny documents to the ShinyApps (https://shinyapps.io) hosted service
+]
+
+---
+
+class: middle
+
+# Interactive plots
+
+.bq.font90[
+- Shiny uses reactive programming to automatically update outputs when inputs change
+
+- Shiny applications have two components:
+  + a user interface (UI) object 
+  + a server function
+  
+- These are passed as arguments to the `shinyApp` function that creates a Shiny app object from this UI/server pair
+]
+
+
+.out-t[The YAML header of this R Markdown document has the line `runtime: shiny` so that RStudio understands this is a Shiny document.]
+
+---
+
+class: middle
+
+# Useful Resources
+
+.bq[
+- [RStudio Documentation](https://shiny.rstudio.com/articles/basics.html)
+
+- [Shiny Documents for further reading](https://bookdown.org/yihui/rmarkdown/shiny-documents.html)
+
+- [Learn Shiny with videos and written tutorials](https://shiny.rstudio.com/tutorial/).
+
+- [Shiny Gallery with example demonstrations](https://shiny.rstudio.com/gallery/)
+
+- [Mastering Shiny by Hadley Wickham](https://mastering-shiny.org/index.html).
+
+- [Shiny Cheatsheet](https://deepbas.io/cheatsheets/shiny.pdf)
+]
+
+---
+
+
+class: center, inverse, top
+background-image: url("images/shiny_COVID.png")
+background-size: 90% 100%
+
+<br>
+
+## [One nice example: COVID-19 Tracker](https://shiny.rstudio.com/gallery/covid19-tracker.html)
+
+
+
+---
+
+class: center, inverse, top
+background-image: url("images/shiny_cheatsheet.png")
+background-size: cover
+
+---
+
+
+class: center, inverse, top
+background-image: url("images/shiny_configuration.png")
+background-size: 90% 100%
+
+
+# .center[http://shinyapps.io/]
+
+---
+
+
+class: center, inverse, top
+background-image: url("images/shiny_Minnesota.png")
+background-size: 100% 100%
+
+<br>
+
+
+## https://deepbas.shinyapps.io/covid/
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Let's go over to class activity 18 .Rmd file and practice building a shiny app together
+- Ask me questions
+]
+
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+

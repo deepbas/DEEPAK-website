@@ -23,3 +23,7 @@ It would be great if you could go through all of the video, but please go throug
 ### In Class
 
 We will see demonstrations of simple Shiny App. We will also go over Midterm II practice problems. 
+
+
+
+Day 18 Slides ({{% staticref "stat220/Day18.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day18.html" "newtab" %}}html{{% /staticref %}})
