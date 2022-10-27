@@ -35,7 +35,7 @@
 &lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Please go over the Shiny the tutorial from Monday and practice further using the resources provided there. Please also watch through a &lt;a href=&#34;https://youtu.be/ak_NJCVrJXY&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;video&lt;/a&gt; on a simple demonstration of building a Shiny app below if you are still disoriented about how Shiny actually works.
+    Please go over the Shiny tutorial from Monday and practice further using the resources provided there. Please also watch through a &lt;a href=&#34;https://youtu.be/ak_NJCVrJXY&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;video&lt;/a&gt; on a simple demonstration of building a Shiny app below if you are still disoriented about how Shiny actually works.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/ak_NJCVrJXY&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;

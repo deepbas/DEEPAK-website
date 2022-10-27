@@ -39,7 +39,7 @@ Day 18 Slides ({{% staticref "stat220/Day18.pdf" "newtab" %}}pdf{{% /staticref %
 
 {{% callout note %}}
 
-Please go over the Shiny the tutorial from Monday and practice further using the resources provided there. Please also watch through a [video](https://youtu.be/ak_NJCVrJXY) on a simple demonstration of building a Shiny app below if you are still disoriented about how Shiny actually works.{{% /callout %}}
+Please go over the Shiny tutorial from Monday and practice further using the resources provided there. Please also watch through a [video](https://youtu.be/ak_NJCVrJXY) on a simple demonstration of building a Shiny app below if you are still disoriented about how Shiny actually works.{{% /callout %}}
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ak_NJCVrJXY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
