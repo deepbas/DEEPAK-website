@@ -48,5 +48,5 @@ Please go over the Shiny tutorial from Monday and practice further using the res
 We will again do some more hands-on activity to build Shiny apps. We will also see how to integrate interactive maps like `leaflet` in Shiny.
 
 
-<!-- Day 20 Slides ({{% staticref "stat220/Day20.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day20.html" "newtab" %}}html{{% /staticref %}}) -->
+Day 20 Slides ({{% staticref "stat220/Day20.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day20.html" "newtab" %}}html{{% /staticref %}})
 
