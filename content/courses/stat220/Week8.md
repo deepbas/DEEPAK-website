@@ -28,6 +28,6 @@ Skim [sections 5.1-5.6 of Data Science: A First Introduction](https://datascienc
 
 We will start basic classification and learn the basics of k-nearest-neighbors (kNN).
 
-<!--
+
 Day 22 Slides ({{% staticref "stat220/Day22.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day22.html" "newtab" %}}html{{% /staticref %}})
--->
+

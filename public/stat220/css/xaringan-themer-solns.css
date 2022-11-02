@@ -120,7 +120,7 @@ a, a > code {
   font-size: 0.9em;
 }
 .remark-code-line-highlighted {
-  background-color: #cbdded;
+  background-color: orange;
 }
 .inverse {
   background-color: #2c8475;
