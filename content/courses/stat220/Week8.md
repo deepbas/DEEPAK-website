@@ -22,7 +22,7 @@ weight: 20
 ### Before Class
 
 {{% callout note %}}
-Skim [sections 5.1-5.6 of Data Science: A First Introduction](https://datasciencebook.ca/classification.html#k-nearest-neighbors-with-tidymodels){{% /callout %}}
+Skim [sections 5.1-5.6 of Data Science: A First Introduction](https://datasciencebook.ca/classification1.html#classification-with-k-nearest-neighbors){{% /callout %}}
 
 ### In Class
 
