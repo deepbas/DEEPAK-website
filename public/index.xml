@@ -24,8 +24,17 @@
     Please go over previous class activities on Shiny App Implementation. We will do a group activity on building our own Shiny app incorporating &lt;code&gt;leaflet&lt;/code&gt; map in class. If we get time, we will go over extra examples of Shiny implementation. Please open an account on &lt;a href=&#34;https://www.shinyapps.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;shinyapps.io&lt;/a&gt; where we will host our app for the projects
   &lt;/div&gt;
 &lt;/div&gt;
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 11/02&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Skim &lt;a href=&#34;https://datasciencebook.ca/classification.html#k-nearest-neighbors-with-tidymodels&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;sections 5.1-5.6 of Data Science: A First Introduction&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;in-class&#34;&gt;In Class&lt;/h3&gt;
+&lt;p&gt;We will start basic classification and learn the basics of k-nearest-neighbors (kNN).&lt;/p&gt;
 &lt;!--
-Day 18 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day18.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day18.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
+Day 22 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day22.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day22.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
 --&gt;
 </description>
     </item>
