@@ -37,7 +37,7 @@ Day 22 Slides ({{% staticref "stat220/Day22.pdf" "newtab" %}}pdf{{% /staticref %
 ### Before Class
 
 {{% callout note %}}
-Read [sections 5.7-5.8 and sections 6.3-6.7 of Data Science: A First Introduction](https://datasciencebook.ca/classification.html#puttingittogetherworkflow)
+Read [sections 5.7-5.8 and sections 6.3-6.7 of Data Science: A First Introduction](https://datasciencebook.ca/classification2.html#evaluating-accuracy)
 {{% /callout %}}
 
 ### In Class
