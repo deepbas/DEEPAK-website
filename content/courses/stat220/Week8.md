@@ -31,3 +31,17 @@ We will start basic classification and learn the basics of k-nearest-neighbors (
 
 Day 22 Slides ({{% staticref "stat220/Day22.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day22.html" "newtab" %}}html{{% /staticref %}})
 
+
+<span style="color:orange">**Friday, 11/04**</span>
+
+### Before Class
+
+{{% callout note %}}
+Read [sections 5.7-5.8 and sections 6.3-6.7 of Data Science: A First Introduction](https://datasciencebook.ca/classification.html#puttingittogetherworkflow)
+{{% /callout %}}
+
+### In Class
+
+- KNN Model accuracy
+
+<!-- Day 22 Slides ({{% staticref "stat220/Day22.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day22.html" "newtab" %}}html{{% /staticref %}}) -->
