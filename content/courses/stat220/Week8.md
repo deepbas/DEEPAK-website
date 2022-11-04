@@ -44,4 +44,5 @@ Read [sections 5.7-5.8 and sections 6.3-6.7 of Data Science: A First Introductio
 
 - KNN Model accuracy
 
-Day 23 Slides ({{% staticref "stat220/Day23.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day23.html" "newtab" %}}html{{% /staticref %}}) 
+<!--
+Day 23 Slides ({{% staticref "stat220/Day23.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day23.html" "newtab" %}}html{{% /staticref %}}) --> 
