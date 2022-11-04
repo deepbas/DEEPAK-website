@@ -721,7 +721,7 @@ class: action, middle
 <br>
 .bq[
 - Please continue working on group activity 2
-- Consider calculating the accuracy metrics bt hand 
+- Consider calculating the accuracy metrics by hand 
 - Verify your calculations with R-code
 
 ]
