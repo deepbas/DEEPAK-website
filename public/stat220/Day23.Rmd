@@ -1,0 +1,885 @@
+---
+title: "Model Accuracy and Evaluation"
+subtitle: "<br/> Fall 2022"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+header-includes:
+    - \usepackage{caption}
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%",
+                      prompt = FALSE,
+                      rows.print=7
+                      )
+
+
+
+# load necessary packages
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(countdown)
+library(ggthemes)
+library(tidyverse)
+library(stringr)
+library(xaringanExtra)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+library(flipbookr)
+library(htmlwidgets)
+library(lubridate)
+library(palmerpenguins)
+library(fontawesome)
+library(class)
+library(patchwork)
+library(tidymodels)
+library(mlbench)     # for PimaIndiansDiabetes2 dataset
+library(janitor)
+library(parsnip)
+library(kknn)
+library(paletteer)
+library(corrr)
+library(scico)
+library(gridExtra)
+
+
+select <- dplyr::select
+
+# Set ggplot theme
+# theme_set(theme_stata(base_size = 10))
+
+yt <- 0
+
+standardize <- function(x, na.rm = FALSE) {
+  (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
+}
+
+# Load the fire data
+
+fire <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Algeriafires.csv")
+fire <- fire %>% clean_names() %>% na.omit() %>% mutate_at(c(10,13), as.numeric)
+fire1 <- fire %>% mutate(across(where(is.numeric), standardize))
+
+fire_raw <- fire %>% select(temperature, isi, classes)
+
+fire_recipe <- recipe(classes ~ ., data = fire_raw) %>%
+ step_scale(all_predictors()) %>%
+ step_center(all_predictors()) %>%
+ prep()
+
+fire_scaled <- bake(fire_recipe, fire_raw)
+
+fire_knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5)
+
+fire_knn_fit <- fire_knn_spec %>%
+ fit(classes ~ ., data = fire_scaled)
+
+# Load the data - diabetes
+data(PimaIndiansDiabetes2)
+db <- PimaIndiansDiabetes2
+
+db <- db %>% na.omit() %>% mutate(diabetes = fct_rev(factor(diabetes))) 
+
+db_raw <- db %>% select(glucose, insulin, diabetes)
+
+db_recipe <- recipe(diabetes ~ ., data = db_raw) %>%
+  step_scale(all_predictors()) %>%
+  step_center(all_predictors()) %>%
+  prep()
+
+db_scaled <-  bake(db_recipe, db_raw)
+db_knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5)
+db_knn_fit <- db_knn_spec %>%
+ fit(diabetes ~ ., data = db_scaled)
+
+
+```
+
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Model Accuracy and Evaluation]
+
+### .fancy[Fall 2022]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+
+---
+
+
+class: middle
+
+# KNN (K- Nearest Neighbor)
+
+.bql.large[
+- Supervised machine learning algorithm i.e., it requires labeled data for training
+
+- Need to tell the algorithm the exact number of neighbors (K) we want to consider
+]
+
+---
+
+class: middle
+
+# Training and Testing
+
+.bq.Large[
+# Training: Fitting a model with certain hyper-parameters on a particular subset of the dataset
+]
+
+<br>
+
+<br>
+
+.bq.Large[
+# Testing: Test the model on a different subset of the dataset to get an estimate of a final, unbiased assessment of the model's performance
+]
+
+
+---
+
+class: middle
+background-image: url("images/workflow.png")
+background-position: left
+background-size: 42%
+
+.pull-right-60.large[
+
+.bq[
+# Workflows
+
+A machine learning workflow (the “black box”) containing model specification and preprocessing recipe/formula
+]
+]
+
+---
+
+class: middle
+
+# 1. Create a workflow: Split the raw data
+
+.font150[
+```{r}
+set.seed(123) # set seed for reproducibility
+
+fire_split <- initial_split(fire_raw, prop = 0.75) 
+
+# Create training data
+fire_train <- fire_split %>% training()
+
+
+# Create testing data
+fire_test <- fire_split %>% testing()
+```
+]
+
+---
+
+class: middle
+
+# 2. Make a recipe
+
+.font150[
+```{r}
+fire_recipe <- recipe(classes ~ ., data = fire_raw) %>%
+  step_scale(all_predictors()) %>%
+  step_center(all_predictors()) %>%
+  prep()
+```
+]
+
+---
+
+class: middle
+
+# 3. Specify the model
+
+.font140[
+```{r}
+fire_knn_spec <- nearest_neighbor(mode = "classification",
+                                  engine = "kknn",
+                                  weight_func = "rectangular",
+                                  neighbors = 5)
+```
+]
+
+---
+
+class: middle
+
+# 4. Define the workflow object
+
+.font150[
+```{r}
+fire_workflow <- workflow() %>% 
+  add_recipe(fire_recipe) %>%
+  add_model(fire_knn_spec)
+```
+]
+
+
+---
+
+class: middle
+
+# 5. Fit the model
+
+.font150[
+```{r}
+fire_fit <- fit(fire_workflow, data = fire_train)
+```
+]
+
+---
+
+class: middle
+
+.code120[
+```{r, echo=FALSE}
+fire_fit
+```
+]
+
+---
+
+class: middle
+
+# 6. Evaluate the model on test dataset
+
+.font150[
+```{r}
+test_features <- fire_test %>% select(temperature, isi) %>% 
+  data.frame()
+fire_pred <- predict(fire_fit, test_features, type = "raw")
+fire_results <- fire_test %>% 
+  select(classes) %>% 
+  bind_cols(predicted = fire_pred)
+
+```
+]
+
+---
+class: middle
+
+# 7. Compare the known labels and predicted labels
+
+.scroll-box-24[
+```{r}
+knitr::kable(fire_results)
+```
+]
+
+```{r include=FALSE}
+db_split <- initial_split(db, prop = 0.75)
+
+# Create training data
+db_train <- db_split %>%
+                    training()
+
+
+# Create testing data
+db_test <- db_split %>%
+                    testing()
+
+
+db_recipe <- recipe(diabetes ~ ., data = db_raw) %>%
+  step_scale(all_predictors()) %>%
+  step_center(all_predictors()) %>%
+  prep()
+
+db_scaled <-  bake(db_recipe, db_raw)
+
+db_knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5)
+
+db_knn_spec7 <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 7)
+
+db_workflow <- workflow() %>% 
+  add_recipe(db_recipe) %>%
+  add_model(db_knn_spec)
+
+db_fit <- fit(db_workflow, data = db_train)
+
+```
+
+
+
+
+---
+
+
+```{r echo=FALSE}
+fire_raw <- fire %>% select(temperature, isi, classes)
+
+# Data Split
+
+set.seed(123)
+fire_split <- initial_split(fire_raw, prop = 0.75)
+
+# Create training data
+fire_train <- fire_split %>%
+                    training()
+
+
+# Create testing data
+fire_test <- fire_split %>%
+                    testing()
+
+
+fire_recipe <- recipe(classes ~ ., data = fire_raw) %>%
+ step_scale(all_predictors()) %>%
+ step_center(all_predictors()) %>%
+ prep()
+
+fire_scaled <- bake(fire_recipe, fire_raw)
+
+fire_knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5)
+
+#fire_knn_fit <- fire_knn_spec %>%
+#fit(classes ~ ., data = fire_scaled)
+
+fire_knn_workflow <- workflow() %>% 
+  add_recipe(fire_recipe) %>%
+  add_model(fire_knn_spec)
+
+fire_fit <- fit(fire_knn_workflow, data = fire_raw)
+
+```
+
+
+class: inverse, middle
+
+# .Large[How do we choose the number of neighbors in a principled way?]
+
+---
+
+.panelset[
+.panel[.panel-name[Scatter-plot]
+```{r scale-fill, echo=FALSE, out.width="65%", fig.align='center'}
+ggplot(data = fire1, aes(x = temperature, y = isi , fill = classes)) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
+  #scale_fill_brewer(palette = "Set1") +
+  scale_fill_wsj() +
+  theme_tufte()
+```
+]
+.panel[.panel-name[Code]
+<br>
+<br>
+.code120[
+```{r scale-fill, echo=TRUE, eval = FALSE, fig.show='hide', fig.height = 2.5, fig.width = 4.5}
+```
+]
+]
+.panel[.panel-name[Take Away]
+<br>
+<br>
+.bql.large.fancy[
+- We normally don't have a clear separation between classes and usually have more than 2 features.
+
+- Eyeballing on a plot to discern the classes is not very helpful in the practical sense
+]
+
+]
+]
+
+
+---
+
+class: middle
+
+## Evaluating accuracy
+
+.yellow-h.large[We want to evaluate classifiers based on some accuracy metrics.]
+
+
+
+.fancy.bq[
+- Randomly split data set into two pieces: .bold[training set] and .bold[test set]
+
+- Train (i.e. fit) KNN on the training set
+
+- Make predictions on the test set
+
+- See how good those predictions are
+]
+
+
+---
+
+# Train (left) and test (right) dataset (50-50)
+
+```{r echo=FALSE, fig.width=4, fig.height=3, fig.align='center', out.width = "75%"}
+set.seed(12345)
+fire1 <- fire %>% 
+  mutate(across(where(is.numeric), standardize)) %>% 
+  mutate(classes = as.factor(classes))
+
+fire_split <- initial_split(fire1, prop = 0.5)
+
+# Create training data
+fire_train <- fire_split %>%
+                    training()
+
+
+# Create testing data
+fire_test <- fire_split %>%
+                    testing()
+
+```
+
+
+.pull-left[
+```{r echo=FALSE, fig.asp=1.1, fig.height = 3, fig.width = 3.5, fig.align='center', out.width = "100%"}
+ggplot(data = fire_train, aes(x = temperature, y = isi , fill = classes)) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
+  #scale_fill_brewer(palette = "Set1") +
+  scale_fill_wsj() +
+  theme_tufte() +
+  xlim(range(fire1$temperature)) +
+  ylim(range(fire1$isi))
+```
+]
+.pull-right[
+```{r echo=FALSE, fig.asp=1.1, fig.height = 3, fig.width = 3.5, fig.align='center', out.width = "100%"}
+ggplot(data = fire_test, aes(x = temperature, y = isi , fill = classes)) +
+  geom_point(color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
+  #scale_fill_brewer(palette = "Set1") +
+  scale_fill_wsj() +
+  theme_tufte() +
+  xlim(range(fire1$temperature)) +
+  ylim(range(fire1$isi))
+```
+]
+
+---
+
+```{r echo=FALSE, comment=NULL}
+
+fire_knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5)
+
+fire_knn_wkflow <- workflow() %>%
+  add_recipe(fire_recipe) %>%
+  add_model(fire_knn_spec)
+
+
+fire_knn_fit <- fit(fire_knn_wkflow, data = fire_train)
+
+test_features <- fire_test %>% select(temperature, isi) %>% data.frame()
+
+nn1_pred <- predict(fire_knn_fit, test_features, type = "raw")
+
+fire_results <- fire_test %>% 
+  select(classes) %>% 
+  bind_cols(predicted = nn1_pred)
+  
+
+#create a prediction pt grid
+
+temp_grid <- seq(min(fire1$temperature), max(fire1$temperature), length.out = 100)
+isi_grid <- seq(min(fire1$isi), max(fire1$isi), length.out = 100)
+plot_grid <- expand.grid(temperature = temp_grid, isi = isi_grid)
+
+knn_pred_grid <- predict(fire_knn_fit, plot_grid, type = "raw")
+
+prediction_table <- bind_cols(plot_grid, data.frame(classes = knn_pred_grid))
+
+```
+
+
+
+```{r echo=FALSE, out.width = "70%", fig.width = 5.5, fig.height = 4.5, fig.align='center'}
+
+# create a prediction pt grid
+
+ggplot(data = fire_train) +
+  geom_point(data = prediction_table, aes(x = temperature, y = isi, color = classes), alpha = 0.2) +
+  geom_point(aes(x = temperature, y = isi, fill = classes), color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
+  scale_fill_wsj() +
+  scale_color_wsj() +
+  theme_tufte() +
+  coord_equal() +  theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Training 1-NN ")
+```
+
+---
+
+
+```{r echo=FALSE, out.width = "70%", fig.width = 5.5, fig.height = 4.5, fig.align='center'}
+ggplot(data = fire_test) +
+  geom_point(data = prediction_table, aes(x = temperature, y = isi, color = classes), alpha = 0.2) +
+  geom_point(aes(x = temperature, y = isi, fill = classes), color = "black", pch = 21) +
+  labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
+  scale_fill_wsj() +
+  scale_color_wsj() +
+  theme_tufte() +
+  coord_equal() + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Evaluating performance")
+```
+
+
+---
+
+background-image: url("images/confusion_matrix.png")
+background-position: center
+background-size: 60%
+
+
+---
+
+background-image: url("images/confusion_matrix.png")
+background-position: center
+background-size: 60%
+
+<br>
+
+.out-t.center[Confusion matrix: tabulation of true (i.e. expected) and predicted class labels]
+
+---
+
+## Performance metrics
+
+
+.bq[Common metrics include:
+
+- accuracy
+- sensitivity
+- specificity
+- positive predictive value (PPV)
+]
+
+
+```{r, echo=FALSE}
+confusion_matrix <- conf_mat(fire_results, truth = classes, estimate = predicted) #<<
+```
+
+.font120[
+```{r}
+conf_mat(fire_results, truth = classes, estimate = predicted)
+```
+]
+
+
+
+
+---
+
+## Accuracy
+
+.bq[
+Proportion of correctly classified cases
+$${\rm Accuracy} = \frac{\text{true positives} + \text{true negatives}}{n}$$
+]
+
+.pull-left-40[
+```{r echo=FALSE, comment=NULL}
+confusion_matrix
+```
+]
+.pull-right-60[
+```{r}
+accuracy(fire_results, truth = classes, 
+         estimate = predicted)
+```
+]
+
+
+---
+
+## Sensitivity
+
+.bq[
+Proportion of positive cases that are predicted to be positive
+$${\rm Sensitivity} = \frac{\text{true positives}}{ \text{true positives}+ \text{false negatives}}$$
+.bold[Also called...] true positive rate or recall
+]
+
+.pull-left-40[
+```{r echo=FALSE, comment=NULL}
+confusion_matrix
+```
+]
+.pull-right-60[
+```{r}
+sens(fire_results, truth = classes,
+         estimate = predicted)
+```
+]
+
+---
+
+## Specificity
+
+.bq[
+Proportion of negative cases that are predicted to be negative
+$${\rm Specificity} = \frac{\text{true negatives}}{ \text{false positives}+ \text{true negatives}}$$
+.bold[Also called...] true negative rate
+]
+
+.pull-left-40[
+```{r echo=FALSE, comment=NULL}
+confusion_matrix
+```
+]
+.pull-right-60[
+```{r}
+spec(fire_results, truth = classes,
+         estimate = predicted)
+```
+]
+
+---
+
+## Positive predictive value (PPV)
+
+.bq[
+Proportion of cases that are predicted to be positives that are truly positives
+$${\rm PPV} = \frac{\text{true positives}}{ \text{true positives} + \text{false positives}}$$
+.bold[Also called...] precision
+]
+.pull-left-40[
+```{r echo=FALSE, comment=NULL}
+confusion_matrix
+```
+]
+.pull-right-60[
+```{r}
+ppv(fire_results, truth = classes,
+         estimate = predicted)
+```
+
+]
+
+
+---
+
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Get the class activity 20.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=39491) and work on activity 1
+]
+
+Here is the confusion matrix for a hypothetical two-class 7-NN penguin classifier
+
+```{r echo=FALSE}
+set.seed(234)
+
+fire1 <- fire %>% 
+  mutate(across(where(is.numeric), standardize)) %>% 
+  mutate(classes = as.factor(classes))
+
+fire_split3 <- initial_split(fire1, prop = 0.6)
+
+# Create training data
+fire_train3 <- fire_split3 %>%
+                    training()
+
+
+# Create testing data
+fire_test3 <- fire_split3 %>%
+                    testing()
+
+fire_knn_fit <- fit(fire_knn_wkflow, data = fire_train3)
+
+test_features <- fire_test3 %>% select(temperature, isi) %>% data.frame()
+
+nn1_pred3 <- predict(fire_knn_fit, test_features, type = "raw")
+
+fire_results3 <- fire_test3 %>% 
+  select(classes) %>% 
+  bind_cols(predicted = nn1_pred3)
+
+
+conf_mat(fire_results3, truth = classes, estimate = predicted)
+
+```
+
+Calculate the accuracy, sensitivity, specificity, and PPV of this classifier.
+
+
+
+]
+
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+
+
+
+---
+
+class: middle
+
+## Choice of metrics !!
+
+```{r}
+custom_metrics <- metric_set(accuracy, sens, spec, ppv)
+metrics <- custom_metrics(fire_results, truth = classes, estimate = predicted) 
+```
+
+```{r}
+metrics %>% select(-.estimator)
+```
+
+
+---
+
+# Plot them over the hyperparamter, K
+
+```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+k <- c(1, 3, 5, 7, 9, 11, 13, 15)
+
+# put it all together
+
+metrics_for_k <- function(k, fire_train, fire_test){
+fire_knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = k)
+
+fire_knn_wkflow <- workflow() %>%
+  add_recipe(fire_recipe) %>%
+  add_model(fire_knn_spec)
+
+fire_knn_fit <- fit(fire_knn_wkflow, data = fire_train)
+test_features <- fire_test %>% select(temperature, isi) %>% data.frame()
+nn1_pred <- predict(fire_knn_fit, test_features, type = "raw")
+
+fire_results <- fire_test %>% 
+  select(classes) %>% 
+  bind_cols(predicted = nn1_pred)
+custom_metrics <- metric_set(accuracy, sens, spec, ppv, kap, mcc)
+
+metrics <- custom_metrics(fire_results,
+               truth = classes,
+               estimate = predicted) 
+metrics <- metrics %>% select(-.estimator) %>% mutate(k = rep(k,6))
+
+return(list = metrics)
+}
+
+k <- seq(1,21, by=2)
+data.results <- lapply(k, function(i) metrics_for_k(i, fire_train, fire_test)) 
+final.results <- do.call("rbind", data.results)
+
+```
+
+
+```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+final.results %>%
+  ggplot(aes(x = k, y = .estimate, color = forcats::fct_reorder2(.metric, k, .estimate ))) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  scale_color_wsj() + 
+  scale_x_continuous(breaks = k) +
+  theme(panel.grid.minor.x = element_blank())+
+  labs(color='Metric', y = "Estimate", x = "K")
+```
+
+--
+
+.out-t.center[Choose the optimal K based on majority of the metrics!]
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Get the class activity 20.Rmd file from [moodle](https://moodle.carleton.edu/course/view.php?id=39491) and work on activity 1
+
+]
+
+]
+
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
