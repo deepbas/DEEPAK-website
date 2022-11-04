@@ -109,29 +109,6 @@ fire_knn_spec <- nearest_neighbor(mode = "classification",
 
 fire_knn_fit <- fire_knn_spec %>%
  fit(classes ~ ., data = fire_scaled)
-
-# Load the data - diabetes
-data(PimaIndiansDiabetes2)
-db <- PimaIndiansDiabetes2
-
-db <- db %>% na.omit() %>% mutate(diabetes = fct_rev(factor(diabetes))) 
-
-db_raw <- db %>% select(glucose, insulin, diabetes)
-
-db_recipe <- recipe(diabetes ~ ., data = db_raw) %>%
-  step_scale(all_predictors()) %>%
-  step_center(all_predictors()) %>%
-  prep()
-
-db_scaled <-  bake(db_recipe, db_raw)
-db_knn_spec <- nearest_neighbor(mode = "classification",
-                             engine = "kknn",
-                             weight_func = "rectangular",
-                             neighbors = 5)
-db_knn_fit <- db_knn_spec %>%
- fit(diabetes ~ ., data = db_scaled)
-
-
 ```
 
 
@@ -167,7 +144,7 @@ class: title-slide, middle
 
 class: middle
 
-# KNN (K- Nearest Neighbor)
+# Recap: KNN (K- Nearest Neighbor)
 
 .bql.large[
 - Supervised machine learning algorithm i.e., it requires labeled data for training
@@ -182,7 +159,7 @@ class: middle
 # Training and Testing
 
 .bq.Large[
-# Training: Fitting a model with certain hyper-parameters on a particular subset of the dataset
+# .out-t[Training:] Fitting a model with certain hyper-parameters on a particular subset of the dataset
 ]
 
 <br>
@@ -190,7 +167,7 @@ class: middle
 <br>
 
 .bq.Large[
-# Testing: Test the model on a different subset of the dataset to get an estimate of a final, unbiased assessment of the model's performance
+# .out-t[Testing:] Test the model on a different subset of the dataset to get an estimate of a final, unbiased assessment of the model's performance
 ]
 
 
@@ -212,6 +189,27 @@ A machine learning workflow (the “black box”) containing model specification
 
 ---
 
+# Forest Fire : Data Description (Recall!)
+<br>
+
+Variable | Description
+-------- | -------------
+`Date` | (DD-MM-YYYY) Day, month, year 
+`Temp` | Noon temperature in Celsius degrees: 22 to 42
+`RH` | Relative Humidity in percentage: 21 to 90
+`Ws` | Wind speed in km/h: 6 to 29
+`Rain` | Daily total rain in mm: 0 to 16.8
+`Fine Fuel Moisture Code (FFMC) index` | 28.6 to 92.5
+`Duff Moisture Code (DMC) index` | 1.1 to 65.9
+`Drought Code (DC) index` | 7 to 220.4
+`Initial Spread Index (ISI) index` | 0 to 18.5
+`Buildup Index (BUI) index` | 1.1 to 68
+`Fire Weather Index (FWI) index` | 0 to 31.1
+`Classes` | Two classes, namely .bold[fire] and .bold[not fire]
+
+
+---
+
 class: middle
 
 # 1. Create a workflow: Split the raw data
@@ -219,6 +217,9 @@ class: middle
 .font150[
 ```{r}
 set.seed(123) # set seed for reproducibility
+
+# Prepare the raw dataset
+fire_raw <- fire %>% select(temperature, isi, classes)
 
 fire_split <- initial_split(fire_raw, prop = 0.75) 
 
@@ -240,9 +241,9 @@ class: middle
 .font150[
 ```{r}
 fire_recipe <- recipe(classes ~ ., data = fire_raw) %>%
-  step_scale(all_predictors()) %>%
-  step_center(all_predictors()) %>%
-  prep()
+  step_scale(all_predictors()) %>% # scale the predictors
+  step_center(all_predictors()) %>% # center the predictors
+  prep    # pre-process
 ```
 ]
 
@@ -269,9 +270,9 @@ class: middle
 
 .font150[
 ```{r}
-fire_workflow <- workflow() %>% 
-  add_recipe(fire_recipe) %>%
-  add_model(fire_knn_spec)
+fire_workflow <- workflow() %>% # initialize a workflow
+  add_recipe(fire_recipe) %>% # add recipe
+  add_model(fire_knn_spec) # add model specification
 ```
 ]
 
@@ -306,9 +307,8 @@ class: middle
 
 .font150[
 ```{r}
-test_features <- fire_test %>% select(temperature, isi) %>% 
-  data.frame()
-fire_pred <- predict(fire_fit, test_features, type = "raw")
+test_features <- fire_test %>% select(temperature, isi) 
+fire_pred <- predict(fire_fit, test_features)
 fire_results <- fire_test %>% 
   select(classes) %>% 
   bind_cols(predicted = fire_pred)
@@ -327,47 +327,6 @@ knitr::kable(fire_results)
 ```
 ]
 
-```{r include=FALSE}
-db_split <- initial_split(db, prop = 0.75)
-
-# Create training data
-db_train <- db_split %>%
-                    training()
-
-
-# Create testing data
-db_test <- db_split %>%
-                    testing()
-
-
-db_recipe <- recipe(diabetes ~ ., data = db_raw) %>%
-  step_scale(all_predictors()) %>%
-  step_center(all_predictors()) %>%
-  prep()
-
-db_scaled <-  bake(db_recipe, db_raw)
-
-db_knn_spec <- nearest_neighbor(mode = "classification",
-                             engine = "kknn",
-                             weight_func = "rectangular",
-                             neighbors = 5)
-
-db_knn_spec7 <- nearest_neighbor(mode = "classification",
-                             engine = "kknn",
-                             weight_func = "rectangular",
-                             neighbors = 7)
-
-db_workflow <- workflow() %>% 
-  add_recipe(db_recipe) %>%
-  add_model(db_knn_spec)
-
-db_fit <- fit(db_workflow, data = db_train)
-
-```
-
-
-
-
 ---
 
 
@@ -376,7 +335,7 @@ fire_raw <- fire %>% select(temperature, isi, classes)
 
 # Data Split
 
-set.seed(123)
+set.seed(122323)
 fire_split <- initial_split(fire_raw, prop = 0.75)
 
 # Create training data
@@ -412,6 +371,30 @@ fire_fit <- fit(fire_knn_workflow, data = fire_raw)
 
 ```
 
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Get the class activity 23.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=39491) 
+- Let's work on group activity 1 together
+]
+
+
+
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
 
 class: inverse, middle
 
@@ -420,7 +403,7 @@ class: inverse, middle
 ---
 
 .panelset[
-.panel[.panel-name[Scatter-plot]
+.panel[.panel-name[Visualizing boundary]
 ```{r scale-fill, echo=FALSE, out.width="65%", fig.align='center'}
 ggplot(data = fire1, aes(x = temperature, y = isi , fill = classes)) +
   geom_point(color = "black", pch = 21) +
@@ -722,8 +705,8 @@ ppv(fire_results, truth = classes,
 ]
 
 
----
 
+---
 
 class: action, middle
 
@@ -737,78 +720,36 @@ class: action, middle
 <br>
 <br>
 .bq[
-- Get the class activity 20.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=39491) and work on activity 1
+- Please continue working on group activity 2
+- Consider calculating the accuracy metrics bt hand 
+- Verify your calculations with R-code
+
 ]
-
-Here is the confusion matrix for a hypothetical two-class 7-NN penguin classifier
-
-```{r echo=FALSE}
-set.seed(234)
-
-fire1 <- fire %>% 
-  mutate(across(where(is.numeric), standardize)) %>% 
-  mutate(classes = as.factor(classes))
-
-fire_split3 <- initial_split(fire1, prop = 0.6)
-
-# Create training data
-fire_train3 <- fire_split3 %>%
-                    training()
-
-
-# Create testing data
-fire_test3 <- fire_split3 %>%
-                    testing()
-
-fire_knn_fit <- fit(fire_knn_wkflow, data = fire_train3)
-
-test_features <- fire_test3 %>% select(temperature, isi) %>% data.frame()
-
-nn1_pred3 <- predict(fire_knn_fit, test_features, type = "raw")
-
-fire_results3 <- fire_test3 %>% 
-  select(classes) %>% 
-  bind_cols(predicted = nn1_pred3)
-
-
-conf_mat(fire_results3, truth = classes, estimate = predicted)
-
-```
-
-Calculate the accuracy, sensitivity, specificity, and PPV of this classifier.
-
-
 
 ]
 
 `r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
-
-
-
 ---
 
 class: middle
 
-## Choice of metrics !!
+## Tabulate the metrics !!
 
+.font110[
 ```{r}
-custom_metrics <- metric_set(accuracy, sens, spec, ppv)
+custom_metrics <- metric_set(accuracy, sens, spec, ppv) # select custom metrics
 metrics <- custom_metrics(fire_results, truth = classes, estimate = predicted) 
+metrics
 ```
-
-```{r}
-metrics %>% select(-.estimator)
-```
-
+]
 
 ---
 
-# Plot them over the hyperparamter, K
+# Choose the optimal K based on majority of the metrics!
 
 ```{r echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
-k <- c(1, 3, 5, 7, 9, 11, 13, 15)
 
 # put it all together
 
@@ -829,24 +770,25 @@ nn1_pred <- predict(fire_knn_fit, test_features, type = "raw")
 fire_results <- fire_test %>% 
   select(classes) %>% 
   bind_cols(predicted = nn1_pred)
-custom_metrics <- metric_set(accuracy, sens, spec, ppv, kap, mcc)
+custom_metrics <- metric_set(accuracy, sens, spec, ppv)
 
 metrics <- custom_metrics(fire_results,
                truth = classes,
                estimate = predicted) 
-metrics <- metrics %>% select(-.estimator) %>% mutate(k = rep(k,6))
+metrics <- metrics %>% select(-.estimator) %>% mutate(k = rep(k,4))
 
 return(list = metrics)
 }
 
-k <- seq(1,21, by=2)
+
+k <- seq(1,15, by=1)
 data.results <- lapply(k, function(i) metrics_for_k(i, fire_train, fire_test)) 
 final.results <- do.call("rbind", data.results)
 
 ```
 
 
-```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+```{r, echo=FALSE, fig.width=8, fig.height=4.5, fig.align='center', out.width = "90%"}
 final.results %>%
   ggplot(aes(x = k, y = .estimate, color = forcats::fct_reorder2(.metric, k, .estimate ))) +
   geom_line(size = 1) +
@@ -858,28 +800,3 @@ final.results %>%
   labs(color='Metric', y = "Estimate", x = "K")
 ```
 
---
-
-.out-t.center[Choose the optimal K based on majority of the metrics!]
-
----
-
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-<br>
-<br>
-.bq[
-- Get the class activity 20.Rmd file from [moodle](https://moodle.carleton.edu/course/view.php?id=39491) and work on activity 1
-
-]
-
-]
-
-`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
