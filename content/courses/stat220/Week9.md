@@ -21,9 +21,10 @@ Continue reading  [section 6.3-6.7 of Data Science: A First Introduction](https:
 
 - Cross validation and intro to logistic regression
 
-<!--
+
 Day 24 Slides ({{% staticref "stat220/Day24.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day24.html" "newtab" %}}html{{% /staticref %}}) 
 
+<!--
 
 <span style="color:orange">**Wednesday, 11/09**</span>
 
