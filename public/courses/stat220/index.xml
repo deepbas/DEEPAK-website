@@ -29,22 +29,18 @@
 &lt;li&gt;Cross validation and intro to logistic regression&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Day 24 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day24.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day24.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;!--
-
-&lt;span style=&#34;color:orange&#34;&gt;**Wednesday, 11/09**&lt;/span&gt;
-
-### Before Class
-
+&lt;p&gt;&lt;span style=&#34;color:orange&#34;&gt;&lt;strong&gt;Wednesday, 11/09&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;h3 id=&#34;before-class-1&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Read &lt;a href=&#34;https://datasciencebook.ca/clustering.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Chapter 9 of Data Science: A First Introduction&lt;/a&gt;. Also, skim through &lt;a href=&#34;https://www.statlearning.com/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;section 12.4.2 (page 521-526) of An Introduction to Statistical Learning&lt;/a&gt; on hierarchical clustering.
+    Read &lt;a href=&#34;https://datasciencebook.ca/clustering.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Chapter 9 of Data Science: A First Introduction&lt;/a&gt;.
   &lt;/div&gt;
 &lt;/div&gt;
-
-
-### In Class
-
-- K-means Clustering
+&lt;h3 id=&#34;in-class-1&#34;&gt;In Class&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;K-means Clustering&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!--
 
 Day 25 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day25.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day25.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;) --&gt;
 </description>

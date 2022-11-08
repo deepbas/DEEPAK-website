@@ -24,18 +24,19 @@ Continue reading  [section 6.3-6.7 of Data Science: A First Introduction](https:
 
 Day 24 Slides ({{% staticref "stat220/Day24.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day24.html" "newtab" %}}html{{% /staticref %}}) 
 
-<!--
 
 <span style="color:orange">**Wednesday, 11/09**</span>
 
 ### Before Class
 
 {{% callout note %}}
-Read [Chapter 9 of Data Science: A First Introduction](https://datasciencebook.ca/clustering.html). Also, skim through [section 12.4.2 (page 521-526) of An Introduction to Statistical Learning](https://www.statlearning.com/) on hierarchical clustering.
+Read [Chapter 9 of Data Science: A First Introduction](https://datasciencebook.ca/clustering.html). 
 {{% /callout %}}
 
 ### In Class
 
 - K-means Clustering
+
+<!--
 
 Day 25 Slides ({{% staticref "stat220/Day25.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day25.html" "newtab" %}}html{{% /staticref %}}) -->
