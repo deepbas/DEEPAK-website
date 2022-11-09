@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Intro to Clustering</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Intro to Clustering]
+
+### .fancy[Fall 2022]
+
+ November 09 2022
+
+---
+
+# Supervised learning
+
+&lt;center&gt;
+&lt;img src="images/supervised-machine-learning.png" width="60%" height="60%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+.bql.font80[
+- train or "supervise" algorithms to use labels to classify data or predict outcomes
+
+- use labeled inputs and outputs to measure model accuracy  
+]
+
+
+.footnote[Image source: click [here](https://www.javatpoint.com/supervised-machine-learning)]
+
+---
+
+class: middle
+
+# Unsupervised learning
+
+&lt;center&gt;
+&lt;img src="images/unsupervised.jpg" width="70%" height="70%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+.bql.font80[
+
+- uses statistical learning algorithms to analyze and cluster unlabeled data sets 
+
+- discover hidden patterns in data without human intervention, so "unsupervised"
+
+  - group unlabeled data based on their similarities or differences
+
+]
+
+
+
+.footnote[Image source: click [here](https://www.geeksforgeeks.org/clustering-in-machine-learning/)]
+
+---
+
+# Example: get cluster association from unlabeled data
+
+.pull-left[
+&lt;img src="Day25_files/figure-html/unnamed-chunk-1-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+.pull-right[
+&lt;img src="Day25_files/figure-html/unnamed-chunk-2-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+&lt;br&gt;
+
+--
+
+.out-t.center[Can use an unsupervised algorithm called k-means to achieve this!]
+
+---
+
+
+class: middle
+
+# K-means Basics
+
+.bq[
+- Algorithm to group data into K clusters
+
+- Starts with an initial clustering of data
+
+- Iteratively improves the cluster assignments 
+
+- Stops until the assignments cannot be improved further
+]
+
+---
+
+class: middle
+
+# Algorithm
+
+.bq[
+1. Randomly assign a number, from 1 to K, to each of the observations
+
+2. Compute the centroid of each of the K clusters
+
+3. Assign each point to the nearest centroid and redefine the cluster
+
+4. Repeat steps 2 and 3 until no point change clusters
+]
+
+---
+
+# Main Idea
+
+.out-t[To minimize the total within cluster variation]
+
+&lt;br&gt;
+
+.bq[
+The total within-cluster variation is the sum of squared Euclidean distances between items and the corresponding centroid:
+
+`$$WSS = \sum_{k=1}^K WSS(C_k) = \sum_{k=1}^K \sum_{x_i \in C_k}(x_i - \mu_k)^2$$`
+where:
+- WSS is the Within Cluster Sum of Squared Errors 
+- `\(x_i\)` is a data point in the cluster `\(C_k\)`
+- `\(\mu_k\)` is the mean value of the points assigned to the cluster `\(C_k\)`
+]
+
+---
+
+.bold[(1). Randomly assign a number, from 1 to *K* , to each of the observations]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-3-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(2). Compute the centroid of each cluster]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-4-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(3). Re-assign each observation to the cluster whose centroid is closest]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-5-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+---
+
+.bold[(4). Re-compute the centroid of each cluster]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-6-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(5). Re-assign each observation to the cluster whose centroid is closest]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-7-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(6). Re-compute the centroid of each cluster]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-8-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(7). Re-assign each observation to the cluster whose centroid is closest]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-9-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(8). Re-compute the centroid of each cluster]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-10-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(9). Re-assign each observation to the cluster whose centroid is closest]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-11-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+.bold[(10). Re-compute the centroid of each cluster]
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-12-1.svg" width="600" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: middle
+
+# `USArrests`
+
+
+```r
+USAData &lt;- as_tibble(USArrests, rownames = "state") %&gt;% drop_na() %&gt;%
+  column_to_rownames("state") %&gt;%
+  select(Murder, UrbanPop)
+```
+
+
+```r
+head(USAData, 10)
+            Murder UrbanPop
+Alabama       13.2       58
+Alaska        10.0       48
+Arizona        8.1       80
+Arkansas       8.8       50
+California     9.0       91
+Colorado       7.9       78
+Connecticut    3.3       77
+Delaware       5.9       72
+Florida       15.4       80
+Georgia       17.4       60
+```
+
+---
+
+class: middle
+
+# Means and standard deviations
+
+.code120[
+
+```r
+USAData %&gt;%
+  map_dfr(mean)
+# A tibble: 1 × 2
+  Murder UrbanPop
+   &lt;dbl&gt;    &lt;dbl&gt;
+1   7.79     65.5
+```
+]
+
+.code120[
+
+```r
+USAData %&gt;%
+  map_dfr(sd)
+# A tibble: 1 × 2
+  Murder UrbanPop
+   &lt;dbl&gt;    &lt;dbl&gt;
+1   4.36     14.5
+```
+]
+
+---
+
+class: middle
+
+# Standardize the data
+
+&lt;!-- Don't want the clustering algorithm to depend to an arbitrary variable unit --&gt;
+
+
+```r
+USAData &lt;- USAData %&gt;% mutate(across(where(is.numeric), standardize))
+```
+
+
+```r
+head(USAData,10)
+                 Murder   UrbanPop
+Alabama      1.24256408 -0.5209066
+Alaska       0.50786248 -1.2117642
+Arizona      0.07163341  0.9989801
+Arkansas     0.23234938 -1.0735927
+California   0.27826823  1.7589234
+Colorado     0.02571456  0.8608085
+Connecticut -1.03041900  0.7917228
+Delaware    -0.43347395  0.4462940
+Florida      1.74767144  0.9989801
+Georgia      2.20685994 -0.3827351
+```
+
+
+
+---
+
+class: inverse, middle
+
+# So, how do we fit all of this in R?
+
+---
+
+class: middle
+
+# `kmeans()`
+
+.bq[
+- `kmeans()` function takes a matrix or data-frame or tibble and the number of centers/clusters we want to find.
+
+- We also set `nstart = 20-25` to have multiple initial starting positions in the hope of finding global optimal solution instead of local optimal solution
+
+- Use `set.seed()` for reproducibility
+]
+
+---
+
+class: middle
+
+# Within Cluster Sum of Squared Errors (WSS)
+
+.bq[
+- Calculate WSS for different values of K.
+
+- Choose K for which WSS first starts to diminish.
+
+- Visually deciphered with an .bold[elbow graph].
+
+- The number of clusters is taken at the elbow joint point.
+]
+
+---
+
+class: middle
+
+# K-means
+
+.code140[
+
+```r
+set.seed(1234)
+k.means &lt;- kmeans(USAData, centers = 2, nstart = 25)
+```
+]
+
+---
+
+.code80[
+
+```r
+k.means
+K-means clustering with 2 clusters of sizes 23, 27
+
+Cluster means:
+      Murder   UrbanPop
+1  0.8961762  0.1939808
+2 -0.7634094 -0.1652429
+
+Clustering vector:
+       Alabama         Alaska        Arizona       Arkansas     California 
+             1              1              1              2              1 
+      Colorado    Connecticut       Delaware        Florida        Georgia 
+             1              2              2              1              1 
+        Hawaii          Idaho       Illinois        Indiana           Iowa 
+             2              2              1              2              2 
+        Kansas       Kentucky      Louisiana          Maine       Maryland 
+             2              1              1              2              1 
+ Massachusetts       Michigan      Minnesota    Mississippi       Missouri 
+             2              1              2              1              1 
+       Montana       Nebraska         Nevada  New Hampshire     New Jersey 
+             2              2              1              2              1 
+    New Mexico       New York North Carolina   North Dakota           Ohio 
+             1              1              1              2              2 
+      Oklahoma         Oregon   Pennsylvania   Rhode Island South Carolina 
+             2              2              2              2              1 
+  South Dakota      Tennessee          Texas           Utah        Vermont 
+             2              1              1              2              2 
+      Virginia     Washington  West Virginia      Wisconsin        Wyoming 
+             1              2              2              2              2 
+
+Within cluster sum of squares by cluster:
+[1] 31.59219 30.59764
+ (between_SS / total_SS =  36.5 %)
+
+Available components:
+
+[1] "cluster"      "centers"      "totss"        "withinss"     "tot.withinss"
+[6] "betweenss"    "size"         "iter"         "ifault"      
+```
+]
+
+
+---
+
+class: middle
+
+# Tidy the information
+
+.code140[
+
+```r
+k.means %&gt;% tidy()
+# A tibble: 2 × 5
+  Murder UrbanPop  size withinss cluster
+   &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;dbl&gt; &lt;fct&gt;  
+1  0.896    0.194    23     31.6 1      
+2 -0.763   -0.165    27     30.6 2      
+```
+]
+
+---
+
+class: middle
+
+# `Glance` at the sum of square decompositions
+
+.code140[
+
+```r
+glance(k.means)
+# A tibble: 1 × 4
+  totss tot.withinss betweenss  iter
+  &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;
+1    98         62.2      35.8     1
+```
+]
+
+---
+
+class: middle
+
+# `augment` from `broom` package
+
+.scroll-box-20[
+
+```r
+library(broom)
+knitr::kable(augment(k.means, data = USAData))
+```
+
+
+
+|.rownames      |     Murder|   UrbanPop|.cluster |
+|:--------------|----------:|----------:|:--------|
+|Alabama        |  1.2425641| -0.5209066|1        |
+|Alaska         |  0.5078625| -1.2117642|1        |
+|Arizona        |  0.0716334|  0.9989801|1        |
+|Arkansas       |  0.2323494| -1.0735927|2        |
+|California     |  0.2782682|  1.7589234|1        |
+|Colorado       |  0.0257146|  0.8608085|1        |
+|Connecticut    | -1.0304190|  0.7917228|2        |
+|Delaware       | -0.4334739|  0.4462940|2        |
+|Florida        |  1.7476714|  0.9989801|1        |
+|Georgia        |  2.2068599| -0.3827351|1        |
+|Hawaii         | -0.5712305|  1.2062373|2        |
+|Idaho          | -1.1911350| -0.7972496|2        |
+|Illinois       |  0.5997002|  1.2062373|1        |
+|Indiana        | -0.1350014| -0.0373063|2        |
+|Iowa           | -1.2829727| -0.5899924|2        |
+|Kansas         | -0.4105145|  0.0317794|2        |
+|Kentucky       |  0.4389842| -0.9354212|1        |
+|Louisiana      |  1.7476714|  0.0317794|1        |
+|Maine          | -1.3059321| -1.0045069|2        |
+|Maryland       |  0.8063350|  0.1008652|1        |
+|Massachusetts  | -0.7778653|  1.3444088|2        |
+|Michigan       |  0.9900104|  0.5844655|1        |
+|Minnesota      | -1.1681755|  0.0317794|2        |
+|Mississippi    |  1.9083874| -1.4881072|1        |
+|Missouri       |  0.2782682|  0.3081225|1        |
+|Montana        | -0.4105145| -0.8663354|2        |
+|Nebraska       | -0.8008247| -0.2445636|2        |
+|Nevada         |  1.0129698|  1.0680658|1        |
+|New Hampshire  | -1.3059321| -0.6590781|2        |
+|New Jersey     | -0.0890826|  1.6207519|1        |
+|New Mexico     |  0.8292944|  0.3081225|1        |
+|New York       |  0.7604162|  1.4134946|1        |
+|North Carolina |  1.1966452| -1.4190215|1        |
+|North Dakota   | -1.6044046| -1.4881072|2        |
+|Ohio           | -0.1120420|  0.6535513|2        |
+|Oklahoma       | -0.2727580|  0.1699510|2        |
+|Oregon         | -0.6630682|  0.1008652|2        |
+|Pennsylvania   | -0.3416362|  0.4462940|2        |
+|Rhode Island   | -1.0074596|  1.4825804|2        |
+|South Carolina |  1.5180772| -1.2117642|1        |
+|South Dakota   | -0.9156219| -1.4190215|2        |
+|Tennessee      |  1.2425641| -0.4518209|1        |
+|Texas          |  1.1277670|  0.9989801|1        |
+|Utah           | -1.0533784|  0.9989801|2        |
+|Vermont        | -1.2829727| -2.3171363|2        |
+|Virginia       |  0.1634711| -0.1754778|1        |
+|Washington     | -0.8697030|  0.5153798|2        |
+|West Virginia  | -0.4793928| -1.8335360|2        |
+|Wisconsin      | -1.1911350|  0.0317794|2        |
+|Wyoming        | -0.2268391| -0.3827351|2        |
+]
+
+---
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-24-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# In-built function for visuals using `factoextra`
+
+.code80[
+
+```r
+library(factoextra)
+fviz_cluster(k.means, data = USAData, repel = TRUE, ggtheme = theme_tufte())
+```
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-25-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-26-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Get the class activity 26.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=39491) 
+- Let's work on group activity 1 together
+]
+
+
+
+]
+
+<div class="countdown" id="timer_2acd31d0" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+
+class: middle, inverse
+
+# Visuals do not tell all the story
+
+&gt; Visuals tell us where the true delineations occur, but do not tell us what the optimal number of clusters is.
+
+
+---
+
+
+# Determine the optimal number of clusters
+
+.code100[
+
+```r
+set.seed(1234)
+multi_kmeans &lt;- tibble(k = 1:10) %&gt;%
+  mutate(
+*   model = purrr::map(k, ~ kmeans(USAData, centers = .x, nstart = 25)),
+    tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss) 
+  )
+
+multi_kmeans
+# A tibble: 10 × 3
+       k model    tot.withinss
+   &lt;int&gt; &lt;list&gt;          &lt;dbl&gt;
+ 1     1 &lt;kmeans&gt;        98   
+ 2     2 &lt;kmeans&gt;        62.4 
+ 3     3 &lt;kmeans&gt;        36.6 
+ 4     4 &lt;kmeans&gt;        24.9 
+ 5     5 &lt;kmeans&gt;        19.6 
+ 6     6 &lt;kmeans&gt;        16.4 
+ 7     7 &lt;kmeans&gt;        13.7 
+ 8     8 &lt;kmeans&gt;        11.0 
+ 9     9 &lt;kmeans&gt;         9.85
+10    10 &lt;kmeans&gt;         8.04
+```
+]
+
+---
+
+# Determine the optimal number of clusters
+
+.code100[
+
+```r
+set.seed(1234)
+multi_kmeans &lt;- tibble(k = 1:10) %&gt;%
+  mutate(
+    model = purrr::map(k, ~ kmeans(USAData, centers = .x, nstart = 25)),
+*   tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss)
+  )
+
+multi_kmeans
+# A tibble: 10 × 3
+       k model    tot.withinss
+   &lt;int&gt; &lt;list&gt;          &lt;dbl&gt;
+ 1     1 &lt;kmeans&gt;        98   
+ 2     2 &lt;kmeans&gt;        62.4 
+ 3     3 &lt;kmeans&gt;        36.6 
+ 4     4 &lt;kmeans&gt;        24.9 
+ 5     5 &lt;kmeans&gt;        19.6 
+ 6     6 &lt;kmeans&gt;        16.4 
+ 7     7 &lt;kmeans&gt;        13.7 
+ 8     8 &lt;kmeans&gt;        11.0 
+ 9     9 &lt;kmeans&gt;         9.85
+10    10 &lt;kmeans&gt;         8.04
+```
+]
+
+---
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-29-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="Day25_files/figure-html/unnamed-chunk-30-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: middle
+
+# Extract the centroids
+
+.code140[
+
+```r
+USAData %&gt;%
+  mutate(Cluster = kmeans.final$cluster) %&gt;%
+  group_by(Cluster) %&gt;%
+  summarise_all("mean")
+# A tibble: 4 × 3
+  Cluster Murder UrbanPop
+    &lt;int&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+1       1  0.649    0.941
+2       2 -0.606    0.412
+3       3  1.22    -0.866
+4       4 -1.09    -1.22 
+```
+]
+
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+- Please continue working on the remainder of the group activities
+]
+
+]
+
+<div class="countdown" id="timer_d06c152e" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

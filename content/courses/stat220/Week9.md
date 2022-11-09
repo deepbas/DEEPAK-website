@@ -37,6 +37,5 @@ Read [Chapter 9 of Data Science: A First Introduction](https://datasciencebook.c
 
 - K-means Clustering
 
-<!--
 
-Day 25 Slides ({{% staticref "stat220/Day25.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day25.html" "newtab" %}}html{{% /staticref %}}) -->
+Day 25 Slides ({{% staticref "stat220/Day25.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day25.html" "newtab" %}}html{{% /staticref %}}) 
