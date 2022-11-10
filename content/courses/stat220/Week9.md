@@ -39,3 +39,20 @@ Read [Chapter 9 of Data Science: A First Introduction](https://datasciencebook.c
 
 
 Day 25 Slides ({{% staticref "stat220/Day25.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day25.html" "newtab" %}}html{{% /staticref %}}) 
+
+
+
+<span style="color:orange">**Friday, 11/11**</span>
+
+### Before Class
+
+{{% callout note %}}
+Skim through [tree-based methods](https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/tree-based-methods.html) from ISLR labs. We will gently go over classification trees and random forest models only.
+{{% /callout %}}
+
+
+### In Class
+
+- Basic decision tree and random forest
+
+
