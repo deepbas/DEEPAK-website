@@ -55,4 +55,6 @@ Skim through [tree-based methods](https://emilhvitfeldt.github.io/ISLR-tidymodel
 
 - Basic decision tree and random forest
 
+Day 26 Slides ({{% staticref "stat220/Day26.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day26.html" "newtab" %}}html{{% /staticref %}}) 
+
 
