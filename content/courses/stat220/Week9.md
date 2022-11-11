@@ -47,7 +47,7 @@ Day 25 Slides ({{% staticref "stat220/Day25.pdf" "newtab" %}}pdf{{% /staticref %
 ### Before Class
 
 {{% callout note %}}
-Skim through [tree-based methods](https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/tree-based-methods.html) from ISLR labs. We will gently go over classification trees and random forest models only.
+Skim through [tree-based methods](https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/08-tree-based-methods.html) from ISLR labs. We will gently go over classification trees and random forest models only.
 {{% /callout %}}
 
 
