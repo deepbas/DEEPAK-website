@@ -45,7 +45,7 @@
 &lt;h3 id=&#34;before-class-2&#34;&gt;Before Class&lt;/h3&gt;
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
-    Skim through &lt;a href=&#34;https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/tree-based-methods.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tree-based methods&lt;/a&gt; from ISLR labs. We will gently go over classification trees and random forest models only.
+    Skim through &lt;a href=&#34;https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/08-tree-based-methods.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;tree-based methods&lt;/a&gt; from ISLR labs. We will gently go over classification trees and random forest models only.
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;h3 id=&#34;in-class-2&#34;&gt;In Class&lt;/h3&gt;
@@ -2085,6 +2085,21 @@ CT
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>My Quiz</title>
+      <link>https://deepbas.netlify.app/courses/stat220/week10/</link>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat220/week10/</guid>
+      <description>&lt;p&gt;Next, add the quiz questions and answers to the page using the Hugo Academic Quiz syntax. For example:&lt;/p&gt;
+&lt;p&gt;Q1: What is the capital of France?
+A1: Paris
+A2: London
+A3: Rome
+A4: Madrid&lt;/p&gt;
+&lt;p&gt;Finally, add the following code to the bottom of the page to save the quiz results to a data file:&lt;/p&gt;
 </description>
     </item>
     

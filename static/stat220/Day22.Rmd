@@ -164,7 +164,7 @@ Predicting what category a (future) observation falls into
 
 ---
 
-background-image: url(images/forest_fire.jpg)
+background-image: url(images/forest_fire.png)
 background-position: center
 background-size: cover
 
@@ -434,14 +434,10 @@ class: middle
 # .purple[Visualizing the decision boundary]
 
 .font100.fancy.bq[
-
-- We can map out the region in feature-space where the classifier would predict 'fire', and the kinds where it would predict 'not fire'
-
-- There is some boundary between the two, where points on one side of
-the boundary will be classified 'fire' and points on the other side will be
-classified 'not fire'
-
-- This boundary is called **decision boundary**
+- There is a feature-space region for classifying 'fire'
+- There is a feature-space region for classifying 'not fire'
+- There is a boundary between the two regions 
+- This boundary is referred to as the **decision boundary**
 ]
 
 ---
@@ -533,7 +529,7 @@ head(fire_raw)
 
 
 
-background-image: url("images/recipe.jpg")
+background-image: url("images/recipe.png")
 background-position: center
 background-size: cover
 class: left
