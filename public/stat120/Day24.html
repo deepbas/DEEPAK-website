@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Interval Estimation in Linear Regression</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Interval Estimation in Linear Regression]
+
+### .fancy[Stat 120]
+
+ May 23 2022
+
+---
+
+class: middle
+
+# Outline
+
+.blockquote[
+When using a fitted regression model to predict a response (Y) for a particular value of the predictor (X), we have two common types of intervals for the response variable:
+
+- Confidence interval for the mean response at that value of X
+- Prediction interval for individual responses at that value of X
+]
+
+---
+
+## Predicting Price Using Cost for printing in Color (1a-b)
+
+
+
+.pull-left[
+
+
+
+.code70[
+
+```r
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  378.195     61.451   6.154 8.23e-06 ***
+CostColor    -18.560      5.111  -3.631  0.00191 ** 
+
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+```
+]
+
+
+`$$\widehat{\text { Price }}=378.20-18.56 \text { CostColor}$$`
+
+
+]
+
+.pull-right[
+
+&lt;img src="Day24_files/figure-html/unnamed-chunk-4-1.svg" width="100%" /&gt;
+
+
+]
+
+.out-t[What Price should we expect when `CostColor` is 9? How accurate is this prediction?]
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the remaining activity 
+]
+]
+
+<div class="countdown" id="timer_628b9c60" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+# Predictions
+
+.blockquote[
+For a single predictor model and a particular value `\((x^*)\)` of the predictor, the predicted response is
+
+`\begin{align*}
+\hat{y}=b_{0}+b_{1} x^{*}
+\end{align*}`
+]
+
+--
+
+&lt;br&gt;
+
+.out-t[How accurate is the prediction?]
+
+.blockquote-list[
+Two kinds of intervals:
+
+1. Confidence Interval (CI) for Mean `\(Y\)`
+2. Prediction Interval (PI) for Individual `\(Y^{\prime} S\)`
+]
+
+---
+
+# CI vs. PI: What’s the difference?
+
+.blockquote[
+If we want to be 95% sure that we have captured the
+average price for all ink-jet printers that cost 10 cents
+per page to print in color 
+
+`\begin{align*}
+\Longrightarrow \text { Confidence interval for the mean  Y}
+\end{align*}`
+
+]
+
+&lt;br&gt;
+
+.blockquote[
+If we want to be 95% sure that we have captured the
+price for a particular ink-jet printer that cost 10 cents
+per page to print in color 
+`\begin{align*}
+\Longrightarrow \text { Prediction interval for the individual Y }
+\end{align*}`
+]
+
+---
+
+
+# CI for Regression
+
+.blockquote[
+A CI for mean Y tries to capture the “true” line for the population. 
+]
+
+--
+
+&lt;br&gt;
+
+.out-t[How much might the fitted line vary from sample to sample? ]
+
+
+---
+
+# Regression Intervals (1c)
+
+.blockquote[We generally use statistical software to
+provide the confidence intervals for
+regression predictions]
+
+
+
+
+```r
+# new data frame with the new x*
+newx = data.frame(CostColor=9.0)
+predict(mod1,newx, interval="confidence",  level = 0.95)
+```
+
+```
+       fit      lwr      upr
+1 211.1552 168.8926 253.4178
+```
+
+
+---
+
+# CI for Mean Y at each x*
+
+.pull-left[
+.blockquote.font90[
+- Trying to capture the line 
+
+- Not trying to capture individual data values 
+
+- The `\(\mathrm{Cl}\)` gets wider for more extreme predictor values
+]
+]
+.pull-right[
+&lt;img src="Day24_files/figure-html/unnamed-chunk-6-1.svg" width="100%" /&gt;
+]
+
+--
+
+.out-t.font90[What about capturing individual values?]
+.hljs.font90[The cost to print a color page from my ink-jet printer is 9 cents. Give me an interval that is 95% sure to capture the price of my ink-jet printer.]
+
+---
+
+# Prediction Interval for Individual Y
+
+.blockquote.font80[
+We need to account for both the uncertainty in estimating the population mean and the random variability (error) of the individual values. 
+]
+
+&lt;center&gt;
+&lt;img src="images/residual-variation.png" width="60%" height="60%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+# Regression Intervals (1d)
+
+.blockquote[
+We generally use statistical software to provide the prediction intervals for regression
+]
+
+
+```r
+# new data frame with the new x*
+newx=data.frame(CostColor=9)
+predict(mod1,newx, interval="prediction", level = 0.95)
+```
+
+```
+       fit      lwr      upr
+1 211.1552 66.00634 356.3041
+```
+
+---
+
+# PI for Price when `\(x^*=9\)`
+
+&lt;center&gt;
+&lt;img src="images/prediction-interval.png" width="60%" height="60%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+# PI for Individual Y at each `\(x^*\)`
+
+&lt;center&gt;
+&lt;img src="images/PI-bounds.png" width="50%" height="50%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+--
+
+.out-t[The PI bounds capture all the data values]
+
+--
+
+---
+
+# Question!
+
+.blockquote-list[
+One of the following is a confidence interval for the mean value and the other is a prediction interval for individual values, both for predicting the body fat percentage for a male with an abdominal circumference of 90 cm. Which is the confidence interval?
+
+A. `\(16.5\)` to `\(18.4\)`
+
+в. `\(8.0\)` to `\(26.8\)`
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is A. (since it is narrower)
+&lt;/details&gt;
+
+---
+
+class: middle
+
+# Computation: CI Mean Y when `\(X=x^*\)` (1e)
+
+.blockquote-list.font120[
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+]
+
+---
+
+### Identify the circled value in the 95% CI formula for the mean Price when `CostColor = 9`.
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.pull-left-40[
+A. `\(211.60\)`
+
+B. `\(211.16\)`
+
+c. `\(250\)`
+
+D. `\(211.00\)`
+
+E. `\(200.16\)`
+]
+
+.pull-right-60.font80[
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is 
+&lt;/details&gt;
+
+---
+
+### Use StatKey or R to identify the circled value in the 95% CI formula for the mean Price when `CostColor = 9`.
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.pull-left-40[
+A. `\(1.674\)`
+
+B. `\(1.96\)`
+
+c. `\(2.101\)`
+
+D. `\(4.83\)`
+
+E. `\(8.09\)`
+]
+
+.pull-right-60.font80[
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is 
+&lt;/details&gt;
+
+---
+
+### Identify the circled value in the 95% CI formula for the mean Price when `CostColor = 9`.
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.pull-left-40[
+A. `\(10.08\)`
+
+B. `\(66.09\)`
+
+c. `\(4369\)`
+
+D. `\(280.42\)`
+
+E. `\(120.71\)`
+]
+
+.pull-right-60.font80[
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is 
+&lt;/details&gt;
+
+---
+
+### Identify the circled value in the 95% CI formula for the mean Price when `CostColor = 9`.
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.pull-left-40[
+A. `\(8.4\)`
+
+B. `\(9.8\)`
+
+С. `\(9.2\)`
+
+D. `\(10\)`
+
+E. `\(10.2\)`
+]
+
+.pull-right-60.font80[
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is 
+&lt;/details&gt;
+
+---
+
+### Identify the circled value in the 95% CI formula for the mean Price when `CostColor = 9`.
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.pull-left-40[
+A. 20
+
+B. 18
+
+c. 19
+
+D. 21
+
+E. 2
+]
+
+.pull-right-60.font80[
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is 
+&lt;/details&gt;
+
+
+---
+
+### Identify the circled value in the 95% CI formula for the mean Price when `CostColor = 9`.
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.pull-left-40[
+A. `\(11.35\)`
+
+B. `\(11.67\)`
+
+c. `\(13.53\)`
+
+D. `\(9.63\)`
+
+E. `\(10\)`
+]
+
+.pull-right-60.font80[
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is 
+&lt;/details&gt;
+
+---
+
+### Identify the circled value in the 95% CI formula for the mean Price when `CostColor = 9`.
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.pull-left-40[
+A. `\(2.97\)`
+
+В. `\(2.90\)`
+
+с. `\(8.76\)`
+
+D. `\(1.72\)`
+
+E. `\(3.00\)`
+]
+
+.pull-right-60.font80[
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.large.red[Click for answer]&lt;/summary&gt;
+The correct answer is 
+&lt;/details&gt;
+
+
+---
+
+## 95% CI for the mean Price when `CostColor = 9`. (1e)
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{\frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+
+```r
+summary(inkjet$CostColor)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  6.500   9.625  11.350  11.670  13.525  18.600 
+sd(inkjet$CostColor)
+[1] 2.966675
+anova(mod1)
+Analysis of Variance Table
+
+Response: Price
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+CostColor  1  57604   57604  13.186 0.00191 **
+Residuals 18  78633    4369                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+newx=data.frame(CostColor=9)
+predict(mod1,newx, interval="confidence", level = 0.95)
+       fit      lwr      upr
+1 211.1552 168.8926 253.4178
+```
+
+---
+
+class: middle
+
+# Computation: PI for Individual Y when `\(X=x^*\)` (1f)
+
+`$$\begin{equation}
+\hat{y} \pm t^{*} S_{\varepsilon} \sqrt{1 + \frac{1}{n}+\frac{\left(x^{*}-\bar{x}\right)^{2}}{(n-1) s_{x}^{2}}}
+\end{equation}$$`
+
+.blockquote[
+Accounts for additional variability from an individual random error, `\(\varepsilon\)`
+]
+
+
+```r
+newx=data.frame(CostColor=9)
+predict(mod1,newx, interval="prediction", level = 0.95)
+       fit      lwr      upr
+1 211.1552 66.00634 356.3041
+```
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

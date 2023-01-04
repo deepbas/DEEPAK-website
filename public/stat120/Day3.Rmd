@@ -1,0 +1,603 @@
+---
+title: "Observations and Experiments"
+subtitle: "<br/> STAT 120"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css,  css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+
+# load necessary packages
+library(Sleuth3)   # Data-set for Sleuth
+library(tidyverse)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+#library(NHSRtheme)  # color themes, nhs
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+library(flipbookr)
+library(patchwork)
+
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+
+yt <- 0
+
+
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[ Experiments and Observational Studies]
+
+### .fancy[Stat 120]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+class: middle
+
+# Explanatory and Response
+
+.bq[
+If we are using one variable to help us understand or predict values
+of another variable, we call the former the .bold[explanatory variable] and
+the latter the .bold[response variable]
+]
+
+
+
+---
+
+# Association and Causation
+
+
+.bq[Two variables are .bold[associated] if values of one variable tends to
+be related to values of the other variable
+- e.g. .yellow-h[Families with many cars tend to own many television sets]
+]
+
+--
+<br>
+
+.bq[Two variables are .bold[causally associated] if changing the value of
+the explanatory variable influences the value of the response
+variable
+- e.g. .yellow-h[Studies show that taking a practice exam increases your score on an exam]
+]
+
+---
+
+# College Education and Aging
+
+.bq[
+.font80[
+“Education seems to be an elixir that can bring us a healthy body and mind
+throughout adulthood and even a longer life,” says Margie E. Lachman, a psychologist
+at Brandeis University who specializes in aging. “For those in midlife and beyond, a
+college degree appears to slow the brain’s aging process by up to a decade, adding a
+new twist to the cost-benefit analysis of higher education - for young students as
+well as those thinking about returning to school.”]]
+
+
+
+Which of the following is true?
+
+.bql.font80[
+1. Explanatory Variable = brain aging; Response Variable = elixir
+2. Explanatory Variable = brain aging; Response Variable = college
+degree
+3. Explanatory Variable = college degree; Response Variable = brain
+aging
+]
+
+
+.footnote[A Sharper Mind, Middle Age and Beyond, NY Times, 1/19/12]
+
+---
+
+class: middle
+
+# College Education and Aging
+
+.bq[Based on this passage, should we conclude that obtaining a college
+degree causes a slowdown in the brain’s aging process?
+- Yes
+- No
+]
+
+---
+
+class: middle
+
+# Explanatory, Response, Causation
+
+Does the following headline imply a causal association?
+.bq[
+1. "Daily Exercise Improves Mental Performance"
+2. "Want to lose weight? Eat more fiber"
+3. "Cat owners tend to be more educated than dog owners"
+]
+
+---
+
+
+# Should you buy more TVs to live longer?
+
+
+```{r, echo=FALSE, out.width="65%", fig.align='center'}
+# Generate data frame
+df <- data.frame(Country = c("United States", "China", "India", "Japan", "Germany", "United Kingdom", "France", "Brazil", "Italy", "Russia", "Canada", "South Korea", "Spain", "Australia", "Mexico", "Indonesia", "Nigeria", "Turkey", "Iran", "Thailand", "Egypt", "Vietnam", "South Africa", "Philippines", "Poland", "Ukraine", "Bangladesh", "Greece", "Portugal", "Sweden"),
+                  Life_Expectancy = c(78.7, 76.4, 68.3, 84.2, 81.2, 81.1, 82.8, 75.2, 82.7, 72.2, 82.2, 82.6, 82.8, 82.8, 76.9, 71.5, 54.2, 77.2, 74.3, 75.2, 72.2, 75.2, 68.2, 67.3, 78.2, 76.2, 72.2, 74.2, 81.2, 81.2),
+                  TVs_per_1000 = c(871.2, 463.2, 82.3, 645.2, 745.2, 745.2, 645.2, 463.2, 545.2, 463.2, 871.2, 745.2, 645.2, 871.2, 463.2, 82.3, 54.2, 463.2, 82.3, 463.2, 54.2, 82.3, 54.2, 72.3, 645.2, 545.2, 82.3, 463.2, 745.2, 745.2))
+
+
+library(ggrepel)
+library(ggthemes)
+
+ggplot(data = df, aes(x = TVs_per_1000, y = Life_Expectancy)) +
+  geom_point(aes(color = Country), size = 3) +
+  geom_text_repel(aes(label = Country), size = 2, max.overlaps = getOption("ggrepel.max.overlaps", default = 10),
+  nudge_x = 1,
+  nudge_y = .3,) +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  annotate("text", x=700, y=60, label=paste("r=", round(cor(df$TVs_per_1000, df$Life_Expectancy),2))) +
+  theme_tufte() +
+  theme(legend.position = "none") 
+```
+
+
+
+---
+
+class: middle
+
+# TVs and Life Expectancy
+
+<center>
+<img src="images/confounding.png" width="70%" height="60%"> <br>
+<a>Extra lurking variable</a>
+</center>
+
+---
+
+# Facebook and Greek Debt Crisis
+
+
+<center>
+<img src="images/confounding_facebook.png" width="60%" height="50%"> <br>
+</center>
+
+.footnote[https://www.bloomberg.com/news/articles/2011-12-01/correlation-or-causation]
+
+---
+
+# Global Warming and Scientists
+
+<center>
+<img src="images/confounding_globalwarming.png" width="60%" height="50%"> <br>
+</center>
+
+.footnote[https://www.bloomberg.com/news/articles/2011-12-01/correlation-or-causation]
+
+---
+
+
+# Confounding Variable
+
+.font120[
+> A third variable that is associated with both the explanatory
+variable and the response variable is called a .bold[confounding variable]
+]
+
+--
+
+.font120[
+> A confounding variable can offer a plausible explanation for an association between the two variables.
+]
+
+--
+
+.font120[
+> Whenever confounding variables are present (or may be present), a causal association .bold[CANNOT] be determined!
+]
+
+---
+
+# Experiment Vs Observational Study
+
+.font120.bq[
+An .out-t.bold[observational study] is a study in which the researcher does
+not actively control the value of any variable, but simply
+observes the values as they naturally exist
+]
+
+--
+<br>
+
+.font120.bq[
+An .out-t.bold[experiment] is a study in which the researcher actively
+controls one or more of the explanatory variables
+]
+
+---
+
+class: middle
+
+# Experiment or Observational Study?
+
+.bq[
+To examine whether playing music in a store increases the amount
+customers spend, we randomly assign some stores to play music and
+some to stay silent and compare the average amount spent by
+customers. Does this describe an experiment or an observational
+study?
+
+- Experiment
+- Observational Study
+]
+
+---
+
+class: middle
+
+# Experiment or Observational Study?
+
+.bq[
+To examine whether farm-grown salmon contain more omega-3 oils
+if water is more acidic, we collect samples of salmon and water from
+multiple fish farms to see if the two variables are related.
+
+- Experiment
+- Observational Study
+]
+
+
+---
+
+# Observational Studies and Confounding Variable
+
+.bql[
+- There are almost always confounding variables in observational
+studies
+
+- Observational studies can almost never be used to establish
+causation!!
+]
+
+--
+
+.blue-h[To avoid confounding variables: Randomly assign values of the explanatory variable!]
+
+
+---
+
+class: middle
+
+# Randomized Experiements
+
+<center>
+<img src="images/basic_randomization.png" width="70%" height="50%"> <br>
+</center>
+
+
+
+
+
+.footnote[Source: click [here](https://bookdown.org/jgscott/DSGI/experiments.html)]
+---
+
+class: middle
+
+# Randomized Experiments
+
+.bql[
+- In a .bold[randomized experiment], the explanatory variable for each
+unit is determined randomly, before the response variable is
+measured
+- The different levels of the explanatory variable are known as
+.bold[treatments]
+- Randomly divide the units into groups, and randomly assign a
+different treatment to each group
+- Observe the response variable after treatments are applied
+]
+
+---
+
+class: middle
+
+# Elimination of confounding variables
+
+<center>
+<img src="images/randomized_experiments.png" width="70%" height="60%"> <br>
+</center>
+
+--
+
+
+.out-t[Because the explanatory variable is randomly assigned, it is not associated with any other variables.  Confounding variables are eliminated!!!]
+
+---
+
+# Exercise and the Brain
+
+.bql[
+- A sample of mice were divided randomly into two groups. One
+group was given access to an exercise wheel, the other group
+was kept sedentary
+- "The brains of mice and rats that were allowed to run on wheels
+pulsed with vigorous, newly born neurons, and those animals
+then breezed through mazes and other tests of rodent IQ"
+compared to the sedentary mice
+]
+
+Is this evidence that exercise causes an increase in brain
+activity and IQ, at least in mice?
+
+
+
+.center.out-t[Randomized experiment can yield causal conclusions!]
+
+
+.footnote[Reynolds, "Phys Ed: Your Brain on Exercise", NY Times, July 7, 2010]
+
+---
+
+# Knee Surgery and Arthritis
+
+> Researchers conducted a study on the effectiveness of a knee
+surgery to cure arthritis. It was randomly determined whether
+people got the knee surgery. Everyone who underwent the
+surgery reported feeling less pain
+
+--
+
+- Is this evidence that the surgery causes a decrease in pain?
+
+--
+
+.out-t[Need a control or comparison group. What would happen without surgery?]
+
+---
+
+class: middle
+
+# Control Group
+
+.bql[
+- When determining whether a treatment is effective, it is
+important to have a comparison group, known as the .bold[control group]
+
+- All randomized experiments need either a control group, or at
+least two different treatments to compare
+]
+
+---
+
+
+# Knee Surgery for Arthritis
+
+.bql[
+- In the knee surgery study, those in the control group received a
+.bold[fake knee surgery]. They were put under and cut open, but the
+doctor did not actually perform the surgery. All of these patients
+also reported less pain!
+
+- The improvement was .bold[indistinguishable] between those receiving
+the real surgery and those receiving the fake surgery!
+]
+
+--
+
+.center.font140.bold[What is the reason?]
+
+
+
+.footnote[Source: The Placebo Prescription, NY Times Magazine, 1/9/00]
+
+---
+
+class: middle
+
+# Placebo Effect
+
+
+.bql[
+- People can experience the effect they think they should be
+experiencing, even if they aren’t actually receiving the treatment
+
+- One study estimated that 75% of the effectiveness of
+anti-depressant medication is due to the .bold[placebo effect]
+
+]
+
+---
+
+
+# Can Video Games Help Teens Beat Depression?
+
+.pull-left[
+.bql[
+- $168$ teens, $2/3^{rd}$ girls
+- Half of the group was
+randomly assigned to
+treatment (video game)
+- Other half received
+traditional counseling
+]
+
+]
+.pull-right[
+<center>
+<img src="images/videogames.jpg" width="90%" height="80%"> <br>
+<a>Source: Brand X Pictures</a>
+</center>
+]
+
+--
+<br>
+<br>
+.out-t[
+44% of those who played video game recovered completely from
+depression, compared with 26% of those in regular treatment
+]
+
+.footnote[[Link](https://healthland.time.com/2012/04/20/study-playing-a-video-game-helps-teens-beat-depression/) to the article]
+
+---
+
+class: middle
+
+# Placebo and Blinding
+
+.bql[
+- Control groups are often given a .bold[placebo], a fake treatment that resembles the active treatment as much as possible
+- If possible, randomized experiments should be .bold[double-blinded:] neither the participants or the researchers evaluating participants should know which treatment the participants are actually getting
+]
+
+
+---
+
+class: middle
+
+# Randomized Experiments: randomized comparative experiment
+
+.bql[
+- In this type of experiment, individuals are randomly assigned to a treatment or control group. 
+- This method is most effective when the investigator has no prior knowledge of the individuals who are part of the experiment. 
+]
+
+.blue-h[Example: A researcher randomly assigns participants to either a drug treatment group or a control group to measure the effectiveness of the drug.]
+
+---
+
+class: middle
+
+# Randomized Experiments: matched pairs experiment
+
+
+.bql[
+- In this type of experiment, each individual in the experimental group is matched with an individual in the control group based on a specific criterion. 
+- This method is most effective when the investigator has prior knowledge of the individuals involved in the experiment.
+]
+
+.blue-h[Example: A researcher matches participants based on age, gender, and education level, then assigns one participant in the matched pair to the drug treatment group and the other to the control group to measure the effectiveness of the drug.]
+
+---
+
+class: middle
+
+# Randomized Experiments: other types
+
+.bql.font80[
+
+- .green-h[Blocking]: Individuals in the study are divided into subgroups (blocks) and then randomly assigned to different treatments within each block. 
+
+- .green-h[Split Plots]: Individuals are randomly assigned to a main treatment and then randomly assigned to a sub-treatment. 
+
+- .green-h[Latin Squares]: Individuals are randomly assigned to treatments in a way that minimizes the effect of order. 
+
+- .green-h[Factorial Experiments]: Individuals are randomly assigned to different combinations of treatments.
+
+]
+
+
+
+
+---
+
+class: middle
+
+# More on Randomization
+
+.bql[
+- Doing a randomized experiment on a random sample is ideal,
+but rarely achievable. (why?)
+- If the focus of the study is using a sample to estimate a
+population parameter, you need a random sample but do not
+need a randomized experiment (example: election polling)
+- If the focus of the study is establishing causality, you need a
+randomized experiment and can settle for a non-random
+sample (example: drug testing)
+]
+
+---
+
+# Randomization in Data Collection
+
+
+<center>
+<img src="images/randomized_flowcharts.png" width="70%" height="60%"> <br>
+</center>
+

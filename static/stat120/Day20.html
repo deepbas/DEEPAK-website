@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Inference for multiple proportions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Inference for multiple proportions]
+
+### .fancy[Stat 120]
+
+ May 13 2022
+
+---
+
+class: middle
+
+# Tests for Categorical Variable(s)
+
+.blockquote[
+Chi-square test for association
+
+- Determine if a relationship between two categorical variables is statistically significant
+- E.g. Does M&amp;M color distribution depend on type (chocolate vs. peanut)?
+]
+
+---
+
+# Chi-square test for association hypothesis
+
+.blockquote[
+- Hypotheses look like
+
+`$$H_0: \textrm{two categorical variables are not associated}$$`
+`$$H_A: \textrm{two categorical variables are associated}$$`
+
+- E.g. Does M&amp;M color distribution depend on type (chocolate vs. peanut)?
+
+`$$H_0: \text{there is no association between M&amp;M color and type}$$`
+`$$H_A: \text{there is an association between M&amp;M color and type}$$`
+]
+
+---
+
+# Expected Counts and p-value
+
+.blockquote-list[
+The expected counts for each combination in a two-way table
+
+`$$\textrm{expected count} = \dfrac{\textrm{row total} \times \textrm{column total}}{n}$$`
+
+
+`$$\chi^2 = \sum_{\textrm{all cells}}\dfrac{(\textrm{expected count} - \textrm{observed count})^2}{\textrm{expected count}}$$`
+
+- For both types of test, large chi-square test stat values support the .bold[alternative] hypothesis so
+
+`$$p-value = P(\chi^2 \geq \text{observed } \chi^2)$$`
+
+- always a .bold[right-tailed] value
+]
+
+---
+
+# Chi-Square test for association
+
+.blockquote.font80[
+.bold[Options for computing the p-value:]
+
+- randomization/permutation: simulate new data consistent with `\(H_0\)` and recompute the `\(\chi^2\)` test stat
+  - .bold[Association:] permute the values of one variable column to break the link that could exist in the data between both variables
+
+- Chi-square distribution (probability model)
+  - .bold[Association:] use `\((r-1)(c-1)\)` where `\(r=\)` number of rows and `\(c=\)` number of columns
+  - need `\(n\)` large enough so expected counts are at least 5
+]
+
+---
+
+# Association example
+
+.blockquote.font90[
+- Does political comfort level depend on religion?
+
+- `\(H_0:\)` There is no association between religion and comfort level 
+  - implies: the distribution of comfort level is the same for all three religion types 
+
+- `\(H_A:\)` There is an association between religion and comfort level
+  - implies: the distribution of comfort level is the different for at least one religion type. 
+]
+
+
+---
+
+##  Association example
+
+.blockquote.font90[
+- EDA for two categorical variables
+
+  - change comfort level names then reorder
+]
+
+
+```r
+survey &lt;- read.csv("http://math.carleton.edu/kstclair/data/Survey.csv")
+summary(survey$Question.9)
+   Length     Class      Mode 
+      374 character character 
+levels(survey$Question.9) &lt;- c("almost always", "rarely", "sometimes")
+survey$Question.9 &lt;- fct_relevel(survey$Question.9,
+                      "almost always", "sometimes", "rarely")
+summary(survey$Question.9)  # always check work!
+   almost always comfortable rarely, if ever, comfortable 
+                         171                           51 
+       sometimes comfortable                         NA's 
+                         150                            2 
+```
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.blockquote[
+- Go over to the in class activity file
+- Complete the activity in your group
+]
+]
+
+<div class="countdown" id="timer_627df379" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+#  Association example
+
+- Observed distribution of comfort level given religiousness
+
+
+```r
+counts &lt;- table(survey$Question.8, survey$Question.9)
+counts
+                                               
+                                                almost always comfortable
+  not religious                                                       110
+  religious and actively practicing my religion                        20
+  religious but not actively practicing                                41
+                                               
+                                                rarely, if ever, comfortable
+  not religious                                                           15
+  religious and actively practicing my religion                           16
+  religious but not actively practicing                                   20
+                                               
+                                                sometimes comfortable
+  not religious                                                    81
+  religious and actively practicing my religion                    25
+  religious but not actively practicing                            44
+```
+
+---
+
+#  Association example
+
+
+```r
+sum(counts)  # number of respondents
+[1] 372
+prop.table(counts,1)  
+                                               
+                                                almost always comfortable
+  not religious                                                0.53398058
+  religious and actively practicing my religion                0.32786885
+  religious but not actively practicing                        0.39047619
+                                               
+                                                rarely, if ever, comfortable
+  not religious                                                   0.07281553
+  religious and actively practicing my religion                   0.26229508
+  religious but not actively practicing                           0.19047619
+                                               
+                                                sometimes comfortable
+  not religious                                            0.39320388
+  religious and actively practicing my religion            0.40983607
+  religious but not actively practicing                    0.41904762
+```
+
+There is a much higher rate of "almost always comfortable" for the not religious respondents (53.4%) than those that are religious (not active: 32.8%; active: 39%). 
+
+---
+
+# 2b. Association example
+
+&lt;img src="Day20_files/figure-html/unnamed-chunk-4-1.svg" width="100%" /&gt;
+
+---
+
+# Association example
+
+- Both variables have missing value(s). Remove using `drop_na` then redo plot.
+
+
+```r
+library(tidyr)
+survey_ex2 &lt;- drop_na(survey, Question.8, Question.9) # removes missing values 
+```
+
+
+&lt;img src="Day20_files/figure-html/unnamed-chunk-6-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+#  Association example
+
+.blockquote-list.font80[
+- Expected counts assuming no association (null)?
+
+  - expected number of respondents who are "not religious" and "almost always comfortable"?
+  - is .bold[not] 1/9 of all respondents!
+
+- There are 206 "not religious" respondents (row total)
+
+- The overall rate (ignoring religion) of "almost always comfortable" is `\(\dfrac{171}{372}\)`, or about  46%. 
+
+- If religion isn't related to comfort level, the expected number is about
+`$$\textrm{expected count} = \dfrac{\textrm{row total} \times \textrm{column total}}{n} = 206 \times \dfrac{171}{372} = 94.694$$`
+]
+
+---
+
+class: middle
+
+# 2d. Association example
+
+.blockquote[
+- Chi-square contribution for "not religious" and "almost always comfortable" cell?
+
+
+
+
+- The contribution to the chi-square test stat from this category is 2.47.
+`$$\dfrac{(110 - 94.694)^2}{94.694} = 2.474$$`
+]
+
+
+---
+
+# 2e. Association example
+
+- Use `chisq.test` to finish the test stat calculation (who wants to add 9 cell contributions!)
+
+
+```r
+ComfortReligion &lt;- chisq.test(survey_ex2$Question.8, survey_ex2$Question.9)
+ComfortReligion
+```
+
+```
+
+	Pearson's Chi-squared test
+
+data:  survey_ex2$Question.8 and survey_ex2$Question.9
+X-squared = 21.362, df = 4, p-value = 0.0002684
+```
+
+.blockquote[
+- The test stat value is 21.362. 
+- There are 3 categories for each variable, so the degrees of freedom will be `\(df = (3-1)(3-1) = 4\)`. 
+]
+
+---
+
+class: middle
+
+# 2f. Association example
+
+.blockquote.font90[
+- .bold[Interpret:]  If there is no association between comfort level and religiousness, then we would see a chi-square test stat of 21.362, or one even larger, only about 0.03% of the time. 
+
+- Conclusion?
+
+- We have strong evidence that there is an association between political comfort level and religiousness ( `\(\chi^2 = 21.362\)`, df = 4, p-value = 0.00026).
+
+]
+
+---
+
+# 2g. Association example
+
+- Are the expected counts above 5?
+
+```r
+ComfortReligion$expected
+                                               survey_ex2$Question.9
+survey_ex2$Question.8                           almost always comfortable
+  not religious                                                  94.69355
+  religious and actively practicing my religion                  28.04032
+  religious but not actively practicing                          48.26613
+                                               survey_ex2$Question.9
+survey_ex2$Question.8                           rarely, if ever, comfortable
+  not religious                                                    28.241935
+  religious and actively practicing my religion                     8.362903
+  religious but not actively practicing                            14.395161
+                                               survey_ex2$Question.9
+survey_ex2$Question.8                           sometimes comfortable
+  not religious                                              83.06452
+  religious and actively practicing my religion              24.59677
+  religious but not actively practicing                      42.33871
+```
+
+---
+
+# 2h. Association example
+
+.blockquote.font90[
+- If we get a red warning when running `chisq.test`, it usually means the sample size conditions aren't met to use the chi-square model. 
+
+- Instead run a randomization test with
+]
+
+
+
+```r
+chisq.test(survey_ex2$Question.8, survey_ex2$Question.9, 
+           simulate.p.value = TRUE)
+```
+
+```
+
+	Pearson's Chi-squared test with simulated p-value (based on 2000
+	replicates)
+
+data:  survey_ex2$Question.8 and survey_ex2$Question.9
+X-squared = 21.362, df = NA, p-value = 0.0004998
+```
+
+
+
+---
+
+# 2i. Association example
+
+.blockquote.font80[
+- Describe the association! 
+
+  - which groups have the most different comfort levels?
+]
+    
+&lt;img src="Day20_files/figure-html/unnamed-chunk-11-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# 2i. Association example
+
+.blockquote.font80[
+- 95% CI for the difference in the true proportions of "rarely comfortable" people in the not religious and actively religious groups.
+`$$p = \textrm{proportion rarely comfortable}$$`
+
+  - 95% CI for `\(p_{not.relig} - p_{active}\)`
+]
+
+
+```r
+table(survey_ex2$Question.8)
+
+                                not religious 
+                                          206 
+religious and actively practicing my religion 
+                                           61 
+        religious but not actively practicing 
+                                          105 
+```
+`$$n_{not.relig} = 206 \ \ \ n_{active} = 105$$`
+
+---
+
+# 2i. Association example
+
+.code90[
+
+```r
+prop.table(counts,1)  
+                                               
+                                                almost always comfortable
+  not religious                                                0.53398058
+  religious and actively practicing my religion                0.32786885
+  religious but not actively practicing                        0.39047619
+                                               
+                                                rarely, if ever, comfortable
+  not religious                                                   0.07281553
+  religious and actively practicing my religion                   0.26229508
+  religious but not actively practicing                           0.19047619
+                                               
+                                                sometimes comfortable
+  not religious                                            0.39320388
+  religious and actively practicing my religion            0.40983607
+  religious but not actively practicing                    0.41904762
+```
+]
+
+---
+
+# 2i. Association example
+
+
+
+```r
+counts
+                                               
+                                                almost always comfortable
+  not religious                                                       110
+  religious and actively practicing my religion                        20
+  religious but not actively practicing                                41
+                                               
+                                                rarely, if ever, comfortable
+  not religious                                                           15
+  religious and actively practicing my religion                           16
+  religious but not actively practicing                                   20
+                                               
+                                                sometimes comfortable
+  not religious                                                    81
+  religious and actively practicing my religion                    25
+  religious but not actively practicing                            44
+```
+
+`$$\hat{p}_{not.rel} = \dfrac{81}{206} = 0.3932039$$`
+`$$\hat{p}_{active} = \dfrac{44}{105} = 0.4190476$$`
+
+---
+
+
+# 2i. Association example
+
+.blockquote[
+- 95% CI for `\(p_{not.relig} - p_{active}\)`
+
+`\begin{align*}
+0.3932039 - 0.4190476  \pm &amp; 1.96 \sqrt{\dfrac{0.3932039(1-0.3932039)}{206} + \dfrac{0.4190476(1-0.4190476)}{105}} \\
+-0.0258437  \pm &amp; 1.96 (0.0589641) \\
+(-0.1414134, &amp;  0.0897259)
+\end{align*}`
+
+
+
+
+
+- I am 95% confident that the percentage of all non-religious 215 students who are  rarely comfortable is between -9 to 14.1 percentage points lower than the actively religious students. 
+]
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

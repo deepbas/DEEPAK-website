@@ -1307,21 +1307,6 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     </item>
     
     <item>
-      <title>My Quiz</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week10/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week10/</guid>
-      <description>&lt;p&gt;Next, add the quiz questions and answers to the page using the Hugo Academic Quiz syntax. For example:&lt;/p&gt;
-&lt;p&gt;Q1: What is the capital of France?
-A1: Paris
-A2: London
-A3: Rome
-A4: Madrid&lt;/p&gt;
-&lt;p&gt;Finally, add the following code to the bottom of the page to save the quiz results to a data file:&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Cache credentials for RStudio and GitHub</title>
       <link>https://deepbas.netlify.app/courses/stat220/pat/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

@@ -1,5 +1,5 @@
 ---
-date: "2021-03-24"
+date: "2023-01-04"
 linkTitle: Introduction to Statistics
 summary: A first course in statistics
 title: "\U0001F4CA STAT 120: Introduction to Statistics"

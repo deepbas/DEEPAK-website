@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Sampling</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Stat 230&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Sampling]
+
+### .fancy[Stat 120]
+
+ March 30 2022
+
+---
+
+# Sampling and Inference
+
+.pull-left[
+.blockquote[
+- A .bold[population] includes all
+individuals or objects of
+interest.
+- A .bold[sample] is all the cases that
+we have collected data on (a
+subset of the population).
+- .bold[Statistical inference] is the
+process of using data from a
+sample to gain information
+about the population.
+]
+
+]
+.pull-right[
+&lt;center&gt;
+&lt;img src="images/pop_samp.png" width="90%" height="80%"&gt; &lt;br&gt;
+&lt;a&gt;Population and Sample&lt;/a&gt;
+&lt;/center&gt;
+]
+
+---
+
+# MN Department of Natural Resources
+
+.pull-left[
+&lt;center&gt;
+&lt;img src="images/MNNatresources.png" width="90%" height="80%"&gt; &lt;br&gt;
+&lt;a&gt;Population and Sample&lt;/a&gt;
+&lt;/center&gt;
+]
+.pull-right[
+.blockquote[
+- .bold[Population:] all plots (grid
+cells) on the map
+- .bold[Sample:] the cross-hatched
+plots on the map
+- .bold[Variable:] number of moose
+counted in a plot
+- .bold[Inference:] estimated 2,760
+moose in the entire
+population
+]
+]
+
+---
+
+# Sampling Bias
+
+.blockquote[
+- Sampling bias occurs when the method of selecting a sample
+causes the sample to differ from the population in some
+relevant way
+
+- If sampling bias exists, we cannot trust generalizations from the
+sample to the population
+]
+
+--
+
+&lt;br&gt;
+
+&lt;center&gt;
+&lt;a style="background-color:Orange;font-size:28px"&gt; To eliminate sampling bias always take a RANDOM SAMPLE! &lt;/a&gt;
+&lt;/center&gt;
+
+
+---
+
+# Lincoln’s Gettysburg Address
+
+.font85[
+```
+“Four score and seven years ago our fathers brought forth, on this continent, a new
+nation, conceived in Liberty, and dedicated to the proposition that all men are created
+equal. Now we are engaged in a great civil war, testing whether that nation, or any
+nation so conceived and so dedicated, can long endure. We are met on a great
+battle-field of that war. We have come to dedicate a portion of that field, as a final
+resting place for those who here gave their lives that that nation might live. It is
+altogether fitting and proper that we should do this. But, in a larger sense, we can not
+dedicate—we can not consecrate—we can not hallow—this ground. The brave men,
+living and dead, who struggled here, have consecrated it, far above our poor power to
+add or detract. The world will little note, nor long remember what we say here, but it
+can never forget what they did here. It is for us the living, rather, to be dedicated here
+to the unfinished work which they who fought here have thus far so nobly advanced. It
+is rather for us to be here dedicated to the great task remaining before us—that from
+these honored dead we take increased devotion to that cause for which they here
+gave the last full measure of devotion—that we here highly resolve that these dead
+shall not have died in vain—that this nation, under God, shall have a new birth of
+freedom—and that government of the people, by the people, for the people, shall not
+perish from the earth.
+```
+]
+
+---
+
+# Lincoln's Gettysberg Address
+
+.bold[Question:] What is the average word length?
+
+--
+
+.bold[Task:] Select a sample of 10 words to estimate average word length of
+entire address
+
+--
+
+.blockquote[
+- Population? (describe cases of interest)
+- Sample?
+- pick your sample….
+- variable measured?
+- compute average word length
+
+]
+
+--
+
+&lt;br&gt;
+
+&lt;center&gt;
+&lt;a style="background-color:Tomato;font-size:28px"&gt; Actual average is 4.29 letters &lt;/a&gt;
+&lt;/center&gt;
+
+---
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+.blockquote[
+
+- Go to this [google form](https://forms.gle/vQLqhXcsFWX5ieRh9)
+- Find the average word length and enter your answer
+]
+]
+
+<div class="countdown" id="timer_6244781c" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: middle
+
+# Bias in data
+
+&gt; Even with a random sample, data can still be biased, especially
+when collected on humans
+
+---
+
+class: middle
+
+# Some other forms of bias
+
+.blockquote[Other forms of bias to watch out for in data collection:
+- Question wording
+- Question order
+- Context
+- Non-response Bias
+]
+
+---
+
+# Question wording
+
+.blockquote[A random sample was asked: “Should there be a tax cut, or
+should money be used to fund new government programs?”
+
+
+| Tax Cut      | Programs |
+| ----------- | ----------- |
+| 60%      | 40%       |
+]
+
+--
+&lt;br&gt;
+
+.blockquote[A different random sample was asked: “Should there be a tax
+cut, or should money be spent on programs for education, the
+environment, health care, crime-fighting, and military defense?”
+
+| Tax Cut      | Programs |
+| ----------- | ----------- |
+| 22%      | 78%       |
+]
+
+---
+
+class: middle
+
+# Question order
+
+&gt; Depending on the order of questions we can see either a greater differences in responses or lesser difference in response. Respondents tend to provide answers consistent with their prior responses.
+
+
+---
+
+# Danish Study
+
+&gt; Danish policy makers found out in a [study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688) that order bias exists in Danish Public Services
+
+- When asked about overall satisfaction before being asked about specific services, the overall satisfaction was low.
+
+- When asked about overall satisfaction after being asked about specifc services, then the overall satifaction was high.
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+Go over the abstract of this [study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688) and summarize it in the in class activity .Rmd file. 
+
+&lt;center&gt;
+&lt;img src="images/abstract.png" width="60%" height="55%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+<div class="countdown" id="timer_62447880" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+# Context
+
+Ann Landers column asked readers “If you had it to do over again,
+would you have children?”
+
+--
+
+.blockquote[The first request for data contained a letter from a young couple
+which listed worries about parenting and various reasons not to
+have kids
+
+`$$30\% \text{ said yes}$$`]
+--
+
+&lt;br&gt;
+
+.blockquote[The second request for data was in response to this number, in
+which Ann wrote how she was “stunned, disturbed, and just
+plain flummoxed”
+
+`$$95\% \text{ said yes}$$`]
+
+
+---
+
+# Non-response Bias
+
+&gt;  When respondents are either unable or unwilling to respond to your survey, then this results in a non-response bias
+
+- Survey targeted to the wrong audience
+- There is general unwillingness due to polar opposite opinions
+- The survey did not reach the right respondent
+
+A survey asking teenagers about best cigarette brands
+Spam emails is also a prime reason for non-response bias
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;3&lt;/i&gt;    
+
+&gt; For the remainder of the time, please go over 
+
+- the Gettysburg example again
+
+- CNN poll: Driving with a Pet on your Lap
+
+
+<div class="countdown" id="timer_62447aa0" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

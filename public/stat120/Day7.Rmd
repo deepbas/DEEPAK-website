@@ -1,0 +1,589 @@
+---
+title: "Day 7: Sampling Distribution and Bootstrap"
+subtitle: "<br/> STAT 120"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula, googlecode, default
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+
+# load necessary packages
+library(tidyverse)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+library(flipbookr)
+library(patchwork)
+library(Lock5Data)
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+
+yt <- 0
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/APM_DougEvansCases.csv")
+
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Sampling Distribution and Bootstrap]
+
+### .fancy[Stat 120]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+# Statistical Inference
+
+.blockquote-list[.bold[Statistical inference]  is the process of drawing conclusions about the entire population based on information in a sample.]
+
+<br>
+
+<center>
+<img src="images/pop_samp.png" width="55%" height="55%"><br>
+<a>Statistical Inference</a>
+</center>
+
+---
+
+# Motivating Example 1
+
+<center>
+<img src="images/bac.png" width="60%" height="60%"><br>
+<a>Regression line of Bood alcohol content (BAC) Vs. number of beers</a>
+</center>
+
+.out-t.center[Can you drink 5 beers and stay under the 0.08 limit?]
+
+---
+
+# Motivating Example 2
+
+<center>
+<img src="images/mississippijuror.png" width="70%" height="70%"><br>
+<a>Striking rates by race</a>
+</center>
+
+.out-t[Do the observed differences in strike rates between black and white eligible jurors indicate a potential bias, or are the differences just due to chance?]
+
+---
+
+# Statistic and Parameter
+
+.blockquote[
+- A .bold[parameter] is a number that describes some aspect of a population.
+- A .bold[statistic] is a number that is computed from data in a sample.
+]
+
+<br>
+
+&nbsp; | Parameter | Statistic |
+---- | ---- | ---- |
+Mean | $\mu$ | $\bar{x}$ | 
+Proportion | $p$ | $\hat{p}$ |
+Std. Dev. | $\sigma$ | $s$ |
+Correlation | $\rho$ | $r$ |
+Slope | $\beta$ | $b$ |
+
+
+---
+
+class: middle
+
+# Parameter Vs. Statistic
+
+.brown.font120[State whether the quantity described is a .bold[parameter]
+or a .bold[statistic], and give the correct notation.]
+
+.blockquote[
+  a. Average household income for all houses in the US, using data from the US census
+  
+  b. The proportion of all residents in a county who voted in the last presidential election.
+  
+  c. The difference in proportion who have ever smoked cigarettes, between a sample of 500 people who are 60 years old and a sample of 200 people who are 25 years old.
+]
+
+---
+
+# A Gallup Poll
+
+.blockquote[
+A random sample of 1527 US adults was contacted in June, 2015
+
+- $p$ = proportion of US adults who would vote for a qualified Muslim presidential candidate
+]
+
+.pull-left[
+<br>
+<center>
+<img src="images/gallup.png" width="70%" height="70%"><br>
+<a>Poll result</a>
+</center>
+
+]
+
+
+.pull-right[
+<br>
+.blockquote-list[The sample proportion can be used as a “point estimate” of $p$ i.e.,
+$$\hat{p}= 0.60$$]
+]
+
+
+.footnote[[Link](https://news.gallup.com/poll/183713/socialist-presidential-candidates-least-appealing.aspx?utm_source=genericbutton&utm_medium=organic&utm_campaign=sharing) to the Gallup poll]
+
+---
+
+class: middle
+
+# Point Estimate (PE)
+
+.blockquote-list[
+- .bold[Point estimate] is a single value constructed from the sample data
+
+- .bold[Sample statistic] can serve as a point estimate  for an unknown parameter
+]
+
+---
+
+
+# Sampling Distribution
+
+> A .bold[sampling distribution] is the distribution of sample statistics computed for different samples of the same size from the same population.
+
+.pull-left[
+
+<br>
+.blockquote-list[
+- Sample statistics varies from sample to sample
+- Sampling distribution gives us an idea of the variation
+]
+]
+
+.pull-right[
+
+<br>
+<center>
+<img src="images/sampprop.png" width="60%" height="60%"><br>
+<a>Distribution of 1000 sample proportions with p=0.65</a>
+</center>
+]
+
+
+---
+
+class: middle
+
+# Center and Shape
+
+.blockquote-list[
+.bold[Center:] If samples are randomly selected, the sampling distribution will be centered around the population parameter.
+
+.bold[Shape:] For most of the statistics we consider, if the sample size is large enough the sampling distribution will be symmetric and bell-shaped.
+]
+
+---
+
+# Standard Error
+
+<br>
+.pull-left[
+
+.blockquote.font90[
+Uncertainty in point estimates measured by the .bold[standard error (SE)]
+- The .bold[standard error] of a statistic is the standard deviation of the sampling distribution
+- The .bold[standard error] measures how much the statistic varies from sample to sample
+]
+
+]
+
+.pull-right[
+![](images/stderror.png)
+
+]
+
+---
+
+# Recall:  Gettysburg Address
+
+.pull-left[
+<br>
+.blockquote[
+The standard error for the average word size in a random sample of 10 words is closest to
+
+a. 0.5
+
+b. 0.7
+
+c. 1.0
+
+d. 1.5
+]
+]
+
+
+.pull-right[
+![Sampling Distribution](images/stderror.png)
+
+]
+
+---
+
+
+# Recall:  Gettysburg Address
+
+.yellow-h[What are each dots?]
+
+<center>
+<img src="images/gettys.png" width="50%" height="45%"><br>
+</center>
+
+
+---
+
+# Sample Size Matters!
+
+
+.pull-left[
+![](images/variability.png)
+
+]
+
+.pull-right[
+<br>
+<br>
+.blockquote[
+Which sampling distribution corresponds to a larger sample size?
+- A
+- B
+
+]
+
+]
+---
+
+# Sample Size Matters!
+
+.pull-left[
+![](images/variability.png)
+]
+.pull-right[
+<br>
+<br>
+.blockquote[
+- As the sample size increases, the variability (SE) of the sample statistics tends to decrease.
+- Smaller SE means the sample statistics tend to be closer to the true population parameter value! 
+]
+]
+
+---
+
+class: middle
+
+# Other Factors
+
+What else affects the standard error of a statistic?
+
+.blue[The variability of the population!]
+
+.blockquote[
+- .bold[Quantitative variable:] the larger the population standard deviation, the larger the standard error of a statistic (like a mean)
+
+- .bold[Categorical variable:] the closer the population proportion is to 0.5, the larger the standard error of the sample proportion
+]
+
+---
+
+class: middle
+
+# Sample Size vs. Simulation size
+
+.red.bold[Do not confuse sample size and simulation size !!]
+
+.blockquote-list[
+.bold.blue[Sample size (n)] = how many individuals are in the sample used to compute our stat?
+
+- The SE of your stat gets smaller as $n$ get bigger.
+
+.bold.blue[Simulation size (N)] = how many random samples did we take from the population to simulate the sampling distribution of our stat?
+
+- Once you’ve simulated a couple $100$ samples, the shape/center/spread of the sampling distribution should remain about the same as you increase the simulation size.
+
+]
+
+---
+
+class: middle
+
+# Further Examples
+
+.pull-left[
+.blockquote[What does each dot represent?
+
+  a. Enrollment at one statistics grad program
+
+  b. One sample mean
+
+  c. 1000 different enrollments
+]
+]
+
+
+.pull-right[
+![Sampling distribution of average enrollment in statistics grad schools for $n=10$](images/gradenroll.png)
+
+]
+
+.footnote[Click [here](https://www.lock5stat.com/StatKey/index.html) to go to Statkey webpage]
+
+---
+
+class: middle
+
+# Population Mean
+
+.pull-left[
+.blockquote[
+The sampling distribution is shown for enrollment in statistics grad schools.  The population parameter is closest to:
+
+a. 45 
+
+b. 60 
+
+c. 50
+
+d. 55
+]
+]
+
+.pull-right[
+
+![Sampling distribution of average enrollment in statistics grad schools for $n=10$](images/gradenroll.png)
+]
+
+
+.footnote[Click [here](https://www.lock5stat.com/StatKey/index.html) to go to Statkey webpage]
+
+---
+
+class: middle
+
+# Standard Error
+
+.pull-left[
+
+.blockquote[
+The sampling distribution is shown for enrollment in statistics grad schools. The .bold[standard error] is closest to:
+
+  a. 5  
+
+  b. 10 
+
+  c. 20 
+
+  d. 15
+]
+]
+
+.pull-right[
+
+![Sampling distribution of average enrollment in statistics grad schools for $n=10$](images/gradenroll.png)
+]
+
+.footnote[Click [here](https://www.lock5stat.com/StatKey/index.html) to go to Statkey webpage]
+
+---
+
+
+# Random Vs. Non-random
+
+.blockquote.font90[Samples of .bold[size] 5 are taken from a large population with .bold[population mean] 8, and the sampling distributions for the sample means are shown.  Dataset A (top) and Dataset B (bottom) were collected using different sampling methods.  Which dataset (A or B) used .bold[random sampling]?]
+
+<center>
+<img src="images/stackeddata.png" width="50%" height="50%"><br>
+<a>Random Vs. non-random data distribution</a>
+</center>
+
+---
+
+
+# Bootstrap 
+
+- .bold[Bootstrap:] Sample with replacement from the original sample, using the same sample size.
+
+<center>
+<img src="images/bootsample.png" width="50%" height="50%"><br>
+<a>Original sample (left) to bootstrap sample (right)</a>
+</center>
+
+
+---
+
+# Bootstrap 
+
+<center>
+<img src="images/bootinf.png" width="50%" height="50%"><br>
+<a>Original sample (left) to population (right)</a>
+</center>
+
+
+.bold[Creating a bootstrap sample is the same as using the data simulate a “population” that contains an infinite number of copies of the data.]
+
+---
+
+# Bootstrap Sampling in R
+
+.blockquote[
+- resample a set of observations with replacement
+
+- same data points can appear multiple times
+]
+
+&nbsp; | Data | Statistic |
+---- | ---- | ---- |
+Original sample | $x_1, x_2, ..., x_n$ | $\bar{x}_n$ | 
+Resample  | $x_1^*, x_2^*, ..., x_n^*$ | $\bar{x}^*_n$|
+
+```{r, eval=FALSE}
+# R-code
+boot <- sample(x, size, replace = TRUE)
+```
+
+---
+
+class: middle
+
+# Bootstrap Steps
+
+.blockquote.font90[
+1. Generate a bootstrap sample.
+
+2. Compute the statistic of interest for your bootstrap sample.
+
+3. Repeat steps (1) –(2) many times. Plot the distribution of all your bootstrap statistics
+]
+
+.center.bold[This is the bootstrap distribution!]
+
+---
+
+# Bootstrap Distribution
+
+
+.pull-left[
+
+<br>
+
+.blockquote[
+Suppose $X = \{20, 24, 19, 23, 22, 16\}$
+\begin{align*}
+            X_1^* &= \{16, 19, 16 ,23 ,22, 24\}\\
+            X_2^* &= \{22, 19, 22, 19, 23, 19\}\\
+            X_3^* &= \{20, 22, 24, 16, 24, 16\}\\
+            \vdots & \qquad \qquad \cdots\\
+            \vdots & \qquad \qquad \cdots\\
+            X_{N}^* &= \{19, 24, 19, 19, 19, 22\}
+\end{align*}
+
+
+N = total number of simulations/samples
+
+]
+]
+
+.pull-right[
+![A bootstrap distribution](images/boot.png)
+]
+
+---
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+.blockquote[
+
+Go to our class [moodle](https://moodle.carleton.edu), go to the in class activity file, skim through and try to answer the questions
+
+]
+]
+
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`

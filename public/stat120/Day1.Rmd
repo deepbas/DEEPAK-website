@@ -1,0 +1,449 @@
+---
+title: "Introduction to Statistics"
+subtitle: "<br/> STAT 120"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html  
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%"
+                      )
+
+
+
+# load necessary packages
+library(Lock5Data)
+library(Lock5withR)
+library(tidyverse)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         #<<
+  mute_unhighlighted_code = TRUE  #<<
+)
+library(flipbookr)
+library(patchwork)
+
+
+# Set ggplot theme
+theme_set(theme_tufte(base_size = 10))
+
+
+yt <- 0
+```
+
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+<!-- <div class="my-footer"><span>Stat 230</span></div> -->
+<!-- this adds the link footer to all slides, depends on my-footer class in css-->
+
+---
+
+class: title-slide, middle
+<!-- background-image: url("assets/title-image2.jpg") -->
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Introduction to Statistics]
+
+### .fancy[Stat 120]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+class: middle
+
+# Something about me
+
+<br>
+
+.pull-left[
+.bq[
+- Second year at Carleton
+- Born in Nepal
+- PhD in Applied Statistics from
+UC-Riverside
+- Diverse education background
+- Avid learner and traveler
+]
+
+]
+.pull-right[
+<center>
+<img src="images/Deepak.jpg" width="75%" height="75%"><br>
+<a href="https://deepbas.io/">My webpage</a>
+</center>
+]
+
+---
+
+class: middle
+
+## What will you learn in this course?
+
+.bql[
+- Analyzing data by doing exploratory data analysis
+
+- Estimate some parameter of interest from the population
+
+- Infer the population characteristics based in your estimation
+
+- Quantify the uncertainty in the estimation
+]
+
+
+---
+
+class: middle
+
+# Statistical Jargons
+
+.bq.font90[
+- .yellow-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. 
+
+- Statistical jargon can be used to help .yellow-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables.
+
+- Understanding statistical terms can help to effectively .yellow-h[communicate the findings] of a statistical analysis.
+]
+
+<!-- It can help to correctly interpret the data and make meaningful conclusions. -->
+
+---
+
+
+class: middle
+
+# What will a typical day/week look like?
+
+Before Class:
+
+.bq[
+1. Some reading/video to introduce some topics
+2. Will be updated in the weekly planner
+]
+
+During Class:
+
+.bq[
+1. Mini-lectures
+2. Hands-on group activities and quizzes
+]
+
+---
+
+class: middle
+
+# Your introduction
+
+.pull-left[
+.bql[
+- Your name?
+- What gender pronouns do
+you use?
+- Favorite Scientist/Person?
+- Recent fun memories?
+]
+]
+.pull-right[
+<center>
+<img src="images/indexcard.jpg" width="95%" height="85%"><br>
+<a>Please fill in!</a>
+</center>
+]
+
+---
+
+# General sentiment of the class
+
+
+<center>
+<img src="images/sentiment.png" width="95%" height="85%"><br>
+</center>
+
+---
+
+## Survey Responses: What do you hope to gain from taking this course?
+
+<center>
+<img src="images/response_1.png" width="55%" height="45%"><br>
+</center>
+
+
+
+---
+
+## Survey Responses: Is there anything about this course that you are nervous about?
+
+
+<center>
+<img src="images/response_2.png" width="45%" height="45%"><br>
+</center>
+
+
+---
+
+class: inverse, middle
+
+# Statistics is distinct from mathematics
+
+.bql.font120[Statistics is the study of data and the uncertainties surrounding them. We will take a more conceptual route to statistics in this course.
+]
+
+---
+
+
+# Software Component
+
+.bq.font120[
+- Statistical computing software called R
+- RStudio gives nice user-friendly interface to R
+- RMarkdown is platform in Rstudio to write your codes and results
+]
+
+--
+
+<br>
+
+.center.font120.purple.b[We will gradually learn these things!]
+
+---
+
+class: middle
+
+# What and Why of Statistics?
+
+.bql[
+Science of collecting, describing, analyzing and making decisions based on data
+
+  + Sampling
+  + Exploratory Data Analysis
+  + Inference
+]
+
+.green-h.font120[Allows us to make informed decisions in the face of uncertainty and let's us take an unbiased and evidence-based viewpoint]
+
+---
+
+class: middle
+
+# Data: Cases and Variables
+
+.bq[
+Data are a set of measurements taken on a set of individual units
+- These are .bold[cases] or units]
+
+<br>
+
+.bq[
+Data is stored and presented in a dataset that comprises of variables measured on cases
+- A .bold[variable] is any characteristic that is recorded for each case
+]
+
+---
+
+## `EducationLiteracy` dataset from Lock5
+
+.scroll-box-16[
+```{r, echo=FALSE}
+knitr::kable(EducationLiteracy, format = "html")
+```
+]
+
+--
+
+<br>
+
+<div style="text-align: center; font-size: 30px; font-weight: bold; color: red;">Each row = case & Each column = variable</div>
+
+.footnote[Click [here](https://www.lock5stat.com/datapage2e.html) for Lock5 datasets for the second edition]
+
+---
+
+class: middle
+
+# Categorical Versus Quantitative
+
+> Variables are classified as either categorical or quantitative:
+
+<br>
+
+.bql[
+- A .bold[categorical variable] divides the cases into groups. e.g. gender,
+country, state etc.
+
+- A .bold[quantitative variable] measures a numerical quantity for each
+case, e.g. age, height, sleep hours, blood pressure etc
+]
+
+---
+
+# Kidney cancer
+
+> Counties with the highest kidney cancer rates
+
+<center>
+<img src="images/kidneycancermap.png" width="65%" height="65%"><br>
+<a>Source: Gelman et. al. Bayesian Data Anaylsis, CRC Press, 2004</a>
+</center>
+
+---
+
+class: middle
+
+# Kidney cancer
+
+> If the cases in the kidney cancer dataset are people, then the measured variable is .bold[categorical]
+
+- We categorize each person as either having kidney
+cancer or not which is categorical.
+
+---
+
+class: middle
+
+# Kidney cancer
+
+> If the cases in the kidney cancer dataset are counties, then the measured variable is .bold[quantitative]
+
+- Data collected at the county level is aggregated
+across all people living in the county. We then get
+rates of cancer which are numbers (quantitative).
+
+---
+
+# Variable manipulations
+
+.bq.font80[
+Can use numbers to code categories of categorical variable
+- e.g Gender (1 for male and 2 for female)
+]
+
+<br>
+
+--
+
+.bq.font80[
+Can convert quantitative variable into categorical groups
+- e.g. Income (0-50000 as Low, 50000+ as High)
+]
+
+<br>
+
+--
+
+.bq.font80[
+Categorical variables are sometimes collapsed into fewer levels
+- e.g. no HS degree, HS degree, some college, 2 year degree
+]
+
+---
+
+# Explanatory and Response Variable
+
+.bql[When one variable helps us understand or predict values of another variable, we call the former the .bold[explanatory variable] and the latter the .bold[response variable]]
+
+--
+
+<br>
+.pull-left[
+
+.bq[
+Does meditation help reduce stress?
+- explanatory variable: .bold[meditation]
+- response variable: .bold[stress level]
+]
+]
+
+.pull-right[
+.bq[
+Does sugar consumption increase hyperactivity?
+- explanatory variable: .bold[sugar consumption]
+- response variable: .bold[hyperactive behavior]
+]
+]
+
+---
+
+background-image: url("images/RStudio Anatomy.svg")
+background-position: center
+background-size: 96%
+class: clear
+
+
+.footnote[ Click [here](https://buzzrbeeline.blog/2018/07/04/rstudio-anatomy/) for source]
+
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+.bq.font90[
+- Make a course folder called 'stat120' either on your Maize account or on your local computer 
+- Please download the in-class activity file for Day 1 from [moodle](https://moodle.carleton.edu/) and go to [class activity module](https://stat120-winter23.netlify.app/) 
+- We will go over this .Rmd file together. 
+- Once you are done, knit to pdf or word and submit.
+]
+
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+

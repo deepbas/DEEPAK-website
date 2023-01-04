@@ -13,6 +13,21 @@
     </image>
     
     <item>
+      <title>Week 1</title>
+      <link>https://deepbas.netlify.app/courses/stat120/week1/</link>
+      <pubDate>Wed, 04 Jan 2023 00:00:00 +0000</pubDate>
+      <guid>https://deepbas.netlify.app/courses/stat120/week1/</guid>
+      <description>&lt;p&gt;Day 1 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/Day1.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/Day1.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;!--
+Day 2 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day2.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day2.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
+
+Day 3 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day3.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
+
+--&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Week 9</title>
       <link>https://deepbas.netlify.app/courses/stat220/week9/</link>
       <pubDate>Sun, 06 Nov 2022 00:00:00 +0000</pubDate>
@@ -1279,28 +1294,10 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     
     <item>
       <title>Week 10</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week10/</link>
-      <pubDate>Sun, 29 May 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week10/</guid>
-      <description>&lt;p&gt;Day 27 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day27.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day27.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 10</title>
       <link>https://deepbas.netlify.app/courses/stat230/week10/</link>
       <pubDate>Sun, 29 May 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat230/week10/</guid>
       <description></description>
-    </item>
-    
-    <item>
-      <title>Week 9</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week9/</link>
-      <pubDate>Sun, 22 May 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week9/</guid>
-      <description>&lt;p&gt;Day 24 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day24.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day24.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
     </item>
     
     <item>
@@ -1311,17 +1308,6 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
       <description>&lt;p&gt;Day 24 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day24.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day24.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Day 25 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day25.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day25.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Day 26 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day26.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day26.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 8</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week8/</link>
-      <pubDate>Sun, 15 May 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week8/</guid>
-      <description>&lt;p&gt;Day 21 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day21.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day21.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 22 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day22.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day22.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 23 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day23.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day23.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
@@ -1338,34 +1324,12 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     
     <item>
       <title>Week 7</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week7/</link>
-      <pubDate>Mon, 09 May 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week7/</guid>
-      <description>&lt;p&gt;Day 18 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day18.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day18.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 19 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day19.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 20 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day20.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 7</title>
       <link>https://deepbas.netlify.app/courses/stat230/week7/</link>
       <pubDate>Mon, 09 May 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat230/week7/</guid>
       <description>&lt;p&gt;Day 18 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day18.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day18.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Day 19 Midterm II&lt;/p&gt;
 &lt;p&gt;Day 20 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day20.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day20.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 6</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week6/</link>
-      <pubDate>Mon, 02 May 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week6/</guid>
-      <description>&lt;p&gt;Midterm Break!&lt;/p&gt;
-&lt;p&gt;Day 16 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day16.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 17 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day17.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
@@ -1382,34 +1346,12 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     
     <item>
       <title>Week 5</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week5/</link>
-      <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week5/</guid>
-      <description>&lt;p&gt;Day 13 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day13.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 14 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day14.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 15 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day15.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 5</title>
       <link>https://deepbas.netlify.app/courses/stat230/week5/</link>
       <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat230/week5/</guid>
       <description>&lt;p&gt;Day 13 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day13.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day13.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Day 14 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day14.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day14.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Day 15 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day15.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day15.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 4</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week4/</link>
-      <pubDate>Mon, 18 Apr 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week4/</guid>
-      <description>&lt;p&gt;Day 10 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day10.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day10.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Midterm I&lt;/p&gt;
-&lt;p&gt;Day 12 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day12.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
@@ -1426,17 +1368,6 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     
     <item>
       <title>Week 3</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week3/</link>
-      <pubDate>Mon, 11 Apr 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week3/</guid>
-      <description>&lt;p&gt;Day 7 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day7.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day7.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 8 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day8.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day8.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 9 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day9.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day9.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 3</title>
       <link>https://deepbas.netlify.app/courses/stat230/week3/</link>
       <pubDate>Mon, 11 Apr 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat230/week3/</guid>
@@ -1448,34 +1379,12 @@ drive/dropbox is another great way to lose work.&lt;/li&gt;
     
     <item>
       <title>Week 2</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week2/</link>
-      <pubDate>Sat, 02 Apr 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week2/</guid>
-      <description>&lt;p&gt;Day 4 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day4.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 5 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day5.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 6 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day6.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day6.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 2</title>
       <link>https://deepbas.netlify.app/courses/stat230/week2/</link>
       <pubDate>Sat, 02 Apr 2022 00:00:00 +0000</pubDate>
       <guid>https://deepbas.netlify.app/courses/stat230/week2/</guid>
       <description>&lt;p&gt;Day 4 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day4.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Day 5 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day5.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;Day 6 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day6.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat230/lecture_notes/Day6.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 1</title>
-      <link>https://deepbas.netlify.app/courses/stat120/week1/</link>
-      <pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat120/week1/</guid>
-      <description>&lt;p&gt;Day 1 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day1.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day1.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 2 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day2.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day2.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 3 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day3.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat120/lecture_notes/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
@@ -2085,21 +1994,6 @@ CT
 &lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>My Quiz</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week10/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week10/</guid>
-      <description>&lt;p&gt;Next, add the quiz questions and answers to the page using the Hugo Academic Quiz syntax. For example:&lt;/p&gt;
-&lt;p&gt;Q1: What is the capital of France?
-A1: Paris
-A2: London
-A3: Rome
-A4: Madrid&lt;/p&gt;
-&lt;p&gt;Finally, add the following code to the bottom of the page to save the quiz results to a data file:&lt;/p&gt;
 </description>
     </item>
     
