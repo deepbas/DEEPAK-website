@@ -50,7 +50,7 @@ library(mosaic)
 library(ggthemes)
 library(xaringanExtra)
 library(forcats)
-library(NHSRtheme)  # color themes, nhs
+#library(NHSRtheme)  # color themes, nhs
 xaringanExtra::use_panelset()
 xaringanExtra::use_tachyons()
 xaringanExtra::use_clipboard()
@@ -105,10 +105,12 @@ background-size: 160px, 100% 100%
 
 ---
 
+class: middle
+
 # Sampling and Inference
 
 .pull-left[
-.blockquote[
+.bq[
 - A .bold[population] includes all
 individuals or objects of
 interest.
@@ -131,6 +133,8 @@ about the population.
 
 ---
 
+class: middle
+
 # MN Department of Natural Resources
 
 .pull-left[
@@ -140,7 +144,7 @@ about the population.
 </center>
 ]
 .pull-right[
-.blockquote[
+.bq[
 - .bold[Population:] all plots (grid
 cells) on the map
 - .bold[Sample:] the cross-hatched
@@ -157,7 +161,7 @@ population
 
 # Sampling Bias
 
-.blockquote[
+.bq[
 - Sampling bias occurs when the method of selecting a sample
 causes the sample to differ from the population in some
 relevant way
@@ -170,16 +174,16 @@ sample to the population
 
 <br>
 
-<center>
-<a style="background-color:Orange;font-size:28px"> To eliminate sampling bias always take a RANDOM SAMPLE! </a>
-</center>
 
+.green-h.center[To eliminate sampling bias always take a RANDOM SAMPLE!]
 
 ---
 
+class: middle
+
 # Lincoln’s Gettysburg Address
 
-.font85[
+.font75[
 ```
 “Four score and seven years ago our fathers brought forth, on this continent, a new
 nation, conceived in Liberty, and dedicated to the proposition that all men are created
@@ -204,18 +208,14 @@ perish from the earth.
 
 ---
 
-# Lincoln's Gettysberg Address
-
-.bold[Question:] What is the average word length?
-
---
+# Lincoln's Gettysberg Address: What is the average word length?
 
 .bold[Task:] Select a sample of 10 words to estimate average word length of
 entire address
 
 --
 
-.blockquote[
+.bq[
 - Population? (describe cases of interest)
 - Sample?
 - pick your sample….
@@ -229,22 +229,27 @@ entire address
 <br>
 
 <center>
-<a style="background-color:Tomato;font-size:28px"> Actual average is 4.29 letters </a>
-</center>
+<a style="background-color:#000000;color:#FFFFFF;font-size:30px"> Actual average is 4.29 letters </a></center>
 
 ---
 class: action, middle
 
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Work&nbsp;`r (yt <- yt + 1)`</i>    
 
 
 .pull-left-40[
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
-.blockquote[
+<br>
+<br>
+.bq[
 
-- Go to this [google form](https://forms.gle/vQLqhXcsFWX5ieRh9)
+- Go to the appropriate forms:
+
+  - [google form section 02](https://forms.gle/seQnFSXF2g3fp1YK8)
+  - [google form section 04](https://forms.gle/JA9fULW5M37XHvEVA)
+
 - Find the average word length and enter your answer
 ]
 ]
@@ -264,9 +269,9 @@ when collected on humans
 
 class: middle
 
-# Some other forms of bias
+# Some forms of bias
 
-.blockquote[Other forms of bias to watch out for in data collection:
+.bq[Some forms of bias to watch out for in data collection:
 - Question wording
 - Question order
 - Context
@@ -277,7 +282,7 @@ class: middle
 
 # Question wording
 
-.blockquote[A random sample was asked: “Should there be a tax cut, or
+.bq[A random sample was asked: “Should there be a tax cut, or
 should money be used to fund new government programs?”
 
 
@@ -289,7 +294,7 @@ should money be used to fund new government programs?”
 --
 <br>
 
-.blockquote[A different random sample was asked: “Should there be a tax
+.bq[A different random sample was asked: “Should there be a tax
 cut, or should money be spent on programs for education, the
 environment, health care, crime-fighting, and military defense?”
 
@@ -306,33 +311,34 @@ class: middle
 
 > Depending on the order of questions we can see either a greater differences in responses or lesser difference in response. Respondents tend to provide answers consistent with their prior responses.
 
-
----
-
-# Danish Study
-
-> Danish policy makers found out in a [study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688) that order bias exists in Danish Public Services
-
-- When asked about overall satisfaction before being asked about specific services, the overall satisfaction was low.
-
-- When asked about overall satisfaction after being asked about specifc services, then the overall satifaction was high.
-
 ---
 
 class: action
 
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+# [Danish study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688): Question order bias
 
-Go over the abstract of this [study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688) and summarize it in the in class activity .Rmd file. 
 
 <center>
-<img src="images/abstract.png" width="60%" height="55%"> <br>
+<img src="images/abstract.png" width="80%" height="55%"> <br>
 </center>
 
+---
 
-`r countdown(minutes = 3, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+class: middle
+
+
+# Danish Study
+
+> Danish policy makers found out in the [study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688) that order bias exists in Danish Public Services
+
+.font90[
+- When asked about overall satisfaction before being asked about specific services, the overall satisfaction was low.
+
+- When asked about overall satisfaction after being asked about specifc services, then the overall satifaction was high.
+]
 
 ---
+
 
 # Context
 
@@ -341,7 +347,7 @@ would you have children?”
 
 --
 
-.blockquote[The first request for data contained a letter from a young couple
+.bq[The first request for data contained a letter from a young couple
 which listed worries about parenting and various reasons not to
 have kids
 
@@ -350,14 +356,15 @@ $$30\% \text{ said yes}$$]
 
 <br>
 
-.blockquote[The second request for data was in response to this number, in
+.bq[The second request for data was in response to this number, in
 which Ann wrote how she was “stunned, disturbed, and just
 plain flummoxed”
 
 $$95\% \text{ said yes}$$]
 
-
 ---
+
+class: middle
 
 # Non-response Bias
 
@@ -367,21 +374,27 @@ $$95\% \text{ said yes}$$]
 - There is general unwillingness due to polar opposite opinions
 - The survey did not reach the right respondent
 
-A survey asking teenagers about best cigarette brands
-Spam emails is also a prime reason for non-response bias
+.blue-h[e.g. A survey asking teenagers about best cigarette brands
+Spam emails is also a prime reason for non-response bias]
 
 ---
 
-class: action
+class: action, middle
 
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
-
-> For the remainder of the time, please go over 
-
-- the Gettysburg example again
-
-- CNN poll: Driving with a Pet on your Lap
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Work&nbsp;`r (yt <- yt + 1)`</i>    
 
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
 
+- Go over to [moodle](https://moodle.carleton.edu/login/index.php) to get the class activity .Rmd file
+- Continue working with your neighbors and let me know of you have any questions
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
