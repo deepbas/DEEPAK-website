@@ -107,7 +107,7 @@ background-size: 160px, 100% 100%
 
 class: middle
 
-# Explanatory and Response
+# Recap: Explanatory and Response
 
 .bq[
 If we are using one variable to help us understand or predict values
@@ -253,25 +253,19 @@ class: middle
 
 ---
 
+class: middle
 
 # Confounding Variable
 
-.font120[
-> A third variable that is associated with both the explanatory
+.bq.font100[
+A third variable that is associated with both the explanatory
 variable and the response variable is called a .bold[confounding variable]
+- A confounding variable can offer a plausible explanation for an association between the two variables.
 ]
+<br>
 
---
+.blue-h[Whenever confounding variables are present (or may be present), a causal association .bold[CANNOT] be determined!]
 
-.font120[
-> A confounding variable can offer a plausible explanation for an association between the two variables.
-]
-
---
-
-.font120[
-> Whenever confounding variables are present (or may be present), a causal association .bold[CANNOT] be determined!
-]
 
 ---
 
@@ -326,6 +320,8 @@ multiple fish farms to see if the two variables are related.
 
 ---
 
+class: middle
+
 # Observational Studies and Confounding Variable
 
 .bql[
@@ -336,7 +332,6 @@ studies
 causation!!
 ]
 
---
 
 .blue-h[To avoid confounding variables: Randomly assign values of the explanatory variable!]
 
@@ -375,7 +370,6 @@ different treatment to each group
 
 ---
 
-class: middle
 
 # Elimination of confounding variables
 
@@ -484,6 +478,7 @@ anti-depressant medication is due to the .bold[placebo effect]
 
 ---
 
+class: middle
 
 # Can Video Games Help Teens Beat Depression?
 
@@ -572,25 +567,6 @@ class: middle
 
 ]
 
-
-
-
----
-
-class: middle
-
-# More on Randomization
-
-.bql[
-- Doing a randomized experiment on a random sample is ideal,
-but rarely achievable. (why?)
-- If the focus of the study is using a sample to estimate a
-population parameter, you need a random sample but do not
-need a randomized experiment (example: election polling)
-- If the focus of the study is establishing causality, you need a
-randomized experiment and can settle for a non-random
-sample (example: drug testing)
-]
 
 ---
 
