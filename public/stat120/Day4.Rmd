@@ -74,6 +74,13 @@ cell_phone_data <- data.frame(
   Frequency = c(458, 437, 141, 924, 293)
 )
 
+data <- data.frame(
+  Gender = c("Female", "Male"),
+  In_a_relationship = c(32, 10),
+  Its_complicated = c(12, 7),
+  Single = c(63, 45)
+)
+
 ```
 
 
@@ -228,11 +235,12 @@ class: middle
 
 
 
-```{r, echo=FALSE, fig.height=6}
-plot_ly(data, x = ~Gender, y = ~In_a_relationship, type = 'bar', name = 'In a relationship') %>%
-  add_trace(y = ~Its_complicated, name = 'It\'s complicated') %>%
-  add_trace(y = ~Single, name = 'Single') %>%
-  layout(yaxis = list(title = 'Number of People'), barmode = 'group')
+```{r, echo=FALSE, fig.height=3, out.width="50%", fig.align='center'}
+ggplot(cell_phone_data, aes(x = Type, y = Frequency)) +
+  geom_col(fill = c("darkblue", "red", "green", "orange", "purple")) +
+  labs(x = "Cell Phone Type", y = "Frequency") +
+  ggtitle("Cell Phone Usage") +
+  theme(axis.text.x = element_text(size = 6))
 ```
 
 
@@ -298,7 +306,7 @@ round(ans,2)
 --
 
 .font90[
-Proportion of people in a relationship that are male?
+Proportion of students in a relationship that are male?
 
 ```{r}
 ans <- 10/42
@@ -308,6 +316,7 @@ round(ans,2)
   
 ---
 
+class: middle
 
 # Relationship status and Gender
 
@@ -396,7 +405,7 @@ class: action
 <br>
 .bq[
 
-- Please go over this [article](https://features.apmreports.org/in-the-dark/mississippi-da-doug-evans-striking-black-people-from-juries/)
+- Let's go over this [article](https://features.apmreports.org/in-the-dark/mississippi-da-doug-evans-striking-black-people-from-juries/)
 - Download the Class Activity .Rmd file for today and skim through the corresponding problems
 ]
 ]
@@ -474,10 +483,12 @@ prop.table(counts)
 
 ---
 
-`r chunk_reveal("bar-plot", font_size_code="50%", title = "## Graphical summary: bar plot")`
+`r chunk_reveal("bar-plot", font_size_code="50%",widths = c(0.6, 0.4), title = "## Graphical summary: bar plot")`
 
-```{r bar-plot, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
-counts_df <- data.frame(x=c("Not Struck by State", "Struck by State"), y=c(1084, 433))
+```{r bar-plot, include=FALSE}
+library(ggplot2)  # load the library
+counts_df <- data.frame(x=c("Not Struck by State", "Struck by State"),
+                        y=c(1084, 433))
 ggplot(counts_df, aes(x=x, y=y)) +
   geom_col(fill="lightblue") +
   labs(x="", y="Count", title="Counts") 
@@ -544,7 +555,7 @@ prop.table(mytable, margin = 1)
 
 # Stacked bar graph
 
-We can graph a conditional distribution using the `ggplot2` graphing package. First, load this package's functions with the `library` command. Basic syntax is as follows:
+We can graph a conditional distribution using the `ggplot2` graphing package. 
 
 ```r
 library(ggplot2)
@@ -557,10 +568,11 @@ ggplot(mydata, aes(x=x, fill=y)) +
 - `geom_bar` describes what type of graph to make
 - `position` describes how to draw the bar graph
 ]
+
 ---
 
 
-`r chunk_reveal("jurors-stacked", font_size_code="50%", title = "## Stacked bar graph")`
+`r chunk_reveal("jurors-stacked", widths = c(0.6, 0.4), font_size_code="50%", title = "## Stacked bar graph")`
 
 ```{r jurors-stacked, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
 ggplot(jurors, aes(x = race, fill = struck_state)) + 
@@ -568,15 +580,15 @@ ggplot(jurors, aes(x = race, fill = struck_state)) +
   labs(title = "State striked by juror race", 
        y = "proportion", 
        x = "eligible juror race", 
-       fill = "struck by state?") +
-  theme(plot.title = element_text(hjust = 0.5))
+       fill = "struck by state?") 
 ```
 
 
 ---
 
-`r chunk_reveal("jurors-stacked-counts", font_size_code="50%", title = "## Stacked bar graph (counts)")`
+`r chunk_reveal("jurors-stacked-counts", widths = c(0.6, 0.4), title = "## Stacked bar graph (counts)")`
 
+.font70[
 ```{r jurors-stacked-counts, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
 # changes the `stuck_state` to a factor
 jurors$struck_state <- factor(jurors$struck_state)
@@ -585,9 +597,9 @@ ggplot(jurors, aes(x = race, fill = struck_state)) +
   labs(title = "State striked by juror race", 
        y = "count", 
        x = "eligible juror race", 
-       fill = "struck by state?") +
-  theme(plot.title = element_text(hjust = 0.5))
+       fill = "struck by state?") 
 ```
+]
 
 ---
 
@@ -604,8 +616,7 @@ class: action
 <br>
 .bq[
 
-- Please go over the rest of the in class activity in a group
-- This will be helpful to complete HW2
+- Please go over the rest of the in-class activity 
 ]
 ]
 
