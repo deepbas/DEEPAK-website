@@ -1,5 +1,5 @@
 ---
-title: "Describing Categorical Variables"
+title: "Describing Variables"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -96,7 +96,7 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Describing Categorical Variables]
+# .fancy[Describing Variables]
 
 ### .fancy[Stat 120]
 
@@ -119,8 +119,9 @@ class: middle
 
 
 
-
 ---
+
+class: middle
 
 # Center: Mean or Average
 
@@ -131,6 +132,11 @@ Mean: average value in a sample or population
 - $\mu$ is an average value of $y$ in a population
 ]
 
+---
+
+class: middle
+
+# Student Survey 
 
 Example: The data `StudentSurvey.csv` is a sample of student survey responses obtained by the textbook authors
 
@@ -156,10 +162,8 @@ The mean pulse rate for this sample of students is $\overline{y} = 69.6$ beats p
 median(survey$Pulse) # the command `median` computes an median
 ```
 
-.bq.font90[
+
 The median pulse rate for this sample of students is $m = 70$ beats per minute. 
-- This means half the students have a rate below 70 and half have a rate about 70.
-]
 
 ---
 
@@ -175,33 +179,9 @@ Standard Devation (SD): average value in a sample or population
 sd(survey$Pulse) # the command `sd` computes an average
 ```
 
-.bq.font90[
-The SD of pulse rates for this sample of students is $s = 12.2$ beats per minute.
-- The "average" deviation of individual pulse rates around the mean value is about 12.2 beats per minute.
-]
 
----
+The SD of pulse rates for this sample of students is $s = 12.2$ beats per minute. The "average" deviation of individual pulse rates around the mean value is about 12.2 beats per minute.
 
-class: action
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-
-<br>
-<br>
-.bq[
-
-Go to our class [moodle](https://moodle.carleton.edu) and skim through the problems
-
-Feel free to talk to your neighbor
-]
-]
-
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 ---
 
@@ -209,7 +189,7 @@ Feel free to talk to your neighbor
 
 .bql[
 - Missing data values in R are coded as `NA` values
-- Many basic statistic functions in R return an NA value if variable has any missing values
+- Many basic statistic functions in R return an `NA` value if variable has any missing values
 ]
 
 --
@@ -253,6 +233,7 @@ sd(movies$WorldGross, na.rm = TRUE)
 
 ---
 
+
 # Shape: histogram
 
 .bq[.bold[Histogram:] aggregates values into bins and counts how many cases fall into each bin]
@@ -263,7 +244,7 @@ sd(movies$WorldGross, na.rm = TRUE)
 ```{r, fig.height=3.5, out.width="60%", fig.align='center'}
 hist(survey$Pulse, 
      main = "Histogram of pulse rates", 
-     cex.lab=0.5, cex.main = 0.5, cex.axis=0.5)
+     cex.lab=0.7, cex.main = 0.9, cex.axis=0.7)
 ```
 ]
 ]
@@ -335,7 +316,7 @@ median(movies$WorldGross, na.rm = T)
 --
 <br>
 
-.bq[Movie world gross (millions of dollars) stats with and without Harry Potter movie:
+.bq[Movie world gross (millions of dollars) stats with and without Harry Potter movie (outlier!):
 
 &nbsp; | Mean | SD | Median
 ---- | ---- | ---- | ----
@@ -365,32 +346,7 @@ Harry Potter (row number 4) had world gross of 1.328 billion dollars!
 
 ---
 
-# Identifying extreme values in R
 
-What are stats without Harry Potter?
-
---
-
-- omit .bold[row 4] from the `WorldGross` variable with the "minus row 4" subset:
-
---
-
-```{r}
-WorldGross.noHP <- movies$WorldGross[-4] 
-```
-
---
-
-- Then compare stats
-
-```{r}
-summary(movies$WorldGross) # with Harry Potter
-summary(WorldGross.noHP) # without Harry Potter
-sd(movies$WorldGross, na.rm = T) # with Harry Potter
-sd(WorldGross.noHP, na.rm = T) # without Harry Potter
-```
-
----
 
 # Adding a categorical variable: stats
 
@@ -420,7 +376,7 @@ tapply(survey$Pulse, survey$Smoke, summary)
 
 ---
 
-`r chunk_reveal("cat-graphics-1", font_size_code="50%", title = "## Adding a categorical variable: graphics")`
+`r chunk_reveal("cat-graphics-1", widths = c(0.51, 0.49), title = "## Adding a categorical variable: graphics")`
 
 ```{r cat-graphics-1, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
 library(ggplot2)
@@ -432,6 +388,29 @@ ggplot(survey, aes(x=Pulse)) +
 
 ---
 
+
+class: action
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+<br>
+<br>
+.bq[
+
+Go to our class activity .Rmd for today and skim through your turn 1
+
+Feel free to talk to your neighbor
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
 
 # Shape and Stats
 
@@ -466,12 +445,12 @@ sd(survey$Pulse)
 
 class: middle
 
-# Shape: Right skew
+# Shape: data distribution
 
-.bql[If a distribution of data is .bold[approximately bell-shaped], about 95% of the data should fall within two standard deviations of the sample mean.
+.bql[
+If a distribution of data is .bold[approximately bell-shaped], about 95% of the data should fall within two standard deviations of the sample mean.
 
 - for a sample: 95% of values between $\bar{y} - 2s$ and $\bar{y} + 2s$
-
 - for a population: 95% of values between $\mu - 2\sigma$ and $\mu + 2\sigma$
 ]
 
@@ -496,7 +475,7 @@ ggplot(data = sleep, aes(x = AverageSleep)) +
 ]
 
 .pull-right[
-
+<br>
 .bq[
 .bold[Question] The standard deviation for hours of sleep per night is closest to
 
@@ -523,40 +502,6 @@ $$z = \dfrac{x - \text{mean}}{\text{SD}}$$
 
 .bql[.bold[Question:] If we standardize all values in a bell-shaped distribution, 95% of all z-scores fall between what values?]
 
-
----
-
-# Standardizing data: z-score
-
-> Z-scores put measurements on a common scale
-
-- .bold[Example 4:]  Which is better, an ACT score of 28 or a combined SAT score of 2100?
-    - ACT: $\mu = 21, \sigma = 5$
-    - SAT:  $\mu = 1500, \sigma = 325$
-
-
-.bql[SAT score because it is .bold[1.85 SDs above] the mean SAT score while the ACT score is only 1.4 SD above the mean ACT score.
-
-$$z_{ACT} = \dfrac{28-21}{5} = 1.4  \qquad  z_{SAT} = \dfrac{2100-1500}{325} = 1.85$$]
----
-
-# Shape and Stats: Percentiles
-.bql[
-Percentiles are good summary stats to describe a .bold[skewed] distribution.
-- The $P^{th}$ percentile of a distribution is the value which is greater than $P\%$ of all other values.
-- The median is the $50^{th}$ percentile
-]
-
---
-
-.bold[Example 4:] Used z-scores to determine whether a SAT score of 2100 or an ACT score of 28 is better
-
---
-
-.bq.font80[We could also have used percentiles:
-- `ACT score of 28:` 91st percentile (you scored better than 91% of people)
-- `SAT score of 2100:` 97th percentile (you scored better than 97% of people!)
-]
 
 ---
 
@@ -592,10 +537,12 @@ Percentiles are good summary stats to describe a .bold[skewed] distribution.
 summary(movies$WorldGross)
 ```
 
-.bq[The 5-number summary is
-- $\text{min} = 0.025, Q_1 = 30.7, \text{m}=76.7, Q_3 = 173.7, \text{max} = 1328.1$
+.bq.font90[
+The 5-number summary is
 
+- $\text{min} = 0.025, Q_1 = 30.7, \text{m}=76.7, Q_3 = 173.7, \text{max} = 1328.1$
 - right skewed:  variation is upper 25 of movies is much larger than lower 25% 
+
   - upper range: $\text{max} - Q_3 = 1328.1 - 173.7 = 1154.4$
   - lower range: $Q_1 - \text{min} = 30.7 - 0.025 = 30.675$
 ]
@@ -603,7 +550,7 @@ summary(movies$WorldGross)
 ---
 
 # Shape and Stats: Boxplot
-.bql.font90[
+.bql.font70[
 .bold[Boxplot:] Visualization of 5-number summary
 
 - Draw a numerical scale appropriate for the data
@@ -617,7 +564,7 @@ summary(movies$WorldGross)
 
 <br>
 
-.bq[Outlier rule of thumb: cases that are more extreme than
+.bq[.yellow-h[Outlier rule of thumb:] cases that are more extreme than
 
 $$
 Q_1 - 1.5(IQR) \ \ \ \ \text{or} \ \ \ \ Q_3 + 1.5(IQR)
@@ -695,13 +642,14 @@ class: action
 
 <br>
 <br>
+<br>
 .bq[
 
-Go over the remaining portion of in class activity and let me know if you have any questions!
+Go over the remaining portion of in-class activity and let me know if you have any questions!
 
 ]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 

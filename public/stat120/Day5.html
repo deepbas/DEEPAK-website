@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Describing Categorical Variables</title>
+    <title>Describing Variables</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -48,11 +48,11 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Describing Categorical Variables]
+# .fancy[Describing Variables]
 
 ### .fancy[Stat 120]
 
- December 25 2022
+ January 13 2023
 
 ---
 
@@ -71,8 +71,9 @@ class: middle
 
 
 
-
 ---
+
+class: middle
 
 # Center: Mean or Average
 
@@ -83,6 +84,11 @@ Mean: average value in a sample or population
 - `\(\mu\)` is an average value of `\(y\)` in a population
 ]
 
+---
+
+class: middle
+
+# Student Survey 
 
 Example: The data `StudentSurvey.csv` is a sample of student survey responses obtained by the textbook authors
 
@@ -112,10 +118,8 @@ median(survey$Pulse) # the command `median` computes an median
 [1] 70
 ```
 
-.bq.font90[
+
 The median pulse rate for this sample of students is `\(m = 70\)` beats per minute. 
-- This means half the students have a rate below 70 and half have a rate about 70.
-]
 
 ---
 
@@ -133,36 +137,9 @@ sd(survey$Pulse) # the command `sd` computes an average
 [1] 12.20514
 ```
 
-.bq.font90[
-The SD of pulse rates for this sample of students is `\(s = 12.2\)` beats per minute.
-- The "average" deviation of individual pulse rates around the mean value is about 12.2 beats per minute.
-]
 
----
+The SD of pulse rates for this sample of students is `\(s = 12.2\)` beats per minute. The "average" deviation of individual pulse rates around the mean value is about 12.2 beats per minute.
 
-class: action
-
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-
-&lt;br&gt;
-&lt;br&gt;
-.bq[
-
-Go to our class [moodle](https://moodle.carleton.edu) and skim through the problems
-
-Feel free to talk to your neighbor
-]
-]
-
-<div class="countdown" id="timer_d76235f5" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
 
 ---
 
@@ -170,7 +147,7 @@ Feel free to talk to your neighbor
 
 .bql[
 - Missing data values in R are coded as `NA` values
-- Many basic statistic functions in R return an NA value if variable has any missing values
+- Many basic statistic functions in R return an `NA` value if variable has any missing values
 ]
 
 --
@@ -223,6 +200,7 @@ sd(movies$WorldGross, na.rm = TRUE)
 
 ---
 
+
 # Shape: histogram
 
 .bq[.bold[Histogram:] aggregates values into bins and counts how many cases fall into each bin]
@@ -234,7 +212,7 @@ sd(movies$WorldGross, na.rm = TRUE)
 ```r
 hist(survey$Pulse, 
      main = "Histogram of pulse rates", 
-     cex.lab=0.5, cex.main = 0.5, cex.axis=0.5)
+     cex.lab=0.7, cex.main = 0.9, cex.axis=0.7)
 ```
 
 &lt;img src="Day5_files/figure-html/unnamed-chunk-7-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
@@ -304,7 +282,7 @@ median(movies$WorldGross, na.rm = T)
 --
 &lt;br&gt;
 
-.bq[Movie world gross (millions of dollars) stats with and without Harry Potter movie:
+.bq[Movie world gross (millions of dollars) stats with and without Harry Potter movie (outlier!):
 
 &amp;nbsp; | Mean | SD | Median
 ---- | ---- | ---- | ----
@@ -338,40 +316,7 @@ Harry Potter (row number 4) had world gross of 1.328 billion dollars!
 
 ---
 
-# Identifying extreme values in R
 
-What are stats without Harry Potter?
-
---
-
-- omit .bold[row 4] from the `WorldGross` variable with the "minus row 4" subset:
-
---
-
-
-```r
-WorldGross.noHP &lt;- movies$WorldGross[-4] 
-```
-
---
-
-- Then compare stats
-
-
-```r
-summary(movies$WorldGross) # with Harry Potter
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA's 
-   0.025   30.706   76.659  150.742  173.691 1328.111        2 
-summary(WorldGross.noHP) # without Harry Potter
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA's 
-   0.025   30.426   75.009  141.890  170.301 1123.195        2 
-sd(movies$WorldGross, na.rm = T) # with Harry Potter
-[1] 215.0186
-sd(WorldGross.noHP, na.rm = T) # without Harry Potter
-[1] 189.7441
-```
-
----
 
 # Adding a categorical variable: stats
 
@@ -500,19 +445,19 @@ ggplot(survey, aes(x=Pulse)) +
 &lt;style&gt;
 .panel1-cat-graphics-1-auto {
   color: black;
-  width: 38.6060606060606%;
+  width: 49.98%;
   hight: 32%;
   float: left;
   padding-left: 1%;
-  font-size: 50%
+  font-size: 80%
 }
 .panel2-cat-graphics-1-auto {
   color: black;
-  width: 59.3939393939394%;
+  width: 48.02%;
   hight: 32%;
   float: left;
   padding-left: 1%;
-  font-size: 50%
+  font-size: 80%
 }
 .panel3-cat-graphics-1-auto {
   color: black;
@@ -520,7 +465,7 @@ ggplot(survey, aes(x=Pulse)) +
   hight: 33%;
   float: left;
   padding-left: 1%;
-  font-size: 50%
+  font-size: 80%
 }
 &lt;/style&gt;
 
@@ -531,12 +476,38 @@ ggplot(survey, aes(x=Pulse)) +
 ---
 
 
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+
+Go to our class activity .Rmd for today and skim through your turn 1
+
+Feel free to talk to your neighbor
+]
+]
+
+<div class="countdown" id="timer_a4a84984" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
 # Shape and Stats
 
 .pull-left[
 &gt; Mean and standard deviation are good summary stats of a .bold[symmetric] distribution.
 
-&lt;img src="Day5_files/figure-html/unnamed-chunk-17-1.svg" width="100%" /&gt;
+&lt;img src="Day5_files/figure-html/unnamed-chunk-15-1.svg" width="100%" /&gt;
 ]
 .pull-right[
 
@@ -564,12 +535,12 @@ sd(survey$Pulse)
 
 class: middle
 
-# Shape: Right skew
+# Shape: data distribution
 
-.bql[If a distribution of data is .bold[approximately bell-shaped], about 95% of the data should fall within two standard deviations of the sample mean.
+.bql[
+If a distribution of data is .bold[approximately bell-shaped], about 95% of the data should fall within two standard deviations of the sample mean.
 
 - for a sample: 95% of values between `\(\bar{y} - 2s\)` and `\(\bar{y} + 2s\)`
-
 - for a population: 95% of values between `\(\mu - 2\sigma\)` and `\(\mu + 2\sigma\)`
 ]
 
@@ -585,12 +556,12 @@ sleep &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/mai
 
 .pull-left[
 
-&lt;img src="Day5_files/figure-html/unnamed-chunk-21-1.svg" width="100%" /&gt;
+&lt;img src="Day5_files/figure-html/unnamed-chunk-19-1.svg" width="100%" /&gt;
 
 ]
 
 .pull-right[
-
+&lt;br&gt;
 .bq[
 .bold[Question] The standard deviation for hours of sleep per night is closest to
 
@@ -617,40 +588,6 @@ sleep &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/mai
 
 .bql[.bold[Question:] If we standardize all values in a bell-shaped distribution, 95% of all z-scores fall between what values?]
 
-
----
-
-# Standardizing data: z-score
-
-&gt; Z-scores put measurements on a common scale
-
-- .bold[Example 4:]  Which is better, an ACT score of 28 or a combined SAT score of 2100?
-    - ACT: `\(\mu = 21, \sigma = 5\)`
-    - SAT:  `\(\mu = 1500, \sigma = 325\)`
-
-
-.bql[SAT score because it is .bold[1.85 SDs above] the mean SAT score while the ACT score is only 1.4 SD above the mean ACT score.
-
-`$$z_{ACT} = \dfrac{28-21}{5} = 1.4  \qquad  z_{SAT} = \dfrac{2100-1500}{325} = 1.85$$`]
----
-
-# Shape and Stats: Percentiles
-.bql[
-Percentiles are good summary stats to describe a .bold[skewed] distribution.
-- The `\(P^{th}\)` percentile of a distribution is the value which is greater than `\(P\%\)` of all other values.
-- The median is the `\(50^{th}\)` percentile
-]
-
---
-
-.bold[Example 4:] Used z-scores to determine whether a SAT score of 2100 or an ACT score of 28 is better
-
---
-
-.bq.font80[We could also have used percentiles:
-- `ACT score of 28:` 91st percentile (you scored better than 91% of people)
-- `SAT score of 2100:` 97th percentile (you scored better than 97% of people!)
-]
 
 ---
 
@@ -689,10 +626,12 @@ summary(movies$WorldGross)
    0.025   30.706   76.659  150.742  173.691 1328.111        2 
 ```
 
-.bq[The 5-number summary is
-- `\(\text{min} = 0.025, Q_1 = 30.7, \text{m}=76.7, Q_3 = 173.7, \text{max} = 1328.1\)`
+.bq.font90[
+The 5-number summary is
 
+- `\(\text{min} = 0.025, Q_1 = 30.7, \text{m}=76.7, Q_3 = 173.7, \text{max} = 1328.1\)`
 - right skewed:  variation is upper 25 of movies is much larger than lower 25% 
+
   - upper range: `\(\text{max} - Q_3 = 1328.1 - 173.7 = 1154.4\)`
   - lower range: `\(Q_1 - \text{min} = 30.7 - 0.025 = 30.675\)`
 ]
@@ -700,7 +639,7 @@ summary(movies$WorldGross)
 ---
 
 # Shape and Stats: Boxplot
-.bql.font90[
+.bql.font70[
 .bold[Boxplot:] Visualization of 5-number summary
 
 - Draw a numerical scale appropriate for the data
@@ -714,7 +653,7 @@ summary(movies$WorldGross)
 
 &lt;br&gt;
 
-.bq[Outlier rule of thumb: cases that are more extreme than
+.bq[.yellow-h[Outlier rule of thumb:] cases that are more extreme than
 
 $$
 Q_1 - 1.5(IQR) \ \ \ \ \text{or} \ \ \ \ Q_3 + 1.5(IQR)
@@ -734,7 +673,7 @@ ggplot(data = survey, aes(x = 1, y = Pulse)) +
   labs(x = "", y = "pulse rate") 
 ```
 
-&lt;img src="Day5_files/figure-html/unnamed-chunk-23-1.svg" width="100%" /&gt;
+&lt;img src="Day5_files/figure-html/unnamed-chunk-21-1.svg" width="100%" /&gt;
 
 ]
 
@@ -777,7 +716,7 @@ ggplot(data = survey, aes(x = Smoke, y = Pulse)) +
   ylab("pulse rate") 
 ```
 
-&lt;img src="Day5_files/figure-html/unnamed-chunk-26-1.svg" width="100%" /&gt;
+&lt;img src="Day5_files/figure-html/unnamed-chunk-24-1.svg" width="100%" /&gt;
 
 ]
 
@@ -804,16 +743,17 @@ class: action
 
 &lt;br&gt;
 &lt;br&gt;
+&lt;br&gt;
 .bq[
 
-Go over the remaining portion of in class activity and let me know if you have any questions!
+Go over the remaining portion of in-class activity and let me know if you have any questions!
 
 ]
 ]
 
-<div class="countdown" id="timer_f6da93c3" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_f7fab0db" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 
