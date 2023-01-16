@@ -106,7 +106,7 @@ background-size: 160px, 100% 100%
 
 # Describing associations between two quantitative variables
 
-.blockquote[
+.bq[
 .bold[Data]: each case $i$ has two measurements
 - $x_i$ is explanatory variable
 - $y_i$ is response variable
@@ -115,7 +115,7 @@ background-size: 160px, 100% 100%
 --
 <br>
 
-.blockquote[
+.bq[
 A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 - form? linear or non-linear
 - direction? positive, negative, no association
@@ -128,7 +128,7 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 
 
 <center>
-<img src="images/linearassociation.png" width="75%" height="75%"><br>
+<img src="images/linearassociation.png" width="80%" height="80%"><br>
 <a>Various Associations of quantitative variables in Cars data</a>
 </center>
 
@@ -137,7 +137,7 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 
 # Direction
 
-.blockquote[
+.bq[
 .bold[positive association:] as $x$ increases, $y$ increases 
 
 - age of the husband and age of the wife
@@ -148,7 +148,7 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 
 <br>
 
-.blockquote[    
+.bq[    
 .bold[negative association:] as $x$ increases, $y$ decreases
 - number of cigarettes smoked per day and lung capacity
 - depth of tire tread and number of miles driven on the tires
@@ -158,7 +158,7 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 
 # Correlation Coefficients
 
-.blockquote-list.font80[
+.bql.font80[
 .bold[Correlation coefficient:] denoted $r$ (sample) or $\rho$ (population)
 
 - Strength of linear association
@@ -172,7 +172,7 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
   
 --
 
-> Correlation can be heavily affected by outliers. Plot your data!
+.blue-h[Correlation can be heavily affected by outliers. Plot your data!]
 
 --
 
@@ -187,7 +187,7 @@ cor(data$x, data$y)  # order of x and y doesn't matter!
 ## Car Correlations
 
 <center>
-<img src="images/carcorrelations.png" width="75%" height="75%"><br>
+<img src="images/carcorrelations.png" width="80%" height="75%"><br>
 <a>Correlations of various variables in Cars data</a>
 </center>
 
@@ -196,19 +196,19 @@ cor(data$x, data$y)  # order of x and y doesn't matter!
 
 # Linear Regression
 
-.brand-red.center[.bold[Goal:] To find a straight line that best fits the data in a scatterplot]
-.blockquote.font80[
+.center.green-h[.bold[Goal:] To find a straight line that best fits the data in a scatterplot]
+.bql.font80[
 The estimated regression line is
 $$ \hat{y} = a + bx$$
 - x is the explanatory variable
 - $\hat{y}$ is the predicted response variable.
 ]
-
-.blockquote.font80[.bold[Slope:] increase in predicted $y$ for every unit increase in $x$
+<br>
+.bq.font80[
+.bold[Slope:] increase in predicted $y$ for every unit increase in $x$
 $$ b = \frac{\text{change }\hat{y}}{\text{change } x} $$
-]
 
-.blockquote.font80[.bold[Intercept:] predicted $y$ value when $x = 0$
+.bold[Intercept:] predicted $y$ value when $x = 0$
  $$ \hat{y} = a + b(0) = a $$]
 
 
@@ -218,8 +218,8 @@ class: middle
 
 # Residuals
 
-.pull-left.font90[
-.blockquote-list[
+.pull-left.font80[
+.bql[
 - .bold[Geometrically], residual is the vertical distance from each point to the line
 
 - .bold[Mathematically], $y - \hat{y}$ is the residual of $y$ at $x$
@@ -230,7 +230,7 @@ class: middle
 .pull-right[
 <br>
 <center>
-<img src="images/residuals.png" width="95%" height="95%"><br>
+<img src="images/residuals.png" width="115%" height="105%"><br>
 <a>Residuals</a>
 </center>
 ]
@@ -242,7 +242,7 @@ class: middle
 
 # Least Squares Line
 
-.blockquote[
+.bq[
 The Least squares line is the line which minimizes the sum of squared residuals. Want to minimize:
 
 $$\sum_{i=1}^n (y_i - \hat{y}_i)^2 = (y_1 - \hat{y}_1)^2 + (y_2 - \hat{y}_2)^2 + \cdots + (y_n - \hat{y}_n)^2 $$
@@ -255,9 +255,9 @@ $$\sum_{i=1}^n (y_i - \hat{y}_i)^2 = (y_1 - \hat{y}_1)^2 + (y_2 - \hat{y}_2)^2 +
 
 class: middle
 
-# Regression Caution
+# Regression Caution!
 
-.blockquote.font80[
+.bql.font80[
 - Do not use the regression equation or line to predict values far from those that were used to create it --> .bold[Extrapolation!]
 
 - The regression line/equation should only be used if the association is approximately linear
@@ -277,7 +277,7 @@ class: middle
 <br>
 <br>
 
-.blockquote[
+.bq[
 .bold[Outliers] can be very influential on the regression line
 
 - remove the points and see if the regression line changes significantly 
@@ -287,7 +287,7 @@ class: middle
 
 .pull-right-60[
 
-```{r,  echo=FALSE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="120%"}
+```{r,  echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="90%"}
 # SAT sscores
 library(dplyr)
 sat <- read.csv("https://math.carleton.edu/Stats215/RLabManual/sat.csv")
@@ -300,10 +300,10 @@ plot(math ~ verbal, data=sat.MW, pch=19,
      main="Average SAT for Midwest States",
      xlab="Math SAT scores", 
      ylab = "Verbal SAT scores",
-     cex.lab=0.5, cex.main = 0.5, cex.axis=0.5)
+     cex.lab=0.7, cex.main = 0.7, cex.axis=0.7)
 abline(sat.lm)
 abline(sat.lm.noIO, col = "red")
-legend("topleft", legend = c("With IN and OH", "Without IN and OH"), col = c("black", "red"), lty = c(1,1), cex = 0.5)
+legend("topleft", legend = c("With IN and OH", "Without IN and OH"), col = c("black", "red"), lty = c(1,1), cex = 0.7)
 text(540, 535, "OH", ces = 0.5)
 text(500, 495, "IN", cex = 0.5)
 ```
@@ -324,9 +324,9 @@ class: action
 
 <br>
 <br>
-.blockquote[
+.bq[
 
-Go to our class [moodle](https://moodle.carleton.edu) and skim through the problems
+Go to our class [moodle](https://moodle.carleton.edu) and skim through class activity 1
 
 Feel free to talk to your neighbor
 ]
@@ -344,7 +344,7 @@ bac <- read.csv("http://math.carleton.edu/kstclair/data/BAC.csv")
 
 .pull-left-60[
 
-.bold[(1c)] Regression of BAC on number of beers
+Regression of BAC on number of beers
 
 .code70[
 ```{r}
@@ -357,7 +357,7 @@ summary(bac.lm)
 .pull-right-40[
 <br>
 <br>
-.blockquote.font80[
+.bq.font80[
 Slope, $b= 0.0180$: 
 
 - `Estimate` column and `Beers` row
@@ -377,8 +377,8 @@ class: middle
 
 $$ \widehat{BAC} = -0.0127 + 0.0180(Beers) $$
 
-.blockquote-list[
-.bold[(1d)] Slope Interpretation?
+.bql[
+Slope Interpretation?
 - Each additional beer consumed is associated with a $0.0180$ unit increase in BAC
 ]
 
@@ -386,8 +386,8 @@ $$ \widehat{BAC} = -0.0127 + 0.0180(Beers) $$
 
 <br>
 
-.blockquote-list[
-.bold[(1e)] y-intercept Interpretation?
+.bql[
+y-intercept Interpretation?
 - Predicted BAC with 0 beers consumed 
 ]
 
@@ -405,7 +405,7 @@ plot(BAC ~ Beers, data=bac, pch=19,
 abline(bac.lm) # adds regression line 
 ```
   
-> .bold[(1f)] If your friend drank 2 beers, what is your best guess at their BAC after 30 minutes?
+> If your friend drank 2 beers, what is your best guess at their BAC after 30 minutes?
  $$\widehat{BAC} = -0.0127 + 0.0180(2) = 0.023$$
   
 ]
@@ -416,7 +416,7 @@ plot(BAC ~ Beers, data=bac, pch=19,
      main="Beer and BAC", 
      xlab="Number of beers drank", 
      ylab = "Blood Alcohol Content",
-     cex.lab=0.5, cex.main = 0.5, cex.axis=0.5)
+     cex.lab=0.7, cex.main = 0.7, cex.axis=0.7)
 abline(bac.lm) # adds regression line 
 ```
 ]
@@ -432,7 +432,7 @@ class: middle
 <br>
 <br>
 
-> .bold[(1g)] Find the residual for the student in the dataset who drank 2 beers and had a BAC of 0.03.
+> Find the residual for the student in the dataset who drank 2 beers and had a BAC of 0.03.
 > The residual is about $y - \hat{y} = 0.03 - 0.023 = 0.007$
 
 ]
@@ -449,7 +449,7 @@ plot(BAC ~ Beers, data=bac, pch=19,
      main="Beer and BAC", 
      xlab="Number of beers drank", 
      ylab = "Blood Alcohol Content",
-     cex.lab=0.5, cex.main = 0.5, cex.axis=0.5)
+     cex.lab=0.7, cex.main = 0.7, cex.axis=0.7)
 abline(bac.lm) # adds regression line to the plot
 segments(2, 0, 2, 0.023, lty = 2, col = "red")
 segments(0, 0.023, 2, 0.023, lty = 2, col = "red")
@@ -514,7 +514,7 @@ ggplot(d, aes(x = Beers, y = residuals)) +
 ---
 
 # R-squared
-.blockquote.font80[
+.bq.font80[
 .bold[R-squared] is proportion (or percentage) of variability observed in the response y which can be explained by the explanatory variable x.
 
 $$R^2 = 1 - \text{unexplained variation} = 1 - \frac{s^{2}_{\text{residuals}}}{s^2_y} $$
@@ -522,7 +522,7 @@ $$R^2 = 1 - \text{unexplained variation} = 1 - \frac{s^{2}_{\text{residuals}}}{s
 
 - $R^2 = r^2$ in simple linear regression model (One explanatory variable)
 
-.blockquote-list.font80[
+.bql.font80[
 .bold[BAC] : $R^2 = 0.7998$
 
 - The number of beers consumed explains about 80.0% of the observed variation in BAC
@@ -544,7 +544,7 @@ summary(bac.lm)
 
 # Additional Comments
 
-.blockquote-list[Include confounding variables when appropriate
+.bql[Include confounding variables when appropriate
 - augment scatterplot with colors for each category
 ]
 
@@ -554,7 +554,7 @@ ggplot(data, aes(x=x,y=y,color=z)) + geom_point()
 
 --
 
-.blockquote[
+.bq[
 - split (subset) data by categories, run regressions for each group.
 - look for outliers that affect the fitted model and correlation
 - fit the model/correlation with and without case(s) to see the affects
@@ -583,14 +583,13 @@ ggplot(salarydata, aes(x=Age, y=Salary, color=PhD)) +
 .pull-right[
 .code80[
 ```{r, eval=FALSE}
-ggplot(salarydata, 
-       aes(x=Age, 
-           y=Salary, 
-           color=PhD)) + 
+ggplot(salarydata, aes(x=Age,  
+                       y=Salary,
+                       color=PhD)) + 
   geom_point()
 ```
 ]
-.blockquote[
+.bq[
 - Visually split the data by PhD status
 - Potentially different trends
 ]
@@ -602,9 +601,9 @@ class: middle
 
 # Adding a categorical variable
 
-.pull-left[
+.pull-left-60[
 
-```{r, echo = FALSE, eval=TRUE, fig.align='center', fig.width=4, fig.height=4, out.width="80%"}
+```{r, echo = FALSE, eval=TRUE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="0%"}
 ggplot(salarydata, aes(x=Age, y=Salary, color=PhD))+
   geom_point() +
   geom_smooth(method ="lm", se=FALSE)+
@@ -613,10 +612,10 @@ ggplot(salarydata, aes(x=Age, y=Salary, color=PhD))+
 
 ]
 
-.pull-right[
+.pull-right-40[
 <br>
 <br>
-.blockquote[
+.bq[
 Visually infer difference in groups:
 - Different correlation
 - Different intercepts
@@ -655,11 +654,8 @@ class: middle
 # Outliers: Average SAT by state
 
 
-.pull-left-60[
-
 .code80[
 ```{r}
-# SAT Scores
 library(dplyr)
 sat <- read.csv("https://math.carleton.edu/Stats215/RLabManual/sat.csv")
 sat.MW <- filter(sat, region == "Midwest") # just MW states
@@ -675,26 +671,15 @@ summary(sat.lm)$r.squared
 
 ]
 
-]
 
-.pull-right-40[
-<br>
-<br>
-.blockquote[
-- Correlation = 0.9732
-- Regression Slope = 1.0469
-- R-squared = 94.7%
-]
-]
+
+.out-t[Correlation = 0.9732, Regression Slope = 1.0469, R-squared = 94.7%]
+
 ---
 
 class: middle
 
-# Outliers: Average SAT by state
-
-.pull-left-60[
-
-Excluding Indiana and Ohio
+# Outliers: Average SAT by state, excluding Indiana and Ohio
 
 .code80[
 ```{r}
@@ -708,16 +693,8 @@ sat.lm.noIO
 summary(sat.lm.noIO)$r.squared
 ```
 ]
-]
-.pull-right-40[
-<br>
-<br>
-.blockquote[
-- Correlation = 0.8465
-- Regression slope = 0.9956 
-- R-squared = 71.66%
-]
-]
+
+.out-t[Correlation = 0.8465, Regression slope = 0.9956 , R-squared = 71.66%]
 
 ---
 
@@ -725,7 +702,7 @@ class: middle
 
 # Non-linear Patterns
 
-.blockquote.font80[.bold[James D. Forbes 1857 experiment:] Can atmospheric pressure be determined from the boiling point of water? Is the relationship linear?]
+.bq.font80[.bold[James D. Forbes 1857 experiment:] Can atmospheric pressure be determined from the boiling point of water? Is the relationship linear?]
 
 .pull-left[
 .red.center[Seems Linear!]
@@ -759,7 +736,7 @@ relationship.
 
 <br>
 
-.blockquote-list[
+.bql[
 Correlation is almost 1, so why not use linear regression!!
 
 - Because the true nature of the relationship is not linear
@@ -783,7 +760,7 @@ class: action
 
 <br>
 <br>
-.blockquote[
+.bq[
 
 <br>
 
@@ -792,6 +769,6 @@ Go over the remaining portion of in class activity and let me know if you have a
 ]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 

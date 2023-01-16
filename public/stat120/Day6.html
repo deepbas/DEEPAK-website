@@ -52,13 +52,13 @@ background-size: 160px, 100% 100%
 
 ### .fancy[Stat 120]
 
- April 08 2022
+ January 16 2023
 
 ---
 
 # Describing associations between two quantitative variables
 
-.blockquote[
+.bq[
 .bold[Data]: each case `\(i\)` has two measurements
 - `\(x_i\)` is explanatory variable
 - `\(y_i\)` is response variable
@@ -67,7 +67,7 @@ background-size: 160px, 100% 100%
 --
 &lt;br&gt;
 
-.blockquote[
+.bq[
 A .bold[scatterplot] is the plot of `\((x_i, y_i)\)`.
 - form? linear or non-linear
 - direction? positive, negative, no association
@@ -80,7 +80,7 @@ A .bold[scatterplot] is the plot of `\((x_i, y_i)\)`.
 
 
 &lt;center&gt;
-&lt;img src="images/linearassociation.png" width="75%" height="75%"&gt;&lt;br&gt;
+&lt;img src="images/linearassociation.png" width="80%" height="80%"&gt;&lt;br&gt;
 &lt;a&gt;Various Associations of quantitative variables in Cars data&lt;/a&gt;
 &lt;/center&gt;
 
@@ -89,7 +89,7 @@ A .bold[scatterplot] is the plot of `\((x_i, y_i)\)`.
 
 # Direction
 
-.blockquote[
+.bq[
 .bold[positive association:] as `\(x\)` increases, `\(y\)` increases 
 
 - age of the husband and age of the wife
@@ -100,7 +100,7 @@ A .bold[scatterplot] is the plot of `\((x_i, y_i)\)`.
 
 &lt;br&gt;
 
-.blockquote[    
+.bq[    
 .bold[negative association:] as `\(x\)` increases, `\(y\)` decreases
 - number of cigarettes smoked per day and lung capacity
 - depth of tire tread and number of miles driven on the tires
@@ -110,7 +110,7 @@ A .bold[scatterplot] is the plot of `\((x_i, y_i)\)`.
 
 # Correlation Coefficients
 
-.blockquote-list.font80[
+.bql.font80[
 .bold[Correlation coefficient:] denoted `\(r\)` (sample) or `\(\rho\)` (population)
 
 - Strength of linear association
@@ -124,7 +124,7 @@ A .bold[scatterplot] is the plot of `\((x_i, y_i)\)`.
   
 --
 
-&gt; Correlation can be heavily affected by outliers. Plot your data!
+.blue-h[Correlation can be heavily affected by outliers. Plot your data!]
 
 --
 
@@ -140,7 +140,7 @@ cor(data$x, data$y)  # order of x and y doesn't matter!
 ## Car Correlations
 
 &lt;center&gt;
-&lt;img src="images/carcorrelations.png" width="75%" height="75%"&gt;&lt;br&gt;
+&lt;img src="images/carcorrelations.png" width="80%" height="75%"&gt;&lt;br&gt;
 &lt;a&gt;Correlations of various variables in Cars data&lt;/a&gt;
 &lt;/center&gt;
 
@@ -149,19 +149,19 @@ cor(data$x, data$y)  # order of x and y doesn't matter!
 
 # Linear Regression
 
-.brand-red.center[.bold[Goal:] To find a straight line that best fits the data in a scatterplot]
-.blockquote.font80[
+.center.green-h[.bold[Goal:] To find a straight line that best fits the data in a scatterplot]
+.bql.font80[
 The estimated regression line is
 $$ \hat{y} = a + bx$$
 - x is the explanatory variable
 - `\(\hat{y}\)` is the predicted response variable.
 ]
-
-.blockquote.font80[.bold[Slope:] increase in predicted `\(y\)` for every unit increase in `\(x\)`
+&lt;br&gt;
+.bq.font80[
+.bold[Slope:] increase in predicted `\(y\)` for every unit increase in `\(x\)`
 $$ b = \frac{\text{change }\hat{y}}{\text{change } x} $$
-]
 
-.blockquote.font80[.bold[Intercept:] predicted `\(y\)` value when `\(x = 0\)`
+.bold[Intercept:] predicted `\(y\)` value when `\(x = 0\)`
  $$ \hat{y} = a + b(0) = a $$]
 
 
@@ -171,8 +171,8 @@ class: middle
 
 # Residuals
 
-.pull-left.font90[
-.blockquote-list[
+.pull-left.font80[
+.bql[
 - .bold[Geometrically], residual is the vertical distance from each point to the line
 
 - .bold[Mathematically], `\(y - \hat{y}\)` is the residual of `\(y\)` at `\(x\)`
@@ -183,7 +183,7 @@ class: middle
 .pull-right[
 &lt;br&gt;
 &lt;center&gt;
-&lt;img src="images/residuals.png" width="95%" height="95%"&gt;&lt;br&gt;
+&lt;img src="images/residuals.png" width="115%" height="105%"&gt;&lt;br&gt;
 &lt;a&gt;Residuals&lt;/a&gt;
 &lt;/center&gt;
 ]
@@ -195,7 +195,7 @@ class: middle
 
 # Least Squares Line
 
-.blockquote[
+.bq[
 The Least squares line is the line which minimizes the sum of squared residuals. Want to minimize:
 
 $$\sum_{i=1}^n (y_i - \hat{y}_i)^2 = (y_1 - \hat{y}_1)^2 + (y_2 - \hat{y}_2)^2 + \cdots + (y_n - \hat{y}_n)^2 $$
@@ -208,9 +208,9 @@ $$\sum_{i=1}^n (y_i - \hat{y}_i)^2 = (y_1 - \hat{y}_1)^2 + (y_2 - \hat{y}_2)^2 +
 
 class: middle
 
-# Regression Caution
+# Regression Caution!
 
-.blockquote.font80[
+.bql.font80[
 - Do not use the regression equation or line to predict values far from those that were used to create it --&gt; .bold[Extrapolation!]
 
 - The regression line/equation should only be used if the association is approximately linear
@@ -230,7 +230,7 @@ class: middle
 &lt;br&gt;
 &lt;br&gt;
 
-.blockquote[
+.bq[
 .bold[Outliers] can be very influential on the regression line
 
 - remove the points and see if the regression line changes significantly 
@@ -240,7 +240,7 @@ class: middle
 
 .pull-right-60[
 
-&lt;img src="Day6_files/figure-html/unnamed-chunk-2-1.svg" width="120%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day6_files/figure-html/unnamed-chunk-2-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -258,15 +258,16 @@ class: action
 
 &lt;br&gt;
 &lt;br&gt;
-.blockquote[
+.bq[
 
-Go to our class [moodle](https://moodle.carleton.edu) and skim through the problems
+Go to our class [moodle](https://moodle.carleton.edu) and skim through class activity 1
 
 Feel free to talk to your neighbor
 ]
 ]
 
-<div class="countdown" id="timer_624ff682" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
+<div class="countdown" id="timer_d5d2313f" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
@@ -278,7 +279,7 @@ Feel free to talk to your neighbor
 
 .pull-left-60[
 
-.bold[(1c)] Regression of BAC on number of beers
+Regression of BAC on number of beers
 
 .code70[
 
@@ -310,7 +311,7 @@ F-statistic: 55.94 on 1 and 14 DF,  p-value: 2.969e-06
 .pull-right-40[
 &lt;br&gt;
 &lt;br&gt;
-.blockquote.font80[
+.bq.font80[
 Slope, `\(b= 0.0180\)`: 
 
 - `Estimate` column and `Beers` row
@@ -330,8 +331,8 @@ class: middle
 
 $$ \widehat{BAC} = -0.0127 + 0.0180(Beers) $$
 
-.blockquote-list[
-.bold[(1d)] Slope Interpretation?
+.bql[
+Slope Interpretation?
 - Each additional beer consumed is associated with a `\(0.0180\)` unit increase in BAC
 ]
 
@@ -339,8 +340,8 @@ $$ \widehat{BAC} = -0.0127 + 0.0180(Beers) $$
 
 &lt;br&gt;
 
-.blockquote-list[
-.bold[(1e)] y-intercept Interpretation?
+.bql[
+y-intercept Interpretation?
 - Predicted BAC with 0 beers consumed 
 ]
 
@@ -359,7 +360,7 @@ plot(BAC ~ Beers, data=bac, pch=19,
 abline(bac.lm) # adds regression line 
 ```
   
-&gt; .bold[(1f)] If your friend drank 2 beers, what is your best guess at their BAC after 30 minutes?
+&gt; If your friend drank 2 beers, what is your best guess at their BAC after 30 minutes?
  `$$\widehat{BAC} = -0.0127 + 0.0180(2) = 0.023$$`
   
 ]
@@ -379,7 +380,7 @@ class: middle
 &lt;br&gt;
 &lt;br&gt;
 
-&gt; .bold[(1g)] Find the residual for the student in the dataset who drank 2 beers and had a BAC of 0.03.
+&gt; Find the residual for the student in the dataset who drank 2 beers and had a BAC of 0.03.
 &gt; The residual is about `\(y - \hat{y} = 0.03 - 0.023 = 0.007\)`
 
 ]
@@ -408,7 +409,7 @@ class: middle
 ---
 
 # R-squared
-.blockquote.font80[
+.bq.font80[
 .bold[R-squared] is proportion (or percentage) of variability observed in the response y which can be explained by the explanatory variable x.
 
 $$R^2 = 1 - \text{unexplained variation} = 1 - \frac{s^{2}_{\text{residuals}}}{s^2_y} $$
@@ -416,7 +417,7 @@ $$R^2 = 1 - \text{unexplained variation} = 1 - \frac{s^{2}_{\text{residuals}}}{s
 
 - `\(R^2 = r^2\)` in simple linear regression model (One explanatory variable)
 
-.blockquote-list.font80[
+.bql.font80[
 .bold[BAC] : `\(R^2 = 0.7998\)`
 
 - The number of beers consumed explains about 80.0% of the observed variation in BAC
@@ -457,7 +458,7 @@ F-statistic: 55.94 on 1 and 14 DF,  p-value: 2.969e-06
 
 # Additional Comments
 
-.blockquote-list[Include confounding variables when appropriate
+.bql[Include confounding variables when appropriate
 - augment scatterplot with colors for each category
 ]
 
@@ -468,7 +469,7 @@ ggplot(data, aes(x=x,y=y,color=z)) + geom_point()
 
 --
 
-.blockquote[
+.bq[
 - split (subset) data by categories, run regressions for each group.
 - look for outliers that affect the fitted model and correlation
 - fit the model/correlation with and without case(s) to see the affects
@@ -490,14 +491,13 @@ class: middle
 .code80[
 
 ```r
-ggplot(salarydata, 
-       aes(x=Age, 
-           y=Salary, 
-           color=PhD)) + 
+ggplot(salarydata, aes(x=Age,  
+                       y=Salary,
+                       color=PhD)) + 
   geom_point()
 ```
 ]
-.blockquote[
+.bq[
 - Visually split the data by PhD status
 - Potentially different trends
 ]
@@ -509,16 +509,16 @@ class: middle
 
 # Adding a categorical variable
 
-.pull-left[
+.pull-left-60[
 
-&lt;img src="Day6_files/figure-html/unnamed-chunk-14-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day6_files/figure-html/unnamed-chunk-14-1.svg" width="0%" style="display: block; margin: auto;" /&gt;
 
 ]
 
-.pull-right[
+.pull-right-40[
 &lt;br&gt;
 &lt;br&gt;
-.blockquote[
+.bq[
 Visually infer difference in groups:
 - Different correlation
 - Different intercepts
@@ -565,12 +565,9 @@ class: middle
 # Outliers: Average SAT by state
 
 
-.pull-left-60[
-
 .code80[
 
 ```r
-# SAT Scores
 library(dplyr)
 sat &lt;- read.csv("https://math.carleton.edu/Stats215/RLabManual/sat.csv")
 sat.MW &lt;- filter(sat, region == "Midwest") # just MW states
@@ -596,26 +593,15 @@ summary(sat.lm)$r.squared
 
 ]
 
-]
 
-.pull-right-40[
-&lt;br&gt;
-&lt;br&gt;
-.blockquote[
-- Correlation = 0.9732
-- Regression Slope = 1.0469
-- R-squared = 94.7%
-]
-]
+
+.out-t[Correlation = 0.9732, Regression Slope = 1.0469, R-squared = 94.7%]
+
 ---
 
 class: middle
 
-# Outliers: Average SAT by state
-
-.pull-left-60[
-
-Excluding Indiana and Ohio
+# Outliers: Average SAT by state, excluding Indiana and Ohio
 
 .code80[
 
@@ -641,16 +627,8 @@ summary(sat.lm.noIO)$r.squared
 [1] 0.7166161
 ```
 ]
-]
-.pull-right-40[
-&lt;br&gt;
-&lt;br&gt;
-.blockquote[
-- Correlation = 0.8465
-- Regression slope = 0.9956 
-- R-squared = 71.66%
-]
-]
+
+.out-t[Correlation = 0.8465, Regression slope = 0.9956 , R-squared = 71.66%]
 
 ---
 
@@ -658,7 +636,7 @@ class: middle
 
 # Non-linear Patterns
 
-.blockquote.font80[.bold[James D. Forbes 1857 experiment:] Can atmospheric pressure be determined from the boiling point of water? Is the relationship linear?]
+.bq.font80[.bold[James D. Forbes 1857 experiment:] Can atmospheric pressure be determined from the boiling point of water? Is the relationship linear?]
 
 .pull-left[
 .red.center[Seems Linear!]
@@ -684,7 +662,7 @@ relationship.
 
 &lt;br&gt;
 
-.blockquote-list[
+.bql[
 Correlation is almost 1, so why not use linear regression!!
 
 - Because the true nature of the relationship is not linear
@@ -708,7 +686,7 @@ class: action
 
 &lt;br&gt;
 &lt;br&gt;
-.blockquote[
+.bq[
 
 &lt;br&gt;
 
@@ -717,8 +695,9 @@ Go over the remaining portion of in class activity and let me know if you have a
 ]
 ]
 
-<div class="countdown" id="timer_624ff63b" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<div class="countdown" id="timer_916a8a3f" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 
@@ -772,6 +751,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
