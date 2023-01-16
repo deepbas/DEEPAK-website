@@ -66,6 +66,8 @@ theme_set(theme_tufte(base_size = 10))
 
 yt <- 0
 
+
+
 # read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/APM_DougEvansCases.csv")
 
 ```
@@ -603,7 +605,7 @@ class: middle
 
 .pull-left-60[
 
-```{r, echo = FALSE, eval=TRUE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="0%"}
+```{r, echo = FALSE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="100%"}
 ggplot(salarydata, aes(x=Age, y=Salary, color=PhD))+
   geom_point() +
   geom_smooth(method ="lm", se=FALSE)+
@@ -736,7 +738,7 @@ relationship.
 
 <br>
 
-.bql[
+.bql.font80[
 Correlation is almost 1, so why not use linear regression!!
 
 - Because the true nature of the relationship is not linear
