@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Day 7: Sampling Distribution and Bootstrap</title>
+    <title>Sampling Distribution and Bootstrap</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -52,13 +52,13 @@ background-size: 160px, 100% 100%
 
 ### .fancy[Stat 120]
 
- April 11 2022
+ January 18 2023
 
 ---
 
 # Statistical Inference
 
-.blockquote-list[.bold[Statistical inference]  is the process of drawing conclusions about the entire population based on information in a sample.]
+.bql.font90[.bold[Statistical inference]  is the process of drawing conclusions about the entire population based on information in a sample.]
 
 &lt;br&gt;
 
@@ -93,36 +93,40 @@ background-size: 160px, 100% 100%
 
 # Statistic and Parameter
 
-.blockquote[
+.bq[
 - A .bold[parameter] is a number that describes some aspect of a population.
 - A .bold[statistic] is a number that is computed from data in a sample.
 ]
 
 &lt;br&gt;
 
-&amp;nbsp; | Parameter | Statistic |
----- | ---- | ---- |
-Mean | `\(\mu\)` | `\(\bar{x}\)` | 
-Proportion | `\(p\)` | `\(\hat{p}\)` |
-Std. Dev. | `\(\sigma\)` | `\(s\)` |
-Correlation | `\(\rho\)` | `\(r\)` |
-Slope | `\(\beta\)` | `\(b\)` |
+&amp;nbsp; | Parameter | Statistic 
+---- | ---- | ---- 
+Mean | `\(\mu\)` | `\(\bar{x}\)` 
+Proportion | `\(p\)` | `\(\hat{p}\)` 
+Std. Dev. | `\(\sigma\)` | `\(s\)` 
+Correlation | `\(\rho\)` | `\(r\)` 
+Slope | `\(\beta\)` | `\(b\)` 
 
 
 ---
-
-class: middle
 
 # Parameter Vs. Statistic
 
 .brown.font120[State whether the quantity described is a .bold[parameter]
 or a .bold[statistic], and give the correct notation.]
 
-.blockquote[
+.bq[
   a. Average household income for all houses in the US, using data from the US census
+] 
+
+--
+
+.bq[
+  b. The proportion of all residents in a county who voted in the last presidential election.]
   
-  b. The proportion of all residents in a county who voted in the last presidential election.
-  
+--
+  .bq[
   c. The difference in proportion who have ever smoked cigarettes, between a sample of 500 people who are 60 years old and a sample of 200 people who are 25 years old.
 ]
 
@@ -130,7 +134,7 @@ or a .bold[statistic], and give the correct notation.]
 
 # A Gallup Poll
 
-.blockquote[
+.bq[
 A random sample of 1527 US adults was contacted in June, 2015
 
 - `\(p\)` = proportion of US adults who would vote for a qualified Muslim presidential candidate
@@ -148,7 +152,7 @@ A random sample of 1527 US adults was contacted in June, 2015
 
 .pull-right[
 &lt;br&gt;
-.blockquote-list[The sample proportion can be used as a “point estimate” of `\(p\)` i.e.,
+.bql[The sample proportion can be used as a “point estimate” of `\(p\)` i.e.,
 `$$\hat{p}= 0.60$$`]
 ]
 
@@ -161,7 +165,7 @@ class: middle
 
 # Point Estimate (PE)
 
-.blockquote-list[
+.bql[
 - .bold[Point estimate] is a single value constructed from the sample data
 
 - .bold[Sample statistic] can serve as a point estimate  for an unknown parameter
@@ -170,14 +174,38 @@ class: middle
 ---
 
 
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+
+Go to our class [moodle](https://moodle.carleton.edu), go to the in class activity file, skim through your turn 1 and try to answer the questions
+
+]
+]
+
+<div class="countdown" id="timer_27b91aa0" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
 # Sampling Distribution
 
-&gt; A .bold[sampling distribution] is the distribution of sample statistics computed for different samples of the same size from the same population.
 
 .pull-left[
 
-&lt;br&gt;
-.blockquote-list[
+
+.bql[A .bold[sampling distribution] is the distribution of sample statistics computed for different samples of the same size from the same population.
 - Sample statistics varies from sample to sample
 - Sampling distribution gives us an idea of the variation
 ]
@@ -185,10 +213,9 @@ class: middle
 
 .pull-right[
 
-&lt;br&gt;
+
 &lt;center&gt;
-&lt;img src="images/sampprop.png" width="60%" height="60%"&gt;&lt;br&gt;
-&lt;a&gt;Distribution of 1000 sample proportions with p=0.65&lt;/a&gt;
+&lt;img src="images/sampprop.png" width="95%" height="90%"&gt;&lt;br&gt;
 &lt;/center&gt;
 ]
 
@@ -199,7 +226,7 @@ class: middle
 
 # Center and Shape
 
-.blockquote-list[
+.bql[
 .bold[Center:] If samples are randomly selected, the sampling distribution will be centered around the population parameter.
 
 .bold[Shape:] For most of the statistics we consider, if the sample size is large enough the sampling distribution will be symmetric and bell-shaped.
@@ -207,31 +234,27 @@ class: middle
 
 ---
 
+class: middle
+
 # Standard Error
 
-&lt;br&gt;
-.pull-left[
 
-.blockquote.font90[
+
+.bql.font90[
 Uncertainty in point estimates measured by the .bold[standard error (SE)]
 - The .bold[standard error] of a statistic is the standard deviation of the sampling distribution
 - The .bold[standard error] measures how much the statistic varies from sample to sample
 ]
 
-]
 
-.pull-right[
-![](images/stderror.png)
-
-]
 
 ---
 
 # Recall:  Gettysburg Address
 
-.pull-left[
+.pull-left-40[
 &lt;br&gt;
-.blockquote[
+.bq[
 The standard error for the average word size in a random sample of 10 words is closest to
 
 a. 0.5
@@ -245,37 +268,37 @@ d. 1.5
 ]
 
 
-.pull-right[
-![Sampling Distribution](images/stderror.png)
-
+.pull-right-60[
+&lt;center&gt;
+&lt;img src="images/stderror.png" width="90%" height="90%"&gt;&lt;br&gt;
+&lt;/center&gt;
 ]
 
 ---
 
 
-# Recall:  Gettysburg Address
-
-.yellow-h[What are each dots?]
+# Gettysburg Address: What are each dots?
 
 &lt;center&gt;
-&lt;img src="images/gettys.png" width="50%" height="45%"&gt;&lt;br&gt;
+&lt;img src="images/gettys.png" width="50%" height="30%" style="max-width:100%; max-height:30%; object-fit: cover;"&gt;&lt;br&gt;
 &lt;/center&gt;
-
 
 ---
 
 # Sample Size Matters!
 
 
-.pull-left[
-![](images/variability.png)
+.pull-left-60[
+&lt;center&gt;
+&lt;img src="images/variability.png" width="90%" height="90%"&gt;&lt;br&gt;
+&lt;/center&gt;
 
 ]
 
-.pull-right[
+.pull-right-40[
 &lt;br&gt;
-&lt;br&gt;
-.blockquote[
+
+.bq[
 Which sampling distribution corresponds to a larger sample size?
 - A
 - B
@@ -287,13 +310,15 @@ Which sampling distribution corresponds to a larger sample size?
 
 # Sample Size Matters!
 
-.pull-left[
-![](images/variability.png)
+.pull-left-60[
+&lt;center&gt;
+&lt;img src="images/variability.png" width="90%" height="90%"&gt;&lt;br&gt;
+&lt;/center&gt;
 ]
-.pull-right[
+.pull-right-40[
 &lt;br&gt;
-&lt;br&gt;
-.blockquote[
+
+.bq.font90[
 - As the sample size increases, the variability (SE) of the sample statistics tends to decrease.
 - Smaller SE means the sample statistics tend to be closer to the true population parameter value! 
 ]
@@ -301,15 +326,22 @@ Which sampling distribution corresponds to a larger sample size?
 
 ---
 
-class: middle
 
 # Other Factors
 
-What else affects the standard error of a statistic?
+.green-h[
+Q. What else affects the standard error of a statistic?]
+--
 
-.blue[The variability of the population!]
+.blue-h[A. .blue[The variability of the population!]]
 
-.blockquote[
+&lt;br&gt;
+
+--
+
+&lt;br&gt;
+
+.bq[
 - .bold[Quantitative variable:] the larger the population standard deviation, the larger the standard error of a statistic (like a mean)
 
 - .bold[Categorical variable:] the closer the population proportion is to 0.5, the larger the standard error of the sample proportion
@@ -323,14 +355,30 @@ class: middle
 
 .red.bold[Do not confuse sample size and simulation size !!]
 
-.blockquote-list[
+.pull-left[
+.bql[
 .bold.blue[Sample size (n)] = how many individuals are in the sample used to compute our stat?
 
-- The SE of your stat gets smaller as `\(n\)` get bigger.
+]
 
+]
+
+
+
+.pull-right[
+
+.bql[
 .bold.blue[Simulation size (N)] = how many random samples did we take from the population to simulate the sampling distribution of our stat?
 
+
+]
+
+]
+
+.bq[
+- The SE of your stat gets smaller as `\(n\)` get bigger.
 - Once you’ve simulated a couple `\(100\)` samples, the shape/center/spread of the sampling distribution should remain about the same as you increase the simulation size.
+
 
 ]
 
@@ -338,10 +386,10 @@ class: middle
 
 class: middle
 
-# Further Examples
+# Further Examples: Statistics Grad Schools
 
 .pull-left[
-.blockquote[What does each dot represent?
+.bq[What does each dot represent?
 
   a. Enrollment at one statistics grad program
 
@@ -366,7 +414,7 @@ class: middle
 # Population Mean
 
 .pull-left[
-.blockquote[
+.bq[
 The sampling distribution is shown for enrollment in statistics grad schools.  The population parameter is closest to:
 
 a. 45 
@@ -395,7 +443,7 @@ class: middle
 
 .pull-left[
 
-.blockquote[
+.bq[
 The sampling distribution is shown for enrollment in statistics grad schools. The .bold[standard error] is closest to:
 
   a. 5  
@@ -420,7 +468,7 @@ The sampling distribution is shown for enrollment in statistics grad schools. Th
 
 # Random Vs. Non-random
 
-.blockquote.font90[Samples of .bold[size] 5 are taken from a large population with .bold[population mean] 8, and the sampling distributions for the sample means are shown.  Dataset A (top) and Dataset B (bottom) were collected using different sampling methods.  Which dataset (A or B) used .bold[random sampling]?]
+.bq.font80[Samples of .bold[size] 5 are taken from a large population with .bold[population mean] 8, and the sampling distributions for the sample means are shown.  Dataset A (top) and Dataset B (bottom) were collected using different sampling methods.  Which dataset (A or B) used .bold[random sampling]?]
 
 &lt;center&gt;
 &lt;img src="images/stackeddata.png" width="50%" height="50%"&gt;&lt;br&gt;
@@ -435,7 +483,7 @@ The sampling distribution is shown for enrollment in statistics grad schools. Th
 - .bold[Bootstrap:] Sample with replacement from the original sample, using the same sample size.
 
 &lt;center&gt;
-&lt;img src="images/bootsample.png" width="50%" height="50%"&gt;&lt;br&gt;
+&lt;img src="images/bootsample.png" width="75%" height="70%"&gt;&lt;br&gt;
 &lt;a&gt;Original sample (left) to bootstrap sample (right)&lt;/a&gt;
 &lt;/center&gt;
 
@@ -445,7 +493,7 @@ The sampling distribution is shown for enrollment in statistics grad schools. Th
 # Bootstrap 
 
 &lt;center&gt;
-&lt;img src="images/bootinf.png" width="50%" height="50%"&gt;&lt;br&gt;
+&lt;img src="images/bootinf.png" width="60%" height="50%"&gt;&lt;br&gt;
 &lt;a&gt;Original sample (left) to population (right)&lt;/a&gt;
 &lt;/center&gt;
 
@@ -456,16 +504,18 @@ The sampling distribution is shown for enrollment in statistics grad schools. Th
 
 # Bootstrap Sampling in R
 
-.blockquote[
+.bq[
 - resample a set of observations with replacement
 
 - same data points can appear multiple times
 ]
 
-&amp;nbsp; | Data | Statistic |
----- | ---- | ---- |
-Original sample | `\(x_1, x_2, ..., x_n\)` | `\(\bar{x}_n\)` | 
-Resample  | `\(x_1^*, x_2^*, ..., x_n^*\)` | `\(\bar{x}^*_n\)`|
+&lt;br&gt;
+
+&amp;nbsp; | Data | Statistic 
+---- | ---- | 
+Original sample | `\(x_1, x_2, ..., x_n\)` | `\(\bar{x}_n\)` 
+Resample  | `\(x_1^*, x_2^*, ..., x_n^*\)` | `\(\bar{x}^*_n\)`
 
 
 ```r
@@ -479,7 +529,7 @@ class: middle
 
 # Bootstrap Steps
 
-.blockquote.font90[
+.bq.font90[
 1. Generate a bootstrap sample.
 
 2. Compute the statistic of interest for your bootstrap sample.
@@ -498,7 +548,7 @@ class: middle
 
 &lt;br&gt;
 
-.blockquote[
+.bq[
 Suppose `\(X = \{20, 24, 19, 23, 22, 16\}\)`
 `\begin{align*}
             X_1^* &amp;= \{16, 19, 16 ,23 ,22, 24\}\\
@@ -510,7 +560,7 @@ Suppose `\(X = \{20, 24, 19, 23, 22, 16\}\)`
 \end{align*}`
 
 
-N = total number of simulations/samples
+.yellow-h[N = total number of resamples/simulations/samples]
 
 ]
 ]
@@ -523,7 +573,7 @@ N = total number of simulations/samples
 
 class: action
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
 
 .pull-left-40[
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
@@ -532,15 +582,16 @@ class: action
 
 &lt;br&gt;
 &lt;br&gt;
-.blockquote[
+.bq[
 
-Go to our class [moodle](https://moodle.carleton.edu), go to the in class activity file, skim through and try to answer the questions
+Please go through the remainder of the class activity file and try to answer the questions
 
 ]
 ]
 
-<div class="countdown" id="timer_6253cda4" style="top:0;right:0;padding:3px 4px;font-size:2em;" data-warnwhen="0">
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<div class="countdown" id="timer_e7a56385" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -592,6 +643,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
