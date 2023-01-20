@@ -108,11 +108,11 @@ class: middle
 
 # Question!
 
-.blockquote[The higher the standard error of a statistic, the $\ldots \ldots$ the uncertainty surrounding the statistic.
+.bq[
+The higher the standard error of a statistic, the $\ldots \ldots$ the uncertainty surrounding the statistic.
 
-1. higher
-
-2. lower
+  1. higher
+  2. lower
 ]
 
 ---
@@ -122,8 +122,8 @@ class: middle
 
 
 <center>
-<img src="images/samp.png" width="45%" height="30%"><br>
 <a>Sampling distributions. Top n=50, Bottom n=100</a>
+<img src="images/samp.png" width="50%" height="30%"><br>
 </center>
 
 
@@ -133,7 +133,7 @@ class: middle
 
 # Interval Estimation
 
-.blockquote-list[
+.bql[
 - .bold[Point estimates] are almost always not accurate
 - Uncertainty in point estimates measured by the .bold[Standard Error (SE)]
 - A plausible range of values for the population parameter is more reliable
@@ -155,15 +155,14 @@ class: middle
 
 .pull-right[
 <br>
-<br>
 > How accurate is an estimate of $60\%$?
 
 ]
 
+<br>
 
 <center>
-<img src="images/surveymethods.png" width="60%" height="50%"><br>
-<a>Survey Methodology</a>
+<img src="images/surveymethods.png" width="70%" height="50%"><br>
 </center>
 
 
@@ -186,7 +185,7 @@ class: middle
 
 .pull-right[
 
-.blockquote[
+.bq[
 - Interval estimate: $60\% \pm 3\% = (57\% , 63\%)$
 - The percentage of American adults who would vote for a Muslim for president is likely between $57\%$ and $63\%$.
 - Would a majority of US adults vote for a qualified Muslim presidential candidate?
@@ -201,7 +200,7 @@ class: middle
 
 # Margin of Error
 
-.blockquote-list.font90[
+.bql.font90[
 - The .bold[margin of error] measures how accurate a point estimate is likely to be in estimating a parameter.
 
 - To determine the margin of error, we can use the statistic's .bold[sampling distribution] and .bold[standard error]
@@ -213,7 +212,7 @@ class: middle
 
 # Confidence Intervals
 
-.blockquote[
+.bq[
 - A .bold[confidence interval] is an interval containing the most believable values for a parameter
 - A confidence interval is centered on the .bold[point estimate] and extends a certain number of .bold[standard errors] on either side of the estimate
 - The .bold[confidence level] tells us what percent of the intervals will contain the population parameter.
@@ -241,12 +240,15 @@ class: middle
 
 ---
 
+class: middle
+
+
 # $95\%$ Confidence Interval
 
 > If the sampling distribution is relatively .bold[symmetric] and .bold[bell-shaped], a $95\%$ confidence interval can be estimated using $$\mathbf{statistic} \pm 2 \times \mathbf{SE}$$
 
---
 
+<br>
 <br>
 
 > $95\%$ confidence means $95\%$ of all samples will yield a statistic that is within 2 SE of the population parameter
@@ -257,9 +259,9 @@ class: middle
 
 # Confidence Intervals are ...
 
-.blockquote-list[
+.bql[
 - always about the .bold[population]
-- are not .bold[probability statements]
+- not .bold[probability statements]
 - only about .bold[population parameters], not individual observations
 - only reliable if the sample statistic they’re based on is an .bold[unbiased] estimator of the population parameter
 ]
@@ -268,10 +270,10 @@ class: middle
 
 # A short demo
 
-Click [here](http://www.lock5stat.com/StatKey/index.html) to go to Statkey website
+Let's all go to [Statkey](http://www.lock5stat.com/StatKey/index.html) web app.
 
 <center>
-<img src="images/images.jpg" width="40%" height="30%"><br>
+<img src="images/images.jpg" width="50%" height="30%"><br>
 </center>
 
 ---
@@ -282,7 +284,7 @@ class: middle
 
 .pull-left[
 
-.blockquote-list[
+.bql[
 - The parameter is .bold[fixed]
 - The statistic is .bold[random] (depends on the sample)
 - The interval is also .bold[random] (depends on the statistic)
@@ -292,8 +294,7 @@ class: middle
 .pull-right[
 <center>
 <img src="images/skconfidence.png" width="70%" height="80%"><br>
-<a>Repeated Sampling of 100 95% Confidence Intervals, Truth = Vertical Line</a>
-</center>
+<a style="font-size: smaller;">Repeated Sampling of 100 95% Confidence Intervals, Truth = Vertical Line</a></center>
 
 
 ]
@@ -302,11 +303,10 @@ class: middle
 
 class: middle
 
-# Bootstrap: Motivation
+# What to do when we only have one sample - .bold.green-h[BOOTSTRAP!]
 
-.blockquote[
+.bq[
 - .bold[Repeated sampling] is needed to compute the standard error of a sample statistic
-- What to do when we only have one sample - .bold.large[BOOTSTRAP!]
 - Can .bold[estimate the SE] from a bootstrap distribution
 - Use this SE to compute a .bold[confidence interval] for an unknown parameter
 ]
@@ -316,8 +316,8 @@ class: middle
 # Bootstrap 
 
 <center>
-<img src="images/bootinf.png" width="60%" height="60%"><br>
 <a> Original sample (left) to population (right)</a>
+<img src="images/bootinf.png" width="60%" height="60%"><br>
 </center>
 
 .out-t[Creating a bootstrap sample is the same as using the data simulate a “population” that contains an infinite number of copies of the data.]
@@ -327,7 +327,7 @@ class: middle
 
 # Bootstrap Sampling in R
 
-.blockquote-list[
+.bql[
 - resample a set of observations with replacement
 
 - same data points can appear multiple times
@@ -341,7 +341,7 @@ Original sample | $x_1, x_2, ..., x_n$ | $\bar{x}_n$
 Resample  | $x_1^*, x_2^*, ..., x_n^*$ | $\bar{x}^*_n$
 
 
-.pull-left[
+.pull-left-60[
 ```{r, eval=FALSE}
 # R-code
 # In base R
@@ -349,7 +349,7 @@ boot <- sample(x, size, replace = TRUE)
 ```
 ]
 
-.pull-right[
+.pull-right-40[
 
 ```{r, eval=FALSE}
 # R-code
@@ -364,7 +364,7 @@ boot(x)
 
 # Bootstrap Steps
 
-.blockquote-list[
+.bql[
 1. Generate a bootstrap sample.
 
 2. Compute the statistic of interest for your bootstrap sample.
@@ -373,9 +373,11 @@ boot(x)
 
 ]
 
+--
+
 <br>
 
-.out-t[This is the bootstrap distribution!]
+.out-t.center.Large[This is the bootstrap distribution!!]
 
 
 ---
@@ -384,7 +386,7 @@ class: middle
 
 # Bootstrap Distribution
 
-.blockquote-list[
+.bql[
 - A .bold[bootstrap distribution] is the distribution of many bootstrap statistics.
 
 - The standard deviation of this distribution is called the .bold[bootstrap standard error] of the statistic.
@@ -402,7 +404,7 @@ class: middle
 
 <br>
 
-.blockquote[
+.bq[
 Suppose $X = \{20, 24, 19, 23, 22, 16\}$
 \begin{align*}
             X_1^* &= \{16, 19, 16 ,23 ,22, 24\}\\
@@ -427,7 +429,7 @@ N = total number of simulations/samples
 
 ## Summary
 
-.blockquote-list[
+.bql.font90[
 - .bold[Interval estimates] let us infer a set of plausible values for a parameter
 - A 95% .bold[confidence interval] will contain the true parameter for 95% of all samples
 - Usually, we do not have access to the population and cannot do .bold[repeated sampling]
@@ -445,18 +447,16 @@ class: action
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
-
 <br>
 <br>
-.blockquote[
-
 <br>
+.bq[
 
 Go over the remaining portion of in class activity and let me know if you have any questions!
 
 ]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 25, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
