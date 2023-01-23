@@ -110,7 +110,7 @@ class: middle
 
 ## Confidence Interval Recap
 
-.blockquote-list[A .bold[confidence interval] for a parameter is an interval computed from sample data by a method that will capture the parameter for a specified proportion of all samples.
+.bql[A .bold[confidence interval] for a parameter is an interval computed from sample data by a method that will capture the parameter for a specified proportion of all samples.
 
 $$CI = PE \pm ME$$
 .bold[95 % CI] $$ statistic \pm 2\times SE $$
@@ -126,7 +126,7 @@ class: middle
 
 .pull-left[
 <br>
-.blockquote[
+.bq.font90[
 - The success rate (proportion of all samples whose intervals contain the parameter) is known as the .bold[confidence level]
 
 - A 95% confidence interval will contain the true .bold[parameter] for 95% of all samples
@@ -136,7 +136,7 @@ class: middle
 .pull-right[
 <center>
 <img src="images/skconfidence.png" width="70%" height="80%"><br>
-<a>Repeated Sampling of 100 95% Confidence Intervals, Truth = Vertical Line</a>
+<a style="font-size: smaller;">Repeated Sampling of 100 95% Confidence Intervals, Truth = Vertical Line</a>
 </center>
 ]
 
@@ -148,7 +148,7 @@ class: middle
 
 A survey of .bold[1,502] Americans in January 2012 found that .bold[86%] consider the economy a “top priority” for the president and congress. The standard error for this statistic is .bold[0.01]. 
 
-.blockquote-list[
+.bql[
 
 What is the .bold[95% confidence interval] for the true proportion of all Americans that considered the economy a “top priority” at that time?
 
@@ -175,7 +175,7 @@ class: middle
 
 # Confidence Interval Interpretation
 
-.blockquote-list[
+.bql[
 
 Which of the following is an appropriate .bold[interpretation] for a 95% confidence interval:
 
@@ -201,16 +201,14 @@ The correct answer is A.
 
 # Common Misintepretations
 
-.blockquote-list[
+.bql[
 - .bold[Misinterpretation 1:] “A 95% confidence interval contains 95% of the data in the population"
 - .bold[Misinterpretation 2:] “I am 95% sure that the mean of a sample will fall within a 95% confidence interval for the mean”
 - .bold[Misinterpretation 3:] “The probability that the population parameter is in this particular 95% confidence interval is 0.95”
-
 ]
 
 --
 
-<br>
 
 .yellow-h.font120[I am 95% sure that the mean of a population will fall within a 95% confidence interval for the mean]
 
@@ -220,7 +218,7 @@ class: middle
 
 # Example 2
 
-.blockquote[
+.bq[
 A 98% confidence interval for mean pulse rate is 65 to 71.  The interpretation “I am 98% sure that all students will have pulse rates between 65 and 71.” is
 
 A. Correct
@@ -241,7 +239,7 @@ class: middle
 
 # Example 3
 
-.blockquote[
+.bq[
 A 98% confidence interval for mean pulse rate is 65 to 71.  The interpretation “I am 98% sure that the mean pulse rate for this sample of students will fall between 65 and 71” is
 
 
@@ -263,7 +261,7 @@ class: middle
 
 # Example 4
 
-.blockquote[
+.bq[
 A 98% confidence interval for mean pulse rate is 65 to 71.  The interpretation “I am 98% sure that the mean pulse rate for the population of all students will fall between 65 and 71” is
 
 
@@ -285,7 +283,7 @@ class: middle
 
 # Level of Confidence
 
-.blockquote[Which is wider? a 99% confidence interval or a 95% confidence interval?
+.bq[Which is wider? a 99% confidence interval or a 95% confidence interval?
 
 (a) 95% CI
 
@@ -301,23 +299,21 @@ The correct answer is (b). We need a larger interval (range of likely parameter 
 
 ---
 
-# Review
-
-<center>
-<img src="images/cireview.png" width="60%" height="60%"><br>
-<a>A nice infographic review</a>
-</center>
+background-image: url("images/cireview.png") 
+background-position: cover
+background-size: 800px, 100% 100%
 
 ---
+
 
 # Sampling Distribution Vs Bootstrap Distribution
 
 .pull-left[
 
-.blockquote[
+.bq[
 .bold[Sampling Distribution of a statistic]
 
-- Take .red[many samples] from the population, compute the statistic for each sample
+- Take .green[many samples] from the population, compute the statistic for each sample
 - .bold[Shape:] bell-shaped when n is large
 - .bold[Center:] population parameter
 - .bold[Spread:] called the SE of the statistic
@@ -327,11 +323,11 @@ The correct answer is (b). We need a larger interval (range of likely parameter 
 ]
 
 .pull-right[
-.blockquote[
+.bq[
 
 .bold[Bootstrap Distribution of a statistic]
 
-- Take .red[many bootstrap samples] from the original sample, compute the statistic for each bootstrap sample
+- Take .green[many bootstrap samples] from the original sample, compute the statistic for each bootstrap sample
 - .bold[Shape:] bell-shaped when n is large
 - .bold[Center:] original sample statistic!
 - .bold[Spread:] caled the bootstrap SE of the statistic
@@ -349,7 +345,7 @@ The correct answer is (b). We need a larger interval (range of likely parameter 
 
 # Percentile Method Bootstrap
 
-.blockquote.font90[If the bootstrap distribution is approximately symmetric, a P% confidence interval equals the percentiles in the bootstrap distribution so that the proportion of bootstrap statistics between the percentiles equal P%.]
+.bq.font90[If the bootstrap distribution is approximately symmetric, a P% confidence interval equals the percentiles in the bootstrap distribution so that the proportion of bootstrap statistics between the percentiles equal P%.]
 
 <center>
 <img src="images/bootpercentile.png" width="60%" height="60%"><br>
@@ -362,7 +358,7 @@ class: middle
 
 # The Magic of Bootstrapping
 
-.blockquote.font90[
+.bq.font90[
 - We can use bootstrapping to approximate the SE for .bold[many types] of sample statistic!
     - Mean, proportion, differences, correlation, slope
     - Standard deviation, *median*
@@ -396,7 +392,7 @@ For Florida lakes, what is the correlation between average mercury level (ppm) i
 <a>A lake in Florida</a>
 </center>
 
-.blockquote[
+.bq[
 $r = -0.575$
 
 Give a 90% CI for $\rho$?
@@ -424,7 +420,7 @@ class: middle
 
 # Bootstrap Caution!
 
-.blockquote[
+.bq[
 - These methods for creating a confidence interval only work if the bootstrap distribution is smooth and symmetric
 
 - .bold[ALWAYS] look at a plot of the bootstrap distribution!
@@ -446,7 +442,7 @@ class: action
 
 <br>
 <br>
-.blockquote[
+.bq[
 
 <br>
 
@@ -455,6 +451,6 @@ Skim through the remaining portion of in class activity and we will discuss this
 ]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
