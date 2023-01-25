@@ -111,7 +111,7 @@ class: middle
 # Extrasensory Perception
 
 <center>
-<img src="images/psychic.jpg" width="70%" height="70%"><br>
+<img src="images/psychic.jpg" width="80%" height="70%"><br>
 <a></a>
 </center>
 
@@ -154,14 +154,14 @@ class: action
 ]
 .pull-right-60[
 <br>
-.blockquote[
+.bq.font80[
 
-Randomly choose a letter from A B C D E and write it down (don’t show anyone!)
+- Randomly choose a letter from A B C D E and write it down (don’t show anyone!)
 
-Find a partner, telepathically communicate your letter (no auditory or visual clues!) and have them guess your
+- Find a partner, telepathically communicate your letter (no auditory or visual clues!) and have them guess your
 letter.
 
-Repeat a couple of times then switch roles.
+- Repeat a couple of times then switch roles.
 
 
 ]
@@ -169,7 +169,7 @@ Repeat a couple of times then switch roles.
 .out-t[How often did you guess correctly?]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 ---
 
@@ -182,7 +182,7 @@ class: middle, inverse
 
 # Extrasensory Perception
 
-.blockquote-list[
+.bql[
 There are five cards with five different symbols. If there is no such thing as ESP, what proportion p of guesses should be correct?
 
   1. $\mathrm{p}=0$
@@ -194,7 +194,7 @@ There are five cards with five different symbols. If there is no such thing as E
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 The correct answer is 3. (since there are five choices and we are randomly guessing)
 </details>
 
@@ -202,7 +202,7 @@ The correct answer is 3. (since there are five choices and we are randomly guess
 
 # Extrasensory Perception (Example 1)
 
-.blockquote[
+.bq[
 Let $\hat{p}$ denote the sample proportion of correct guesses. Which of the statistics below would give the strongest evidence for ESP?
 
   1. $\hat{\mathrm{p}}=0$
@@ -213,7 +213,7 @@ Let $\hat{p}$ denote the sample proportion of correct guesses. Which of the stat
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 The correct answer is 4. Since more correct means ESP. 
 </details>
 
@@ -222,7 +222,7 @@ The correct answer is 4. Since more correct means ESP.
 
 # Extrasensory Perception
 
-.blockquote-list.font120[
+.bql.font120[
 - As we've learned, statistics vary from sample to sample
 - Even if the "population/true" proportion is $\mathrm{p}=1/5$, not every sample proportion will be exactly $1/5$
 ]
@@ -238,7 +238,7 @@ The correct answer is 4. Since more correct means ESP.
 
 # Statistical Test
 
-.blockquote-list.font120[
+.bql.font120[
 A statistical test uses data from a sample to assess a claim about a population or experiment
 
 
@@ -260,7 +260,7 @@ Claim for which we seek evidence.
 ---
 
 # ESP Hypothesis
-.blockquote.font90[
+.bql.font90[
 For the ESP experiment:
   - $\mathrm{H}_{0}: \mathrm{p}=1 / 5$
   - $\mathrm{H}_{\mathrm{a}}: \mathrm{p}>1 / 5$
@@ -268,8 +268,8 @@ For the ESP experiment:
 
 <br>
 
-.blockquote.font90[
-.purple[Helpful hints:]
+.bq.font80[
+.purple.bold[Helpful hints:]
   - $\mathrm{H}_{0}$ usually includes $=$
   - $\mathrm{H}_{\mathrm{a}}$ usually includes $>,<$, or $\neq$
   - The direction in $\mathrm{H}_{\mathrm{a}}$ depends on the question being asked, not based on what the data shows!
@@ -281,28 +281,26 @@ For the ESP experiment:
 
 # Sleep Vs. Caffeine (Example 2)
 
-.blockquote[
+.bq[
 Students were given words to memorize, then randomly assigned to take either a 90 min nap, or a caffeine pill. $2 \frac{1}{2}$ hours later, they were tested on their recall ability.
 - Explanatory variable: .bold[sleep or caffeine]
 - Response variable: .bold[number of words recalled]
 ]
 
---
 
 <br>
 
-.out-t[Is sleep or caffeine better for memory?
+.green-h.font120[.b[Research Question]: Is sleep or caffeine better for memory?
 ]
 
 .footnote[Mednick, Cai, Kanady, and Drummond (2008). “Comparing the benefits of caffeine, naps and placebo on verbal, motor and perceptual memory,” Behavioral Brain Research, 193, 79-86.]
 
 ---
 
-class: middle
 
 # Sleep Vs. Caffeine
 
-.blockquote[
+.bq[
 
 What is the parameter of interest in the sleep versus caffeine experiment?
 
@@ -316,10 +314,10 @@ What is the parameter of interest in the sleep versus caffeine experiment?
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 The correct answer is 4.
 
-.blockquote[Difference in mean responses $\mu_1 - \mu_2$, where $\mu_1$ and $\mu_2$ are the mean words recalled in the two different conditions]
+.bq[Difference in mean responses $\mu_1 - \mu_2$, where $\mu_1$ and $\mu_2$ are the mean words recalled in the two different conditions]
 
 </details>
 
@@ -330,7 +328,7 @@ class: middle
 
 # Sleep Vs. Caffeine
 
-.blockquote-list[
+.bql[
 - Let $\mu_{\mathrm{s}}$ and $\mu_{\mathrm{c}}$ be the mean number of words recalled after sleeping and after caffeine.
 - Is there a difference in average word recall between sleep and caffeine?
 ]
@@ -339,8 +337,9 @@ class: middle
 
 # Sleep Vs. Caffeine
 
-.blockquote[
+.bq[
 - What are the null and alternative hypothesis?
+
   1. $\mathrm{H}_{0}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}$
   2. $\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}$
   3. $\mathrm{H}_{0}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}>\mu_{\mathrm{c}}$
@@ -348,9 +347,8 @@ class: middle
   5. $\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}<\mu_{\mathrm{c}}$
 ]
 
-<br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 The correct answer is 2 (since we are looking for evidence that the means are different)
 </details>
 
@@ -362,10 +360,10 @@ class: middle
 
 Note: the following two sets of hypotheses are equivalent, and can be used interchangeably:
 
-.blockquote[
+.bq[
 $$\begin{array}{ll}
-\mathrm{H}_{0}: \mu_{1}=\mu_{2} & \mathrm{H}_{0}: \mu_{1}-\mu_{2}=0 \\
-\mathrm{H}_{\mathrm{a}}: \mu_{1} \neq \mu_{2} & \mathrm{H}_{\mathrm{a}}: \mu_{1}-\mu_{2} \neq 0
+\mathrm{H}_{0}: \mu_{1}=\mu_{2} & \qquad \mathrm{H}_{0}: \mu_{1}-\mu_{2}=0 \\
+\mathrm{H}_{\mathrm{a}}: \mu_{1} \neq \mu_{2} & \qquad \mathrm{H}_{\mathrm{a}}: \mu_{1}-\mu_{2} \neq 0
 \end{array}$$
 ]
 
@@ -375,15 +373,15 @@ $$\begin{array}{ll}
 
 Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
-.blockquote-list[
+.bql[
 (a) What proportion of US adults support gun control?]
 
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 <br>
-.blockquote[
+.bq[
 - Estimating a parameter
 - .bold[Confidence Interval] for $\mathrm{p}$
 - proportion of US adults who support gun control.]
@@ -398,16 +396,16 @@ Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
 Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
-.blockquote-list[
+.bql[
 (b) Does the proportion of US adults who support gun control differ between males and females?]
 
 
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 <br>
-.blockquote[
+.bq[
 .bold[Testing] the claim of difference
 $$\begin{array}{l}
 \mathrm{H}_{0}: \mathrm{p}_{\mathrm{f}}=\mathrm{p}_{\mathrm{m}} \\
@@ -425,15 +423,15 @@ $$\begin{array}{l}
 
 Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
-.blockquote-list[
+.bql[
 (c) What proportion of this class supports gun control?]
 
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 <br>
-.blockquote[
+.bq[
 .bold[Neither], just collect data on the entire population (class) to answer this question.
 ]
 
@@ -446,16 +444,16 @@ Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
 Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
-.blockquote-list[
+.bql[
 (d) How much more do men earn, on average, compared to women in the US?]
 
 
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 <br>
-.blockquote[
+.bq[
 “how much" means an estimate: .bold[Confidence Interval] for
 $$\mu_{\mathrm{f}}-\mu_{\mathrm{m}}$$
 ]
@@ -470,15 +468,15 @@ $$\mu_{\mathrm{f}}-\mu_{\mathrm{m}}$$
 
 Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
-.blockquote-list[
+.bql[
 (e) What proportion of Minnesota voters in the 2012 election voted for President Biden?]
 
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 <br>
-.blockquote[
+.bq[
 - Neither, this number is computed from voting records
 ]
 
@@ -493,16 +491,16 @@ Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
 Options: .green[TEST, CONFIDENCE INTERVAL, NEITHER]
 
-.blockquote-list[
+.bql[
 (f) Is a higher rate of cricket chirping associated with higher summer night temps?]
 
 
 
 <br>
 <details>
-<summary>.large.red[Click for answer]</summary>
+<summary>.red[Click for answer]</summary>
 <br>
-.blockquote[
+.bq[
 - .bold[Testing] a claim about association
 $$\begin{array}{l}
 \mathrm{H}_{0}: \rho=0 \text { or } \beta=0 \\
@@ -531,7 +529,7 @@ class: middle
 
 # Statistical Significance
 
-.blockquote[
+.bql[
 When results as extreme as the observed sample statistic are unlikely to occur by .bold[random chance] alone (assuming the null hypothesis is true), we say the sample results are .bold[statistically significant]
 - If our sample is .bold[statistically significant], we have convincing .bold[evidence against] $\mathrm{H}_{0}$, .bold[in favor of] $\mathrm{H}_{\mathrm{a}}$
 - If our sample is .bold[not statistically significant], our test is .bold[inconclusive]. The null hypothesis may be true (or maybe not).
@@ -541,7 +539,7 @@ When results as extreme as the observed sample statistic are unlikely to occur b
 
 # Extrasensory Perception
 
-.blockquote[
+.bql[
 $p=$ Proportion of correct guesses
 $$\begin{array}{l}
 \mathrm{H}_{0}: \mathrm{p}=1 / 5 \\
@@ -550,9 +548,9 @@ $$\begin{array}{l}
 ]
 
 <br>
-.blockquote[
+.bq.font80[
 If results are statistically significant ...
-- the sample proportion of correct guesses is higher than is likely just by random chance (if ESP does not exist and $\mathrm{p}=1 / 5$ )
+- the sample proportion of correct guesses is higher than is likely just by random chance (if ESP does not exist and $\mathrm{p}=1 / 5$)
 - we have evidence that the true proportion of correct guesses really is higher than $1 / 5$, and thus have evidence of ESP
 ]
 
@@ -563,7 +561,7 @@ class: middle
 
 # Extrasensory Perception
 
-.blockquote[
+.bql[
 $p=$ Proportion of correct guesses
 $$\begin{array}{l}
 \mathrm{H}_{0}: \mathrm{p}=1 / 5 \\
@@ -572,7 +570,8 @@ $$\begin{array}{l}
 ]
 
 <br>
-.blockquote[
+
+.bq.font80[
 If results are .bold[NOT] statistically significant ...
 - the sample proportion of correct guesses could easily happen just by random chance (if ESP does not exist and $\mathrm{p}=1 / 5$ )
 - we do not have enough evidence to conclude that $p>1 / 5$, or that ESP exists
@@ -585,7 +584,7 @@ class: middle
 
 # Sleep Vs Caffeine
 
-.blockquote-list[
+.bql[
 - $\mu_{\mathrm{s}}$ and $\mu_{\mathrm{c}}$ : mean number of words recalled after sleeping and after caffeine
 - $\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}$ and $\mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}$ sleeping and after caffeine
 - The sample difference in means is $\overline{\mathrm{x}}_{\mathrm{S}}-\overline{\mathrm{x}}_{\mathrm{C}}=3$, and this is statistically significant. 
@@ -598,7 +597,7 @@ class: middle
 
 The sample difference in means is $\overline{\mathrm{x}}_{\mathrm{S}}-\overline{\mathrm{x}}_{\mathrm{C}}=3$, and this is statistically significant. 
 
-.blockquote-list[
+.bql[
 We can conclude ...
 
   1. there is a difference between sleep and caffeine for memory (and data show sleep is better)
@@ -613,7 +612,7 @@ We can conclude ...
 
 # Statistical Significance
 
-.blockquote-list[
+.bql[
 - Hypothesis testing is similar to how our justice system works (or is suppose to work).
 
 $$\mathrm{H}_{0} : \text{Defendant is innocent vs. } \mathrm{H}_{\mathrm{a}} \text{: Defendant is guilty}$$
@@ -621,7 +620,7 @@ $$\mathrm{H}_{0} : \text{Defendant is innocent vs. } \mathrm{H}_{\mathrm{a}} \te
 
 <br>
 
-.blockquote[
+.bq.font80[
 Assumption: Defendant is innocent $\left(\mathrm{H}_{0}\right)$
 
 Verdict:
@@ -636,7 +635,7 @@ Verdict:
 
 .out-t[How do we determine statistical significance??]
 
-.blockquote-list[
+.bql[
 For ESP example:
 - If there is no ESP, how unusual would it be to get 3 correct guesses in 10 tries?
 
@@ -646,14 +645,14 @@ For Sleep versus Caffeine example:
 ]
 
 
-.yellow-h[We assess this with a probability that we call a "p-value."]
+.blue-h[We assess this with a probability that we call a "p-value."]
 ---
 
 class: middle
 
 # Summary
 
-.blockquote[
+.bql[
 - Statistical tests use data from a sample to assess a claim about a population
 - Statistical tests are usually formalized with competing hypotheses:
 - Null hypothesis $\left(\mathrm{H}_{0}\right)$ : no effect or no difference
