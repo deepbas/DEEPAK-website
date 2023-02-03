@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>The Normal Distribution!</title>
+    <title>Additional topics in testing</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -22,7 +22,6 @@
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
 
     <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
-    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
     <link rel="stylesheet" href="css/my-font.css" type="text/css" />
   </head>
   <body>
@@ -45,133 +44,454 @@ layout: true
 ---
 
 class: title-slide, middle
-&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+&lt;!-- background-image: url("images/title-image2.png") --&gt;
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[The Normal Distribution!]
+# .fancy[Additional topics in testing]
 
 ### .fancy[Stat 120]
 
- December 26 2022
+ February 03 2023
 
 
 ---
 
 class: middle
 
-# Density Curve
+# Significance Level `\(\&amp;\)` Formal  Decisions
 
-&gt; A density curve is a theoretical model to describe a distribution.
+.bql[The .bold[significance level], `\(\alpha\)` is  the threshold below which the p-value is deemed small enough to reject the null hypothesis (evidence is statistically significant).
+]
+
+$$ \mathrm{p} \text {-value }&lt;\alpha \quad \Longrightarrow \quad \text { Reject } \mathrm{H}_0 $$
+`$$\mathrm{p} \text {-value } \geq \alpha \quad \Longrightarrow \text { Do not Reject } \mathrm{H}_0$$`
+Common levels:
+.bq[
+- `\(10 \%\)` : need some evidence to reject the null
+- `\(5 \%\)` : need moderate evidence to reject the null
+- `\(1 \%\)` : need strong evidence to reject the null
+]
+
+---
+
+# Errors
+
+
+|  | Reject `\(H_0\)` | Do not reject `\(H_0\)` |
+| :--- | :--- | :--- |
+| `\(H_0\)` true | .red.bold[TYPE I ERROR] | &lt;p style="text-align: center;"&gt;&amp;#128516;&lt;/p&gt; |
+| `\(H_0\)` false | &lt;p style="text-align: center;"&gt;&amp;#128516;&lt;/p&gt; | .red.bold[TYPE II ERROR] |
 
 &lt;br&gt;
 
 .bq[
-Distribution for 
-- individual measurements in population (for a quantitative variable)
-- Sampling distribution for a statistic
-]
-
-.bq[
-All density curves have an area under the curve of 1 (100%)
-- give proportions/percents as areas under the curve
+- A Type I Error is rejecting a true null (false positive)
+- A Type II Error is not rejecting a false null (false negative)
 ]
 
 ---
 
-# Normal Distribution
+class: middle
 
-.bq[A normal distribution has a symmetric bell-shaped density curve.]
+# Statistical Significance
 
-&lt;img src="Day14_files/figure-html/unnamed-chunk-1-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-# The Normal Model: `\(X \sim N(\mu, \sigma)\)`
-
-.bq[The mean and SD determine how a normal density curve looks.
-The normal model parameters are
-- `\(\mu\)` = model mean (center)
-- `\(\sigma=\)` model SD (variability)
-]
-
-&lt;br&gt;
-
-&lt;center&gt;
-&lt;img src="images/day14-1.png" width="50%" height="50%"&gt; &lt;br&gt;
-&lt;/center&gt;
-
----
-
-# What proportion of people score above 650?
-
-&lt;img src="Day14_files/figure-html/unnamed-chunk-2-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
-
-
-&lt;center&gt;
-&lt;div style="position: absolute; top: 20%; left: 70%;"&gt;
-&lt;span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
-  &lt;p&gt;Area under the curve &lt;br&gt; for scores 650 &amp; higher&lt;/p&gt;
-&lt;/span&gt;
-&lt;/div&gt;
-&lt;/center&gt;
-
----
-
-# How can we find areas under a normal density?
-
-
-
-
-&lt;img src="Day14_files/figure-html/unnamed-chunk-3-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
-
-
-
+Hypothesis testing is similar to how our justice system works (or is supposed to work!).
 `\begin{align*}
-\text { Area }=\int_a^b \frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^2}{2 \sigma^2}} d x
+H_0 &amp; \text { : defendant is innocent }  \\ H_A &amp; \text { : defendant is guilty }
 \end{align*}`
 
----
+Assumption: Defendant is innocent `\((H_0)\)`
 
-# StatKey – Verbal SAT population 
+.bq.font80[
+.bold[Verdicts:]
 
-&lt;center&gt;
-&lt;img src="images/day14-2.png" width="70%" height="50%"&gt; &lt;br&gt;
-&lt;/center&gt;
+Guilty: evidence (data) "beyond a reasonable doubt" points to guilt (Statistically significant)
+- Type I error possible: convict an innocent person
 
----
-
-# StatKey – Verbal SAT population
-
-&lt;center&gt;
-&lt;img src="images/day14-3.png" width="50%" height="50%"&gt; &lt;br&gt;
-&lt;/center&gt;
+Not Guilty: evidence (data) not beyond a reasonable doubt, but we don't know if they are truly innocent `\(\left(H_0\right)\)`
+- Type II error possible: release a guilty person
+]
 
 ---
 
-&lt;img src="Day14_files/figure-html/unnamed-chunk-4-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+class: middle
+
+# Examples
+
+.bq.font80[
+Science study of gender stereotypes:
+- Comparing interest between 5-year-old boys and girls in a game for "really, really smart kids"
+- test using `\(\alpha=0.05\)`; reported `\(p\)`-value of `\(0.46\)`
+
+Decision?
+- Do not reject `\(\mathrm{H}_0\)` : no evidence of a difference in mean interest level
+
+Possible error?
+- Type II: if a difference in mean interest level exists, then we would have made an error when not finding evidence of a gender difference in interest levels.
+
+Consequence of making this error?
+- Mislead the public about when gender stereotypes start emerging in young children
+]
+
 
 ---
 
-# Connecting any Normal model to the standard normal model
+class: middle
 
-&lt;img src="Day14_files/figure-html/unnamed-chunk-5-1.svg" width="680%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-# Big question
+# Examples
 
 .bq[
-When have we already been using normal models??
-- Bootstrap distributions – get confidence intervals if a bootstrap distribution is roughly bell-shaped
-- Randomization distributions – many of these are bell-shaped. 
+Memory: test using `\(\alpha=0.05\)`; data gives `\(p\)`-value of `\(0.048\)`
 
-- Normal models play a huge role in statistical inference.
+Decision?
+- Reject `\(\mathrm{H}_0\)`
 
-- If we know the (bootstrap/randomization) standard error* then we can just use a normal model rather than a resampling model (which requires more computational effort)
+Possible error?
+- Type I: if there is no difference in treatments, then we would have made an error in claiming that there was.
+
+Consequences of making this error?
+- Mislead the public about the benefits of sleep over caffeine.
+- The nice thing about type I errors is that we can control the chance of such an error...
 ]
+
+---
+
+class: middle
+
+#  `\(\alpha=\)` Probability of Type I Error
+
+.out-t[
+The significance level `\(\alpha\)` controls the type I error rate.
+]
+
+.pull-left[
+
+.bq.font80[
+- Recall the Florida Lakes slope test: `$$\mathrm{H}_0: \beta=0 \quad \mathrm{H}_{\mathrm{a}}: \beta&lt;0$$`
+
+- If `\(\mathrm{H}_0\)` is true and `\(\alpha=0.05\)`, then `\(5 \%\)` of sample slopes will be lower red tail `\((b \leq 0.06)\)`.
+
+- `\(5 \%\)` of the sample slopes will give `\(p\)`-values less than `\(0.05\)`, so `\(5 \%\)` of statistics will lead to rejecting `\(\mathrm{H}_0\)` if it is true (Type I error)!!!
+
+]
+]
+
+
+.pull-right[
+
+&lt;center&gt;
+&lt;img src="images/day13-1.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;a&gt;Null distribution&lt;/a&gt;
+&lt;/center&gt;
+
+]
+
+---
+
+class: middle
+
+#  `\(\alpha=\)` Probability of Type I Error
+
+.out-t[
+The significance level `\(\alpha\)` controls the type I error rate.
+]
+
+.pull-left[
+
+.bq.font80[
+- Recall the Florida Lakes slope test: `$$\mathrm{H}_0: \beta=0 \quad \mathrm{H}_{\mathrm{a}}: \beta&lt;0$$`
+
+- If `\(\mathrm{H}_0\)` is true and `\(\alpha=0.05\)`, then `\(5 \%\)` of sample slopes will be lower red tail `\((b \leq 0.06)\)`.
+
+- `\(5 \%\)` of the sample slopes will give `\(p\)`-values less than `\(0.05\)`, so `\(5 \%\)` of statistics will lead to rejecting `\(\mathrm{H}_0\)` if it is true (Type I error)!!!
+
+]
+]
+
+
+.pull-right[
+
+&lt;center&gt;
+&lt;img src="images/day13-1.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;div style="position: absolute; top: 50%; left: 50%;"&gt;
+&lt;span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;"&gt;
+  &lt;p&gt;Any b here will &lt;br&gt; mean we reject &lt;br&gt; null&lt;/p&gt;
+   &lt;i class="gg-arrow-long-right"&gt;&lt;/i&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;a&gt;Null distribution&lt;/a&gt;
+&lt;/center&gt;
+
+]
+
+---
+
+class: middle
+
+# Selecting a significance level
+
+.bq[
+Decreasing `\(\alpha\)` will lower your Type I error rate (makes it harder to reject the null)
+  - but it will also increase your type II error rate (makes it harder to accept a true alternative)
+]
+
+---
+
+class: middle
+
+# Selecting a significance level
+
+
+.bq[
+If a Type I error (rejecting a true null) is much worse than a Type II error, we may choose a smaller `\(\alpha\)`, like `\(\alpha=0.01\)` (need lots of evidence to reject null).
+  - E.g. sending an innocent person to jail
+  ]
+  
+---
+
+class: middle
+
+# Selecting a significance level
+
+.bq[
+If a Type II error (not rejecting a false null) is much worse than a Type I error, we may choose a larger `\(\alpha\)`, like `\(\alpha=0.10\)`
+- E.g. a false negative test for a serious disease
+]
+
+
+
+---
+
+class: middle
+
+# Probability of Type II Error
+
+.bq.font80[
+Not as simple to compute since the alternative is assumed to be true
+- E.g. which value in `\(\mathrm{H}_{\mathrm{a}}: \beta&lt;0\)` do we select to create an "alternative" randomization distribution?]
+&lt;br&gt;
+.bq.font80[
+The probability of making a Type II Error (not rejecting a false null) depends on
+- Effect size (how far the truth is from the null)
+- Sample size (bigger `\(\mathrm{n}\)` means less uncertainty)
+- Variability of measurements
+- Significance level (bigger `\(\alpha\)` means more false positives but fewer false negatives)]
+
+
+
+---
+
+class: middle
+
+# Power of a test
+
+.bql[
+The power of a test is the chance that it will correctly reject the null, or
+`$$1 - \text{Prob(Type II error)}$$`
+]
+
+
+---
+
+# Statistical Conclusions
+
+Formal decision of hypothesis test, based on a = 0.05 :
+
+&lt;center&gt;
+&lt;img src="images/day13-2.png" width="100%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+
+Informal strength of evidence against H0:
+
+
+&lt;center&gt;
+&lt;img src="images/day13-3.png" width="100%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Strength of evidence
+
+.bql[
+
+- Smaller p-values give us stronger and stronger evidence for the alternative hypothesis.
+
+- Larger p-values indicate little evidence for the alternative hypothesis. 
+
+]
+
+
+---
+
+# Example: bootstrap or randomization?
+
+&lt;center&gt;
+&lt;img src="images/day13-4.png" width="60%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+# Example: bootstrap or randomization?
+
+&lt;center&gt;
+&lt;img src="images/day13-5.png" width="60%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Using confidence intervals for hypothesis testing
+
+.bq.font110[
+If a `\(95 \%\)` CI contains the parameter in `\(\mathrm{H}_0\)`, then a two-tailed test should not reject `\(\mathrm{H}_0\)` at a `\(5 \%\)` significance level.
+]
+
+&lt;br&gt;
+
+.bq.font110[
+If a `\(95 \%\)` CI misses the parameter in `\(\mathrm{H}_0\)`, then a two-tailed test should reject `\(\mathrm{H}_0\)` at a `\(5 \%\)` significance level.
+]
+
+---
+
+&lt;center&gt;
+&lt;img src="images/day13-6.png" width="60%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+.bq[The 95% confidence interval misses null difference of 0. Reject the null at 5% level]
+
+
+---
+
+&lt;center&gt;
+&lt;img src="images/day13-7.png" width="60%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+.bq[The 99% confidence interval contains null difference of 0. Do not reject the null at 1% level]
+
+---
+
+class: middle
+
+# Sample Size and Statistical Significance
+
+.bql[
+- With small sample sizes, even large differences or effects may not be significant.
+- With large sample sizes, even a very small difference or effect can be significant
+]
+
+---
+
+# Randomization distribution with `\(n=10\)`
+
+&lt;center&gt;
+&lt;img src="images/day13-8.png" width="60%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+---
+
+# Randomization distribution with `\(n=100\)`
+
+
+&lt;center&gt;
+&lt;img src="images/day13-9.png" width="60%" height="30%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Multiple Testing/Comparison
+
+
+.bql[
+When multiple hypothesis tests are conducted, the chance that at least one test incorrectly rejects a true null hypothesis increases with the number of tests.
+
+- If the null hypotheses are all true, `\(\alpha\)` of the tests will yield statistically significant results just by random chance.
+]
+
+---
+
+class: middle
+
+# Diet and Sex of Baby
+
+
+.bq[
+- Are certain foods in your diet associated with whether or not you conceive a boy or a girl? 
+- To study this, researchers asked women about their eating habits, including asking whether or not they ate 133 different foods regularly
+]
+
+
+.footnote[http://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys.html]
+
+---
+
+class: middle
+
+# Diet and Sex of Baby
+
+.hljs[For each of the 133 foods studied, a hypothesis test was conducted for a difference between mothers who conceived boys and girls in the proportion who consume each food]
+
+
+.bq[What are the null and alternative hypotheses?
+
+Compare two populations: mothers who have boys vs. mothers who have girls
+
+`\(\boldsymbol{p}_b\)` : proportion of mothers who have boys that consume the food regularly
+
+`\(\boldsymbol{p}_g\)` : proportion of mothers who have girls that consume the food regularly
+]
+
+`\begin{aligned}
+&amp; \mathrm{H}_0: p_b=p_g \\
+&amp; \mathrm{H}_a: p_b \neq p_g
+\end{aligned}`
+
+---
+
+class: middle
+
+# Diet and Sex of Baby
+
+A significant difference was found for breakfast cereal (mothers of boys eat more), prompting the headline
+
+.green-h.center[“Breakfast Cereal Boosts Chances of 	Conceiving Boys”]
+
+How might you explain this?
+
+.bq[Random chance; several tests (about 6 or 7) are going to be significant, even if no differences exist]
+
+---
+
+class: middle
+
+# Diet and Sex of Baby
+
+&gt; If there are NO differences (all 133 null hypotheses are true), about how many significant differences would be found using α = 0.05?
+
+`$$133 \pm 0.05 = 6.65$$`
+.bq[Expect about 6-7 statistically significant foods even if the rate of food consumption is equal for women who have boys and women who have girls]
+
+
+---
+
+class: middle
+
+# Multiple Comparisons
+
+.bq[The most important thing is to be aware of this issue, and not to trust claims that are obviously one of many tests (unless they specifically mention an adjustment for multiple testing)]
+
+.bq[There are ways to account for this (e.g. Bonferroni’s Correction), but these are beyond the scope of this class]
+
 
 
 ---
@@ -183,33 +503,29 @@ class: action
 .pull-left-40[
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
-.pull-right-60[
+
 &lt;br&gt;
-.bq[
 
-Randomly choose a letter from A B C D E and write it down (don’t show anyone!)
 
-Find a partner, telepathically communicate your letter (no auditory or visual clues!) and have them guess your
-letter.
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
-Repeat a couple of times then switch roles.
-
+&gt; Please go over the class activity for today and let me know if you have any questions.
 
 ]
 
-.out-t[How often did you guess correctly?]
-]
-
-<div class="countdown" id="timer_8c32daa1" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_1665b3e5" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "googlecode",
+"highlightStyle": "magula",
 "highlightLines": true,
 "highlightLanguage": ["r", "css", "yaml"],
 "countIncrementalSlides": true,
