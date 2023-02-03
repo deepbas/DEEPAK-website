@@ -211,7 +211,9 @@ class: middle
 
 #  $\alpha=$ Probability of Type I Error
 
-.out-t[The significance level $\alpha$ controls the type I error rate.]
+.out-t[
+The significance level $\alpha$ controls the type I error rate.
+]
 
 .pull-left[
 
@@ -241,7 +243,9 @@ class: middle
 
 #  $\alpha=$ Probability of Type I Error
 
-.out-t[The significance level $\alpha$ controls the type I error rate.]
+.out-t[
+The significance level $\alpha$ controls the type I error rate.
+]
 
 .pull-left[
 
@@ -277,17 +281,35 @@ class: middle
 
 # Selecting a significance level
 
-.bq.font80[
+.bq[
 Decreasing $\alpha$ will lower your Type I error rate (makes it harder to reject the null)
-  - but it will also increase your type II error rate (makes it harder to accept a true alternative)]
-.bq.font80[
+  - but it will also increase your type II error rate (makes it harder to accept a true alternative)
+]
+
+---
+
+class: middle
+
+# Selecting a significance level
+
+
+.bq[
 If a Type I error (rejecting a true null) is much worse than a Type II error, we may choose a smaller $\alpha$, like $\alpha=0.01$ (need lots of evidence to reject null).
-  - E.g. sending an innocent person to jail]
-.bq.font80[
+  - E.g. sending an innocent person to jail
+  ]
+  
+---
+
+class: middle
+
+# Selecting a significance level
+
+.bq[
 If a Type II error (not rejecting a false null) is much worse than a Type I error, we may choose a larger $\alpha$, like $\alpha=0.10$
 - E.g. a false negative test for a serious disease
 ]
-]
+
+
 
 ---
 
@@ -305,11 +327,20 @@ The probability of making a Type II Error (not rejecting a false null) depends o
 - Sample size (bigger $\mathrm{n}$ means less uncertainty)
 - Variability of measurements
 - Significance level (bigger $\alpha$ means more false positives but fewer false negatives)]
-<br>
-.bq.font80[
+
+
+
+---
+
+class: middle
+
+# Power of a test
+
+.bql[
 The power of a test is the chance that it will correctly reject the null, or
 $$1 - \text{Prob(Type II error)}$$
 ]
+
 
 ---
 
@@ -332,11 +363,22 @@ Informal strength of evidence against H0:
 
 ---
 
-Smaller p-values give us stronger and stronger evidence for the alternative hypothesis.
-Larger p-values indicate little evidence for the alternative hypothesis. 
+class: middle
+
+# Strength of evidence
+
+.bql[
+
+- Smaller p-values give us stronger and stronger evidence for the alternative hypothesis.
+
+- Larger p-values indicate little evidence for the alternative hypothesis. 
+
+]
 
 
 ---
+
+# Example: bootstrap or randomization?
 
 <center>
 <img src="images/day13-4.png" width="60%" height="30%"> <br>
@@ -344,20 +386,25 @@ Larger p-values indicate little evidence for the alternative hypothesis.
 
 ---
 
+# Example: bootstrap or randomization?
+
 <center>
 <img src="images/day13-5.png" width="60%" height="30%"> <br>
 </center>
 
 ---
 
+class: middle
 
-.bq[
+# Using confidence intervals for hypothesis testing
+
+.bq.font110[
 If a $95 \%$ CI contains the parameter in $\mathrm{H}_0$, then a two-tailed test should not reject $\mathrm{H}_0$ at a $5 \%$ significance level.
 ]
 
---
+<br>
 
-.bq[
+.bq.font110[
 If a $95 \%$ CI misses the parameter in $\mathrm{H}_0$, then a two-tailed test should reject $\mathrm{H}_0$ at a $5 \%$ significance level.
 ]
 
@@ -381,6 +428,8 @@ If a $95 \%$ CI misses the parameter in $\mathrm{H}_0$, then a two-tailed test s
 
 ---
 
+class: middle
+
 # Sample Size and Statistical Significance
 
 .bql[
@@ -390,6 +439,8 @@ If a $95 \%$ CI misses the parameter in $\mathrm{H}_0$, then a two-tailed test s
 
 ---
 
+# Randomization distribution with $n=10$
+
 <center>
 <img src="images/day13-8.png" width="60%" height="30%"> <br>
 </center>
@@ -397,21 +448,29 @@ If a $95 \%$ CI misses the parameter in $\mathrm{H}_0$, then a two-tailed test s
 
 ---
 
+# Randomization distribution with $n=100$
+
+
 <center>
 <img src="images/day13-9.png" width="60%" height="30%"> <br>
 </center>
 
 ---
 
+class: middle
+
 # Multiple Testing/Comparison
 
 
+.bql[
 When multiple hypothesis tests are conducted, the chance that at least one test incorrectly rejects a true null hypothesis increases with the number of tests.
 
-- If the null hypotheses are all true, α of the tests will yield statistically significant results just by random chance.
-
+- If the null hypotheses are all true, $\alpha$ of the tests will yield statistically significant results just by random chance.
+]
 
 ---
+
+class: middle
 
 # Diet and Sex of Baby
 
@@ -426,10 +485,11 @@ When multiple hypothesis tests are conducted, the chance that at least one test 
 
 ---
 
+class: middle
+
 # Diet and Sex of Baby
 
-
-> For each of the 133 foods studied, a hypothesis test was conducted for a difference between mothers who conceived boys and girls in the proportion who consume each food
+.hljs[For each of the 133 foods studied, a hypothesis test was conducted for a difference between mothers who conceived boys and girls in the proportion who consume each food]
 
 
 .bq[What are the null and alternative hypotheses?
@@ -448,6 +508,8 @@ $\boldsymbol{p}_g$ : proportion of mothers who have girls that consume the food 
 
 ---
 
+class: middle
+
 # Diet and Sex of Baby
 
 A significant difference was found for breakfast cereal (mothers of boys eat more), prompting the headline
@@ -459,6 +521,8 @@ How might you explain this?
 .bq[Random chance; several tests (about 6 or 7) are going to be significant, even if no differences exist]
 
 ---
+
+class: middle
 
 # Diet and Sex of Baby
 
@@ -493,5 +557,14 @@ class: action
 <br>
 
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+.pull-right[
+<br>
+<br>
+<br>
+
+> Please go over the class activity for today and let me know if you have any questions.
+
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
