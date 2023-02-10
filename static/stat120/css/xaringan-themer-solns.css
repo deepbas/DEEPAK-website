@@ -50,7 +50,7 @@ h1, h2, h3 {
   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
 }
 .remark-code {
-  font-size: 22px;
+  font-size: 16px;
 }
 .remark-inline-code {
   font-size: 1.2em;
@@ -164,25 +164,47 @@ blockquote, .bql {
   text-shadow: 0 0 1px rgba(0,0,0,0.5);
 }
 
+
 blockquote, .bq {
   display: block;
-  font-size: 0.95em;
+  font-size: 1.2em;
   margin-top: 0.02em;
   margin-bottom: 0.02em;
   margin-left: 5px;
   margin-right: 5px;
-  border-left: solid 5px #0C4839;
-  border-top: solid 2px #0C4839;
-  border-bottom: solid 2px #0C4839;
-  border-right: solid 2px #0C4839;
+  border-left: solid 5px #00008B;
+  border-top: solid 2px #00008B;
+  border-bottom: solid 2px #00008B;
+  border-right: solid 2px #00008B;
   box-shadow: 0 0 6px rgba(255,255,255,0.5);
-  background-color: #F2B155; 
-  color: #00008B;
+  background-color: #FFD700; 
+  color: #0C4839;
   padding: 0.5em;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
 }
 
+
+
+blockquote, .bqt {
+  display: block;
+  font-size: 1.2em;
+  margin-top: 0.05em;
+  margin-bottom: 0.05em;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-left: solid 10px #008000;
+  border-top: solid 4px #008000;
+  border-bottom: solid 4px #008000;
+  border-right: solid 4px #008000;
+  box-shadow: 0 0 15px rgba(255,255,255,0.8);
+  background-color: #F1F1F1; 
+  color: #000000;
+  padding: 0.5em;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  height: <variable>px;
+}
 
 .blockquote p {
   margin-top: 0px;
@@ -403,10 +425,63 @@ pre code {
   opacity: 0.5; 
 }
 
-ul li::marker {
-  margin-bottom: 10px;
-  color: #00FF40;
-  font-size: 1.2em;
+
+
+
+
+ul {
+  list-style-type: "✨";
+  font-size: 0.95em;
+  margin: .05em;
+  padding: 1em;
+  padding-left: 2.5em;
+  border-left: solid 5px #00008B;
+  border-top: solid 2px #00008B;
+  border-bottom: solid 2px #00008B;
+  border-right: solid 2px #00008B;
+  box-shadow: 0 0 6px rgba(255,255,255,0.5);
+  background-color: #4169E1; 
+  color: #FFF;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 5px;
+}
+
+
+# my second list styling css
+ul, .list-two{
+  list-style-type: "💫";
+  font-size: 0.95em;
+  margin: .06em;
+  padding: 1em;
+  padding-left: 2.5em;
+  border-left: solid 5px #00008B;
+  border-top: solid 2px #00008B;
+  border-bottom: solid 2px #00008B;
+  border-right: solid 2px #00008B;
+  box-shadow: 0 0 6px rgba(255,255,255,0.5);
+  background-color: #4169E1; 
+  color: #FFF;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 5px;
+}
+
+
+# my second list styling css
+ul2 {
+  list-style-type: "💫";
+  font-size: 1em;
+  margin: .06em;
+  padding: 1em;
+  padding-left: 2.5em;
+  border-left: solid 5px #00008B;
+  border-top: solid 2px #00008B;
+  border-bottom: solid 2px #00008B;
+  border-right: solid 2px #00008B;
+  box-shadow: 0 0 6px rgba(255,255,255,0.5);
+  background-color: #4169E1; 
+  color: #FFF;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 5px;
 }
 
 .hljs-github .hljs {
@@ -431,11 +506,8 @@ ul li::marker {
 }
 
 
-
-
 .out-t, remark-inline-code {
    background: #9fff9f;
    border-radius: 10px;
    color: #215A4A;
 }
-

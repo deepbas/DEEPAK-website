@@ -11,5 +11,5 @@ weight: 20
 
 Day 15 Slides ({{% staticref "stat120/Day15.pdf" "newtab" %}}pdf{{% /staticref %}})
 
-
+Day 16 Slides ({{% staticref "stat120/Day16.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day16.html" "newtab" %}}html{{% /staticref %}})
 
