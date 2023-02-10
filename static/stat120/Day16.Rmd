@@ -175,7 +175,7 @@ D. $H_0: p_{\mathrm{E}}>p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}=
 
 <details>
 <summary>.red[Click for answer]</summary>
-The correct answer is 3. (since there are five choices and we are randomly guessing)
+The correct answer is A. (since it favors parasites if exposed mosquitoes do not approach humans during this stage)
 </details>
 
 
@@ -187,6 +187,7 @@ class: middle
 <img src="images/day16-1.png" width="90%" height="90%"> <br>
 </center>
 
+--
 
 <center>
 <div style="position: absolute; top: 10%; left: 20%;">
@@ -297,7 +298,7 @@ D. \quad& \mathrm{N}(0.056,0)
 <br>
 <details>
 <summary>.red[Click for answer]</summary>
-The correct answer is 3. (since there are five choices and we are randomly guessing)
+The correct answer is B. (since the distribution is centered at 0 and has standard deviation of 0.056)
 </details>
 ]
 
@@ -380,7 +381,7 @@ class: middle
 
 # Days 9 – 28
 
-For the data after the mosquitoes become infectious (Days $9-28$), what are the relevant hypotheses?
+.hljs[For the data after the mosquitoes become infectious (Days $9-28$), what are the relevant hypotheses?]
 
 \begin{align}
 \boldsymbol{p}_{C}: & \text{proportion of controls to approach human}\\ 
@@ -397,7 +398,7 @@ D. \quad & \mathrm{H}_0: p_{\mathrm{E}}>p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}:
 
 <details>
 <summary>.red[Click for answer]</summary>
-The correct answer is 3. (since there are five choices and we are randomly guessing)
+The correct answer is B. (since it now favors parasites if exposed mosquitoes approach humans more during this stage)
 </details>
 
 
@@ -484,7 +485,7 @@ z=\frac{\text { sample statistic }-\text { null value }}{\text { SE }}
 <center>
 <div style="position: absolute; top: 40%; left: 62%;">
 <span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>From H<sub>0</sub></b></p>
+<p><b>From H<sub>o</sub></b></p>
 </span>
 </div>
 </center>
@@ -495,7 +496,7 @@ z=\frac{\text { sample statistic }-\text { null value }}{\text { SE }}
 <center>
 <div style="position: absolute; top: 60%; left: 45%;">
 <span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>From <br>randomization <br>distribution0</sub></b></p>
+<p><b>From <br>randomization <br>distribution</sub></b></p>
 </span>
 </div>
 </center>
@@ -525,7 +526,7 @@ $$statistic \pm 2(SE)$$
 
 .bql[
 Why 2 SE's?
-- $95 \%$ of all sample means fall within 2 SE's of the population mean*
+- $95 \%$ of all sample means fall within 2 SE's of the population mean
 - The value 2 is a z-score!
 - Well, actually the precise z-score under a normal model is $z=1.96$ instead of 2 !
 ]
@@ -662,7 +663,7 @@ $$0.59\pm2.576(0.01)=(0.564,0.616)$$]
 
 --
 
-.green-h[Remember, more confidence = wider interval. So how do these compare to the bootstrap CI ?]
+.green-h[Remember, more confidence = wider interval. So how do these compare to the bootstrap CI?]
 
 ---
 
@@ -743,11 +744,12 @@ class: action
 <br>
 .bq[
 
-Please go over the class activity 16 
+Let's go over to the class activity .Rmd file and complete the tasks for today.
+
 
 ]
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
