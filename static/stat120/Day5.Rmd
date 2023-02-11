@@ -151,7 +151,7 @@ The mean pulse rate for this sample of students is $\overline{y} = 69.6$ beats p
 ---
 
 # Center: Median
-.bq[
+.bql[
 .bold[Median:] the middle value when the data are ordered
 - The median splits the data in half
 - $m$ is the median value in a sample
@@ -169,7 +169,7 @@ The median pulse rate for this sample of students is $m = 70$ beats per minute.
 
 # Variability: Standard Deviation
 
-.bq[
+.bql[
 Standard Devation (SD): average value in a sample or population
 - $s = \sqrt{ \dfrac{\sum_{i=1}^n(y_i - \overline{y})^2}{n-1}}$ is the SD of $n$ values $y_i$ in a sample
 - $\sigma$ is the SD of values of $y$ in a population
@@ -236,7 +236,7 @@ sd(movies$WorldGross, na.rm = TRUE)
 
 # Shape: histogram
 
-.bq[.bold[Histogram:] aggregates values into bins and counts how many cases fall into each bin]
+.bqt[.bold[Histogram:] aggregates values into bins and counts how many cases fall into each bin]
 
 .pull-left[
 
@@ -314,9 +314,8 @@ median(movies$WorldGross, na.rm = T)
 ]
 
 --
-<br>
 
-.bq[Movie world gross (millions of dollars) stats with and without Harry Potter movie (outlier!):
+.bq.font80[Movie world gross (millions of dollars) stats with and without Harry Potter movie (outlier!):
 
 &nbsp; | Mean | SD | Median
 ---- | ---- | ---- | ----
@@ -327,7 +326,7 @@ without HP | 141.9 | 189.7 |  75.0
 ---
 
 # Identifying extreme values in R
-.bq[`which` identifies the .bold[row number] of cases that satisfy a given criteria]
+.bql[`which` identifies the .bold[row number] of cases that satisfy a given criteria]
 
 --
 
@@ -415,7 +414,7 @@ Feel free to talk to your neighbor
 # Shape and Stats
 
 .pull-left[
-> Mean and standard deviation are good summary stats of a .bold[symmetric] distribution.
+.bqt.font90[Mean and standard deviation are good summary stats of a .bold[symmetric] distribution.]
 
 ```{r, echo=FALSE}
 ggplot(survey, aes(x=Pulse)) +
@@ -425,7 +424,7 @@ ggplot(survey, aes(x=Pulse)) +
 ]
 .pull-right[
 
-> Similar variation to the left and right of the mean so one measure of SD is fine.
+.bqt.font90[Similar variation to the left and right of the mean so one measure of SD is fine.]
 
 <br>
 
@@ -475,8 +474,7 @@ ggplot(data = sleep, aes(x = AverageSleep)) +
 ]
 
 .pull-right[
-<br>
-.bq[
+.bql[
 .bold[Question] The standard deviation for hours of sleep per night is closest to
 
 (a) 0.5
@@ -494,9 +492,11 @@ ggplot(data = sleep, aes(x = AverageSleep)) +
 
 # Standardizing data: z-score
 
-> The z-score of a data value, x, tells us how many standard deviations the value is above or below the mean:
+.bqt.font90[The z-score of a data value, x, tells us how many standard deviations the value is above or below the mean:
 
-$$z = \dfrac{x - \text{mean}}{\text{SD}}$$
+$$z = \dfrac{x - \text{mean}}{\text{SD}}$$]
+
+<br>
 
 - E.g. if a value $x$ has $z=-1.5$ then the value $x$ is .bold[1.5 standard deviations below] the mean.
 
@@ -507,7 +507,7 @@ $$z = \dfrac{x - \text{mean}}{\text{SD}}$$
 
 # Shape and Stats: Quartiles
 
-.bq[
+.bql.font80[
 .bold[Quartiles] divide values in to quarters
 
 - 1st Quartile: $Q_1$ is the 25th percentile
@@ -517,13 +517,13 @@ $$z = \dfrac{x - \text{mean}}{\text{SD}}$$
 
 --
 
-.bq[
+.bql.font80[
 .bold[5-number summary] is quartiles along with min and max: $\text{min}, Q_1, \text{m}, Q_3, \text{max}$
 ]
 
 --
 
-.bq[
+.bql.font80[
 .bold[Interquartile Range (IQR)] is the range of the middle 50% of values:
 - $IQR = Q_3 - Q_1$
 - the .bold[range] is just $\text{max} - \text{min}$
@@ -537,7 +537,7 @@ $$z = \dfrac{x - \text{mean}}{\text{SD}}$$
 summary(movies$WorldGross)
 ```
 
-.bq.font90[
+.bql.font90[
 The 5-number summary is
 
 - $\text{min} = 0.025, Q_1 = 30.7, \text{m}=76.7, Q_3 = 173.7, \text{max} = 1328.1$
@@ -564,7 +564,7 @@ The 5-number summary is
 
 <br>
 
-.bq[.yellow-h[Outlier rule of thumb:] cases that are more extreme than
+.bq.font80[.yellow-h[Outlier rule of thumb:] cases that are more extreme than
 
 $$
 Q_1 - 1.5(IQR) \ \ \ \ \text{or} \ \ \ \ Q_3 + 1.5(IQR)
@@ -591,7 +591,7 @@ ggplot(data = survey, aes(x = 1, y = Pulse)) +
 summary(survey$Pulse)
 ```
 
-.bq[
+.bq.font80[
 - $IQR = 77.75-62 = 15.75$
 - $1.5(15.75) = 23.625$
 - lower "fence" = $62-23.625=  38.375$
@@ -621,7 +621,7 @@ ggplot(data = survey, aes(x = Smoke, y = Pulse)) +
 
 .pull-right[
 
-.bq[
+.bql.font80[
 - Median pulse rates are slightly higher for smokers than non-smokers (72 vs. 69 beats per minute) but variation is slightly lower (IQR 14 vs 16 beats per minute).
 - Both distributions are roughly symmetric.
 - Overall, just a slight association between smoking status and pulse rates. 

@@ -117,7 +117,7 @@ class: middle
 $$ \mathrm{p} \text {-value }<\alpha \quad \Longrightarrow \quad \text { Reject } \mathrm{H}_0 $$
 $$\mathrm{p} \text {-value } \geq \alpha \quad \Longrightarrow \text { Do not Reject } \mathrm{H}_0$$
 Common levels:
-.bq[
+.bq.font80[
 - $10 \%$ : need some evidence to reject the null
 - $5 \%$ : need moderate evidence to reject the null
 - $1 \%$ : need strong evidence to reject the null
@@ -135,7 +135,7 @@ Common levels:
 
 <br>
 
-.bq[
+.bq.font90[
 - A Type I Error is rejecting a true null (false positive)
 - A Type II Error is not rejecting a false null (false negative)
 ]
@@ -145,15 +145,16 @@ Common levels:
 class: middle
 
 # Statistical Significance
-
+.font80.hljs[
 Hypothesis testing is similar to how our justice system works (or is supposed to work!).
 \begin{align*}
 H_0 & \text { : defendant is innocent }  \\ H_A & \text { : defendant is guilty }
 \end{align*}
 
 Assumption: Defendant is innocent $(H_0)$
+]
 
-.bq.font80[
+.bql.font70[
 .bold[Verdicts:]
 
 Guilty: evidence (data) "beyond a reasonable doubt" points to guilt (Statistically significant)
@@ -169,7 +170,7 @@ class: middle
 
 # Examples
 
-.bq.font80[
+.bql.font60[
 Science study of gender stereotypes:
 - Comparing interest between 5-year-old boys and girls in a game for "really, really smart kids"
 - test using $\alpha=0.05$; reported $p$-value of $0.46$
@@ -191,7 +192,7 @@ class: middle
 
 # Examples
 
-.bq[
+.bql.font70[
 Memory: test using $\alpha=0.05$; data gives $p$-value of $0.048$
 
 Decision?
@@ -281,7 +282,7 @@ class: middle
 
 # Selecting a significance level
 
-.bq[
+.bqt[
 Decreasing $\alpha$ will lower your Type I error rate (makes it harder to reject the null)
   - but it will also increase your type II error rate (makes it harder to accept a true alternative)
 ]
@@ -293,7 +294,7 @@ class: middle
 # Selecting a significance level
 
 
-.bq[
+.bqt[
 If a Type I error (rejecting a true null) is much worse than a Type II error, we may choose a smaller $\alpha$, like $\alpha=0.01$ (need lots of evidence to reject null).
   - E.g. sending an innocent person to jail
   ]
@@ -304,7 +305,7 @@ class: middle
 
 # Selecting a significance level
 
-.bq[
+.bqt[
 If a Type II error (not rejecting a false null) is much worse than a Type I error, we may choose a larger $\alpha$, like $\alpha=0.10$
 - E.g. a false negative test for a serious disease
 ]
@@ -317,11 +318,11 @@ class: middle
 
 # Probability of Type II Error
 
-.bq.font80[
+.bqt.font80[
 Not as simple to compute since the alternative is assumed to be true
 - E.g. which value in $\mathrm{H}_{\mathrm{a}}: \beta<0$ do we select to create an "alternative" randomization distribution?]
 <br>
-.bq.font80[
+.bql.font80[
 The probability of making a Type II Error (not rejecting a false null) depends on
 - Effect size (how far the truth is from the null)
 - Sample size (bigger $\mathrm{n}$ means less uncertainty)
@@ -475,7 +476,7 @@ class: middle
 # Diet and Sex of Baby
 
 
-.bq[
+.bql[
 - Are certain foods in your diet associated with whether or not you conceive a boy or a girl? 
 - To study this, researchers asked women about their eating habits, including asking whether or not they ate 133 different foods regularly
 ]
@@ -492,19 +493,20 @@ class: middle
 .hljs[For each of the 133 foods studied, a hypothesis test was conducted for a difference between mothers who conceived boys and girls in the proportion who consume each food]
 
 
-.bq[What are the null and alternative hypotheses?
+.bql.font90[.purple-h[What are the null and alternative hypotheses?]
 
 Compare two populations: mothers who have boys vs. mothers who have girls
 
 $\boldsymbol{p}_b$ : proportion of mothers who have boys that consume the food regularly
 
 $\boldsymbol{p}_g$ : proportion of mothers who have girls that consume the food regularly
-]
+
 
 \begin{aligned}
 & \mathrm{H}_0: p_b=p_g \\
 & \mathrm{H}_a: p_b \neq p_g
 \end{aligned}
+]
 
 ---
 

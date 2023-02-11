@@ -141,7 +141,8 @@ h3 {
 .grey { color: gray; }
 .brown { color:brown;}
 
-.bold { font-weight: bold; color:#0148A4;}
+.b { font-weight: bold; color:#0148A4;}
+.bold { font-weight: bold; color:#FFA500;}
 .bolder { font-weight: bolder; color:#0148A4;}
 
 .i { font-style: italic; color:#e64626; }
@@ -218,7 +219,7 @@ div.my-footer span {
 }
 
 .blue-h{
-  background: #B3D9DF;
+  background: #A9F9FF;
 }
 
 .pull-left-c {
