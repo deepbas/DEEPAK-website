@@ -133,7 +133,7 @@ class: middle
 
 # One Categorical Variable
 
-.bq.font80[A random sample of US adults in 2012 were surveyed regarding the type of cell phone owned]
+.bq.font90[A random sample of US adults in 2012 were surveyed regarding the type of cell phone owned]
 
 <center>
 <img src="images/cellphone.png" width="70%" height="70%"> <br>
@@ -191,7 +191,7 @@ Total | 2253
 
 <br>
 
-.bq[
+.bql[
 Percentages/proportions  (relative frequencies)
 - $p$ = proportion for a .bold[population] (parameter)
 - $\hat{p}$ = proportion for a .bold[sample] (statistic) ("p-hat")
@@ -220,7 +220,7 @@ class: middle
 
 # Distribution of a variable
 
-.bq[The .yellow-h["distribution of variable Y"]
+.bq[The .green-h["distribution of variable Y"]
 - describes the count or percent of observations that fall into each category of “variable Y”
 ]
 
@@ -376,6 +376,7 @@ plot_ly(data, x = ~Gender, y = ~In_a_relationship, type = 'bar', name = 'In a re
 
 
 .footnote[Source: https://www.lock5stat.com/StatKey/index.html]
+
 ---
 
 # Segmented Bar Chart
@@ -416,13 +417,13 @@ class: action
 
 # Flowers v. Mississippi
 
-.bq.font90[2019 Supreme Court case:
+.bql.font80[2019 Supreme Court case:
 - Has Mississippi prosecutor Doug Evans deliberately use “peremptory challenges” to strike black jurors from jury pools?
 ]
 
 .font80[American Public Media journalist collected trial data from this district from 1992 to 2017 [(Link)](https://github.com/APM-Reports/jury-data)]
 
-.bq.font90[The data set `APM_DougEvansCases.csv` contains data on 1517 jurors for cases which listed Doug Evans as the first prosecutor. 
+.bql.font80[The data set `APM_DougEvansCases.csv` contains data on 1517 jurors for cases which listed Doug Evans as the first prosecutor. 
 - Only looking at jurors with race listed as Black or White. 
 - These jurors are eligible for Evans to strike.
 ]
@@ -431,6 +432,7 @@ class: action
 
 ---
 
+class: middle
 
 # Look at the data
 
@@ -444,7 +446,7 @@ dim(jurors) # dimension of dataset
 ```
 ]
 
-Look at the first .bold[three rows] of the data set
+Look at the first .b[three rows] of the data set
 
 .code80[
 ```{r}
@@ -501,14 +503,13 @@ ggplot(counts_df, aes(x=x, y=y)) +
 
 .green-h[How does state struck status vary by juror race? (How are race and state strikes associated?)]
 
-.bq.font90[Numerically: 
+.bql.font90[Numerically: 
 - summarize .bold[counts] in a contingency/two-way table
 - .bold[conditional proportions:] “The conditional distribution of Y given variable X” describes how Y is distributed within each category of X (group by X).
 ]    
 
-<br>
 
-.bq.font90[Graphically:
+.bql.font90[Graphically:
 - stacked bar graph of conditional proportions]
 
 ---

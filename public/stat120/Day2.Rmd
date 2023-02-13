@@ -109,22 +109,22 @@ class: middle
 
 # Sampling and Inference
 
-.pull-left[
-.bq[
-- A .bold[population] includes all
+.pull-left-60[
+.bql[
+- A .b[population] includes all
 individuals or objects of
 interest.
-- A .bold[sample] is all the cases that
+- A .b[sample] is all the cases that
 we have collected data on (a
 subset of the population).
-- .bold[Statistical inference] is the
+- .b[Statistical inference] is the
 process of using data from a
 sample to gain information
 about the population.
 ]
 
 ]
-.pull-right[
+.pull-right-40[
 <center>
 <img src="images/pop_samp.png" width="90%" height="80%"> <br>
 <a>Population and Sample</a>
@@ -144,14 +144,14 @@ class: middle
 </center>
 ]
 .pull-right[
-.bq[
-- .bold[Population:] all plots (grid
+.bql[
+- .b[Population:] all plots (grid
 cells) on the map
-- .bold[Sample:] the cross-hatched
+- .b[Sample:] the cross-hatched
 plots on the map
-- .bold[Variable:] number of moose
+- .b[Variable:] number of moose
 counted in a plot
-- .bold[Inference:] estimated 2,760
+- .b[Inference:] estimated 2,760
 moose in the entire
 population
 ]
@@ -171,9 +171,6 @@ sample to the population
 ]
 
 --
-
-<br>
-
 
 .green-h.center[To eliminate sampling bias always take a RANDOM SAMPLE!]
 
@@ -210,7 +207,7 @@ perish from the earth.
 
 # Lincoln's Gettysberg Address: What is the average word length?
 
-.bold[Task:] Select a sample of 10 words to estimate average word length of
+.b[Task:] Select a sample of 10 words to estimate average word length of
 entire address
 
 --
@@ -243,14 +240,11 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
-.bq[
+.bql[Go to the appropriate forms:
+- [google form section 02](https://forms.gle/seQnFSXF2g3fp1YK8)
+- [google form section 04](https://forms.gle/JA9fULW5M37XHvEVA)
 
-- Go to the appropriate forms:
-
-  - [google form section 02](https://forms.gle/seQnFSXF2g3fp1YK8)
-  - [google form section 04](https://forms.gle/JA9fULW5M37XHvEVA)
-
-- Find the average word length and enter your answer
+Find the average word length and enter your answer
 ]
 ]
 
@@ -282,7 +276,7 @@ class: middle
 
 # Question wording
 
-.bq[A random sample was asked: “Should there be a tax cut, or
+.bq.font90[A random sample was asked: “Should there be a tax cut, or
 should money be used to fund new government programs?”
 
 
@@ -294,7 +288,7 @@ should money be used to fund new government programs?”
 --
 <br>
 
-.bq[A different random sample was asked: “Should there be a tax
+.bq.font90[A different random sample was asked: “Should there be a tax
 cut, or should money be spent on programs for education, the
 environment, health care, crime-fighting, and military defense?”
 
@@ -347,7 +341,7 @@ would you have children?”
 
 --
 
-.bq[The first request for data contained a letter from a young couple
+.bq.font90[The first request for data contained a letter from a young couple
 which listed worries about parenting and various reasons not to
 have kids
 
@@ -356,7 +350,7 @@ $$30\% \text{ said yes}$$]
 
 <br>
 
-.bq[The second request for data was in response to this number, in
+.bq.font90[The second request for data was in response to this number, in
 which Ann wrote how she was “stunned, disturbed, and just
 plain flummoxed”
 

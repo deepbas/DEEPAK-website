@@ -111,8 +111,8 @@ class: middle
 
 .bq[
 If we are using one variable to help us understand or predict values
-of another variable, we call the former the .bold[explanatory variable] and
-the latter the .bold[response variable]
+of another variable, we call the former the .b[explanatory variable] and
+the latter the .b[response variable]
 ]
 
 
@@ -122,25 +122,24 @@ the latter the .bold[response variable]
 # Association and Causation
 
 
-.bq[Two variables are .bold[associated] if values of one variable tends to
+.bql[Two variables are .b[associated] if values of one variable tends to
 be related to values of the other variable
-- e.g. .yellow-h[Families with many cars tend to own many television sets]
+- e.g. .green-h[Families with many cars tend to own many television sets]
 ]
 
 --
-<br>
 
-.bq[Two variables are .bold[causally associated] if changing the value of
+.bql[Two variables are .b[causally associated] if changing the value of
 the explanatory variable influences the value of the response
 variable
-- e.g. .yellow-h[Studies show that taking a practice exam increases your score on an exam]
+- e.g. .green-h[Studies show that taking a practice exam increases your score on an exam]
 ]
 
 ---
 
 # College Education and Aging
 
-.bq[
+.bql[
 .font80[
 “Education seems to be an elixir that can bring us a healthy body and mind
 throughout adulthood and even a longer life,” says Margie E. Lachman, a psychologist
@@ -170,7 +169,7 @@ class: middle
 
 # College Education and Aging
 
-.bq[Based on this passage, should we conclude that obtaining a college
+.bqt[Based on this passage, should we conclude that obtaining a college
 degree causes a slowdown in the brain’s aging process?
 - Yes
 - No
@@ -259,12 +258,12 @@ class: middle
 
 .bq.font100[
 A third variable that is associated with both the explanatory
-variable and the response variable is called a .bold[confounding variable]
+variable and the response variable is called a .b[confounding variable]
 - A confounding variable can offer a plausible explanation for an association between the two variables.
 ]
 <br>
 
-.blue-h[Whenever confounding variables are present (or may be present), a causal association .bold[CANNOT] be determined!]
+.blue-h[Whenever confounding variables are present (or may be present), a causal association .b[CANNOT] be determined!]
 
 
 ---
@@ -272,7 +271,7 @@ variable and the response variable is called a .bold[confounding variable]
 # Experiment Vs Observational Study
 
 .font120.bq[
-An .out-t.bold[observational study] is a study in which the researcher does
+An .out-t.b[observational study] is a study in which the researcher does
 not actively control the value of any variable, but simply
 observes the values as they naturally exist
 ]
@@ -281,7 +280,7 @@ observes the values as they naturally exist
 <br>
 
 .font120.bq[
-An .out-t.bold[experiment] is a study in which the researcher actively
+An .out-t.b[experiment] is a study in which the researcher actively
 controls one or more of the explanatory variables
 ]
 
@@ -340,7 +339,7 @@ causation!!
 
 class: middle
 
-# Randomized Experiements
+# Randomized Experiments
 
 <center>
 <img src="images/basic_randomization.png" width="70%" height="50%"> <br>
@@ -358,11 +357,11 @@ class: middle
 # Randomized Experiments
 
 .bql[
-- In a .bold[randomized experiment], the explanatory variable for each
+- In a .b[randomized experiment], the explanatory variable for each
 unit is determined randomly, before the response variable is
 measured
 - The different levels of the explanatory variable are known as
-.bold[treatments]
+.b[treatments]
 - Randomly divide the units into groups, and randomly assign a
 different treatment to each group
 - Observe the response variable after treatments are applied
@@ -431,7 +430,7 @@ class: middle
 
 .bql[
 - When determining whether a treatment is effective, it is
-important to have a comparison group, known as the .bold[control group]
+important to have a comparison group, known as the .b[control group]
 
 - All randomized experiments need either a control group, or at
 least two different treatments to compare
@@ -444,17 +443,17 @@ least two different treatments to compare
 
 .bql[
 - In the knee surgery study, those in the control group received a
-.bold[fake knee surgery]. They were put under and cut open, but the
+.b[fake knee surgery]. They were put under and cut open, but the
 doctor did not actually perform the surgery. All of these patients
 also reported less pain!
 
-- The improvement was .bold[indistinguishable] between those receiving
+- The improvement was .b[indistinguishable] between those receiving
 the real surgery and those receiving the fake surgery!
 ]
 
 --
 
-.center.font140.bold[What is the reason?]
+.center.font140.b[What is the reason?]
 
 
 
@@ -472,7 +471,7 @@ class: middle
 experiencing, even if they aren’t actually receiving the treatment
 
 - One study estimated that 75% of the effectiveness of
-anti-depressant medication is due to the .bold[placebo effect]
+anti-depressant medication is due to the .b[placebo effect]
 
 ]
 
@@ -517,8 +516,8 @@ class: middle
 # Placebo and Blinding
 
 .bql[
-- Control groups are often given a .bold[placebo], a fake treatment that resembles the active treatment as much as possible
-- If possible, randomized experiments should be .bold[double-blinded:] neither the participants or the researchers evaluating participants should know which treatment the participants are actually getting
+- Control groups are often given a .b[placebo], a fake treatment that resembles the active treatment as much as possible
+- If possible, randomized experiments should be .b[double-blinded:] neither the participants or the researchers evaluating participants should know which treatment the participants are actually getting
 ]
 
 

@@ -63,10 +63,7 @@ library(Lock5Data)
 # Set ggplot theme
 theme_set(theme_tufte(base_size = 10))
 
-
 yt <- 0
-
-
 
 # read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/APM_DougEvansCases.csv")
 
@@ -108,16 +105,15 @@ background-size: 160px, 100% 100%
 
 # Describing associations between two quantitative variables
 
-.bq[
+.bql[
 .bold[Data]: each case $i$ has two measurements
 - $x_i$ is explanatory variable
 - $y_i$ is response variable
 ]
 
 --
-<br>
 
-.bq[
+.bql[
 A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 - form? linear or non-linear
 - direction? positive, negative, no association
@@ -139,7 +135,7 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 
 # Direction
 
-.bq[
+.bql[
 .bold[positive association:] as $x$ increases, $y$ increases 
 
 - age of the husband and age of the wife
@@ -148,9 +144,7 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
  
 --
 
-<br>
-
-.bq[    
+.bql[    
 .bold[negative association:] as $x$ increases, $y$ decreases
 - number of cigarettes smoked per day and lung capacity
 - depth of tire tread and number of miles driven on the tires
@@ -160,7 +154,8 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
 
 # Correlation Coefficients
 
-.bql.font80[
+.pull-left-60[
+.bql.font70[
 .bold[Correlation coefficient:] denoted $r$ (sample) or $\rho$ (population)
 
 - Strength of linear association
@@ -171,18 +166,23 @@ A .bold[scatterplot] is the plot of $(x_i, y_i)$.
     - $r > 0:$ positive
     - $r < 0:$ negative
 ]
-  
+]
+
+
 --
+
+.pull-right-40[
+<br>
+<br>
 
 .blue-h[Correlation can be heavily affected by outliers. Plot your data!]
 
---
-
 ```{r, eval=FALSE}
-# R-code
-cor(data$x, data$y)  # order of x and y doesn't matter!
+# order of x and y doesn't matter!
+cor(data$x, data$y)  
 ```
 
+]
 
 ---
 
@@ -200,19 +200,17 @@ cor(data$x, data$y)  # order of x and y doesn't matter!
 
 .center.green-h[.bold[Goal:] To find a straight line that best fits the data in a scatterplot]
 .bql.font80[
-The estimated regression line is
-$$ \hat{y} = a + bx$$
+The estimated regression line is $\hat{y} = a + bx$
 - x is the explanatory variable
 - $\hat{y}$ is the predicted response variable.
 ]
 <br>
-.bq.font80[
+.bqt.font80[
 .bold[Slope:] increase in predicted $y$ for every unit increase in $x$
 $$ b = \frac{\text{change }\hat{y}}{\text{change } x} $$
 
 .bold[Intercept:] predicted $y$ value when $x = 0$
  $$ \hat{y} = a + b(0) = a $$]
-
 
 ---
 
@@ -277,9 +275,8 @@ class: middle
 .pull-left-40[
 
 <br>
-<br>
 
-.bq[
+.bql[
 .bold[Outliers] can be very influential on the regression line
 
 - remove the points and see if the regression line changes significantly 
@@ -359,7 +356,7 @@ summary(bac.lm)
 .pull-right-40[
 <br>
 <br>
-.bq.font80[
+.bqt.font80[
 Slope, $b= 0.0180$: 
 
 - `Estimate` column and `Beers` row
@@ -516,7 +513,7 @@ ggplot(d, aes(x = Beers, y = residuals)) +
 ---
 
 # R-squared
-.bq.font80[
+.bqt.font80[
 .bold[R-squared] is proportion (or percentage) of variability observed in the response y which can be explained by the explanatory variable x.
 
 $$R^2 = 1 - \text{unexplained variation} = 1 - \frac{s^{2}_{\text{residuals}}}{s^2_y} $$
@@ -534,13 +531,17 @@ other roughly 20% of variation in BAC?
 
 ---
 
+class: middle
+
 # R-squared
 
 Called .bold[Multiple R-squared] in the summary output
 
+.code100[
 ```{r}
 summary(bac.lm)
 ```
+]
 
 ---
 
@@ -556,7 +557,7 @@ ggplot(data, aes(x=x,y=y,color=z)) + geom_point()
 
 --
 
-.bq[
+.bqt.font80[
 - split (subset) data by categories, run regressions for each group.
 - look for outliers that affect the fitted model and correlation
 - fit the model/correlation with and without case(s) to see the affects
@@ -605,7 +606,7 @@ class: middle
 
 .pull-left-60[
 
-```{r, echo = FALSE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="100%"}
+```{r, echo = FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="90%"}
 ggplot(salarydata, aes(x=Age, y=Salary, color=PhD))+
   geom_point() +
   geom_smooth(method ="lm", se=FALSE)+
@@ -616,8 +617,7 @@ ggplot(salarydata, aes(x=Age, y=Salary, color=PhD))+
 
 .pull-right-40[
 <br>
-<br>
-.bq[
+.bql[
 Visually infer difference in groups:
 - Different correlation
 - Different intercepts
@@ -704,7 +704,7 @@ class: middle
 
 # Non-linear Patterns
 
-.bq.font80[.bold[James D. Forbes 1857 experiment:] Can atmospheric pressure be determined from the boiling point of water? Is the relationship linear?]
+.bql.font80[.bold[James D. Forbes 1857 experiment:] Can atmospheric pressure be determined from the boiling point of water? Is the relationship linear?]
 
 .pull-left[
 .red.center[Seems Linear!]
@@ -730,9 +730,9 @@ abline(h=0)
 
 # Residuals Plot
 
-> While the scatterplot of pressure vs. temp may look linear
+.bqt.font80[While the scatterplot of pressure vs. temp may look linear
 relationship, the residuals plot reveals that there is curvature in the
-relationship.
+relationship.]
 
 --
 
@@ -740,7 +740,6 @@ relationship.
 
 .bql.font80[
 Correlation is almost 1, so why not use linear regression!!
-
 - Because the true nature of the relationship is not linear
 - Would systematically overestimate pressure for midrange temps and underestimate pressure for high/low temps.
 ]

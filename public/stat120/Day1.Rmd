@@ -110,7 +110,7 @@ class: middle
 <br>
 
 .pull-left[
-.bq[
+.bql[
 - Second year at Carleton
 - Born in Nepal
 - PhD in Applied Statistics from
@@ -151,11 +151,11 @@ class: middle
 # Statistical Jargons
 
 .bq.font90[
-- .yellow-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. 
+- .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. 
 
-- Statistical jargon can be used to help .yellow-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables.
+- Statistical jargon can be used to help .green-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables.
 
-- Understanding statistical terms can help to effectively .yellow-h[communicate the findings] of a statistical analysis.
+- Understanding statistical terms can help to effectively .green-h[communicate the findings] of a statistical analysis.
 ]
 
 <!-- It can help to correctly interpret the data and make meaningful conclusions. -->
@@ -169,14 +169,14 @@ class: middle
 
 Before Class:
 
-.bq[
+.bqt[
 1. Some reading/video to introduce some topics
 2. Will be updated in the weekly planner
 ]
 
 During Class:
 
-.bq[
+.bqt[
 1. Mini-lectures
 2. Hands-on group activities and quizzes
 ]
@@ -243,6 +243,7 @@ class: inverse, middle
 
 ---
 
+class: middle
 
 # Software Component
 
@@ -280,15 +281,15 @@ class: middle
 
 # Data: Cases and Variables
 
-.bq[
+.bql[
 Data are a set of measurements taken on a set of individual units
-- These are .bold[cases] or units]
+- These are .b[cases] or units]
 
 <br>
 
-.bq[
+.bql[
 Data is stored and presented in a dataset that comprises of variables measured on cases
-- A .bold[variable] is any characteristic that is recorded for each case
+- A .b[variable] is any characteristic that is recorded for each case
 ]
 
 ---
@@ -320,10 +321,10 @@ class: middle
 <br>
 
 .bql[
-- A .bold[categorical variable] divides the cases into groups. e.g. gender,
+- A .b[categorical variable] divides the cases into groups. e.g. gender,
 country, state etc.
 
-- A .bold[quantitative variable] measures a numerical quantity for each
+- A .b[quantitative variable] measures a numerical quantity for each
 case, e.g. age, height, sleep hours, blood pressure etc
 ]
 
@@ -365,25 +366,23 @@ rates of cancer which are numbers (quantitative).
 
 # Variable manipulations
 
-.bq.font80[
+.bql.font80[
 Can use numbers to code categories of categorical variable
 - e.g Gender (1 for male and 2 for female)
 ]
 
-<br>
 
 --
 
-.bq.font80[
+.bql.font80[
 Can convert quantitative variable into categorical groups
 - e.g. Income (0-50000 as Low, 50000+ as High)
 ]
 
-<br>
 
 --
 
-.bq.font80[
+.bql.font80[
 Categorical variables are sometimes collapsed into fewer levels
 - e.g. no HS degree, HS degree, some college, 2 year degree
 ]
@@ -399,18 +398,18 @@ Categorical variables are sometimes collapsed into fewer levels
 <br>
 .pull-left[
 
-.bq[
+.bql[
 Does meditation help reduce stress?
-- explanatory variable: .bold[meditation]
-- response variable: .bold[stress level]
+- explanatory variable: .b[meditation]
+- response variable: .b[stress level]
 ]
 ]
 
 .pull-right[
-.bq[
+.bql[
 Does sugar consumption increase hyperactivity?
-- explanatory variable: .bold[sugar consumption]
-- response variable: .bold[hyperactive behavior]
+- explanatory variable: .b[sugar consumption]
+- response variable: .b[hyperactive behavior]
 ]
 ]
 
