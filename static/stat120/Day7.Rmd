@@ -141,12 +141,11 @@ background-size: 160px, 100% 100%
 
 # Statistic and Parameter
 
-.bq[
+.bql[
 - A .bold[parameter] is a number that describes some aspect of a population.
 - A .bold[statistic] is a number that is computed from data in a sample.
 ]
 
-<br>
 
 &nbsp; | Parameter | Statistic 
 ---- | ---- | ---- 
@@ -164,32 +163,31 @@ Slope | $\beta$ | $b$
 .brown.font120[State whether the quantity described is a .bold[parameter]
 or a .bold[statistic], and give the correct notation.]
 
-.bq[
+.bq.font90[
   a. Average household income for all houses in the US, using data from the US census
 ] 
 
 --
 
-.bq[
+.bq.font90[
   b. The proportion of all residents in a county who voted in the last presidential election.]
   
 --
-  .bq[
+  .bq.font90[
   c. The difference in proportion who have ever smoked cigarettes, between a sample of 500 people who are 60 years old and a sample of 200 people who are 25 years old.
 ]
 
 ---
 
-# A Gallup Poll
+## A Gallup Poll
 
-.bq[
+.bql[
 A random sample of 1527 US adults was contacted in June, 2015
 
 - $p$ = proportion of US adults who would vote for a qualified Muslim presidential candidate
 ]
 
 .pull-left[
-<br>
 <center>
 <img src="images/gallup.png" width="70%" height="70%"><br>
 <a>Poll result</a>
@@ -199,7 +197,6 @@ A random sample of 1527 US adults was contacted in June, 2015
 
 
 .pull-right[
-<br>
 .bql[The sample proportion can be used as a “point estimate” of $p$ i.e.,
 $$\hat{p}= 0.60$$]
 ]
@@ -298,7 +295,6 @@ Uncertainty in point estimates measured by the .bold[standard error (SE)]
 # Recall:  Gettysburg Address
 
 .pull-left-40[
-<br>
 .bq[
 The standard error for the average word size in a random sample of 10 words is closest to
 
@@ -420,7 +416,7 @@ class: middle
 
 ]
 
-.bq[
+.bqt.font90[
 - The SE of your stat gets smaller as $n$ get bigger.
 - Once you’ve simulated a couple $100$ samples, the shape/center/spread of the sampling distribution should remain about the same as you increase the simulation size.
 
@@ -551,11 +547,9 @@ The sampling distribution is shown for enrollment in statistics grad schools. Th
 
 .bq[
 - resample a set of observations with replacement
-
 - same data points can appear multiple times
 ]
 
-<br>
 
 &nbsp; | Data | Statistic 
 ---- | ---- | 
@@ -589,10 +583,9 @@ class: middle
 
 
 .pull-left[
-
 <br>
 
-.bq[
+.bqt.font90[
 Suppose $X = \{20, 24, 19, 23, 22, 16\}$
 \begin{align*}
             X_1^* &= \{16, 19, 16 ,23 ,22, 24\}\\

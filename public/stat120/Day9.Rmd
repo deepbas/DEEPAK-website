@@ -310,10 +310,10 @@ background-size: 800px, 100% 100%
 
 .pull-left[
 
-.bq[
+.bql.font90[
 .bold[Sampling Distribution of a statistic]
 
-- Take .green[many samples] from the population, compute the statistic for each sample
+- Take .red[many samples] from the population, compute the statistic for each sample
 - .bold[Shape:] bell-shaped when n is large
 - .bold[Center:] population parameter
 - .bold[Spread:] called the SE of the statistic
@@ -323,14 +323,14 @@ background-size: 800px, 100% 100%
 ]
 
 .pull-right[
-.bq[
+.bql.font90[
 
 .bold[Bootstrap Distribution of a statistic]
 
-- Take .green[many bootstrap samples] from the original sample, compute the statistic for each bootstrap sample
+- Take .red[many bootstrap samples] from the original sample, compute the statistic for each bootstrap sample
 - .bold[Shape:] bell-shaped when n is large
 - .bold[Center:] original sample statistic!
-- .bold[Spread:] caled the bootstrap SE of the statistic
+- .bold[Spread:] bootstrap SE 
 ]
 
 ]
@@ -345,7 +345,7 @@ background-size: 800px, 100% 100%
 
 # Percentile Method Bootstrap
 
-.bq.font90[If the bootstrap distribution is approximately symmetric, a P% confidence interval equals the percentiles in the bootstrap distribution so that the proportion of bootstrap statistics between the percentiles equal P%.]
+.bql.font80[If the bootstrap distribution is approximately symmetric, a P% confidence interval equals the percentiles in the bootstrap distribution so that the proportion of bootstrap statistics between the percentiles equal P%.]
 
 <center>
 <img src="images/bootpercentile.png" width="60%" height="60%"><br>
@@ -358,7 +358,7 @@ class: middle
 
 # The Magic of Bootstrapping
 
-.bq.font90[
+.bql.font80[
 - We can use bootstrapping to approximate the SE for .bold[many types] of sample statistic!
     - Mean, proportion, differences, correlation, slope
     - Standard deviation, *median*
@@ -371,7 +371,7 @@ class: middle
 
 ---
 
-# Mercury and pH in Lakes
+## Mercury and pH in Lakes
 
 For Florida lakes, what is the correlation between average mercury level (ppm) in fish taken from a lake and acidity (pH) of the lake?
 
@@ -420,7 +420,7 @@ class: middle
 
 # Bootstrap Caution!
 
-.bq[
+.bql.font90[
 - These methods for creating a confidence interval only work if the bootstrap distribution is smooth and symmetric
 
 - .bold[ALWAYS] look at a plot of the bootstrap distribution!

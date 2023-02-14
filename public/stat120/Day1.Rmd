@@ -243,7 +243,6 @@ class: inverse, middle
 
 ---
 
-class: middle
 
 # Software Component
 
@@ -285,7 +284,6 @@ class: middle
 Data are a set of measurements taken on a set of individual units
 - These are .b[cases] or units]
 
-<br>
 
 .bql[
 Data is stored and presented in a dataset that comprises of variables measured on cases

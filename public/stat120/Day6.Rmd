@@ -537,7 +537,7 @@ class: middle
 
 Called .bold[Multiple R-squared] in the summary output
 
-.code100[
+.code80[
 ```{r}
 summary(bac.lm)
 ```

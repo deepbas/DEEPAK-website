@@ -266,7 +266,6 @@ For the ESP experiment:
   - $\mathrm{H}_{\mathrm{a}}: \mathrm{p}>1 / 5$
 ]
 
-<br>
 
 .bq.font80[
 .purple.bold[Helpful hints:]
@@ -281,7 +280,7 @@ For the ESP experiment:
 
 # Sleep Vs. Caffeine (Example 2)
 
-.bq[
+.bql.font90[
 Students were given words to memorize, then randomly assigned to take either a 90 min nap, or a caffeine pill. $2 \frac{1}{2}$ hours later, they were tested on their recall ability.
 - Explanatory variable: .bold[sleep or caffeine]
 - Response variable: .bold[number of words recalled]
@@ -300,7 +299,7 @@ Students were given words to memorize, then randomly assigned to take either a 9
 
 # Sleep Vs. Caffeine
 
-.bq[
+.bql.font90[
 
 What is the parameter of interest in the sleep versus caffeine experiment?
 
@@ -317,7 +316,7 @@ What is the parameter of interest in the sleep versus caffeine experiment?
 <summary>.red[Click for answer]</summary>
 The correct answer is 4.
 
-.bq[Difference in mean responses $\mu_1 - \mu_2$, where $\mu_1$ and $\mu_2$ are the mean words recalled in the two different conditions]
+.bqt[Difference in mean responses $\mu_1 - \mu_2$, where $\mu_1$ and $\mu_2$ are the mean words recalled in the two different conditions]
 
 </details>
 
@@ -337,7 +336,7 @@ class: middle
 
 # Sleep Vs. Caffeine
 
-.bq[
+.bql.font90[
 - What are the null and alternative hypothesis?
 
   1. $\mathrm{H}_{0}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}$
@@ -349,7 +348,7 @@ class: middle
 
 <details>
 <summary>.red[Click for answer]</summary>
-The correct answer is 2 (since we are looking for evidence that the means are different)
+> The correct answer is 2 (since we are looking for evidence that the means are different)
 </details>
 
 ---
@@ -612,13 +611,12 @@ We can conclude ...
 
 # Statistical Significance
 
-.bql[
+.bql.font80[
 - Hypothesis testing is similar to how our justice system works (or is suppose to work).
 
 $$\mathrm{H}_{0} : \text{Defendant is innocent vs. } \mathrm{H}_{\mathrm{a}} \text{: Defendant is guilty}$$
 ]
 
-<br>
 
 .bq.font80[
 Assumption: Defendant is innocent $\left(\mathrm{H}_{0}\right)$
@@ -631,9 +629,7 @@ Verdict:
 
 ---
 
-# BUT..
-
-.out-t[How do we determine statistical significance??]
+# How do we determine statistical significance??
 
 .bql[
 For ESP example:
@@ -644,8 +640,8 @@ For Sleep versus Caffeine example:
 - If the effect of sleep and caffeine on recall is the same, how rare would it be to get an average difference of 3 words in the experiment conducted?
 ]
 
-
 .blue-h[We assess this with a probability that we call a "p-value."]
+
 ---
 
 class: middle
