@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Inference for means using the t-distribution</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Inference for means using the t-distribution]
+
+### .fancy[Stat 120]
+
+ February 17 2023
+
+---
+
+class: middle
+
+# The SE for means
+
+.bql.font80[
+- The standard error for `\(\bar{x}\)` is
+`$$S E_{\bar{x}}=\frac{\sigma}{\sqrt{n}}$$`
+where `\(\sigma\)` is the population SD of your response
+
+- The standard error for `\(\bar{x}_{1}-\bar{x}_{2}\)` is
+`$$S E_{\bar{x}_{1}-\bar{x}_{2}}=\sqrt{\frac{\sigma_{1}^{2}}{n_{1}}+\frac{\sigma_{2}^{2}}{n_{2}}}$$`
+]
+
+
+---
+
+class: middle
+
+# Unknown `\(\sigma\)`
+
+
+.bqt[But we usually do not know `\(\sigma\)` !
+  - Estimate `\(\sigma\)` with the sample SD `\(s\)`
+]
+
+
+---
+
+class: middle
+
+# Central Limit Theorem for means: One sample
+
+.bql-list[
+
+The sampling distribution for a sample mean is approximately `\(N\left(\mu, S E_{\bar{x}}\right)\)`]
+
+&lt;br&gt;
+
+.bql[
+When is this approximately "good"?
+
+- if `\(X \sim N(\mu, \sigma)\)` then `\(\bar{X} \sim N(\mu, \sigma / \sqrt{n})\)`
+
+- if `\(X \nsim N(\mu, \sigma)\)` then `\(\bar{X} \sim N(\mu, \sigma / \sqrt{n})\)` if `\(n \geqslant 30\)`
+]
+
+
+---
+
+class: middle
+
+# Problem!
+
+.bql.font90[
+- The estimated SE varies from sample to sample, along with `\(\bar{x}\)` ! 
+
+- In `\(z\)`, only `\(\bar{x}\)` varies from sample to sample
+`$$z=\frac{\bar{x}-\mu}{\sigma / \sqrt{n}} \sim N(0,1)$$`
+
+- In `\(t\)`, both `\(\bar{x}\)` and `\(s\)` vary from sample to sample
+`$$t=\frac{\bar{x}-\mu}{s / \sqrt{n}} \sim ? ? ?$$`
+
+]
+
+
+---
+
+class: middle
+
+# Central Limit Theorem for means: Two independent samples:
+
+.bql-list[
+The sampling distribution for a difference of two independent sample means is approximately `\(N\left(\mu_{1}-\mu_{2}, S E_{\bar{x}_{1}-\bar{x}_{2}}\right)\)`
+]
+
+&lt;br&gt;
+
+.bql[
+When is this approximately "good"?
+- need both `\(n_{1}\)` and `\(n_{2}\)` samples sizes big enough for the one-sample condition
+]
+
+
+---
+
+# Inference for means
+
+.green-h[.purple[Check:] Check the one- or two-sample size conditions for the CLT]
+
+.pull-left[
+.bql[
+Tests: Use t-ratios of the form
+`$$t=\frac{\text { stat }-\text { null value }}{S E}$$`
+P-values computed from a t-distribution with appropriate `\(\mathrm{df}\)`
+- `pt(t, df= )` gives the area to the left of `\(t\)`
+]
+]
+
+.pull-right[
+.bql[
+Confidence intervals: `\(\mathrm{CI}\)` of the form
+`$$\text { stat } \pm t^{*} S E$$`
+The `\(t^{*}\)` multiplier comes from a t-distribution with appropriate `\(d f\)`
+- `qt(0.975, df= )` gives `\(t^{*}\)` for `\(95 \%\)` confidence
+
+]
+
+]
+
+
+---
+
+# Florida lakes
+
+.bql.font80[53 lakes were sampled, pH recorded
+- Is average pH in Florida lakes different from 7 (neutral)?
+- Let `\(\mu\)` be the mean pH for all Florida lakes
+`$$H_0: \mu = 7 \qquad\qquad H_A: \mu \neq 7$$`
+]
+
+.bqt.font80[Can we use a t-test?
+- `\(n=53\)` is a decent sample size
+- check sample distribution of pHs
+]
+
+
+---
+
+count: false
+ 
+## Florida lakes
+.panel1-hist-auto[
+
+```r
+*library(ggplot2)
+```
+]
+ 
+.panel2-hist-auto[
+
+]
+
+---
+count: false
+ 
+## Florida lakes
+.panel1-hist-auto[
+
+```r
+library(ggplot2)
+*lakes &lt;- read.csv("http://www.lock5stat.com/datasets2e/FloridaLakes.csv")
+```
+]
+ 
+.panel2-hist-auto[
+
+]
+
+---
+count: false
+ 
+## Florida lakes
+.panel1-hist-auto[
+
+```r
+library(ggplot2)
+lakes &lt;- read.csv("http://www.lock5stat.com/datasets2e/FloridaLakes.csv")
+*ggplot(lakes, aes(x = pH))
+```
+]
+ 
+.panel2-hist-auto[
+&lt;img src="Day19_files/figure-html/hist_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Florida lakes
+.panel1-hist-auto[
+
+```r
+library(ggplot2)
+lakes &lt;- read.csv("http://www.lock5stat.com/datasets2e/FloridaLakes.csv")
+ggplot(lakes, aes(x = pH)) +
+* geom_histogram(fill = "steelblue",
+*                bins = 7,
+*                col = "lightblue")
+```
+]
+ 
+.panel2-hist-auto[
+&lt;img src="Day19_files/figure-html/hist_auto_04_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-hist-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-hist-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-hist-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Florida lakes
+
+.bql.font80[
+`$$H_0: \mu = 7  \qquad\qquad  H_A: \mu \neq 7$$`
+Data: The average pH was `\(\bar{x}=6.591\)` with a standard deviation of `\(s=1.288\)`.]
+
+.pull-left[
+
+```r
+mean(lakes$pH)
+[1] 6.590566
+```
+]
+
+.pull-right[
+
+```r
+sd(lakes$pH)
+[1] 1.288449
+```
+]
+
+.bql.font80[
+
+- The t-test stat is
+`$$t = \dfrac{6.591 - 7}{1.288/\sqrt{53}} \approx -2.31$$`
+
+- .bold[Interpret t]: The observed mean of 6.591 is 2.31 SEs below 7.
+
+]
+
+
+---
+
+# Florida lakes
+
+.pull-left[
+.bql.font80[
+`$$H_0: \mu = 7 \qquad\qquad  H_A: \mu \neq 7$$`
+- .bold[p-value] `\(2 \times P(t &lt; -2.31)\)`, or double left tail area below -2.31
+  - use t-distribution with `\(df = 53-1= 52\)`
+]
+    
+
+```r
+2*pt(-2.31, df=53-1)  # df = n-1
+[1] 0.02489032
+```
+
+]
+
+.pull-right[
+.bql.font80[
+- .bold[Interpret:] The p-value is 0.025. If the mean pH of all lakes is 7, then we would see a sample mean that is at least 2.31 SEs away from 7 about 2.5% of the time in samples of 53 lakes. 
+
+
+- .bold[Conclusion:] There is a statistically significant difference between the observed mean pH of 6.591 and the hypothesized mean of 7 (t=-2.31, df=52, p=0.025). 
+]
+]
+
+---
+
+## Florida lakes: `t.test` in R
+
+- We can also use `t.test` in R !
+
+
+```r
+t.test(lakes$pH, mu  = 7)
+```
+
+```
+
+	One Sample t-test
+
+data:  lakes$pH
+t = -2.3134, df = 52, p-value = 0.02469
+alternative hypothesis: true mean is not equal to 7
+95 percent confidence interval:
+ 6.235425 6.945707
+sample estimates:
+mean of x 
+ 6.590566 
+```
+
+
+---
+
+# Florida lakes
+
+.bql[
+How different is the population mean from 7?
+
+- 95% CI for `\(\mu\)`:
+
+
+`$$6.591 \pm 2.0066 \dfrac{1.288}{\sqrt{53}} = 6.591 \pm 0.355 = (6.236, 6.946)$$`
+where `\(t^*\)` corresponds to 95% confidence (97.5th percentile):
+]
+
+
+
+```r
+qt(.975, df=53-1)
+[1] 2.006647
+```
+
+..hljs[We are 95% confident that the mean pH of all lakes is between 6.236 and 6.946 (slightly acidic)]
+
+
+---
+
+class: middle
+
+# Academic Performance Index (API) 
+
+.bql-list[
+Academic Performance Index (API) is a number reflecting a school’s performance on a statewide standardized test
+  - simple random sample of `\(n=200\)` schools
+  - variable `growth` measures the growth in API from 1999 to 2000 (API 2000 - API 1999).
+]
+
+
+```r
+# read data
+api &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/API.csv")
+```
+
+---
+
+class: middle
+
+# Academic Performance Index (API) 
+
+.code110[
+
+```r
+api$wealth &lt;- ifelse(api$meals &gt; 50, "low","high")
+table(api$wealth)
+
+high  low 
+ 102   98 
+```
+]
+
+
+.code110[
+
+```r
+library(dplyr)
+api %&gt;% 
+  group_by(wealth) %&gt;% 
+  summarize(mean(growth), sd(growth))
+# A tibble: 2 × 3
+  wealth `mean(growth)` `sd(growth)`
+  &lt;chr&gt;           &lt;dbl&gt;        &lt;dbl&gt;
+1 high             25.2         28.8
+2 low              38.8         30.0
+```
+]
+
+---
+
+# API
+
+
+```r
+ggplot(api, aes(x = wealth, y = growth)) + geom_boxplot() + 
+  labs(y ="API growth (2000 - 1999)") + coord_flip()
+```
+
+&lt;img src="Day19_files/figure-html/unnamed-chunk-9-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Hypothesis Test: Can we use t-inference methods to compare mean growths?
+
+.bql.font80[
+- Both samples sizes (98 and 102) can be deemed large 
+- No severe skewness (but two extreme outliers)
+]
+
+.bqt.font80[
+- Estimated Standard Error : `\(SD_{\bar{x}_h - \bar{x}_l} = \sqrt{\dfrac{28.75380^2}{102} + \dfrac{29.95048^2}{98}} = 4.1544\)`
+
+- Test statistics: `\(t = \dfrac{(25.24510 - 38.82653) - 0}{4.154404} = -3.2692\)`
+]
+
+..hljs[The observed mean difference is 3.3 SEs below the hypothesized mean difference of 0]
+
+---
+
+# Two-sample t-test
+
+
+```r
+t.test(growth ~ wealth, data = api)
+```
+
+```
+
+	Welch Two Sample t-test
+
+data:  growth by wealth
+*t = -3.2692, df = 196.71, p-value = 0.001273
+alternative hypothesis: true difference in means between group high and group low is not equal to 0
+95 percent confidence interval:
+ -21.774321  -5.388544
+sample estimates:
+mean in group high  mean in group low 
+          25.24510           38.82653 
+```
+
+.font80[
+&gt; The p-value is 0.001273. If there is no difference between mean growth in the two populations,
+then there is just a 0.13% chance of seeing a sample mean difference that is 3.27 standard errors or more
+away from 0.
+]
+
+---
+
+# Outliers
+
+
+```r
+which(api$growth &gt; 120 )
+[1]  74 119
+```
+
+
+
+```r
+api %&gt;% slice(74,119)  
+           cds stype            name                 sname snum
+1 5.471911e+13     E Lincoln Element    Lincoln Elementary 5873
+2 1.975342e+13     E Washington Elem Washington Elementary 2543
+                    dname dnum       cname cnum flag pcttest api00 api99 target
+1 Exeter Union Elementary  226      Tulare   53   NA      98   693   504     15
+2   Redondo Beach Unified  585 Los Angeles   18   NA     100   745   615      9
+  growth sch.wide comp.imp both awards meals ell yr.rnd mobility acs.k3 acs.46
+1    189      Yes      Yes  Yes    Yes    50  18   &lt;NA&gt;        9     18     NA
+2    130      Yes      Yes  Yes    Yes    41  20   &lt;NA&gt;       16     19     30
+  acs.core pct.resp not.hsg hsg some.col col.grad grad.sch avg.ed full emer
+1       NA       93      28  23       27       14        8   2.51   91    9
+2       NA       81      11  26       32       16       16   2.99  100    3
+  enroll api.stu    pw  fpc wealth
+1    196     177 30.97 6194   high
+2    391     313 30.97 6194   high
+```
+
+---
+
+# Remove Outliers
+
+
+```r
+t.test(growth ~ wealth, data = api, subset = -c(74,119))
+```
+
+```
+
+	Welch Two Sample t-test
+
+data:  growth by wealth
+*t = -4.395, df = 174.97, p-value = 1.916e-05
+alternative hypothesis: true difference in means between group high and group low is not equal to 0
+95 percent confidence interval:
+ -23.571116  -8.961945
+sample estimates:
+mean in group high  mean in group low 
+          22.56000           38.82653 
+```
+
+..hljs[How does removing outliers influence `t-test` stat and p-value?]
+
+
+---
+
+# Confidence Interval
+
+.pull-left[
+.bql-list.font90[
+.bolder[95% Confidence Interval from the output:]
+- Without Outliers: (-23.57, -8.96)
+- With Outliers: (-21.77, -5.39)
+]
+]
+
+.pull-right[
+.bql.font80[
+.bolder[Removing Outliers:]
+- the difference in means shifted further away from 0
+- CI shifted further from a difference of 0
+- decrease the SE of our sample difference
+]
+]
+
+--
+
+.bql.font90[
+.bold[Interpretation:] We are 95% confident that the mean API growth between 1999 and 2000 for all low wealth
+schools is anywhere from 8.96 points to 23.57 points higher than the mean API growth for all high wealth
+schools in California.
+]
+
+---
+
+## Paired Data
+
+.bql.font90[Data are paired if the data being compared consists of paired data values. Common paired data examples:
+  - Two measurements on each case
+  - natural pairs (twins, spouses, etc)
+]
+
+--
+
+.bql.font90[Use paired data to reduce natural variation in the response when comparing the two groups/treatments
+  - comparing group 1 and 2 responses among similar individuals 
+  - reduces the effects of confounding variables
+  - reduces the SE for the mean difference!
+]
+
+---
+
+class: middle
+
+# Analyzing paired data
+
+.bql.font80[
+- Look at the difference between responses for each unit (pair)
+`$$d_{i} = x_{1,i} - x_{2,i}$$`
+
+- Analyze the .bold[mean of these differences] rather than the average difference between two groups
+`$$\textrm{sample mean difference: } \bar{d}$$`
+`$$\textrm{sample SD of difference: } s_d$$`
+`$$\textrm{population mean difference: } \mu_d$$`
+
+- Use .bold[one sample] inference methods for these differences
+]
+
+---
+
+# Tuition example
+
+.bql.font90[How much higher is non-resident tuition, on average, compared to resident tuition? Use the `Tuition2006.csv` lab manual data
+  - the variable `Diff` computes the difference `Res` - `NonRes`
+]
+    
+
+```r
+tuition &lt;- read.csv("http://math.carleton.edu/Stats215/RLabManual/Tuition2006.csv")
+str(tuition)
+'data.frame':	19 obs. of  5 variables:
+ $ X          : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ Institution: chr  "Univ of Akron (OH)" "Athens State (AL)" "Ball State (IN)" "Bloomsburg U (PA)" ...
+ $ Res        : int  4200 1900 3400 3200 3400 2600 3300 2900 2200 3400 ...
+ $ NonRes     : int  8800 3600 8600 7000 12700 5700 5900 3400 4600 7300 ...
+* $ Diff       : int  -4600 -1700 -5200 -3800 -9300 -3100 -2600 -500 -2400 -3900 ...
+```
+
+
+---
+
+## Tuition example
+
+.bql.font80[
+- Smaller sample size (n=19) and slightly left-skewed distribution or roughly symmetric with one low case!
+]
+
+
+.pull-left[
+&lt;img src="Day19_files/figure-html/unnamed-chunk-15-1.svg" width="100%" /&gt;
+]
+.pull-right[
+&lt;img src="Day19_files/figure-html/unnamed-chunk-16-1.svg" width="100%" /&gt;
+]
+
+---
+
+## Tuition example
+
+.bql[We are 95% confident that the mean tuition for non-residents is $2,585 to $4584 higher than mean tuition for residents]
+
+
+```r
+t.test(tuition$Diff)
+
+	One Sample t-test
+
+data:  tuition$Diff
+t = -7.5349, df = 18, p-value = 5.69e-07
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -4583.580 -2584.841
+sample estimates:
+mean of x 
+-3584.211 
+```
+
+
+```r
+sd(tuition$Diff)/sqrt(19)  # SE for mean diff
+[1] 475.6813
+```
+
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.bql[
+- Go over to the in class activity file
+- Complete the activity 
+]
+]
+
+<div class="countdown" id="timer_6aefdde9" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
