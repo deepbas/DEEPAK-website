@@ -327,7 +327,7 @@ where $t^*$ corresponds to 95% confidence (97.5th percentile):
 qt(.975, df=53-1)
 ```
 
-..hljs[We are 95% confident that the mean pH of all lakes is between 6.236 and 6.946 (slightly acidic)]
+.hljs[We are 95% confident that the mean pH of all lakes is between 6.236 and 6.946 (slightly acidic)]
 
 
 ---
