@@ -268,8 +268,7 @@ Cuckoo %>%
   geom_qq() + 
   geom_qq_line() + 
   facet_grid(~species) +  
-  theme(strip.text.x = element_text(size = 6)) +
-  theme_bw()
+  theme(strip.text.x = element_text(size = 6)) 
 ```
 
 ]
