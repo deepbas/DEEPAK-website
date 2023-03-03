@@ -54,7 +54,7 @@ h1, h2, h3 {
 }
 .remark-inline-code {
   font-size: 1.2em;
-  color:  #FA8072;
+  color: #FFA500;
 
 }
 .remark-slide-number {
@@ -267,8 +267,6 @@ blockquote, .bqt {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
-
-
 table.dataTable tbody {
   background-color: #0148A4;;
   color: #B2182B;
@@ -370,6 +368,10 @@ slides > slide {
   overflow-y: scroll;
 }
 
+.remark-slide-scaler {
+    overflow-y: auto;
+}
+
 .scroll-box-26 {
   height:20em;
   overflow-y: scroll;
@@ -389,8 +391,6 @@ slides > slide {
 .action {
     background-color: #f2eecb;
 }
-
-
 
 
 img {

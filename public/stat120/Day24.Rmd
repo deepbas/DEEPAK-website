@@ -770,7 +770,7 @@ class: middle
 .pull-left-60[
 
 .bqt.font80[
-.b[Leverage points] far away in the horizontal direction, do not changes slope. 
+.b[Leverage points], far away in the horizontal direction, do not change slope. 
 
 .b[Influential points], slope changes with and without the influential point. 
 
