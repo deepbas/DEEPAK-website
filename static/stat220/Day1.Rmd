@@ -409,7 +409,7 @@ class: middle
 .pull-left-60[
 .bq.font70[
 - _User:_ A Github account for you (e.g., deepbas).
-- _Organization:_ The Github account for one or more user (e.g., DataScienceFall22).
+- _Organization:_ The Github account for one or more user (e.g., DataScienceSpring23).
 - _Repository:_ A folder within the organization that includes files dedicated to a project.
 - _Local Github:_ Copies of Github files located your computer.
 - _Remote Github:_ Github files located on the https://github.com website.
