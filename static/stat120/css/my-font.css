@@ -142,7 +142,7 @@ h3 {
 .brown { color:brown;}
 
 .b { font-weight: bold; color:brown;}
-.bold { font-weight: bold; color:#FA8072;}
+.bold { font-weight: bold; color:#0099FF;}
 .bolder { font-weight: bolder; color:#0148A4;}
 
 .i { font-style: italic; color:#e64626; }
@@ -247,14 +247,6 @@ div.my-footer span {
 .small {
     font-size: 50%
     }
-
-
-ul li::marker {
-  margin-bottom: 10px;
-  color: #00FF40;
-  font-size: 1.4em;
-}
-
 
 .hidden{
   visibility: hidden;

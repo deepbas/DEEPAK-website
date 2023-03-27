@@ -32,30 +32,37 @@ h1, h2, h3 {
   font-weight: bold;
   color: #1F4257;
 }
+
 .remark-slide-content {
   background-color:  #F7FCF8;
   font-size: 30px;
-  padding: 0em 2em 1em 2em;
+  padding: 0em 1em 0em 1em;
 }
+
 .remark-slide-content h1 {
-    font-size: 35px;
-}
-.remark-slide-content h2 {
     font-size: 30px;
 }
-.remark-slide-content h3 {
+
+.remark-slide-content h2 {
     font-size: 25px;
 }
+
+.remark-slide-content h3 {
+    font-size: 20px;
+}
+
 .remark-code, .remark-inline-code {
   font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
 }
+
+/* code box */
 .remark-code {
   font-size: 16px;
 }
+/* code font size */
 .remark-inline-code {
   font-size: 1.2em;
-  color: #FFA500;
-
+  color: #0099FF;
 }
 .remark-slide-number {
   color: #518c66;
@@ -63,10 +70,20 @@ h1, h2, h3 {
   font-size: 0.9em;
 }
 
-strong{color:#518c66;}
+/*  
+• Underline - text-decoration: underline;
+• Overline - text-decoration: overline;
+• Line-through - text-decoration: line-through;
+• Blink - text-decoration: blink;
+• Initial - text-decoration: initial;
+• Inherit - text-decoration: inherit;
+• None - text-decoration: none;
+*/
+
+strong{color:#A52A2A;}
 a, a > code {
   color: #38BDDE;
-  text-decoration: none;
+  text-decoration: blink;
 }
 
 .footnote {
@@ -86,15 +103,15 @@ a, a > code {
 }
 
 .inverse h1, .inverse h2, .inverse h3 {
-  color: #BFFF00;
+  color: #A2DED0;
 }
 
 .title-slide, .title-slide h1, .title-slide h2, .title-slide h3 {
-  color: #EDF3EF;
+  color: #002366;
 }
 
 .title-slide {
-  background-color: #0C4839;
+  background-color: #FFC0CB;
 }
 
 .title-slide .remark-slide-number {
@@ -122,12 +139,12 @@ a, a > code {
 
 .pull-left {
   float: left;
-  width: 47%;
+  width: 49%;
 }
 
 .pull-right {
   float: right;
-  width: 47%;
+  width: 49%;
 }
 
 .pull-right ~ * {
@@ -138,17 +155,16 @@ img, video, iframe {
   max-width: 100%;
 }
 
-
 blockquote, .bql {
   display: block;
   margin-top: 0.05em;
   margin-bottom: 0.05em;
   margin-left: 5px;
   margin-right: 5px;
-  border-left: solid 5px #E6E6E6;
-  border-top: solid 2px #E6E6E6;
-  border-bottom: solid 2px #E6E6E6;
-  border-right: solid 2px #E6E6E6;
+  border-left: solid 5px #006699;
+  border-top: solid 2px #ffcc00;
+  border-bottom: solid 2px #ffcc00;
+  border-right: solid 2px #006699;
   box-shadow: 0 0 3px rgba(0,0,0,0.5);
   background-color: rgba(255,255,255,1);
   color: #000000;
@@ -162,6 +178,12 @@ blockquote, .bql {
   line-height: 1.5em;
   letter-spacing: 0.1em;
   text-shadow: 0 0 1px rgba(0,0,0,0.5);
+  list-style-type: "💫";
+  ul li::marker {
+    margin-bottom: 10px;
+    color: orange;
+    font-size: 1.4em;
+  }
 }
 
 
@@ -172,19 +194,52 @@ blockquote, .bq {
   margin-bottom: 0.02em;
   margin-left: 5px;
   margin-right: 5px;
-  border-left: solid 5px #00008B;
-  border-top: solid 2px #00008B;
-  border-bottom: solid 2px #00008B;
-  border-right: solid 2px #00008B;
+  border-left: solid 5px #0000FF;
+  border-top: solid 2px #FF00FF;
+  border-bottom: solid 2px #FF00FF;
+  border-right: solid 2px #0000FF;
   box-shadow: 0 0 6px rgba(255,255,255,0.5);
-  background-color: #FFD700; 
-  color: #0C4839;
+  background-color:    #F2F9E8; 
+  color:  #003399;
   padding: 0.5em;
   font-weight: bold;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  list-style-type: "💫";
+  ul li::marker {
+    margin-bottom: 10px;
+    color: orange;
+    font-size: 1.4em;
+  }
 }
 
+
+/*
+• Disc - A filled circle 
+• Circle - An empty circle
+• Square - A filled square
+• Decimal - Numbered 
+• Lower-alpha - Lowercase letters 
+• Upper-alpha - Uppercase letters 
+• Lower-roman - Lowercase Roman numerals 
+• Upper-roman - Uppercase Roman numerals 
+• Lower-greek - Lowercase Greek letters 
+• Upper-greek - Uppercase Greek letters 
+• Armenian - Armenian numbering 
+• Chinese-informal - Chinese informal numbering 
+• Chinese-formal - Chinese formal numbering 
+• Geometric-shapes - Geometric shapes
+• Japanese-informal - Japanese informal numbering 
+• Japanese-formal - Japanese formal numbering 
+• Korean-hangul-formal - Korean Hangul formal numbering 
+• Korean-hanja-informal - Korean Hanja informal numbering 
+• Korean-hanja-formal - Korean Hanja formal numbering 
+• Hebrew - Hebrew numbering 
+• Hindi-arabic - Hindi-Arabic numbering 
+• Devanagari - Devanagari numbering 
+• Gujarati - Gujarati numbering 
+• Gurmukhi - Gurmukhi numbering
+*/
 
 
 blockquote, .bqt {
@@ -194,18 +249,25 @@ blockquote, .bqt {
   margin-bottom: 0.05em;
   margin-left: 10px;
   margin-right: 10px;
-  border-left: solid 10px #008000;
-  border-top: solid 4px #008000;
-  border-bottom: solid 4px #008000;
-  border-right: solid 4px #008000;
+  border-left: solid 10px #6A5ACD;
+  border-top: solid 4px #6A5ACD;
+  border-bottom: solid 4px #6A5ACD;
+  border-right: solid 4px #6A5ACD;
   box-shadow: 0 0 15px rgba(255,255,255,0.8);
-  background-color: #F1F1F1; 
+  background-color: #FFC0CB; 
   color: #000000;
   padding: 0.5em;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   height: <variable>px;
+  list-style-type: "✨";
+  ul li::marker {
+    margin-bottom: 10px;
+    color: orange;
+    font-size: 1.4em;
+  }
 }
+
 
 .blockquote p {
   margin-top: 0px;
@@ -299,7 +361,7 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
   }
 }
 
-#social_icons {
+.social_icons {
     padding: .5em;
     line-height: 2.7;
     -webkit-columns: 150px 2;
@@ -428,63 +490,6 @@ pre code {
 
 
 
-
-
-ul {
-  list-style-type: "✨";
-  font-size: 0.95em;
-  margin: .05em;
-  padding: 1em;
-  padding-left: 2.5em;
-  border-left: solid 5px #00008B;
-  border-top: solid 2px #00008B;
-  border-bottom: solid 2px #00008B;
-  border-right: solid 2px #00008B;
-  box-shadow: 0 0 6px rgba(255,255,255,0.5);
-  background-color: #4169E1; 
-  color: #FFF;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 5px;
-}
-
-
-# my second list styling css
-ul, .list-two{
-  list-style-type: "💫";
-  font-size: 0.95em;
-  margin: .06em;
-  padding: 1em;
-  padding-left: 2.5em;
-  border-left: solid 5px #00008B;
-  border-top: solid 2px #00008B;
-  border-bottom: solid 2px #00008B;
-  border-right: solid 2px #00008B;
-  box-shadow: 0 0 6px rgba(255,255,255,0.5);
-  background-color: #4169E1; 
-  color: #FFF;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 5px;
-}
-
-
-# my second list styling css
-ul2 {
-  list-style-type: "💫";
-  font-size: 1em;
-  margin: .06em;
-  padding: 1em;
-  padding-left: 2.5em;
-  border-left: solid 5px #00008B;
-  border-top: solid 2px #00008B;
-  border-bottom: solid 2px #00008B;
-  border-right: solid 2px #00008B;
-  box-shadow: 0 0 6px rgba(255,255,255,0.5);
-  background-color: #4169E1; 
-  color: #FFF;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 5px;
-}
-
 .hljs-github .hljs {
     background: #1c5253;
     color: white;
@@ -505,7 +510,6 @@ ul2 {
   background: #00FF00;
   border-radius: 10px;
 }
-
 
 .out-t, remark-inline-code {
    background: #9fff9f;

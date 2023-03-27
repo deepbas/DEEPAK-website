@@ -105,25 +105,21 @@ background-size: 160px, 100% 100%
 
 class: middle
 
-# Something about me
-
-<br>
+# Your introduction
 
 .pull-left[
 .bql[
-- Second year at Carleton
-- Born in Nepal
-- PhD in Applied Statistics from
-UC-Riverside
-- Diverse education background
-- Avid learner and traveler
+- Your name?
+- What gender pronouns do
+you use?
+- Favorite Scientist/Person?
+- Recent fun memories?
 ]
-
 ]
 .pull-right[
 <center>
-<img src="images/Deepak.jpg" width="75%" height="75%"><br>
-<a href="https://deepbas.io/">My webpage</a>
+<img src="images/indexcard.jpg" width="95%" height="85%"><br>
+<a>Please fill in!</a>
 </center>
 ]
 
@@ -133,7 +129,7 @@ class: middle
 
 ## What will you learn in this course?
 
-.bql[
+.bqt.font90[
 - Analyzing data by doing exploratory data analysis
 
 - Estimate some parameter of interest from the population
@@ -143,8 +139,134 @@ class: middle
 - Quantify the uncertainty in the estimation
 ]
 
+---
+
+
+class: middle
+
+# What will a typical day/week look like?
+
+Before Class:
+
+.bqt[
+- Some reading/video to introduce some topics
+- Will be updated in the weekly planner
+]
+
+During Class:
+
+.bqt[
+- Mini-lectures
+- Hands-on group activities and quizzes
+]
 
 ---
+
+class: middle
+
+
+<div class="bq" style="height: 4in;">
+
+ <li> Wad up </li>
+
+
+</div>
+
+---
+
+class: middle
+
+<div class="bq" style="height: 4in;">
+  
+<li> Wad up </li>
+
+<li> Not much </li>
+
+</div>
+
+---
+
+
+class: middle
+
+<div class="bq" style="height: 4in;">
+  
+<li> Wad up </li>
+
+<li> Not much </li>
+
+<li> Not much again</li>
+
+
+</div>
+
+---
+
+class: middle
+
+<div class="bq" style="height: 4in;">
+  
+<li> Wad up </li>
+
+<li> Not much </li>
+
+<li> Not much again</li>
+
+<li> Not much when</li>
+
+</div>
+
+---
+
+
+class: middle
+
+<div class="bq" style="height: 4in;">
+  
+<li> Wad up </li>
+
+<li> Not much </li>
+
+<li> Not much again</li>
+
+<li> Not much when</li>
+
+<li> Not much then</li>
+
+</div>
+
+---
+
+
+class: middle
+
+<div class="bq" style="height: 4in;">
+  
+<li> Wad up </li>
+
+<li> Not much </li>
+
+<li> Not much again</li>
+
+<li> Not much when</li>
+
+<li> Not much then</li>
+
+<li> Not much then again</li>
+
+</div>
+
+---
+
+class: inverse, middle
+
+# Statistics is distinct from mathematics
+
+.bql.font120[Statistics is the study of data and the uncertainties surrounding them. We will take a more conceptual route to statistics in this course.
+]
+
+---
+
 
 class: middle
 
@@ -162,45 +284,35 @@ class: middle
 
 ---
 
-
 class: middle
 
-# What will a typical day/week look like?
+# What and Why of Statistics?
 
-Before Class:
+.bql[
+Science of collecting, describing, analyzing and making decisions based on data
 
-.bqt[
-1. Some reading/video to introduce some topics
-2. Will be updated in the weekly planner
+  + Sampling
+  + Exploratory Data Analysis
+  + Inference
 ]
 
-During Class:
-
-.bqt[
-1. Mini-lectures
-2. Hands-on group activities and quizzes
-]
+.green-h.font120[Allows us to make informed decisions in the face of uncertainty and let's us take an unbiased and evidence-based viewpoint]
 
 ---
 
 class: middle
 
-# Your introduction
+# Data: Cases and Variables
 
-.pull-left[
 .bql[
-- Your name?
-- What gender pronouns do
-you use?
-- Favorite Scientist/Person?
-- Recent fun memories?
-]
-]
-.pull-right[
-<center>
-<img src="images/indexcard.jpg" width="95%" height="85%"><br>
-<a>Please fill in!</a>
-</center>
+Data are a set of measurements taken on a set of individual units
+- These are .b[cases] or units]
+
+<br>
+
+.bql[
+Data is stored and presented in a dataset that comprises of variables measured on cases
+- A .b[variable] is any characteristic that is recorded for each case
 ]
 
 ---
@@ -234,17 +346,9 @@ you use?
 
 ---
 
-class: inverse, middle
+class: middle
 
-# Statistics is distinct from mathematics
-
-.bql.font120[Statistics is the study of data and the uncertainties surrounding them. We will take a more conceptual route to statistics in this course.
-]
-
----
-
-
-# Software Component
+# Software Component: We will gradually learn these things!
 
 .bq.font120[
 - Statistical computing software called R
@@ -252,43 +356,6 @@ class: inverse, middle
 - RMarkdown is platform in Rstudio to write your codes and results
 ]
 
---
-
-<br>
-
-.center.font120.purple.b[We will gradually learn these things!]
-
----
-
-class: middle
-
-# What and Why of Statistics?
-
-.bql[
-Science of collecting, describing, analyzing and making decisions based on data
-
-  + Sampling
-  + Exploratory Data Analysis
-  + Inference
-]
-
-.green-h.font120[Allows us to make informed decisions in the face of uncertainty and let's us take an unbiased and evidence-based viewpoint]
-
----
-
-class: middle
-
-# Data: Cases and Variables
-
-.bql[
-Data are a set of measurements taken on a set of individual units
-- These are .b[cases] or units]
-
-
-.bql[
-Data is stored and presented in a dataset that comprises of variables measured on cases
-- A .b[variable] is any characteristic that is recorded for each case
-]
 
 ---
 
@@ -300,7 +367,6 @@ knitr::kable(EducationLiteracy, format = "html")
 ```
 ]
 
---
 
 <br>
 
@@ -343,7 +409,7 @@ class: middle
 
 # Kidney cancer
 
-> If the cases in the kidney cancer dataset are people, then the measured variable is .bold[categorical]
+> If the cases in the kidney cancer dataset are people, then the measured variable is .b[categorical]
 
 - We categorize each person as either having kidney
 cancer or not which is categorical.
@@ -369,6 +435,7 @@ Can use numbers to code categories of categorical variable
 - e.g Gender (1 for male and 2 for female)
 ]
 
+<br>
 
 --
 
@@ -377,6 +444,7 @@ Can convert quantitative variable into categorical groups
 - e.g. Income (0-50000 as Low, 50000+ as High)
 ]
 
+<br>
 
 --
 
@@ -389,7 +457,7 @@ Categorical variables are sometimes collapsed into fewer levels
 
 # Explanatory and Response Variable
 
-.bql[When one variable helps us understand or predict values of another variable, we call the former the .bold[explanatory variable] and the latter the .bold[response variable]]
+.bql[When one variable helps us understand or predict values of another variable, we call the former the .b[explanatory variable] and the latter the .bold[response variable]]
 
 --
 
@@ -433,6 +501,7 @@ class: action, middle
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
+<br>
 .bq.font90[
 - Make a course folder called 'stat120' either on your Maize account or on your local computer 
 - Please download the in-class activity file for Day 1 from [moodle](https://moodle.carleton.edu/) and go to [class activity module](https://stat120-winter23.netlify.app/) 

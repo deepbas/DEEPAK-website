@@ -8,10 +8,6 @@ type: book
 weight: 20
 ---
 
-<span style="color:orange">**Monday, 09/12**</span>
-
-
-
 Day 1 Slides ({{% staticref "stat220/Day1.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day1.html" "newtab" %}}html{{% /staticref %}})
 
 <!--
