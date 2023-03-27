@@ -258,18 +258,67 @@ Data is stored and presented in a dataset that comprises of variables measured o
 
 # General sentiment of the class
 
+```{r echo=FALSE, fig.width=7.5, fig.height=5.5, out.width="60%", fig.align='center'}
+# data
+library(tidytext)
+library(ggthemes)
+library(dplyr)
+library(ggplot2)
 
-<center>
-<img src="images/sentiment.png" width="95%" height="85%"><br>
-</center>
+review_02 <- read.csv("data/response.csv")
+
+
+review_02 %>%
+  select(What.do.you.hope.to.gain.from.taking.this.course.) %>%
+  unnest_tokens(output = word, input = What.do.you.hope.to.gain.from.taking.this.course.) %>%
+  inner_join(get_sentiments('nrc')) %>%
+  group_by(sentiment) %>%
+  count() %>%
+  ggplot(aes(x = reorder(sentiment, X = n), y = n, fill = sentiment)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_brewer(palette = "Paired") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+    axis.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 10)
+  ) + 
+  labs(title = "Sentiment of Class",
+       x = "Spectrum of Sentiments")
+```
+
 
 ---
 
 ## Survey Responses: What do you hope to gain from taking this course?
 
-<center>
-<img src="images/response_1.png" width="55%" height="45%"><br>
-</center>
+
+```{r echo=FALSE, fig.width=7.5, fig.height=5.5, out.width="60%", fig.align='center'}
+library(tidyverse)
+library(tidyr)
+library(tidytext)
+library(wordcloud)
+
+wordcloudData <- 
+  review_02 %>%
+  select(What.do.you.hope.to.gain.from.taking.this.course.) %>%
+  unnest_tokens(output = word, input = What.do.you.hope.to.gain.from.taking.this.course.) %>%
+  anti_join(stop_words)  %>%
+  count(word) %>%
+  data.frame()
+
+set.seed(42) # For reproducibility
+wordcloud(words = wordcloudData$word, 
+          freq = wordcloudData$n, 
+          min.freq = 1, 
+          max.words = 100, # Maximum number of words to display
+          random.order = FALSE, 
+          rot.per = 0.3, 
+          random.color = TRUE, 
+          colors = RColorBrewer::brewer.pal(8, "Dark2"), # Color palette
+          scale = c(3, 0.5)) # Font size range
+```
 
 
 
@@ -278,10 +327,26 @@ Data is stored and presented in a dataset that comprises of variables measured o
 ## Survey Responses: Is there anything about this course that you are nervous about?
 
 
-<center>
-<img src="images/response_2.png" width="45%" height="45%"><br>
-</center>
+```{r echo=FALSE, fig.width=7.5, fig.height=5.5, out.width="60%", fig.align='center'}
+wordcloudData <- 
+  review_02 %>%
+  select(Is.there.anything.about.this.course.that.you.are.nervous.about.) %>%
+  unnest_tokens(output = word, input = Is.there.anything.about.this.course.that.you.are.nervous.about.) %>%
+  anti_join(stop_words)  %>%
+  count(word) %>%
+  data.frame()
 
+set.seed(42) # For reproducibility
+wordcloud(words = wordcloudData$word, 
+          freq = wordcloudData$n, 
+          min.freq = 1, 
+          max.words = 100, # Maximum number of words to display
+          random.order = FALSE, 
+          rot.per = 0.3, 
+          random.color = TRUE, 
+          colors = RColorBrewer::brewer.pal(8, "Dark2"), # Color palette
+          scale = c(3, 0.5)) # Font size range
+```
 
 
 

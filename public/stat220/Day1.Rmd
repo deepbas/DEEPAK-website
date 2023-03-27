@@ -249,6 +249,41 @@ class: middle
 
 ---
 
+## Survey Responses: One thing you are excited and nervous about?
+
+```{r echo=FALSE, fig.width=4, fig.height=3.5, out.width="60%", fig.align='center'}
+# stat 220
+library(tidyverse)
+library(tidyr)
+library(tidytext)
+library(wordcloud)
+
+review_220 <- read.csv("data/response_220.csv")
+
+
+wordcloudData <- 
+  review_220 %>%
+  select(Please.share.one.thing.that.you.are.excited.about.and.one.thing.that.you.are.nervous.about.for.this.class...Note..I.may.share.your.anonymized.response.with.other.students..You.can.use.the.next.question.for.anything.you.don.t.want.to.put.here..) %>%
+  unnest_tokens(output = word, input = Please.share.one.thing.that.you.are.excited.about.and.one.thing.that.you.are.nervous.about.for.this.class...Note..I.may.share.your.anonymized.response.with.other.students..You.can.use.the.next.question.for.anything.you.don.t.want.to.put.here..) %>%
+  anti_join(stop_words)  %>%
+  count(word) %>%
+  data.frame()
+
+set.seed(42) # For reproducibility
+wordcloud(words = wordcloudData$word, 
+          freq = wordcloudData$n, 
+          min.freq = 1, 
+          max.words = 100, # Maximum number of words to display
+          random.order = FALSE, 
+          rot.per = 0.3, 
+          random.color = TRUE, 
+          colors = RColorBrewer::brewer.pal(8, "Dark2"), # Color palette
+          scale = c(3, 0.5)) # Font size range
+```
+
+
+---
+
 class: middle
 
 # Class Pipelines
