@@ -460,9 +460,9 @@ class: action, middle
 .pull-right-60[
 <br>
 .bq.font90[
-- Work on the class-activity-1.Rmd file
-- You can get the file either from [Github organization repo](https://github.com/DataScienceSpring23) or from [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
-- Ask me questions
+- Work on the class_activity_1.Rmd file
+- You can get the file from [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Talk to your neighbor
 - Submit your compiled .pdf file to moodle
 ]
 ]
