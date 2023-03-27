@@ -41,9 +41,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       )
 
 # load necessary packages
-library(Sleuth3)   # Data-set for Sleuth
 library(tidyverse)
-library(dplyr)
 library(countdown)
 library(mosaic)
 library(ggthemes)
@@ -58,7 +56,6 @@ xaringanExtra::use_extra_styles(
 )
 library(flipbookr)
 library(patchwork)
-library(DT)
 library(moderndive)
 library(knitr)
 library(grid)
@@ -158,19 +155,6 @@ $$
 
 ---
 
-background-image: url("images/glassdoor.png")
-background-position: center
-background-size: 60%
-class: clear
-
-# One of the best jobs
-
-.footnote[ Source: Click [here](https://www.glassdoor.com/List/Best-Jobs-in-America-LST_KQ0,20.htm)]
-
-
-
----
-
 background-image: url("images/ds-cycle.png")
 background-position: center
 background-size: 80%
@@ -184,7 +168,7 @@ class: clear
 
 class: middle
 
-# Stat 220: Introduction to Data Science
+## Stat 220: Introduction to Data Science
 
 .out-t[Focus on the “soup to nuts” approach to problem solving]
 
@@ -198,8 +182,7 @@ class: middle
 
   + EDA tools
   + statistical learning methods
-  + network data, spatial data
-  
+
 - communication
 
   + reproducibility
@@ -219,10 +202,6 @@ class: clear
 .footnote[ Click [here](http://benschmidt.org/profGender/) to go to the app]
 
 
-
-
-
-
 ---
 
 
@@ -232,7 +211,7 @@ class: middle
 
 .bq.font90[
 1. Actively follow along! RMarkdown (.Rmd) documents will be provided for you
-each week 
+each class
 
   - use these to take notes and run code “live” in class.
   
@@ -333,18 +312,20 @@ class: middle
 
 ---
 
+class: middle
+
+
 # R Vs Python for data science
 
-.out-t["R is written by statisticians, for statisticians," 
+.out-t.font80["R is written by statisticians, for statisticians," 
 .right[Norm Matloff, Author of The Art of R Programmming, Prof. of Computer Science, UC Davis]]
 <br>
-.bq[
+.bqt.font90[
 .brown[Advantages of R over Python]:
 - Not so steep learning curve as Python
 - R has many generic functions that are universal, e.g. `print()`, `plot()`, `summary()`
 - R Comprehensive R Archive Network (CRAN) has many user-friendly packages
 - R's basic `help()` and `example()` functions are much more informative than Python's counterparts
-- R community champions for inclusiveness. The `reticulate` package enables seamless, high-performance interoperability between R and Python
 ]
 
 ---
@@ -354,14 +335,15 @@ background-position: center
 background-size: 96%
 class: clear
 
-
 .footnote[ Click [here](https://buzzrbeeline.blog/2018/07/04/rstudio-anatomy/) for source]
 
 ---
 
-# Using R Markdown for data science
+class: middle
 
-.bql.font80[
+## Using R Markdown for data science
+
+.bq.font70[
 - You will use R Markdown for all work in this class
 
 - A Markdown (.Rmd) file contains
@@ -385,10 +367,13 @@ class: clear
 
 ---
 
-# Version Control using Git and GitHub
+class: middle
+
+
+### Version Control using Git and GitHub
 
 .pull-left-60[
-.bq.font80[
+.bq.font70[
 - _User:_ A Github account for you (e.g., deepbas).
 - _Organization:_ The Github account for one or more user (e.g., DataScienceFall22).
 - _Repository:_ A folder within the organization that includes files dedicated to a project.
@@ -418,7 +403,7 @@ class: middle
 # Using GitHub and Rstudio for data science
 
 
-.bq[
+.bq.font90[
 Rstudio lets you create git controlled projects
 - create a GitHub repo
 - make a Rstudio project using your cloned repo
@@ -440,8 +425,7 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
-<br>
-.bq[
+.bq.font90[
 - Work on the class-activity-1.Rmd file
 - You can get the file either from [Github organization repo](https://github.com/DataScienceFall22) or from [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
 - Ask me questions

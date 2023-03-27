@@ -1,10 +1,11 @@
+
 .title-slide a, a > code {
     color: #aadff2;
     text-decoration: none;
 }
 
 div.my-footer {
-    background-color: #E7EEF0;
+    background-color: #F2F2F2;
     position: absolute;
     bottom: 0px;
     left: 0px;
@@ -12,7 +13,7 @@ div.my-footer {
     width: 100%;
 }
 div.my-footer span {
-    font-size: 14pt;
+    font-size: 16pt;
     color: #125972;
     position: absolute;
     left: 20px;
@@ -48,14 +49,15 @@ div.my-footer span {
 }
 
 .hljs-github .hljs {
-    background: #e5e5e5;
+    background: #F8F8F8;
 }
 
 .inline-c, remark-inline-code {
-   background: #e5e5e5;
-   border-radius: 3px;
-   padding: 4px;
+   background: #FFFFFF;
+   border-radius: 1px;
+   padding: 2px;
    font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+   font-size: 14px;
 }
 
 .yellow-h{
@@ -99,7 +101,7 @@ div.my-footer span {
 ul li::marker {
   margin-bottom: 10px;
   color: orange;
-  font-size: 1.2em;
+  font-size: 1.4em;
 }
 
 

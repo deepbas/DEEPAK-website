@@ -471,7 +471,7 @@ Gendermale  -3.240e-03  6.286e-03  -0.515 0.615584
 .bql.font70[
 .b[Model diagnostic tools]
 - Are model conditions met?
-- linearity, constant variance, independent observation
+- linearity, normality, constant variance, independent observation
 
 .b[Outlier checks]
 - What is an "outlier" in multiple regression?
