@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Data Science"
-subtitle: "<br/> Fall 22"
+subtitle: "<br/> Spring 23"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
 output:
@@ -98,7 +98,7 @@ class: title-slide, middle
 
 # .fancy[Introduction to Data Science]
 
-### .fancy[Fall 2022]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -253,14 +253,14 @@ class: middle
 
 # Class Pipelines
 
-.font140.center[[https://deepbas.io/courses/stat220/](https://deepbas.io/courses/stat220/)]
+.font140.center[[https://stat220-spring23.netlify.app](https://stat220-spring23.netlify.app)]
 
 
-.bq[
+.bql[
 
 - Please bookmark this page: should be checked multiple times a day
-- Most of the course information and schedule will be posted here in advance
-- Use moodle for submitting class activity and accessing solutions
+- Most of the course information and schedule will be posted in [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Use moodle for submitting class activity and seeing grades
 - Use Github for homework and projects
 ]
 
@@ -300,14 +300,13 @@ During class:
 
 class: middle
 
-#  What you need to do ..
+#  What you need to do next . ...
 
 .bq[
-- read the [Rstudio for Stat220](https://deepbas.io/courses/stat220/rstudio-in-stat-220/) page
-- read the [GitHub for Stat220](https://deepbas.io/courses/stat220/github-in-stat-220/) page
-- read the [Software for Stat220](https://deepbas.io/courses/stat220/software/) page
+- read the [Rstudio for Stat220](https://stat220-spring23.netlify.app/rstudio.html) page
+- read the [GitHub for Stat220](https://stat220-spring23.netlify.app/github.html) page
+- read the [Software for Stat220](https://stat220-spring23.netlify.app/software.html) page
 ]
-
 
 
 ---
@@ -427,7 +426,7 @@ class: action, middle
 <br>
 .bq.font90[
 - Work on the class-activity-1.Rmd file
-- You can get the file either from [Github organization repo](https://github.com/DataScienceFall22) or from [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- You can get the file either from [Github organization repo](https://github.com/DataScienceSpring23) or from [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
 - Ask me questions
 - Submit your compiled .pdf file to moodle
 ]
