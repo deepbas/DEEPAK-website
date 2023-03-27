@@ -239,22 +239,6 @@ Science of collecting, describing, analyzing and making decisions based on data
 
 ---
 
-class: middle
-
-# Data: Cases and Variables
-
-.bql[
-Data are a set of measurements taken on a set of individual units
-- These are .b[cases] or units]
-
-<br>
-
-.bql[
-Data is stored and presented in a dataset that comprises of variables measured on cases
-- A .b[variable] is any characteristic that is recorded for each case
-]
-
----
 
 # General sentiment of the class
 
@@ -355,7 +339,7 @@ wordcloud(words = wordcloudData$word,
 
 class: middle
 
-# Statistical Jargons
+# Statistical Computation
 
 
 <div class="bq" style="height: 3in;">
@@ -373,7 +357,7 @@ class: middle
 
 class: middle
 
-# Statistical Jargons
+# Statistical Computation
 
 
 <div class="bq" style="height: 3in;">
@@ -392,7 +376,7 @@ class: middle
 
 class: middle
 
-# Statistical Jargons
+# Statistical Computation
 
 
 <div class="bq" style="height: 3in;">
@@ -404,6 +388,24 @@ class: middle
 <li>  RMarkdown is platform in Rstudio to write your codes and results </li>
 
 </div>
+
+---
+
+
+class: middle
+
+# Data: Cases and Variables
+
+.bql[
+Data are a set of measurements taken on a set of individual units
+- These are .b[cases] or units]
+
+<br>
+
+.bql[
+Data is stored and presented in a dataset that comprises of variables measured on cases
+- A .b[variable] is any characteristic that is recorded for each case
+]
 
 ---
 
