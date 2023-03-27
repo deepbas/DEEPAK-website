@@ -150,111 +150,15 @@ Before Class:
 
 .bqt[
 - Some reading/video to introduce some topics
-- Will be updated in the weekly planner
+- Daily quizzes
 ]
 
 During Class:
 
 .bqt[
 - Mini-lectures
-- Hands-on group activities and quizzes
+- Hands-on class activities 
 ]
-
----
-
-class: middle
-
-
-<div class="bq" style="height: 4in;">
-
- <li> Wad up </li>
-
-
-</div>
-
----
-
-class: middle
-
-<div class="bq" style="height: 4in;">
-  
-<li> Wad up </li>
-
-<li> Not much </li>
-
-</div>
-
----
-
-
-class: middle
-
-<div class="bq" style="height: 4in;">
-  
-<li> Wad up </li>
-
-<li> Not much </li>
-
-<li> Not much again</li>
-
-
-</div>
-
----
-
-class: middle
-
-<div class="bq" style="height: 4in;">
-  
-<li> Wad up </li>
-
-<li> Not much </li>
-
-<li> Not much again</li>
-
-<li> Not much when</li>
-
-</div>
-
----
-
-
-class: middle
-
-<div class="bq" style="height: 4in;">
-  
-<li> Wad up </li>
-
-<li> Not much </li>
-
-<li> Not much again</li>
-
-<li> Not much when</li>
-
-<li> Not much then</li>
-
-</div>
-
----
-
-
-class: middle
-
-<div class="bq" style="height: 4in;">
-  
-<li> Wad up </li>
-
-<li> Not much </li>
-
-<li> Not much again</li>
-
-<li> Not much when</li>
-
-<li> Not much then</li>
-
-<li> Not much then again</li>
-
-</div>
 
 ---
 
@@ -272,15 +176,50 @@ class: middle
 
 # Statistical Jargons
 
-.bq.font90[
-- .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. 
 
-- Statistical jargon can be used to help .green-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables.
 
-- Understanding statistical terms can help to effectively .green-h[communicate the findings] of a statistical analysis.
-]
 
-<!-- It can help to correctly interpret the data and make meaningful conclusions. -->
+<div class="bq" style="height: 5in;">
+
+ <li> .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. </li>
+
+
+</div>
+
+---
+
+class: middle
+
+# Statistical Jargons
+
+
+
+
+<div class="bq" style="height: 5in;">
+
+ <li> .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. </li>
+
+<li> Statistical jargon can be used to help .green-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables. </li>
+
+</div>
+
+
+---
+
+class: middle
+
+# Statistical Jargons
+
+
+<div class="bq" style="height: 5in;">
+
+ <li> .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. </li>
+
+<li> Statistical jargon can be used to help .green-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables. </li>
+
+<li>  Understanding statistical terms can help to effectively .green-h[communicate the findings] of a statistical analysis. </li>
+
+</div>
 
 ---
 
@@ -296,7 +235,7 @@ Science of collecting, describing, analyzing and making decisions based on data
   + Inference
 ]
 
-.green-h.font120[Allows us to make informed decisions in the face of uncertainty and let's us take an unbiased and evidence-based viewpoint]
+.blue-h.font120[Allows us to make informed decisions in the face of uncertainty and let's us take an unbiased and evidence-based viewpoint]
 
 ---
 
@@ -344,18 +283,62 @@ Data is stored and presented in a dataset that comprises of variables measured o
 </center>
 
 
+
+
 ---
+
 
 class: middle
 
-# Software Component: We will gradually learn these things!
+# Statistical Jargons
 
-.bq.font120[
-- Statistical computing software called R
-- RStudio gives nice user-friendly interface to R
-- RMarkdown is platform in Rstudio to write your codes and results
-]
 
+<div class="bq" style="height: 3in;">
+
+ <li> Statistical computing software called R </li>
+
+
+</div>
+
+
+
+
+---
+
+
+class: middle
+
+# Statistical Jargons
+
+
+<div class="bq" style="height: 3in;">
+
+ <li> Statistical computing software called R </li>
+
+<li> RStudio gives nice user-friendly interface to R </li>
+
+
+</div>
+
+
+
+---
+
+
+class: middle
+
+# Statistical Jargons
+
+
+<div class="bq" style="height: 3in;">
+
+ <li> Statistical computing software called R </li>
+
+<li> RStudio gives nice user-friendly interface to R </li>
+
+<li>  RMarkdown is platform in Rstudio to write your codes and results </li>
+
+</div>
 
 ---
 
@@ -504,7 +487,7 @@ class: action, middle
 <br>
 .bq.font90[
 - Make a course folder called 'stat120' either on your Maize account or on your local computer 
-- Please download the in-class activity file for Day 1 from [moodle](https://moodle.carleton.edu/) and go to [class activity module](https://stat120-winter23.netlify.app/) 
+- Please download the in-class activity file for Day 1 from [moodle](https://moodle.carleton.edu/) and go to [class web page](https://stat120-spring23.netlify.app/) 
 - We will go over this .Rmd file together. 
 - Once you are done, knit to pdf or word and submit.
 ]
