@@ -153,7 +153,7 @@ class: action, middle
 ]
 .pull-right-60[
 .bq.font90[
-- Let's go over to maize server/ local Rstudio to connect it with the class [Github repository](https://github.com/DataScienceFall22)
+- Let's go over to maize server/ local Rstudio to connect it with the class [Github repository](https://github.com/DataScienceSpring23)
 - Clone hw0-yourusername repository to your course folder as an R project using version control methods
 - Make changes to hw and commit those changes
 - Tip: push the changes regularly back to Github
