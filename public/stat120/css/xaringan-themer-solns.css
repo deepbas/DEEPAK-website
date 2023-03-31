@@ -516,3 +516,17 @@ pre code {
    border-radius: 10px;
    color: #215A4A;
 }
+
+
+
+/* Style for collapsible summary */
+.answer {
+  color: red;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Style for the collapsed content */
+details > *:not(summary) {
+  padding: 0.5rem 1rem;
+}
