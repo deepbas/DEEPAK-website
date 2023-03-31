@@ -14,7 +14,7 @@ Day 1 Slides ({{% staticref "stat120/Day1.pdf" "newtab" %}}pdf{{% /staticref %}}
 
 Day 2 Slides ({{% staticref "stat120/Day2.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day2.html" "newtab" %}}html{{% /staticref %}})
 
-Day 3 Slides ({{% staticref "stat120/lecture_notes/Day3.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/lecture_notes/Day3.html" "newtab" %}}html{{% /staticref %}})
+Day 3 Slides ({{% staticref "stat120/Day3.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day3.html" "newtab" %}}html{{% /staticref %}})
 
 
 
