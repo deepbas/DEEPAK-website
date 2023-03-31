@@ -371,10 +371,12 @@ then breezed through mazes and other tests of rodent IQ"
 compared to the sedentary mice
 ]
 
+--
+
 Is this evidence that exercise causes an increase in brain
 activity and IQ, at least in mice?
 
-
+--
 
 .center.out-t[Randomized experiment can yield causal conclusions!]
 
@@ -535,7 +537,7 @@ class: action, middle
 .bq[
 
 - Go over to [moodle](https://moodle.carleton.edu/login/index.php) to get the class activity .Rmd file
-- Continue working with your neighbors and let me know of you have any questions
+- Continue working with your neighbors and let me know if you have any questions
 ]
 ]
 
