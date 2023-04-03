@@ -1,6 +1,6 @@
 ---
 title: "Graphics with ggplot2"
-subtitle: "<br/> Fall 2022"
+subtitle: "<br/> Spring 2023"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
 output:
@@ -67,7 +67,8 @@ library(palmerpenguins)
 library(broom)
 library(ggResidpanel)
 library(ggrepel)
-
+library(kableExtra)
+library(pagedown)
 
 select <- dplyr::select
 
@@ -82,6 +83,15 @@ base <- ggplot(hate_crimes, aes(x=median_household_income,
                                 y=hate_crimes_per_100k_splc)) 
 
 # read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+# renderthis::to_pdf(from = "Day4.html", complex_slides = TRUE, partial_slides = TRUE)
+
+```
+
+```{r setup-fonts, include=FALSE}
+options(html_dependency_resolver = function(dep) {
+  dep$src = sub("^fonts", "fonts", dep$src)
+  dep
+})
 ```
 
 
@@ -105,7 +115,7 @@ class: title-slide, middle
 
 # .fancy[Graphics with ggplot2]
 
-### .fancy[Fall 2022]
+### .fancy[Spring 2023]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -117,7 +127,157 @@ class: center, inverse, bottom
 background-image: url("images/data_viz.jpg")
 background-size: cover
 
-## .white.bold.font120[Data Visualization provides a powerful way to communicate data-driven findings, motivate analyses, and detect flaw]
+## .white.font140[Data Visualization provides a powerful way to communicate data-driven findings, motivate analyses, and detect flaw]
+
+---
+
+# Visualization in the data science workflow
+
+
+.pull-left-60[
+
+.hljs[Data visualization is a key skill for data scientists.]
+
+.bql.font90[Useful for:
+- Identification of outliers
+- Guidance of recoding operations
+- Summarize distributions
+- Discover patterns, relationships
+- Visualize uncertainty
+]
+]
+
+--
+
+.pull-right-40[
+<br>
+<br>
+<br>
+```{r, echo=FALSE,  fig.align='center'}
+#Generating a Sample Dataset 
+x <- c(1.2, 3.4, 4.5, 5.7, 7.8, 9.4, 11.4, 13.4, 15.4, 17.4, 20.4, 23.4, 26.4, 28.4, 30.4)
+y <- c(1.4, 4.3, 5.6, 7.2, 9.3, 11.8, 14.3, 17.9, 20.7, 24.4, 27.7, 31.4, 35.2, 38.4, 42.2)
+#Creating the Scatterplot
+
+library(ggplot2)
+df = data.frame(x = x, y = y)
+ggplot(data = df, aes(x = x, y = y)) +
+  geom_point(shape = 2, color = 'black', linewidth = 3) + 
+  geom_smooth(method = lm, se = FALSE) +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.title = element_blank()) +
+   scale_x_continuous(limits = c(min(x), 42)) +
+  scale_y_continuous(limits = c(min(y), 55)) +
+  labs(x = "", y = "")+
+  geom_point(x = 11, y = 40, shape = 3, color = 'blue', linewidth = 3) +
+  geom_text(x = 11, y = 37, label = 'Outlier', color = 'blue') +
+  geom_point(x = 38, y = 53, shape = 3, color = 'red', linewidth = 3) +
+  geom_text(x = 38, y = 50, label = 'Leverage', color = "red") +
+  geom_point(x = 38, y = 10, shape = 3, color = 'green', linewidth = 3) +
+  geom_text(x = 38, y = 7, label = 'Influential', color = 'green') 
+
+```
+]
+
+
+---
+
+# Which visualization do you prefer?
+
+.pull-left[
+```{r, echo=FALSE, fig.width=6, fig.height=6, out.width="95%", fig.align='center', results='hide'}
+library(corrplot)
+library(reshape2)
+
+# Load the data
+data(mtcars)
+  
+# Calculate the correlation matrix
+cor_matrix = cor(mtcars)
+  
+# Set the dimensions of the output file
+width <- 7
+height <- 7
+
+# Save the correlogram to the "images" folder
+  corrplot(cor_matrix, type = "upper", diag = FALSE,
+           method = "circle", number.cex = 0.65,
+           addCoef.col = "black", 
+           tl.col = "black", tl.srt = 45)
+```
+]
+
+.pull-right[
+```{r, echo=FALSE, fig.width=6, fig.height=6, out.width="95%", fig.align='center', results='hide'}
+# Calculate the correlation matrix
+cor_matrix <- cor(mtcars)
+
+# Melt the correlation matrix
+melted_cor_matrix <- melt(cor_matrix)
+
+# Create the heatmap
+ggplot(data = melted_cor_matrix, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile(color = "gray90", linewidth = 0.5) +
+  scale_fill_gradient2(low = "#3C57A8", high = "#B2182B", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, size = 12, hjust = 1, family = "Arial"),
+        axis.text.y = element_text(size = 12, family = "Arial"),
+        axis.title = element_blank(),
+        legend.position = "right",
+        legend.title = element_text(size = 14, face = "bold", family = "Arial"),
+        legend.text = element_text(size = 12, family = "Arial"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()) +
+  coord_fixed()
+```
+]
+
+
+---
+
+
+.pull-left-40[
+
+## Which quantity do I want to visualize?
+
+<br>
+.hljs.font90[
+- Amounts
+- Distributions
+- Proportions
+- Associations
+- Trends
+- Estimates
+- Uncertainty
+]
+
+
+
+]
+
+--
+
+.pull-right-60[
+
+# Which question do I want to answer?
+
+.bq.font80[
+- "Is the distribution normal (or uniform or...)?" $\rightarrow$ Histogram, density plot, Q-Q plot
+- "Are univariate distributions across subgroups different?" $\rightarrow$ Boxplots
+- "How do differences in amounts between groups compare?" $\rightarrow$ Barplot
+- "What is the relationship between $\mathrm{x}$ and $\mathrm{y}$ ?" $\rightarrow$ Scatterplot, contour plot, hex bins
+- "What are the correlations in a set of variables?" $\rightarrow$ Correlogram, small multiples
+- "Are the data clustered by subgroup?" $\rightarrow$ Scatterplot with color
+- "How uncertain are estimates? $\rightarrow$ Error bars, confidence bands
+]
+
+
+]
+
+
+
 
 ---
 
@@ -126,7 +286,7 @@ class: middle
 # **ggplot2**  &mdash; Overview
 
 .bql[
-- A powerful package for visualising data 
+- A powerful package for visualizing data 
 - Used widely by academics and industries alike
 ]
 <br>
@@ -144,43 +304,60 @@ class: middle
 
 # Our building blocks `r emo::ji("bricks")`
 
+.pull-left[
+.bq.font80[Essentials
 - **Data**: the data frame, or data frames, we will use to plot
 - **Aesthetics**: the variables we will be working with
 - **Geometric objects**: the type of visualization
-- **Theme adjustments**: size, text, colors etc
+]
+]
+
+.pull-right[
+.bq.font80[Additional elements
+- **Theme adjustments**: linewidth, text, colors etc
+- Facets
+- **Coordinate system**
+- **Statistical transformations**
+- **Position adjustments**
+- Scales
+]
+]
 
 
 ---
 
 ### Data 
 
-The first building block for our plots are the data we intend to map. In `ggplot2`, we always have to specify the object where our data lives. In other words, you will always have to specify a data frame, as such:
+.hljs[In `ggplot2`, we always specify a data frame with :]
 
 ```r
 ggplot(name_of_your_df)
 ```
 
-In the future, we will see how to combine multiple data sources to build a single plot. For now, we will work under the assumption that all your data live in the same object. Remember what you learned about `dplyr::left_join()` and `broom::augment()` etc. to combine data sets or to complement your original data set with information from models (e.g. fitted values). 
+--
 
----
 
 ### Aesthetics 
 
-The second building block for our plots are the aesthetics. We need to specify the variables in the data frame we will be using and what role they play. 
-
-To do this we will use the function `aes()` within the `ggplot()` function after the data frame.
+.hljs[Specify the variables in the data frame we will be using and what role they play. Use the function `aes()` within the `ggplot()` function after the data frame.
+]
 
 ```r
 ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable))
 ```
+--
 
-Beyond your axis, you can add more aesthetics representing further dimensions of the data in the two dimensional graphic plane, such as: size, color, fill, to name a few.
+.yellow-h.font90[Beyond your axis, you can add more aesthetics representing further dimensions of the data in the two dimensional graphic plane, such as: `shape`, `linewidth`, `color`, `fill`, `alpha` to name a few.]
 
 ---
 
+class: middle
+
 ### Geometric objects 
 
-The third layer to render our graph (to make it a specific type of graph, e.g. bar plot, scatter plot, etc.) is a geometric object. To add one, we need to add a plus (**+**) at the end of the initial line and state the type of geometric object we want to add, for example, `geom_point()` for a scatter plot, or `geom_bar()` for bar plots. For an overview of the most important functions and geoms available through `ggplot2`, see the `ggplot2` [cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
+.hljs[The third layer required to create our plot (which determines the specific kind of visualization, such as a bar plot or scatter plot) involves adding a geometric object. 
+
+To do this, we should append a plus .b[(+)] at the end of the initial line and specify the desired geometric object type, like `geom_point()` for a scatter plot or `geom_bar()` for bar plots.] 
 
 ```r
 ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable)) +
@@ -191,108 +368,18 @@ ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable))
 
 ### Theme and Axes
 
-At this point our plot may just need some final touches. We may want to fix the axes names or get rid of the default gray background. To do so, we need to add an additional layer preceded by a plus sign (+). 
+.hljs[At this stage, our plot might require a few finishing touches. We might want to adjust the axis names or remove the default gray background. To accomplish this, we should add another layer, preceded by a plus sign .b[(+)].
 
-If we want to change the names in our axes, we can utilize the `labs()` function. 
-
-We can also employ some of the pre-loaded themes, for example, `theme_minimal()`.
+To modify the axis names, we can use the `labs()` function. Additionally, we can apply some of the pre-defined themes, such as `theme_minimal()`.
+]
 
 ```r
 ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable)) +
   geom_point() +
   theme_minimal() +
-  labs(x = "Name you want displayed",
-       y = "Name you want displayed")
+  labs(x = "Your x label",
+       y = "Your y label")
 ```
-
----
-
-```{r, echo=T, results='hide', warning=FALSE, message=FALSE}
-pacman::p_load(
-  tidyverse,
-  foreign,
-  palmerpenguins,
-  haven,
-  gapminder,
-  gridExtra,
-  viridis
-  )
-df <- gapminder # let's make a copy of the data to save some characters
-str(df)
-```
-
-
----
-
-class: middle
-
-# **ggplot2** &mdash; Basics 
-
-.bq.font80[The `ggplot` function and the `data` argument
-- specify a data frame in the main `ggplot` function
-]
-
-```{r, prompt=FALSE, eval=FALSE, tidy=FALSE}
-ggplot(data = df)
-```
-
---
-
-.bq.font80[The mapping aesthetics, or .out-t[aes]; most importantly, the variable(s) that we want to plot
-- specify as an additional argument in the same `ggplot` function
-]
-
-```{r, prompt=FALSE, eval=FALSE, tidy=FALSE}
-ggplot(data = df, mapping = aes(x = x-variable, y = y-variable))
-```
-
----
-
-class: middle
-
-# **ggplot2** &mdash; Basics
-
-.bq.font90[The geometric objects, or .out-t[geom]; the visual representations
-  - specify, after a plus sign .yellow-h[+], as an additional function
-]
-
-```{r, prompt=FALSE, eval=FALSE, tidy=FALSE}
-ggplot(data = df, mapping = aes(x = x-variable, y = y-variable)) +
-       geom_point() #<<
-```
-
-- Additional aesthetics like `color`, `size`, `shape`, and `alpha` (i.e. transparency) are possible.
-  
-```{r, prompt=FALSE, eval=FALSE, tidy=FALSE}
-ggplot(data = df, mapping = aes(x = x-variable, y = y-variable)) +
-       geom_point(color = z-variable) #<<
-```
-
-
----
-
-class: middle
-
-# Layered Grammar of Graphics
-
-.pull-left[
-.bq.font80[Essentials
-- Data
-- **Aesthetic mappings**
-- **Geometric objects**
-]
-]
-
-.pull-right[
-.bq.font80[Additional elements
-- Facets
-- **Coordinate system**
-- **Statistical transformations**
-- **Position adjustments**
-- Scales
-- Theme
-]
-]
 
 ---
 
@@ -310,9 +397,201 @@ ggplot(data) +    # data
   <theme_funs> # play with axes, colors, etc (optional)
 ```
 
-.footnote[See the [Rstudio cheatsheets](https://rstudio.com/resources/cheatsheets/) for more details]
+.footnote[See the [ggplot2 cheatsheets](https://rstudio.com/resources/cheatsheets/) for more details]
 
 ---
+
+
+
+`r chunk_reveal("hist", font_size_code="70%", width= c(0.5, 0.5), title = "## Histogram")`
+
+```{r hist, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Histogram of mpg (miles per gallon) in the mtcars dataset
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(binwidth = 2) +
+  theme_minimal()
+```
+
+
+---
+
+
+`r chunk_reveal("density", font_size_code="70%", width= c(0.5, 0.5), title = "## Density Plot")`
+
+```{r density, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Density plot of mpg (miles per gallon)
+ggplot(mtcars, aes(x = mpg)) +
+  geom_density() +
+  theme_minimal()
+```
+
+
+---
+
+
+`r chunk_reveal("histo-dens", font_size_code="70%", width= c(0.5, 0.5), title = "## Histogram with density overlay")`
+
+```{r histo-dens, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Density plot of mpg (miles per gallon)
+ggplot(mtcars, aes(x = mpg)) +
+  geom_histogram(aes(y = ..density..), 
+                 binwidth = 2, 
+                 alpha = 0.5,
+                 fill = "blue") +
+  geom_density(color = "red") +
+  theme_minimal()
+```
+
+---
+
+
+`r chunk_reveal("boxplot", font_size_code="70%", width= c(0.5, 0.5), title = "## Boxplot")`
+
+```{r boxplot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Boxplot of mpg by number of cylinders in the mtcars dataset
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_boxplot() +
+  theme_minimal()
+```
+
+---
+
+
+
+`r chunk_reveal("barplot", font_size_code="70%", width= c(0.5, 0.5), title = "## Barplot")`
+
+```{r barplot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Barplot of number of cars by number of cylinders in the mtcars dataset
+ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar() +
+  theme_minimal()
+```
+
+---
+
+
+
+`r chunk_reveal("scatter-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Scatter plot")`
+
+```{r scatter-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Scatterplot of mpg vs. weight in the mtcars dataset
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme_minimal()
+```
+
+---
+
+
+
+`r chunk_reveal("contour-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Contour plot")`
+
+```{r contour-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Contour plot of mpg vs. weight in the mtcars dataset
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_density_2d() +
+  theme_minimal()
+```
+
+---
+
+
+`r chunk_reveal("hexbins-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Hex  Bins plot")`
+
+```{r hexbins-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Hex bins plot of mpg vs. weight in the mtcars dataset
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_hex(bins = 8) +
+  theme_minimal()
+```
+
+---
+
+`r chunk_reveal("errorbar-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Error Bars plot")`
+
+```{r errorbar-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Example data for trend plot
+set.seed(42)
+example_data <- data.frame(
+  x = 1:10,
+  y = 2 * (1:10) + rnorm(10, mean = 0, sd = 3),
+  se = runif(10, min = 1, max = 3)
+)
+
+# Trend plot with error bars
+ggplot(example_data, aes(x = x, y = y)) +
+  geom_point(color = "skyblue", linewidth = 3) +
+  geom_line(color = "skyblue") +
+  geom_errorbar(aes(ymin = y - se, ymax = y + se), width = 0.2) +
+  theme_minimal()
+```
+
+
+---
+
+
+`r chunk_reveal("cbands-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Uncertainty - Confidence Bands ")`
+
+```{r cbands-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Uncertainty - Confidence Bands plot
+set.seed(42)
+example_data <- data.frame(
+  x = 1:10,
+  y = 2 * (1:10) + rnorm(10, mean = 0, sd = 3),
+  se = runif(10, min = 1, max = 3)
+)
+
+ggplot(example_data, aes(x = x, y = y)) +
+  geom_point(color = "skyblue", linewidth = 3) +
+  geom_smooth(method = "lm", se = TRUE, 
+              color = "skyblue", 
+              fill = "skyblue", alpha = 0.3) +
+  theme_minimal()
+```
+
+---
+
+
+
+`r chunk_reveal("variable-transformation", font_size_code="70%", width= c(0.5, 0.5), title = "## Variable Transformations ")`
+
+```{r variable-transformation, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(data = diamonds, aes(x = price)) +
+  geom_histogram(binwidth = 500) +
+  scale_y_log10() +
+  theme_minimal()
+```
+
+
+
+
+---
+
+`r chunk_reveal("facet", font_size_code="70%", width= c(0.5, 0.5), title = "## Facet ")`
+
+```{r facet, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Create example data
+set.seed(123)
+example_data <- data.frame(
+  category = factor(rep(c("A", "B", "C", "D"),
+                        each = 50)),
+  x = runif(200),
+  y = rnorm(200)
+)
+
+# Create the base plot
+ggplot(example_data, aes(x = x, y = y)) +
+  geom_point() + 
+  facet_wrap(~category, nrow = 2) +
+  theme_minimal()
+```
+
+
+
+
+
+---
+
 
 ## Hate Crime and income inequality
 
@@ -327,11 +606,12 @@ glimpse(hate_crimes)
 
 ---
 
-`r chunk_reveal("layering-geoms", font_size_code="70%", width= c(0.4, 0.6), title = "## Layering geoms")`
+`r chunk_reveal("layering-geoms", font_size_code="70%", width= c(0.5, 0.5), title = "## Layering geoms")`
 
 ```{r layering-geoms, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-base <- ggplot(hate_crimes, aes(x=median_household_income,
-                                y=hate_crimes_per_100k_splc)) 
+base <- ggplot(hate_crimes, 
+               aes(x=median_household_income,
+                   y=hate_crimes_per_100k_splc)) 
 base
 ```
 
@@ -339,7 +619,7 @@ base
 
 ---
 
-`r chunk_reveal("layering-geoms1", font_size_code="70%", width= c(0.4, 0.6), title = "## Layering geoms")`
+`r chunk_reveal("layering-geoms1", font_size_code="70%", width= c(0.5, 0.5), title = "## Layering geoms")`
 
 ```{r layering-geoms1, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 base + 
@@ -348,219 +628,77 @@ base +
 
 ---
 
-`r chunk_reveal("layering-geoms2", font_size_code="60%", width= c(0.4, 0.6), title = "## A better plot")`
+`r chunk_reveal("layering-geoms2", font_size_code="60%", width= c(0.5, 0.5), title = "## A better plot")`
 
 ```{r layering-geoms2, fig.align='center', echo=FALSE, out.width="120%", eval=FALSE}
+library(ggrepel)
 base + 
-  geom_text_repel(aes(label=state_code, color=region), 
-                  size = 2) 
-```
-
-
----
-
-# Statistical transformations: Default stats
-
-Common geom | stat 
----------------|-----------------
-`geom_histogram()`|`stat_bin()`     
-`geom_bar()`|`stat_count()`     
-`geom_smooth()`|`stat_smooth()`  
-`geom_boxplot()`|`stat_boxplot()` 
-`geom_density()`|`stat_density()`   
-
---
-
-<br>
-
-.bq.font80[
-- Every geom has a default stat
-- Often no need to explicitly specify the stat
-- Check help files: `?geom_bar`
-]
-
----
-
-`r chunk_reveal("mpg-barplot", font_size_code="70%", width= c(0.45, 0.55), title = "## Barplots")`
-
-```{r mpg-barplot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(data = mpg) +
-  geom_bar(mapping = aes(x = class, fill = class )) +
-  theme(axis.text.x = element_text(angle = 45, 
-                                   vjust = 0.5, 
-                                   hjust=1))
+  geom_text_repel(aes(label=state_code,
+                      color=region)) 
 ```
 
 ---
 
-## Weather Dataset
+class: middle
 
-.font80[The data set `Weather` contains data on weather-related variables for several world cities.]
+## Multi-panel plots in a grid
 
-.font60[
+.pull-left.font60[
+
 ```{r}
-#install.packages(mosaicData)
-library(mosaicData)
-data(Weather)
-glimpse(Weather)
+plot1 <- ggplot(data = mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  labs(title = "Horsepower vs. Miles per Gallon",
+       x = "Horsepower",
+       y = "Miles per Gallon") +
+  theme(plot.title = element_text(size = 6)) +
+  theme_minimal()
+
+plot2 <- ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(title = "Weight vs. Miles per Gallon",
+       x = "Weight",
+       y = "Miles per Gallon") +
+  theme(plot.title = element_text(size = 6)) +
+  theme_minimal()
+```
+
+]
+
+.pull-right.font60[
+
+```{r}
+plot3 <- ggplot(data = mtcars, aes(x = drat, y = mpg)) +
+  geom_point() +
+  labs(title = "Rear Axle Ratio vs. Miles per Gallon",
+       x = "Rear Axle Ratio",
+       y = "Miles per Gallon") +
+  theme(plot.title = element_text(size = 6)) +
+  theme_minimal()
+
+plot4 <- ggplot(data = mtcars, aes(x = qsec, y = mpg)) +
+  geom_point() +
+  labs(title = "1/4 Mile Time vs. Miles per Gallon",
+       x = "1/4 Mile Time",
+       y = "Miles per Gallon") +  
+  theme(plot.title = element_text(size = 6)) +
+  theme_minimal()
 ```
 ]
 
 ---
 
-
-`r chunk_reveal("weather-patterns1", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns1, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Weather, aes(y=avg_temp)) + 
-  geom_boxplot()
-```
-
----
-
-`r chunk_reveal("weather-patterns2", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns2, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Weather, aes(y=avg_temp, group=city)) + 
-  geom_boxplot(aes(color=city))
-```
-
----
-
-`r chunk_reveal("weather-patterns3", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns3, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Weather, aes(x=date, y=avg_temp)) +
-  geom_point()
-```
-
----
-
-`r chunk_reveal("weather-patterns4", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns4, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Weather, aes(x=date, y=avg_temp)) + 
-  geom_point(aes(color=city))
-```
-
----
-
-`r chunk_reveal("weather-patterns5", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r, echo=FALSE}
-Chicago <- Weather %>% filter(city=='Chicago')
-```
-
-```{r weather-patterns5, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-Chicago <- Weather %>% filter(city=='Chicago')
-ggplot(Chicago, aes(x=date, y=avg_temp)) + 
-  geom_point(color='blue')
-```
-
----
-
-`r chunk_reveal("weather-patterns6", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns6, fig.align='center', echo=FALSE, out.width="120%", eval=FALSE}
-ggplot(Chicago, aes(x=date, y=avg_temp)) + 
-  geom_point(aes(color=events)) +
-  theme(legend.spacing.y = unit(0.5, "cm"),
-        legend.key.size = unit(0.5, "cm"))
-```
-
----
-
-`r chunk_reveal("weather-patterns7", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns7, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=date, y=avg_temp)) + 
-  ylim(0,90) +
-  geom_smooth() + 
-  geom_point()
-```
-
----
-
-`r chunk_reveal("weather-patterns9", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns9, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
-  geom_point(aes(color=month))
-```
-
----
-
-`r chunk_reveal("weather-patterns10", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns10, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=low_temp, y=high_temp)) + 
-  geom_point(aes(color=as.factor(month)))
-```
-
----
-
-`r chunk_reveal("weather-patterns11", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns11, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=avg_temp)) + 
-  geom_histogram() 
-```
-
----
-
-`r chunk_reveal("weather-patterns12", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns12, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=avg_temp)) + 
-  geom_histogram(bins = 50) 
-```
-
----
-
-`r chunk_reveal("weather-patterns13", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns13, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=avg_temp)) + 
-  geom_density(fill='lightblue')
-```
-
----
-
-`r chunk_reveal("weather-patterns14", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns14, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=avg_temp)) + 
-  geom_density(fill='lightblue', alpha=0.5)
-```
-
----
-
-`r chunk_reveal("weather-patterns16", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns16, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=avg_temp, group=month)) +
-  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
-  facet_wrap(~month, nrow=3)
-```
-
----
-
-`r chunk_reveal("weather-patterns17", font_size_code="70%", width= c(0.4, 0.6), title = "## Weather patterns")`
-
-```{r weather-patterns17, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(Chicago, aes(x=avg_vis, group=month)) +
-  geom_density(aes(color=as.factor(month), fill=as.factor(month)), alpha=0.5) +
-  facet_wrap(~month, nrow=3)
+```{r, fig.width=6, fig.height=6, out.width="45%", fig.align='center'}
+library(gridExtra)
+grid.arrange(plot1, plot2, plot3, plot4, nrow = 2)
 ```
 
 
 ---
-
-
 
 class: action, middle
 
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+# <i class="fa fa-pencil-square-o" style="font-linewidth:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
 
 
 .pull-left-40[
@@ -568,13 +706,13 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
-.bq[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+.bq.font90[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
 - Get the class activity 4 file
 - Please work on the problems 
 - Ask me questions
 ]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_linewidth = "2em")`
 

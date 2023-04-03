@@ -20,17 +20,6 @@
 }
 
 
-/* Style for collapsible summary */
-.answer {
-  color: red;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-/* Style for the collapsed content */
-details > *:not(summary) {
-  padding: 0.5rem 1rem;
-}
 
 body {
   font-family: 'Ubuntu Mono', Sans-Serif;
@@ -68,7 +57,7 @@ h1, h2, h3 {
 
 /* code box */
 .remark-code {
-  font-size: 20px;
+  font-size: 18px;
 }
 /* code font size */
 .remark-inline-code {
