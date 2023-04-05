@@ -1,0 +1,624 @@
+---
+title: "Advanced Data Visualization Tools"
+subtitle: "<br/> Spring 2023"
+author: "Bastola"
+date: "`r format(Sys.Date(), ' %B %d %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", css/xaringan-themer-solns.css, css/my-theme.css, css/my-font.css]
+    lib_dir: libs
+    chakra: libs/remark-latest.min.js
+    seal: false
+    nature:
+      highlightStyle: googlecode  #http://arm.rbind.io/slides/xaringan.html#77 # idea, magula
+      highlightLines: true
+      highlightLanguage: ["r", "css", "yaml"]
+      countIncrementalSlides: true
+      slideNumberFormat: "%current%"
+      titleSlideClass: ["left", "middle", "inverse"]
+      ratio: "16:9"
+    includes:
+      in_header: header.html
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(htmltools.preserve.raw = FALSE)
+options(ggrepel.max.overlaps = Inf)
+
+knitr::opts_chunk$set(echo = TRUE, 
+                      dev = 'svg',
+                      collapse = TRUE, 
+                      comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
+                      prompt = FALSE, # IF TRUE adds a > before each code input
+                      warning = FALSE, 
+                      message = FALSE,
+                      fig.height = 3, 
+                      fig.width = 4,
+                      out.width = "100%",
+                      prompt = FALSE
+                      )
+
+# load necessary packages
+library(tidyverse)
+library(dplyr)
+library(countdown)
+library(mosaic)
+library(ggthemes)
+library(xaringanExtra)
+library(forcats)
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE  
+)
+library(flipbookr)
+library(patchwork)
+library(DT)
+library(moderndive)
+library(knitr)
+library(grid)
+library(gridExtra)
+library(palmerpenguins)
+library(broom)
+library(ggResidpanel)
+library(ggrepel)
+
+
+# specific packages
+library(maps)
+library(spdep)
+library(maptools)
+library(polite)
+library(rvest)
+
+select <- dplyr::select
+
+# Set ggplot theme
+# theme_set(theme_stata(base_size = 10))
+
+yt <- 0
+
+# covid dataset
+
+table_usafacts <- bow(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/") %>%
+  scrape() %>% 
+  html_elements(css = "table") %>% 
+  html_table()
+
+covid <- table_usafacts[[2]]
+covid_clean <- covid %>% janitor::clean_names() %>%
+  mutate_at(4:5, parse_number) %>% mutate(state = str_to_lower(state))
+
+states <- map_data("state")
+covid_data <- left_join(states, covid_clean, by = c("region" = "state"))
+
+
+# Final dataset
+set.seed(516)
+x1 <- rnorm(60, 20, 3)
+x2 <- rnorm(60, 36, 2.5)
+x1 <- data.frame(x=x1, type="Lake #1")
+x2 <- data.frame(x=x2, type="Lake #2")
+data <- rbind(x1,x2)
+colnames(data) <- c("Depth", "Location")
+
+# read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
+```
+
+
+```{r xaringanExtra-clipboard, echo=FALSE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[More Data Visualization Tools]
+
+### .fancy[Spring 2023]
+
+`r format(Sys.Date(), ' %B %d %Y')`
+
+---
+
+class: middle
+
+# So far ..
+
+.bql.font90[.b[We know]
+
+- A basic set of geometries
+- How to map variables to aesthetics
+- How to layer `geoms`
+- How to change axis labels and titles
+- Common statistical graphs
+]
+
+
+---
+
+class: middle
+
+# More to learn ...
+
+.bql.font90[.b[Today]
+- Changing scales
+- Changing coordinates
+- Mapping spatial data
+]
+
+
+---
+
+class: middle
+
+# Changing scales and colors
+
+.bql.font80[Functions that control the mapping of your data to aesthetic attributes like color, fill, and shape.]
+
+```{r eval=FALSE}
+scale_<aes>_<method>()
+```
+
+
+.hjls[Some common scale functions:
+
+.pull-left.font80[
+- `scale_fill_manual()` : Manually define the fill colors for different categories
+- `scale_fill_brewer()` : Use color palettes from the `ColorBrewer` library
+- `scale_color_viridis()` : Use the viridis color scale for continuous data.
+- `scale_shape_manual()` : Manually define the shapes for different categories.
+
+]
+
+.pull-right.font80[
+- `scale_x_log10()`: Transform the x-axis to a logarithmic scale.
+- `scale_y_reverse()`: Reverse the direction of the y-axis.
+- `scale_color_gradient()`: Define a custom color gradient for continuous data.
+- `scale_fill_discrete()`: Use a predefined color palette for discrete data.
+
+]
+]
+
+---
+
+class: middle
+
+.hljs[Recommended reading:
+
+- [Using colors in R](http://stat545.com/block018_colors.html)
+
+- [Taking control of qualitative colors in ggplot2](http://stat545.com/block019_enforce-color-scheme.html)
+
+- [Data journalism](https://datajournalism.com/read/)
+
+]
+
+---
+
+
+# Example
+
+Let's make Lake #1 `steelblue` and Lake #2 `maroon`
+
+.panelset[
+.panel[.panel-name[Plot]
+```{r scale-fill, echo=FALSE, fig.height = 2.5, fig.width = 4.5, out.width="60%", fig.align='center'}
+ggplot(data) +
+  geom_histogram(
+    aes(x = Depth, fill = Location), 
+    binwidth = 1,
+    color = "gold")+
+    scale_fill_manual(values = c("steelblue", "maroon"))
+```
+]
+.panel[.panel-name[Code]
+```{r scale-fill, echo=TRUE, fig.show='hide', fig.height = 2.5, fig.width = 4.5}
+```
+]
+]
+
+---
+
+class: middle
+
+# Changing themes
+
+.pull-left[
+.bq.font80[
+**Theme:** The non-data ink on your plots
+
+Examples:
+
+- background color
+
+- tick marks
+
+- grid lines
+
+- legend position 
+
+- legend appearance
+]
+]
+
+.pull-right[
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4, fig.width = 5, out.width="90%", fig.align='center', fig.cap='Top to bottom: solarized, bw, and dark themes resp.'}
+library(patchwork)
+
+p1 <- ggplot(data) +
+  geom_histogram(
+    aes(x = Depth, fill = Location), 
+    binwidth = 1,
+    color = "lightblue") +
+    scale_fill_manual(values = c("steelblue", "maroon")) + 
+    theme(legend.position = "right") +
+    theme_solarized()
+
+
+p2 <- p1 + theme_bw()
+
+p3 <- p1 + theme_dark() 
+
+pthemes <- p1 + p2 + p3 + plot_layout(ncol = 1)
+pthemes
+```
+
+]
+
+.footnote[Click for various basic [ggplot2 themes](https://ggplot2.tidyverse.org/reference/ggtheme.html)  and for [ggthemes](https://mran.microsoft.com/snapshot/2017-02-04/web/packages/ggthemes/vignettes/ggthemes.html)]
+
+---
+
+# Annotations
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r annotate, echo=FALSE, fig.height = 3, fig.width = 4.5, out.width="50%", fig.align='center'}
+library(ggthemes)
+ggplot(data) +
+  geom_histogram(
+    aes(x = Depth, fill = Location), 
+    binwidth = 1,
+    color = "lightblue") +
+    scale_fill_manual(values = c("steelblue", "maroon")) + 
+    theme_solarized() +
+    theme(legend.position = "none") +
+    annotate("text", x = 20, y = 15, label = "Lake #1", color = "steelblue") + #<<
+    annotate("text", x = 39, y = 15, label = "Lake #2", color = "maroon") #<<
+```
+]
+.panel[.panel-name[Code]
+.code90[
+```{r annotate, fig.align='center', fig.show='hide'}
+```
+]
+]
+]
+
+---
+
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+.bql.font80[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Get the class activity 5 .Rmd file
+- Work on Problem 1
+- Ask me questions
+]
+]
+
+`r countdown(minutes = 6, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+class: middle
+
+# Changing coordinates
+
+.hljs[By default, `ggplot2` uses a Cartesian coordinate system, but there are others available!]
+
+.pull-left.font80[
+- `coord_cartesian`: Adjusts the x and y axis limits without modifying the data.
+- `coord_equal`: Ensures equal scaling for the x and y axes.
+- `coord_fixed`: Sets a fixed aspect ratio for the plot.
+- `coord_flip`: Flips the x and y axes.
+- `coord_map`: Projects the plot onto a map projection. 
+]
+.pull-right.font80[
+- `coord_polar`: Transforms the plot to a polar coordinate system.
+- `coord_quickmap`: Provides an approximation for a map projection.
+- `coord_sf`: Designed for use with sf objects (spatial data).
+- `coord_trans`: Transforms the plot's x and y axes using specified transformations.  
+]
+
+
+---
+
+# Cartesian vs. Polar Coordinates
+
+.pull-left[
+
+.code70[
+```{r}
+ggplot(data = mpg) +
+ geom_bar(mapping = aes(x = class, fill = class)) +
+ theme(axis.text.x = element_text(angle = 45))
+```
+]
+]
+
+--
+
+.pull-right[
+
+.code70[
+```{r}
+ggplot(data = mpg) +
+ geom_bar(mapping = aes(x = class, fill = class)) +
+ coord_polar(theta = "x")
+```
+]
+]
+
+
+---
+
+# **ggplot2** maps
+
+.bql.font80[
+The `ggplot2` package contains latitude and longitude to define geographic boundaries
+- some regions: `state`, `usa`, `world`, `county`
+- see `?map_data` or `?maps` for more regions (may need to install `maps`)
+]
+
+```{r}
+states <- map_data("state")
+glimpse(states)
+```
+
+
+---
+
+# What is a map?
+
+.hljs[A set of latitude longitude points...]
+
+```{r, fig.height = 4, fig.width =7, out.width="60%", fig.align='center'}
+ggplot(states) + geom_point(aes(long, lat))
+```
+
+---
+
+# What is a map?
+
+.hljs[... that are connected with lines in a very specific order.]
+
+```{r, fig.height = 4, fig.width =7, out.width = "60%", fig.align='center'}
+ggplot(states) + geom_path(aes(long, lat, group = group))
+```
+
+---
+
+class: middle
+
+## Necessary map data
+
+.bql[
+- .b[latitude/longitude] points for all map boundaries
+- which boundary .b[group] all lat/long points belong 
+- the .b[order] to connect points within each group
+]
+
+
+---
+
+class: middle
+
+# Adding state-level information
+
+.bql.font80[
+-  Add other geographic information by adding geometric layers to the plot
+
+-  Add non-geographic information by altering the fill color for each state
+
+  + Use `geom = "polygon"` to treat states as solid shapes to add color
+  + Incorporate numeric information using color shade or intensity
+  + Incorporate categorical information using color hue
+]
+
+---
+
+# Maps using *geom_polygon*
+
+.bq.font80[`geom_polygon` connects the dots between lat (`y`) and long (`x`) points in a given `group`.  It connects start and end points which allows you to `fill` a closed polygon shape]
+
+.code80[
+```{r, fig.height = 4, fig.width =7, out.width = "55%", fig.align='center'}
+ggplot(states, aes(x=long, y=lat, group=group)) + 
+    geom_polygon(color="black", fill="lightblue")
+```
+]
+
+---
+
+`r chunk_reveal("scale", font_size_code="70%", width= c(0.5, 0.5), title = "## Why is scale so important in a map?")`
+
+```{r scale, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+ggplot(states, aes(x=long, y=lat, group=group)) + 
+    geom_polygon(color="black", fill="lightblue") + 
+    coord_fixed(ratio=3) 
+```
+
+---
+
+# Covid mapping
+
+```{r, echo = FALSE}
+glimpse(covid)
+```
+
+.footnote[Source: https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/]
+
+---
+
+# Combining datasets
+
+We need to add the covid info to the state polygon data set
+
+```{r}
+states <- map_data("state")
+covid_data <- left_join(states, covid_clean, by = c("region" = "state"))
+```
+
+```{r echo=FALSE}
+print(as_tibble(covid_data), n = 5)
+```
+
+---
+
+# COVID Cases 
+
+```{r, fig.height = 4, fig.width = 7, out.width="60%", fig.align='center'}
+Covid_cases_map <- ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cases))
+Covid_cases_map
+```
+
+
+---
+
+# Adjusting the coordinate system + theme + scale +  breaks
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r better-plot, echo=FALSE, fig.height = 3, fig.width = 4.5, out.width="55%", fig.align='center'}
+breaks <- round(seq(min(covid_data$cases), max(covid_data$cases), length.out = 10))
+Covid_cases_map + coord_map() + theme_map() + theme(legend.position="right") +
+    scale_fill_fermenter(type = "div", palette = "Spectral", breaks = breaks) + 
+    labs(title = "COVID-19 Cases by State") +
+    theme(legend.position="right",
+          plot.margin = margin(0, 0, 0, 0))  # Adjust the values inside 'margin()' to reduce white space
+```
+]
+.panel[.panel-name[Code]
+.code80[
+```{r better-plot, fig.align='center', fig.show='hide'}
+```
+]
+]
+]
+
+---
+
+# Adjusting the color: alternate way
+
+.panelset[
+.panel[.panel-name[Plot]
+
+```{r better-plot1, echo=FALSE, fig.height = 3, fig.width = 4.5, out.width="55%", fig.align='center'}
+library(viridis)
+ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cases)) +
+  scale_fill_viridis_c(option = "viridis", trans = "log10", labels = scales::comma,
+                       guide = guide_colorbar(title.position = "top")) +
+  labs(fill = "cases", title = "COVID-19 Cases by State") +
+  coord_map() + theme_map() +
+  theme(legend.position="right",
+        plot.margin = margin(0, 0, 0, 0)) 
+```
+]
+.panel[.panel-name[Code]
+.code80[
+```{r better-plot1, fig.align='center', fig.show='hide'}
+```
+]
+]
+]
+
+
+---
+
+
+# Cloropleth maps
+
+.bq.font90[
+- Uses color or shading of sub regions to visual data
+- Displays divided geographical areas or regions that are colored in relation to a numeric variable.
+]
+
+```{r}
+ACS <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/ACS.csv")
+ACS <- dplyr::filter(ACS, !(region  %in% c("Alaska", "Hawaii"))) # only 48+D.C.
+ACS$region <- tolower(ACS$region)  # lower case (match states regions)
+glimpse(ACS)
+```
+
+---
+
+# Cloropleth maps using **geom_map**
+
+- Don't need to merge `ACS` and `states` data! 
+
+.code80[
+```{r,  fig.height = 4, fig.width = 7, out.width="60%", fig.align='center'}
+ggplot(data=ACS) + coord_map() + 
+  geom_map(aes(map_id = region, fill = PercentInState), map = states) +
+  expand_limits(x=states$long, y=states$lat) + ggtitle("% Born in State")
+```
+]
+
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bql.font90[
+- Please work on the remaining problems 
+- Please feel free to talk to me or your neighbor
+- Submit a pdf to moodle when done
+]
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+

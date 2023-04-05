@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Advanced Data Visualization Tools</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[More Data Visualization Tools]
+
+### .fancy[Spring 2023]
+
+ April 04 2023
+
+---
+
+class: middle
+
+# So far ..
+
+.bql.font90[.b[We know]
+
+- A basic set of geometries
+- How to map variables to aesthetics
+- How to layer `geoms`
+- How to change axis labels and titles
+- Common statistical graphs
+]
+
+
+---
+
+class: middle
+
+# More to learn ...
+
+.bql.font90[.b[Today]
+- Changing scales
+- Changing coordinates
+- Mapping spatial data
+]
+
+
+---
+
+class: middle
+
+# Changing scales and colors
+
+.bql.font80[Functions that control the mapping of your data to aesthetic attributes like color, fill, and shape.]
+
+
+```r
+scale_&lt;aes&gt;_&lt;method&gt;()
+```
+
+
+.hjls[Some common scale functions:
+
+.pull-left.font80[
+- `scale_fill_manual()` : Manually define the fill colors for different categories
+- `scale_fill_brewer()` : Use color palettes from the `ColorBrewer` library
+- `scale_color_viridis()` : Use the viridis color scale for continuous data.
+- `scale_shape_manual()` : Manually define the shapes for different categories.
+
+]
+
+.pull-right.font80[
+- `scale_x_log10()`: Transform the x-axis to a logarithmic scale.
+- `scale_y_reverse()`: Reverse the direction of the y-axis.
+- `scale_color_gradient()`: Define a custom color gradient for continuous data.
+- `scale_fill_discrete()`: Use a predefined color palette for discrete data.
+
+]
+]
+
+---
+
+class: middle
+
+.hljs[Recommended reading:
+
+- [Using colors in R](http://stat545.com/block018_colors.html)
+
+- [Taking control of qualitative colors in ggplot2](http://stat545.com/block019_enforce-color-scheme.html)
+
+- [Data journalism](https://datajournalism.com/read/)
+
+]
+
+---
+
+
+# Example
+
+Let's make Lake #1 `steelblue` and Lake #2 `maroon`
+
+.panelset[
+.panel[.panel-name[Plot]
+&lt;img src="Day5_files/figure-html/scale-fill-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+
+```r
+ggplot(data) +
+  geom_histogram(
+    aes(x = Depth, fill = Location), 
+    binwidth = 1,
+    color = "gold")+
+    scale_fill_manual(values = c("steelblue", "maroon"))
+```
+]
+]
+
+---
+
+class: middle
+
+# Changing themes
+
+.pull-left[
+.bq.font80[
+**Theme:** The non-data ink on your plots
+
+Examples:
+
+- background color
+
+- tick marks
+
+- grid lines
+
+- legend position 
+
+- legend appearance
+]
+]
+
+.pull-right[
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="Day5_files/figure-html/unnamed-chunk-2-1.svg" alt="Top to bottom: solarized, bw, and dark themes resp." width="90%" /&gt;
+&lt;p class="caption"&gt;Top to bottom: solarized, bw, and dark themes resp.&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+.footnote[Click for various basic [ggplot2 themes](https://ggplot2.tidyverse.org/reference/ggtheme.html)  and for [ggthemes](https://mran.microsoft.com/snapshot/2017-02-04/web/packages/ggthemes/vignettes/ggthemes.html)]
+
+---
+
+# Annotations
+
+.panelset[
+.panel[.panel-name[Plot]
+
+&lt;img src="Day5_files/figure-html/annotate-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+.code90[
+
+```r
+library(ggthemes)
+ggplot(data) +
+  geom_histogram(
+    aes(x = Depth, fill = Location), 
+    binwidth = 1,
+    color = "lightblue") +
+    scale_fill_manual(values = c("steelblue", "maroon")) + 
+    theme_solarized() +
+    theme(legend.position = "none") +
+*   annotate("text", x = 20, y = 15, label = "Lake #1", color = "steelblue") +
+*   annotate("text", x = 39, y = 15, label = "Lake #2", color = "maroon")
+```
+]
+]
+]
+
+---
+
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+.bql.font80[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Get the class activity 5 .Rmd file
+- Work on Problem 1
+- Ask me questions
+]
+]
+
+<div class="countdown" id="timer_835d5218" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">06</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+class: middle
+
+# Changing coordinates
+
+.hljs[By default, `ggplot2` uses a Cartesian coordinate system, but there are others available!]
+
+.pull-left.font80[
+- `coord_cartesian`: Adjusts the x and y axis limits without modifying the data.
+- `coord_equal`: Ensures equal scaling for the x and y axes.
+- `coord_fixed`: Sets a fixed aspect ratio for the plot.
+- `coord_flip`: Flips the x and y axes.
+- `coord_map`: Projects the plot onto a map projection. 
+]
+.pull-right.font80[
+- `coord_polar`: Transforms the plot to a polar coordinate system.
+- `coord_quickmap`: Provides an approximation for a map projection.
+- `coord_sf`: Designed for use with sf objects (spatial data).
+- `coord_trans`: Transforms the plot's x and y axes using specified transformations.  
+]
+
+
+---
+
+# Cartesian vs. Polar Coordinates
+
+.pull-left[
+
+.code70[
+
+```r
+ggplot(data = mpg) +
+ geom_bar(mapping = aes(x = class, fill = class)) +
+ theme(axis.text.x = element_text(angle = 45))
+```
+
+&lt;img src="Day5_files/figure-html/unnamed-chunk-3-1.svg" width="100%" /&gt;
+]
+]
+
+--
+
+.pull-right[
+
+.code70[
+
+```r
+ggplot(data = mpg) +
+ geom_bar(mapping = aes(x = class, fill = class)) +
+ coord_polar(theta = "x")
+```
+
+&lt;img src="Day5_files/figure-html/unnamed-chunk-4-1.svg" width="100%" /&gt;
+]
+]
+
+
+---
+
+# **ggplot2** maps
+
+.bql.font80[
+The `ggplot2` package contains latitude and longitude to define geographic boundaries
+- some regions: `state`, `usa`, `world`, `county`
+- see `?map_data` or `?maps` for more regions (may need to install `maps`)
+]
+
+
+```r
+states &lt;- map_data("state")
+glimpse(states)
+Rows: 15,537
+Columns: 6
+$ long      &lt;dbl&gt; -87.46201, -87.48493, -87.52503, -87.53076, -87.57087, -87.5…
+$ lat       &lt;dbl&gt; 30.38968, 30.37249, 30.37249, 30.33239, 30.32665, 30.32665, …
+$ group     &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ order     &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 1…
+$ region    &lt;chr&gt; "alabama", "alabama", "alabama", "alabama", "alabama", "alab…
+$ subregion &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+```
+
+
+---
+
+# What is a map?
+
+.hljs[A set of latitude longitude points...]
+
+
+```r
+ggplot(states) + geom_point(aes(long, lat))
+```
+
+&lt;img src="Day5_files/figure-html/unnamed-chunk-6-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# What is a map?
+
+.hljs[... that are connected with lines in a very specific order.]
+
+
+```r
+ggplot(states) + geom_path(aes(long, lat, group = group))
+```
+
+&lt;img src="Day5_files/figure-html/unnamed-chunk-7-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: middle
+
+## Necessary map data
+
+.bql[
+- .b[latitude/longitude] points for all map boundaries
+- which boundary .b[group] all lat/long points belong 
+- the .b[order] to connect points within each group
+]
+
+
+---
+
+class: middle
+
+# Adding state-level information
+
+.bql.font80[
+-  Add other geographic information by adding geometric layers to the plot
+
+-  Add non-geographic information by altering the fill color for each state
+
+  + Use `geom = "polygon"` to treat states as solid shapes to add color
+  + Incorporate numeric information using color shade or intensity
+  + Incorporate categorical information using color hue
+]
+
+---
+
+# Maps using *geom_polygon*
+
+.bq.font80[`geom_polygon` connects the dots between lat (`y`) and long (`x`) points in a given `group`.  It connects start and end points which allows you to `fill` a closed polygon shape]
+
+.code80[
+
+```r
+ggplot(states, aes(x=long, y=lat, group=group)) + 
+    geom_polygon(color="black", fill="lightblue")
+```
+
+&lt;img src="Day5_files/figure-html/unnamed-chunk-8-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+count: false
+ 
+## Why is scale so important in a map?
+.panel1-scale-auto[
+
+```r
+*ggplot(states, aes(x=long, y=lat, group=group))
+```
+]
+ 
+.panel2-scale-auto[
+&lt;img src="Day5_files/figure-html/scale_auto_01_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Why is scale so important in a map?
+.panel1-scale-auto[
+
+```r
+ggplot(states, aes(x=long, y=lat, group=group)) +
+*   geom_polygon(color="black", fill="lightblue")
+```
+]
+ 
+.panel2-scale-auto[
+&lt;img src="Day5_files/figure-html/scale_auto_02_output-1.svg" width="100%" /&gt;
+]
+
+---
+count: false
+ 
+## Why is scale so important in a map?
+.panel1-scale-auto[
+
+```r
+ggplot(states, aes(x=long, y=lat, group=group)) +
+    geom_polygon(color="black", fill="lightblue") +
+*   coord_fixed(ratio=3)
+```
+]
+ 
+.panel2-scale-auto[
+&lt;img src="Day5_files/figure-html/scale_auto_03_output-1.svg" width="100%" /&gt;
+]
+
+&lt;style&gt;
+.panel1-scale-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel2-scale-auto {
+  color: black;
+  width: 49%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+.panel3-scale-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 70%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Covid mapping
+
+
+```
+Rows: 51
+Columns: 7
+$ State                                  &lt;chr&gt; "Alabama", "Alaska", "Arizona",…
+$ `7-day avg. cases`                     &lt;int&gt; 294, 0, 465, 0, 173, 320, 147, …
+$ `7-day avg. deaths`                    &lt;int&gt; 1, 0, 0, 0, 0, 7, 0, 0, 0, 0, 3…
+$ Cases                                  &lt;chr&gt; "1,650,449", "285,075", "2,454,…
+$ Deaths                                 &lt;chr&gt; "21,127", "1,441", "29,852", "1…
+$ `7-day avg. hospitalizations`          &lt;int&gt; 41, 10, 172, 70, 612, 100, 42, …
+$ `7-day avg. hospitalizations per 100k` &lt;dbl&gt; 0.8, 1.0, 2.0, 2.0, 1.0, 1.0, 1…
+```
+
+.footnote[Source: https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/]
+
+---
+
+# Combining datasets
+
+We need to add the covid info to the state polygon data set
+
+
+```r
+states &lt;- map_data("state")
+covid_data &lt;- left_join(states, covid_clean, by = c("region" = "state"))
+```
+
+
+```
+# A tibble: 15,537 × 12
+   long   lat group order region  subreg…¹ x7_da…² x7_da…³  cases deaths x7_da…⁴
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;int&gt;   &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;int&gt;
+1 -87.5  30.4     1     1 alabama &lt;NA&gt;         294       1 1.65e6  21127      41
+2 -87.5  30.4     1     2 alabama &lt;NA&gt;         294       1 1.65e6  21127      41
+3 -87.5  30.4     1     3 alabama &lt;NA&gt;         294       1 1.65e6  21127      41
+4 -87.5  30.3     1     4 alabama &lt;NA&gt;         294       1 1.65e6  21127      41
+5 -87.6  30.3     1     5 alabama &lt;NA&gt;         294       1 1.65e6  21127      41
+# … with 15,532 more rows, 1 more variable:
+#   x7_day_avg_hospitalizations_per_100k &lt;dbl&gt;, and abbreviated variable names
+#   ¹​subregion, ²​x7_day_avg_cases, ³​x7_day_avg_deaths,
+#   ⁴​x7_day_avg_hospitalizations
+```
+
+---
+
+# COVID Cases 
+
+
+```r
+Covid_cases_map &lt;- ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cases))
+Covid_cases_map
+```
+
+&lt;img src="Day5_files/figure-html/unnamed-chunk-12-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Adjusting the coordinate system + theme + scale +  breaks
+
+.panelset[
+.panel[.panel-name[Plot]
+
+&lt;img src="Day5_files/figure-html/better-plot-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+.code80[
+
+```r
+breaks &lt;- round(seq(min(covid_data$cases), max(covid_data$cases), length.out = 10))
+Covid_cases_map + coord_map() + theme_map() + theme(legend.position="right") +
+    scale_fill_fermenter(type = "div", palette = "Spectral", breaks = breaks) + 
+    labs(title = "COVID-19 Cases by State") +
+    theme(legend.position="right",
+          plot.margin = margin(0, 0, 0, 0))  # Adjust the values inside 'margin()' to reduce white space
+```
+]
+]
+]
+
+---
+
+# Adjusting the color: alternate way
+
+.panelset[
+.panel[.panel-name[Plot]
+
+&lt;img src="Day5_files/figure-html/better-plot1-1.svg" width="55%" style="display: block; margin: auto;" /&gt;
+]
+.panel[.panel-name[Code]
+.code80[
+
+```r
+library(viridis)
+ggplot(covid_data) + 
+  geom_polygon(aes(long, lat, group = group, fill = cases)) +
+  scale_fill_viridis_c(option = "viridis", trans = "log10", labels = scales::comma,
+                       guide = guide_colorbar(title.position = "top")) +
+  labs(fill = "cases", title = "COVID-19 Cases by State") +
+  coord_map() + theme_map() +
+  theme(legend.position="right",
+        plot.margin = margin(0, 0, 0, 0)) 
+```
+]
+]
+]
+
+
+---
+
+
+# Cloropleth maps
+
+.bq.font90[
+- Uses color or shading of sub regions to visual data
+- Displays divided geographical areas or regions that are colored in relation to a numeric variable.
+]
+
+
+```r
+ACS &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/ACS.csv")
+ACS &lt;- dplyr::filter(ACS, !(region  %in% c("Alaska", "Hawaii"))) # only 48+D.C.
+ACS$region &lt;- tolower(ACS$region)  # lower case (match states regions)
+glimpse(ACS)
+Rows: 49
+Columns: 8
+$ X              &lt;int&gt; 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18,…
+$ region         &lt;chr&gt; "alabama", "arizona", "arkansas", "california", "colora…
+$ PopSize        &lt;int&gt; 4841164, 6728577, 2968472, 38654206, 5359295, 3588570, …
+$ MedianAge      &lt;dbl&gt; 38.6, 37.1, 37.7, 36.0, 36.4, 40.6, 39.6, 33.8, 41.6, 3…
+$ PercentFemale  &lt;dbl&gt; 51.5, 50.3, 50.9, 50.3, 49.8, 51.2, 51.6, 52.6, 51.1, 5…
+$ BornInState    &lt;int&gt; 3387845, 2623391, 1823628, 21194542, 2294446, 1981427, …
+$ MedianIncome   &lt;int&gt; 23527, 26565, 22787, 27772, 31325, 34124, 30648, 41160,…
+$ PercentInState &lt;dbl&gt; 69.98, 38.99, 61.43, 54.83, 42.81, 55.21, 45.49, 36.72,…
+```
+
+---
+
+# Cloropleth maps using **geom_map**
+
+- Don't need to merge `ACS` and `states` data! 
+
+.code80[
+
+```r
+ggplot(data=ACS) + coord_map() + 
+  geom_map(aes(map_id = region, fill = PercentInState), map = states) +
+  expand_limits(x=states$long, y=states$lat) + ggtitle("% Born in State")
+```
+
+&lt;img src="Day5_files/figure-html/unnamed-chunk-14-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bql.font90[
+- Please work on the remaining problems 
+- Please feel free to talk to me or your neighbor
+- Submit a pdf to moodle when done
+]
+]
+
+<div class="countdown" id="timer_270a69a1" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
