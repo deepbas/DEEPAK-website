@@ -68,6 +68,7 @@ yt <- 0
 
 # read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/APM_DougEvansCases.csv")
 survey <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/StudentSurvey.csv")
+# renderthis::to_pdf(from = "Day4.html", complex_slides = TRUE, partial_slides = TRUE)
 ```
 
 
@@ -106,7 +107,7 @@ background-size: 160px, 100% 100%
 
 # Student Survey
 
-.hljs[]
+.hljs[Dataset on 362 responses to a student survey given at one college]
 
 .font80[
 ```{r, echo=FALSE}
