@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Data wrangling with dplyr</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Data wrangling with **dplyr**]
+
+### .fancy[Fall 2022]
+
+ April 07 2023
+
+---
+
+# Data Wrangling 
+
+.blockquote[the process of .out-t[cleaning and unifying messy and complex data sets for easy access and analysis]]
+
+&lt;br&gt;
+
+.pull-left[
+.bqt.font90[
+- .yellow-h["data janitor work"]
+- importing data
+- cleaning data
+- changing shape of data
+]
+]
+.pull-right[
+.bqt.font90[
+- fixing errors and poorly formatted data elements
+- transforming columns and rows
+- filtering, subsetting
+]
+]
+
+---
+
+background-image: url("images/dplyr.png")
+background-position: 100% 100% 
+background-size: 100% 100%
+
+
+---
+
+class: middle
+
+# The Five Verbs
+
+.hljs[Most of the operations on a data table can be achieved with]
+
+.bql[
+- .b[select()] : extract a subset of columns
+- .b[filter()] : extract a subset of rows
+- .b[mutate()] : create new columns
+- .b[arrange()] : order the rows from smallest to largest (or largest to smallest)
+- .b[summarize()] : compute a table of summary statistics
+]
+
+---
+
+
+class: middle
+
+# Some Operators
+
+Operator|Definition                   
+---|---
+`&lt;`| less than                    
+`&lt;=`|	less than or equal to
+`&gt;`| greater than
+`&gt;=`|	greater than or equal to 
+`==`|	exactly equal to 
+`!=`|	not equal to 
+`x &amp; y`| `x` AND `y`                  
+`x %in% y`| test if `x` is in `y`   
+
+
+
+---
+
+class: middle
+
+# Find a subset of the columns using *select()*:
+
+- `select()`: take a .yellow-h[subset of the columns (variables/features)]
+
+
+```r
+library(babynames)
+babynames %&gt;%
+* select(year, name, n) %&gt;%
+  head()
+# A tibble: 6 × 3
+   year name          n
+  &lt;dbl&gt; &lt;chr&gt;     &lt;int&gt;
+1  1880 Mary       7065
+2  1880 Anna       2604
+3  1880 Emma       2003
+4  1880 Elizabeth  1939
+5  1880 Minnie     1746
+6  1880 Margaret   1578
+```
+
+
+---
+
+# Using **%&gt;%** (pipe operator)
+
+.bq.font90[
+- `%&gt;%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+--
+
+
+```r
+*babynames %&gt;%                   # dataframe first and then...
+  select(year, name, n) %&gt;%
+  head()
+```
+
+---
+
+# Using **%&gt;%** (pipe operator)
+
+.bq.font90[
+- `%&gt;%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+
+
+
+```r
+babynames %&gt;%                   # dataframe first and then... 
+* select(year, name, n) %&gt;%     # select columns `year`, `name`, and `n` and then...
+  head()                    
+```
+
+---
+
+# Using **%&gt;%** (pipe operator)
+
+.bq.font90[
+- `%&gt;%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+
+
+
+```r
+babynames %&gt;%                   # dataframe first and then... 
+  select(year, name, n) %&gt;%     # select columns year, name, and n 
+* head()                        # display header of the data frame
+```
+
+
+---
+
+# Using **%&gt;%** (pipe operator)
+
+.bq.font90[
+- `%&gt;%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
+- `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
+]
+
+
+
+
+```r
+babynames %&gt;%                   # dataframe first and then... 
+  select(year, name, n) %&gt;%     # select columns year, name, and n 
+* head()                        # display header of the data frame
+```
+
+
+
+```
+# A tibble: 6 × 3
+   year name          n
+  &lt;dbl&gt; &lt;chr&gt;     &lt;int&gt;
+1  1880 Mary       7065
+2  1880 Anna       2604
+3  1880 Emma       2003
+4  1880 Elizabeth  1939
+5  1880 Minnie     1746
+6  1880 Margaret   1578
+```
+
+---
+
+# **select()** helpers
+
+.pull-left[
+
+.bql[
+`:` select range of columns
+
+```r
+select(gapminder, income:population)
+```
+
+
+
+`-` select every column but
+
+```r
+select(gapminder, -c(income,population))
+```
+
+
+
+`starts_with()` select columns that start with...
+
+```r
+select(gapminder, starts_with("p"))
+```
+]
+]
+
+--
+
+.pull-right[
+&lt;br&gt;
+
+.bql[
+`ends_with()` select columns that end with...
+
+```r
+select(gapminder, ends_with("y"))
+```
+
+
+
+`contains()` select columns whose names contain...
+
+```r
+select(gapminder, contains("e"))
+```
+
+]
+]
+
+
+---
+
+class: middle
+
+# Find a subset of the rows using *filter()*:
+
+- `filter()`: take a .yellow-h[subset of the rows (observations)]
+
+
+```r
+babynames %&gt;%
+  filter(name == "Bella") %&gt;%
+  head()
+# A tibble: 6 × 5
+   year sex   name      n     prop
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;    &lt;dbl&gt;
+1  1880 F     Bella    13 0.000133
+2  1881 F     Bella    24 0.000243
+3  1882 F     Bella    16 0.000138
+4  1883 F     Bella    17 0.000142
+5  1884 F     Bella    31 0.000225
+6  1885 F     Bella    25 0.000176
+```
+
+
+---
+
+
+# Use both *filter()* and *select()*
+
+.pull-left-40[
+
+
+```r
+bella &lt;- babynames %&gt;%
+  filter(name == "Bella") %&gt;%
+  select(year, name, sex, n)
+```
+
+
+```r
+head(bella, 10)
+# A tibble: 10 × 4
+    year name  sex       n
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;
+ 1  1880 Bella F        13
+ 2  1881 Bella F        24
+ 3  1882 Bella F        16
+ 4  1883 Bella F        17
+ 5  1884 Bella F        31
+ 6  1885 Bella F        25
+ 7  1886 Bella F        22
+ 8  1887 Bella F        26
+ 9  1888 Bella F        31
+10  1889 Bella F        37
+```
+
+
+
+
+]
+
+
+--
+
+
+
+
+.pull-right-60[
+
+
+```r
+michael_selected_years &lt;- babynames %&gt;%
+  filter(name == "Michael", sex == "M", 
+         year %in% c(1990, 2000, 2010)) %&gt;%
+  select(year, name, sex, n)
+```
+
+
+```r
+head(michael_selected_years, 10)
+# A tibble: 3 × 4
+   year name    sex       n
+  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt; &lt;int&gt;
+1  1990 Michael M     65282
+2  2000 Michael M     32035
+3  2010 Michael M     17342
+```
+
+
+]
+
+---
+
+class: middle
+
+
+# *arrange()*
+
+.yellow-h[Order rows from smallest to largest]
+
+
+```r
+arrange(babynames, n)
+# A tibble: 1,924,665 × 5
+    year sex   name          n      prop
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;     &lt;dbl&gt;
+ 1  1880 F     Adelle        5 0.0000512
+ 2  1880 F     Adina         5 0.0000512
+ 3  1880 F     Adrienne      5 0.0000512
+ 4  1880 F     Albertine     5 0.0000512
+ 5  1880 F     Alys          5 0.0000512
+ 6  1880 F     Ana           5 0.0000512
+ 7  1880 F     Araminta      5 0.0000512
+ 8  1880 F     Arthur        5 0.0000512
+ 9  1880 F     Birtha        5 0.0000512
+10  1880 F     Bulah         5 0.0000512
+# … with 1,924,655 more rows
+```
+
+---
+
+class: middle
+
+
+# *desc()*
+
+Changes ordering from largest to smallest.
+
+
+
+```r
+*arrange(babynames, desc(n))
+# A tibble: 1,924,665 × 5
+    year sex   name        n   prop
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;   &lt;int&gt;  &lt;dbl&gt;
+ 1  1947 F     Linda   99686 0.0548
+ 2  1948 F     Linda   96209 0.0552
+ 3  1947 M     James   94756 0.0510
+ 4  1957 M     Michael 92695 0.0424
+ 5  1947 M     Robert  91642 0.0493
+ 6  1949 F     Linda   91016 0.0518
+ 7  1956 M     Michael 90620 0.0423
+ 8  1958 M     Michael 90520 0.0420
+ 9  1948 M     James   88588 0.0497
+10  1954 M     Michael 88514 0.0428
+# … with 1,924,655 more rows
+```
+
+---
+
+class: middle
+
+
+# Most common names in 1990
+
+
+```r
+babynames %&gt;%
+* filter(year == 1990) %&gt;%
+* arrange(desc(prop))
+# A tibble: 24,719 × 5
+    year sex   name            n   prop
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;  &lt;dbl&gt;
+ 1  1990 M     Michael     65282 0.0303
+ 2  1990 M     Christopher 52332 0.0243
+ 3  1990 F     Jessica     46475 0.0226
+ 4  1990 F     Ashley      45558 0.0222
+ 5  1990 M     Matthew     44800 0.0208
+ 6  1990 M     Joshua      43216 0.0201
+ 7  1990 F     Brittany    36538 0.0178
+ 8  1990 F     Amanda      34408 0.0168
+ 9  1990 M     Daniel      33815 0.0157
+10  1990 M     David       33742 0.0157
+# … with 24,709 more rows
+```
+
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+.bql.font90[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Get the class activity 6.Rmd file
+- Work on problems 1-3
+- Ask me questions
+]
+]
+
+<div class="countdown" id="timer_9cb9d702" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+---
+
+class: middle
+
+
+# *summarize()* or *summarise()*
+
+If we want to .yellow-h[compare summary statistics], we might use `summarize()`.
+
+
+```r
+babynames %&gt;% 
+  filter(name == "Bella", sex == "F") %&gt;% 
+* summarise(total = sum(n), max = max(n), mean = mean(n))
+# A tibble: 1 × 3
+  total   max  mean
+  &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+1 57411  5121  416.
+```
+
+---
+
+class: middle
+
+# *summarize()* 
+
+.pull-left[
+
+```r
+babynames %&gt;% 
+  filter(name == "Bella", sex == "F") %&gt;% 
+* summarize(n = n())
+# A tibble: 1 × 1
+      n
+  &lt;int&gt;
+1   138
+```
+]
+
+.pull-right[
+
+```r
+babynames %&gt;% 
+* summarize(nname = n_distinct(name))
+# A tibble: 1 × 1
+  nname
+  &lt;int&gt;
+1 97310
+```
+]
+
+
+---
+
+class: middle
+
+
+# Using *group_by()*
+
+
+```r
+babynames %&gt;% 
+* group_by(year, sex)
+# A tibble: 1,924,665 × 5
+# Groups:   year, sex [276]
+    year sex   name          n   prop
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;
+ 1  1880 F     Mary       7065 0.0724
+ 2  1880 F     Anna       2604 0.0267
+ 3  1880 F     Emma       2003 0.0205
+ 4  1880 F     Elizabeth  1939 0.0199
+ 5  1880 F     Minnie     1746 0.0179
+ 6  1880 F     Margaret   1578 0.0162
+ 7  1880 F     Ida        1472 0.0151
+ 8  1880 F     Alice      1414 0.0145
+ 9  1880 F     Bertha     1320 0.0135
+10  1880 F     Sarah      1288 0.0132
+# … with 1,924,655 more rows
+```
+
+---
+
+class: middle
+
+# Using *group_by()* along with *summarize()*
+
+
+```r
+babynames %&gt;%
+* group_by(year) %&gt;%
+* summarise(total = sum(n))
+# A tibble: 138 × 2
+    year  total
+   &lt;dbl&gt;  &lt;int&gt;
+ 1  1880 201484
+ 2  1881 192696
+ 3  1882 221533
+ 4  1883 216946
+ 5  1884 243462
+ 6  1885 240854
+ 7  1886 255317
+ 8  1887 247394
+ 9  1888 299473
+10  1889 288946
+# … with 128 more rows
+```
+
+---
+
+class: middle
+
+# *mutate()*
+
+- `mutate()` lets us .yellow-h[create new variables based on manipulations of the old variables]
+
+
+
+```r
+babynames &lt;- babynames %&gt;%
+  group_by(year) %&gt;%
+* mutate(percent = prop * 100)
+head(babynames)
+# A tibble: 6 × 6
+# Groups:   year [1]
+   year sex   name          n   prop percent
+  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1  1880 F     Mary       7065 0.0724    7.24
+2  1880 F     Anna       2604 0.0267    2.67
+3  1880 F     Emma       2003 0.0205    2.05
+4  1880 F     Elizabeth  1939 0.0199    1.99
+5  1880 F     Minnie     1746 0.0179    1.79
+6  1880 F     Margaret   1578 0.0162    1.62
+```
+
+---
+
+class: middle
+
+# *top_n()* 
+
+Most common name in each year
+
+
+```r
+babynames %&gt;%
+* group_by(year) %&gt;%
+* top_n(1, prop)
+# A tibble: 138 × 6
+# Groups:   year [138]
+    year sex   name      n   prop percent
+   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1  1880 M     John   9655 0.0815    8.15
+ 2  1881 M     John   8769 0.0810    8.10
+ 3  1882 M     John   9557 0.0783    7.83
+ 4  1883 M     John   8894 0.0791    7.91
+ 5  1884 M     John   9388 0.0765    7.65
+ 6  1885 M     John   8756 0.0755    7.55
+ 7  1886 M     John   9026 0.0758    7.58
+ 8  1887 M     John   8110 0.0742    7.42
+ 9  1888 M     John   9247 0.0712    7.12
+10  1889 M     John   8548 0.0718    7.18
+# … with 128 more rows
+```
+
+---
+
+class: middle
+
+# *min_rank()* : A go to ranking function (ties share the lowest rank)
+
+
+```r
+min_rank(c(50, 100, 1000))
+[1] 1 2 3
+```
+
+
+```r
+min_rank(desc(c(50, 100, 1000)))
+[1] 3 2 1
+```
+
+
+---
+
+class: middle
+
+# Slicing and selecting data
+
+.bql.font90[
+The slice_ operators let you slice (subset) rows:
+
+- .b[slice_head(n=5)] : view the first 5 rows
+
+- .b[slice_tail(n=5)] : view the last 5 rows
+
+- .b[slice_sample(n=5)] : view 5 random rows
+
+- .b[slice_min(column, n=5)] : view the 5 smallest values of a column
+
+- .b[slice_max(column, n=5)] : view the 5 largest values of a column
+]
+
+---
+
+class: middle
+
+## *slice()*
+
+.code90[
+
+```r
+library(gapminder)
+slice(gapminder, 1:5)
+# A tibble: 5 × 6
+  country     continent  year lifeExp      pop gdpPercap
+  &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+1 Afghanistan Asia       1952    28.8  8425333      779.
+2 Afghanistan Asia       1957    30.3  9240934      821.
+3 Afghanistan Asia       1962    32.0 10267083      853.
+4 Afghanistan Asia       1967    34.0 11537966      836.
+5 Afghanistan Asia       1972    36.1 13079460      740.
+```
+]
+
+---
+
+class: middle
+
+
+## *slice_max()*
+
+.code90[
+
+```r
+gapminder %&gt;% slice_max(gdpPercap, n=6)
+# A tibble: 6 × 6
+  country continent  year lifeExp     pop gdpPercap
+  &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+1 Kuwait  Asia       1957    58.0  212846   113523.
+2 Kuwait  Asia       1972    67.7  841934   109348.
+3 Kuwait  Asia       1952    55.6  160000   108382.
+4 Kuwait  Asia       1962    60.5  358266    95458.
+5 Kuwait  Asia       1967    64.6  575003    80895.
+6 Kuwait  Asia       1977    69.3 1140357    59265.
+```
+]
+
+---
+
+class: middle
+
+# *summarize()* vs. *mutate()*
+
+*summarize()* : summarize collapses all variable values down to one number (by group)
+
+
+```r
+gapminder %&gt;% 
+  group_by(continent) %&gt;% 
+* summarize(avg_life_expectancy = mean(lifeExp))
+# A tibble: 5 × 2
+  continent avg_life_expectancy
+  &lt;fct&gt;                   &lt;dbl&gt;
+1 Africa                   48.9
+2 Americas                 64.7
+3 Asia                     60.1
+4 Europe                   71.9
+5 Oceania                  74.3
+```
+
+---
+
+class: middle
+
+
+# *summarize()* vs. *mutate()*
+
+*mutate()* : transforms all variable values but preserves the variable length (by group)
+
+
+```r
+gapminder %&gt;%
+  group_by(continent) %&gt;%
+* mutate(meanPop = mean(pop)/1000000)
+# A tibble: 1,704 × 7
+# Groups:   continent [5]
+   country     continent  year lifeExp      pop gdpPercap meanPop
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.    77.0
+ 2 Afghanistan Asia       1957    30.3  9240934      821.    77.0
+ 3 Afghanistan Asia       1962    32.0 10267083      853.    77.0
+ 4 Afghanistan Asia       1967    34.0 11537966      836.    77.0
+ 5 Afghanistan Asia       1972    36.1 13079460      740.    77.0
+ 6 Afghanistan Asia       1977    38.4 14880372      786.    77.0
+ 7 Afghanistan Asia       1982    39.9 12881816      978.    77.0
+ 8 Afghanistan Asia       1987    40.8 13867957      852.    77.0
+ 9 Afghanistan Asia       1992    41.7 16317921      649.    77.0
+10 Afghanistan Asia       1997    41.8 22227415      635.    77.0
+# … with 1,694 more rows
+```
+
+---
+
+class: middle
+
+
+# *group_by(var1, var2)*
+
+
+```r
+gapminder %&gt;% 
+  group_by(continent, year) %&gt;% 
+  summarise(avg_life_expectancy = mean(lifeExp)) %&gt;% 
+  slice_max(avg_life_expectancy, n = 1)
+# A tibble: 5 × 3
+# Groups:   continent [5]
+  continent  year avg_life_expectancy
+  &lt;fct&gt;     &lt;int&gt;               &lt;dbl&gt;
+1 Africa     2007                54.8
+2 Americas   2007                73.6
+3 Asia       2007                70.7
+4 Europe     2007                77.6
+5 Oceania    2007                80.7
+```
+
+---
+
+class: middle
+
+# *ungroup()*
+
+Any further mutations called on it would not use the grouping for aggregate statistics.
+
+
+```r
+gapminder %&gt;% 
+  group_by(continent, year) %&gt;% 
+  summarise(avg_life_expectancy = mean(lifeExp)) %&gt;% 
+* ungroup() %&gt;%
+  slice_max(avg_life_expectancy, n = 1)
+# A tibble: 1 × 3
+  continent  year avg_life_expectancy
+  &lt;fct&gt;     &lt;int&gt;               &lt;dbl&gt;
+1 Oceania    2007                80.7
+```
+
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+.bql.font90[
+- Work on problems 4-6
+- Ask me questions
+]
+]
+
+<div class="countdown" id="timer_763d4bea" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

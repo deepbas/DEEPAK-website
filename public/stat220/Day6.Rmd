@@ -120,7 +120,7 @@ class: title-slide, middle
 <br>
 
 .pull-left[
-.bq[
+.bqt.font90[
 - .yellow-h["data janitor work"]
 - importing data
 - cleaning data
@@ -128,14 +128,12 @@ class: title-slide, middle
 ]
 ]
 .pull-right[
-.bq[
+.bqt.font90[
 - fixing errors and poorly formatted data elements
 - transforming columns and rows
 - filtering, subsetting
 ]
 ]
-
-
 
 ---
 
@@ -150,15 +148,35 @@ class: middle
 
 # The Five Verbs
 
-Most of the operations on a data table can be achieved with
+.hljs[Most of the operations on a data table can be achieved with]
 
-.bq[
-- *select()* : extract a subset of columns
-- *filter()* : extract a subset of rows
-- *mutate()* : create new columns
-- *arrange()* : order the rows from smallest to largest (or largest to smallest)
-- *summarize()* : compute a table of summary statistics
+.bql[
+- .b[select()] : extract a subset of columns
+- .b[filter()] : extract a subset of rows
+- .b[mutate()] : create new columns
+- .b[arrange()] : order the rows from smallest to largest (or largest to smallest)
+- .b[summarize()] : compute a table of summary statistics
 ]
+
+---
+
+
+class: middle
+
+# Some Operators
+
+Operator|Definition                   
+---|---
+`<`| less than                    
+`<=`|	less than or equal to
+`>`| greater than
+`>=`|	greater than or equal to 
+`==`|	exactly equal to 
+`!=`|	not equal to 
+`x & y`| `x` AND `y`                  
+`x %in% y`| test if `x` is in `y`   
+
+
 
 ---
 
@@ -178,9 +196,9 @@ babynames %>%
 
 ---
 
-# Using **%>%**
+# Using **%>%** (pipe operator)
 
-.bq[
+.bq.font90[
 - `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
 - `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
 ]
@@ -195,28 +213,30 @@ babynames %>%                   # dataframe first and then... #<<
 
 ---
 
-# Using **%>%**
+# Using **%>%** (pipe operator)
 
-.bq[
+.bq.font90[
 - `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
 - `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
 ]
 
 
+
 ```{r, eval=FALSE}
 babynames %>%                   # dataframe first and then... 
-  select(year, name, n) %>%     # select columns `year`, `name`, and `n` #<<
+  select(year, name, n) %>%     # select columns `year`, `name`, and `n` and then... #<<
   head()                    
 ```
 
 ---
 
-# Using **%>%**
+# Using **%>%** (pipe operator)
 
-.bq[
+.bq.font90[
 - `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
 - `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
 ]
+
 
 
 ```{r, eval=FALSE}
@@ -228,12 +248,13 @@ babynames %>%                   # dataframe first and then...
 
 ---
 
-# Using **%>%**
+# Using **%>%** (pipe operator)
 
-.bq[
+.bq.font90[
 - `%>%` passes .yellow-h[result on left] into .yellow-h[first argument of function on right]
 - `Chaining` functions together lets you read `Left-to-right`, `top-to-bottom`
 ]
+
 
 
 ```{r, eval=FALSE}
@@ -254,6 +275,8 @@ babynames %>%
 # **select()** helpers
 
 .pull-left[
+
+.bql[
 `:` select range of columns
 ```{r eval=FALSE}
 select(gapminder, income:population)
@@ -273,12 +296,14 @@ select(gapminder, -c(income,population))
 select(gapminder, starts_with("p"))
 ```
 ]
-
+]
 
 --
 
 .pull-right[
+<br>
 
+.bql[
 `ends_with()` select columns that end with...
 ```{r eval=FALSE}
 select(gapminder, ends_with("y"))
@@ -292,7 +317,7 @@ select(gapminder, contains("e"))
 ```
 
 ]
-
+]
 
 
 ---
@@ -315,6 +340,7 @@ babynames %>%
 
 # Use both *filter()* and *select()*
 
+.pull-left-40[
 
 ```{r}
 bella <- babynames %>%
@@ -323,23 +349,76 @@ bella <- babynames %>%
 
 ```
 
+```{r}
+head(bella, 10)
+```
+
+
+
+
+]
+
+
 --
 
-.pull-left[
+
+
+
+.pull-right-60[
 
 ```{r}
-head(bella)
+michael_selected_years <- babynames %>%
+  filter(name == "Michael", sex == "M", 
+         year %in% c(1990, 2000, 2010)) %>%
+  select(year, name, sex, n)
 ```
+
+```{r}
+head(michael_selected_years, 10)
+```
+
 
 ]
 
+---
 
-.pull-right[
+class: middle
+
+
+# *arrange()*
+
+.yellow-h[Order rows from smallest to largest]
+
 ```{r}
-dim(bella)
+arrange(babynames, n)
 ```
 
-]
+---
+
+class: middle
+
+
+# *desc()*
+
+Changes ordering from largest to smallest.
+
+
+```{r}
+arrange(babynames, desc(n)) #<<
+```
+
+---
+
+class: middle
+
+
+# Most common names in 1990
+
+```{r}
+babynames %>%
+  filter(year == 1990) %>% #<<
+  arrange(desc(prop))  #<<
+```
 
 
 ---
@@ -354,9 +433,8 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
-<br>
-.bq[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+.bql.font90[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
 - Get the class activity 6.Rmd file
 - Work on problems 1-3
 - Ask me questions
@@ -369,22 +447,6 @@ class: action, middle
 ---
 
 class: middle
-
-# Some Operators
-
-Operator|Definition                   
----|---
-`<`| less than                    
-`<=`|	less than or equal to
-`>`| greater than
-`>=`|	greater than or equal to 
-`==`|	exactly equal to 
-`!=`|	not equal to 
-`x & y`| `x` AND `y`                  
-`x %in% y`| test if `x` is in `y`   
-
-
----
 
 
 # *summarize()* or *summarise()*
@@ -421,6 +483,9 @@ babynames %>%
 
 ---
 
+class: middle
+
+
 # Using *group_by()*
 
 ```{r}
@@ -430,6 +495,7 @@ babynames %>%
 
 ---
 
+class: middle
 
 # Using *group_by()* along with *summarize()*
 
@@ -441,6 +507,7 @@ babynames %>%
 
 ---
 
+class: middle
 
 # *mutate()*
 
@@ -456,36 +523,7 @@ head(babynames)
 
 ---
 
-# *arrange()*
-
-.yellow-h[Order rows from smallest to largest]
-
-```{r}
-arrange(babynames, n)
-```
-
----
-
-# *desc()*
-
-Changes ordering from largest to smallest.
-
-
-```{r}
-arrange(babynames, desc(n)) #<<
-```
-
----
-
-# Most common names in 1990
-
-```{r}
-babynames %>%
-  filter(year == 1990) %>% #<<
-  arrange(desc(prop))  #<<
-```
-
----
+class: middle
 
 # *top_n()* 
 
@@ -519,42 +557,49 @@ class: middle
 
 # Slicing and selecting data
 
-.bq[
+.bql.font90[
 The slice_ operators let you slice (subset) rows:
 
-- `slice_head(n=5)` : view the first 5 rows
+- .b[slice_head(n=5)] : view the first 5 rows
 
-- `slice_tail(n=5)` : view the last 5 rows
+- .b[slice_tail(n=5)] : view the last 5 rows
 
-- `slice_sample(n=5)` : view 5 random rows
+- .b[slice_sample(n=5)] : view 5 random rows
 
-- `slice_min(column, n=5)` : view the 5 smallest values of a column
+- .b[slice_min(column, n=5)] : view the 5 smallest values of a column
 
-- `slice_max(column, n=5)` : view the 5 largest values of a column
+- .b[slice_max(column, n=5)] : view the 5 largest values of a column
 ]
 
 ---
 
+class: middle
+
 ## *slice()*
 
-.code80[
+.code90[
 ```{r}
 library(gapminder)
 slice(gapminder, 1:5)
 ```
 ]
 
---
+---
+
+class: middle
+
 
 ## *slice_max()*
 
-.code80[
+.code90[
 ```{r}
 gapminder %>% slice_max(gdpPercap, n=6)
 ```
 ]
 
 ---
+
+class: middle
 
 # *summarize()* vs. *mutate()*
 
@@ -568,6 +613,9 @@ gapminder %>%
 
 ---
 
+class: middle
+
+
 # *summarize()* vs. *mutate()*
 
 *mutate()* : transforms all variable values but preserves the variable length (by group)
@@ -580,7 +628,10 @@ gapminder %>%
 
 ---
 
-# *group_by()*
+class: middle
+
+
+# *group_by(var1, var2)*
 
 ```{r}
 gapminder %>% 
@@ -590,6 +641,8 @@ gapminder %>%
 ```
 
 ---
+
+class: middle
 
 # *ungroup()*
 
@@ -617,13 +670,11 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
-<br>
-.bq[
-- Work on problem 4
+.bql.font90[
+- Work on problems 4-6
 - Ask me questions
-- Any hw-related questions? 
 ]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
