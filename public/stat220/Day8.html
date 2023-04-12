@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Tidy Data</title>
+    <title>Tidy Data and Dates</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -15,8 +15,8 @@
     <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
     <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
-    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
-    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -44,35 +44,21 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Tidy Data]
+# .fancy[Tidy Data and Dates]
 
-### .fancy[Fall 2022]
+### .fancy[Spring 23]
 
- September 28 2022
-
----
-
-# Last time: Combining data sets
-
-
-&lt;center&gt;
-&lt;img src="images/combine_cases.png" width="25%" height="25%"&gt;&lt;br&gt;
-
-
-&lt;img src="images/combine_variables.png" width="40%" height="40%"&gt; &lt;br&gt;
-
-
-&lt;a href="https://deepbas.io/cheatsheets/data-transformation.pdf"&gt;dplyr data transformation cheatsheet&lt;/a&gt;
-&lt;/center&gt;
-
+ April 11 2023
 
 ---
 
 # What are tidy data?
 
+.hljs.font80[
 1. Each .yellow-h[variable] forms a column
 2. Each .yellow-h[observation] forms a row 
 3. Each .yellow-h[value] has its own cell
+]
 
 ![](images/r4ds_tidy_data.png)
 
@@ -81,7 +67,9 @@ class: title-slide, middle
 
 ---
 
-# Untidy data: example 1
+
+
+.pull-left[## Untidy data: example 1
 
 
 ```r
@@ -91,7 +79,10 @@ untidy_data &lt;- tibble(
   wt_08_01_2021 = c(104, 155, 138),
   wt_09_01_2021 = c(NA, 160, 142)
 )
-untidy_data
+```
+
+
+```
 # A tibble: 3 × 4
   name  wt_07_01_2021 wt_08_01_2021 wt_09_01_2021
   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
@@ -100,22 +91,22 @@ untidy_data
 3 Cara            140           138           142
 ```
 
+]
 
----
+--
 
-# Tidy data: example 1
-
+.pull-right[## Tidy data: example 1
 
 
 ```r
-library(lubridate)
-library(stringr)
+library(lubridate)  # for date manipulations
+library(stringr) # for string manipulations
 untidy_data %&gt;% 
-  pivot_longer(names_to = "date", 
-               values_to = "weight",
+  pivot_longer(names_to = "date",  
+               values_to = "weight", 
                cols = -name) %&gt;%
-  mutate(date = str_remove(date,"wt_"),
-         date = dmy(date))     # dmy() is a function in the lubridate package
+  mutate(date = stringr::str_remove(date,"wt_"), 
+         date = lubridate::dmy(date))    
 # A tibble: 9 × 3
   name  date       weight
   &lt;chr&gt; &lt;date&gt;      &lt;dbl&gt;
@@ -129,34 +120,15 @@ untidy_data %&gt;%
 8 Cara  2021-01-08    138
 9 Cara  2021-01-09    142
 ```
-
---
-
-.out-t[We will learn how to do this!]
-
----
-
-class: center, middle, inverse
-
-# Reshaping data 
-
-wide vs. long
-
-
-.pull-left[
-&lt;img src="images/horst_tidyr_spread_gather.png" width="80%" height="80%"&gt;  
-[Allison Horst](https://github.com/allisonhorst/stats-illustrations)
 ]
-.pull-right[
-&lt;img src="images/hex-tidyr.png" width="70%" height="70%"&gt;  
-[tidyr](https://tidyr.tidyverse.org)
-]
+
 ---
 
 ## Wide vs. long data
-.bq.font80[
-- __Wide__ data has one row per subject, with multiple columns for their repeated measurements
-- __Long__ data has multiple rows per subject, with one column for the measurement variable and another indicating from when/where the repeated measures are from
+
+.bqt.font70[
+- .bold[Wide] data has one row per subject, with multiple columns for their repeated measurements
+- .bold[Long] data has multiple rows per subject, with one column for the measurement variable and another indicating from when/where the repeated measures are from
 ]
 
 .pull-left[
@@ -168,7 +140,7 @@ wide
 ]
 .pull-right[
 &lt;center&gt;
-&lt;img src="images/SBP_long2.png" width="30%" height="30%"&gt;&lt;br&gt;
+&lt;img src="images/SBP_long2.png" width="30%" height="20%"&gt;&lt;br&gt;
 long
 &lt;/center&gt;
 ]
@@ -227,24 +199,25 @@ class: middle
 
 # Wide to long: `pivot_longer()`
 
-.bq-l[`pivot_longer`  lengthens data, increasing the number of rows and decreasing the number of columns.]
+.hljs[`pivot_longer`  lengthens data, increasing the number of rows and decreasing the number of columns.]
 
 &lt;br&gt;
 
 
-.bq[
-## Need to **specify**:
+.bql.font90[Need to **specify**:
 
 - *new column names*
 
-  - __names_to__: stores row names of wide data's columns 
-  - __values_to__: stores data values
-
+  - .b[names_to]: stores row names of wide data's columns 
+  - .b[values_to]: stores data values
+  
 - *which columns to pivot*
 ]
 
 
 ---
+
+class: middle
 
 
 # Long to wide: `pivot_wider()`
@@ -297,14 +270,19 @@ class: middle
 
 # Long to wide: `pivot_wider()`
 
-.bq[
-`pivot_wider`  increases number of columns and decreases the number of rows. Need to **specify**:
+.hljs[`pivot_wider`  increases number of columns and decreases the number of rows.]
+
+.bql.font90[Need to **specify**:
+
 - *new column names*
-    + __names_from__: get the name of the column 
-    + __values_from__: get the cell values from
+
+  + .b[names_from]: get the name of the column 
+  + .b[values_from]: get the cell values from
 ]
 
 ---
+
+class: middle
 
 # Separate Info
 
@@ -359,30 +337,30 @@ BP_long1
 
 ---
 
-# Remove and Clean up Columns
+# `readr::parse_number()`
 
-.pull-left[
+.hljs[**Goal**: Extract first number from the visit column and remove the characters]
+
+.pull-left-40[
 
 ```r
-BP_long1
-# A tibble: 12 × 5
-   id    sex   acrnym visit   SBP
-   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;
- 1 a     F     SBP    v1      130
- 2 a     F     SBP    v2      110
- 3 a     F     SBP    v3      112
- 4 b     M     SBP    v1      120
- 5 b     M     SBP    v2      116
- 6 b     M     SBP    v3      122
- 7 c     M     SBP    v1      130
- 8 c     M     SBP    v2      136
- 9 c     M     SBP    v3      138
-10 d     F     SBP    v1      119
-11 d     F     SBP    v2      106
-12 d     F     SBP    v3      118
+BP_long
+# A tibble: 12 × 4
+   id    sex   visit    SBP
+   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;
+ 1 a     F     SBP_v1   130
+ 2 a     F     SBP_v2   110
+ 3 a     F     SBP_v3   112
+ 4 b     M     SBP_v1   120
+ 5 b     M     SBP_v2   116
+ 6 b     M     SBP_v3   122
+ 7 c     M     SBP_v1   130
+ 8 c     M     SBP_v2   136
+ 9 c     M     SBP_v3   138
+10 d     F     SBP_v1   119
+11 d     F     SBP_v2   106
+12 d     F     SBP_v3   118
 ```
-
-**Goal**: Get rid of `acrnym` column and remove the string `v` from the `visit` variable's values.
 
 ]
 
@@ -392,11 +370,8 @@ BP_long1
 
 
 ```r
-library(stringr)
-BP_long2 &lt;- BP_long1 %&gt;% 
-* select(-acrnym) %&gt;%
-* mutate(visit = str_replace(visit,"v","")) %&gt;%
-* mutate_at(vars(visit), as.double)
+BP_long2 &lt;- BP_long %&gt;% 
+* mutate(visit = parse_number(visit))
 BP_long2
 # A tibble: 12 × 4
    id    sex   visit   SBP
@@ -452,18 +427,19 @@ BP_wide2
 
 --
 
-.pull-right.font80[
-**Problem**: have numbers as column names  
-**Solution**: have row names start with the `key` column's name separated by a character
+.pull-right[
 
-&lt;br&gt;
+.b[Problem]: have numbers as column names  
+.b[Solution]: have row names start with the `key` column's name separated by a character
+
+
 
 
 ```r
 BP_wide3 &lt;- BP_long2 %&gt;% 
-* pivot_wider(names_from = "visit",
-*             values_from = "SBP",
-*             names_prefix = "value_")
+  pivot_wider(names_from = "visit",     
+              values_from = "SBP",      
+              names_prefix = "value_")  
 BP_wide3
 # A tibble: 4 × 5
   id    sex   value_1 value_2 value_3
@@ -473,6 +449,7 @@ BP_wide3
 3 c     M         130     136     138
 4 d     F         119     106     118
 ```
+
 ]
 
 ---
@@ -488,160 +465,18 @@ class: action, middle
 ]
 .pull-right-60[
 &lt;br&gt;
-&lt;br&gt;
-.bq[
+.bql[
 - Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
 - Get the class activity 8.Rmd file
-- Work on problem 1
-- Ask me questions
+- Work on your turn 1
 ]
 
 ]
 
-<div class="countdown" id="timer_70bf9f2d" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_cb53c81d" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
-
----
-
-class: center, middle, inverse
-
-
-&lt;center&gt;&lt;img src="images/08-janitor.jpg" width="80%" height="80%"&gt;&lt;a href="https://github.com/allisonhorst/stats-illustrations"&gt;&lt;br&gt;Allison Horst&lt;/a&gt;&lt;/center&gt;
-
-
----
-
-# Clean messy column names with `janitor::clean_names()`
-
-
-```r
-bar &lt;- tibble("First Name"= c("Yi","DJ"), "last init" = c("C","R"), "% in" = c(0.1, 0.5), 
-              "ñ$$$"= 1:2, " "=3:2," hi"=c("a","b"),  "null"=c(NA,NA))
-bar
-# A tibble: 2 × 7
-  `First Name` `last init` `% in` `ñ$$$`   ` ` ` hi` null 
-  &lt;chr&gt;        &lt;chr&gt;        &lt;dbl&gt;  &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;lgl&gt;
-1 Yi           C              0.1      1     3 a     NA   
-2 DJ           R              0.5      2     2 b     NA   
-```
-
-
-
-```r
-library(janitor)
-*bar %&gt;% clean_names() %&gt;%        # in the janitor package
-* remove_empty(c("rows","cols"))    # also useful
-# A tibble: 2 × 6
-  first_name last_init percent_in     n     x hi   
-  &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;
-1 Yi         C                0.1     1     3 a    
-2 DJ         R                0.5     2     2 b    
-```
-
----
-
-
-
-# Removing missing data: `drop_na()`
-
-&lt;!-- These examples might be clearer with a small dataset and showing what the outcomes are. --&gt;
-
-.pull-left[
-
-A simple example:
-
-
-```r
-foo &lt;- tibble(id = 3:5, 
-                 name = c("Al",
-                          "Wu",
-                          "Flo"), 
-                 height = c(3, NA, 2.8), 
-                 years = c(50,33,NA))
-foo
-# A tibble: 3 × 4
-     id name  height years
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1     3 Al       3      50
-2     4 Wu      NA      33
-3     5 Flo      2.8    NA
-```
-]
-
---
-
-.pull-right[
-
-Remove *all* rows with **any missing data**
-
-
-```r
-foo %&gt;% drop_na()
-# A tibble: 1 × 4
-     id name  height years
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1     3 Al         3    50
-```
-
-Remove rows with `NA` in **selected columns**
-
-
-```r
-foo %&gt;% drop_na(height)
-# A tibble: 2 × 4
-     id name  height years
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1     3 Al       3      50
-2     5 Flo      2.8    NA
-```
-]
-
----
-
-class: middle
-
-# Replace `NA`s with another value: `replace_na()`
-
-.pull-left-40[
-Use with `mutate()`
-
-```r
-foo
-# A tibble: 3 × 4
-     id name  height years
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1     3 Al       3      50
-2     4 Wu      NA      33
-3     5 Flo      2.8    NA
-```
-
-]
-
-.pull-right-60[
-&lt;br&gt;
-
-```r
-foo %&gt;% mutate(height = replace_na(height , 0),
-               years = replace_na(years, 0))
-# A tibble: 3 × 4
-     id name  height years
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1     3 Al       3      50
-2     4 Wu       0      33
-3     5 Flo      2.8     0
-```
-]
-
-
----
-
-class: center, middle, inverse
-
-# Date manipulation
-
-&lt;img src="images/lubridate_hex2.png" width="40%" height="55%"&gt;
 
 ---
 
@@ -650,7 +485,7 @@ class: center, middle, inverse
 
 .pull-left[
 &lt;br&gt;
-.bq.font80[
+.bql.font80[
 - Convert characters to special "Date" type
 
 - Easy date magic examples:
@@ -662,7 +497,6 @@ class: center, middle, inverse
 ]
 ]
 
-.footnote[[`lubridate` cheat sheet](https://www.rstudio.com/resources/cheatsheets/#lubridate)]
 
 
 .pull-right[
@@ -670,60 +504,234 @@ class: center, middle, inverse
 &lt;/center&gt;
 ]
 
----
+.footnote[[`lubridate` cheat sheet](https://www.rstudio.com/resources/cheatsheets/#lubridate)]
 
-## What kind of date do you have?
-
-.pull-left[
-&lt;center&gt;&lt;img src="images/lubridate_parse_date_times.png" width="100%" height="100%"&gt;&lt;/center&gt;
-[`lubridate` cheat sheet](https://www.rstudio.com/resources/cheatsheets/#lubridate)
-]
-.pull-right[
-.code80[
-&lt;br&gt;
-
-```r
-timedata &lt;- tibble(name = c("Yi","Mo","Dee"), 
-                   dob=c("10/31/1952",
-                         "1/12/1984",
-                         "2/02/2002"),
-                   age= c("69", "38", "19"))
-
-timedata %&gt;%
-* mutate(dob_date = mdy(dob),
-        age_num = as.numeric(age))
-# A tibble: 3 × 5
-  name  dob        age   dob_date   age_num
-  &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt; &lt;date&gt;       &lt;dbl&gt;
-1 Yi    10/31/1952 69    1952-10-31      69
-2 Mo    1/12/1984  38    1984-01-12      38
-3 Dee   2/02/2002  19    2002-02-02      19
-```
-]
-]
 
 ---
 
 class: middle
 
-# Math with dates
+## What kind of date do you have?
+
+
+&lt;center&gt;&lt;img src="images/lubridate_parse_date_times.png" width="40%" height="50%"&gt;&lt;/center&gt;
+[`lubridate` cheat sheet](https://www.rstudio.com/resources/cheatsheets/#lubridate)
+
+---
+
+class: middle
+
+# Parsing Complex Dates
+
 
 
 ```r
-timedata %&gt;% 
-  mutate(dob = mdy(dob),                            # convert to a date
-         dob_year = year(dob),                      # extract the year
-         time_since_birth = dob %--% today(),       # create an "interval"
-         age = time_since_birth %/% years(1),       # modulus on "years"
-         dobplus = dob + days(30)                   # add 30 days
-  )                  
-# A tibble: 3 × 6
-  name  dob          age dob_year time_since_birth               dobplus   
-  &lt;chr&gt; &lt;date&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;Interval&gt;                     &lt;date&gt;    
-1 Yi    1952-10-31    69     1952 1952-10-31 UTC--2022-09-28 UTC 1952-11-30
-2 Mo    1984-01-12    38     1984 1984-01-12 UTC--2022-09-28 UTC 1984-02-11
-3 Dee   2002-02-02    20     2002 2002-02-02 UTC--2022-09-28 UTC 2002-03-04
+complex_dates &lt;- tibble(
+  name = c("Yi", "Mo", "Dee"),
+  dob = c("31-October-1952 14:30:15",
+          "12-Jan-1984 22:15:00",
+          "02-Feb-2002 10:45:30")
+)
+
+complex_dates %&gt;%
+  mutate(
+    dob_date = dmy_hms(dob),
+  ) %&gt;% knitr::kable()
 ```
+
+
+
+|name |dob                      |dob_date            |
+|:----|:------------------------|:-------------------|
+|Yi   |31-October-1952 14:30:15 |1952-10-31 14:30:15 |
+|Mo   |12-Jan-1984 22:15:00     |1984-01-12 22:15:00 |
+|Dee  |02-Feb-2002 10:45:30     |2002-02-02 10:45:30 |
+
+
+
+---
+
+class: middle
+
+# Advanced Date Arithmetic
+
+
+
+```r
+complex_dates %&gt;%
+  mutate(
+    dob_date = dmy_hms(dob),
+    dob_year = year(dob_date),
+    time_since_birth = interval(dob_date, now()),
+    age_exact = as.duration(time_since_birth) / dyears(1),
+  ) %&gt;% knitr::kable()
+```
+
+
+
+|name |dob                      |dob_date            | dob_year|                                 time_since_birth| age_exact|
+|:----|:------------------------|:-------------------|--------:|------------------------------------------------:|---------:|
+|Yi   |31-October-1952 14:30:15 |1952-10-31 14:30:15 |     1952| 1952-10-31 14:30:15 UTC--2023-04-12 03:27:52 UTC|  70.44364|
+|Mo   |12-Jan-1984 22:15:00     |1984-01-12 22:15:00 |     1984| 1984-01-12 22:15:00 UTC--2023-04-12 03:27:52 UTC|  39.24495|
+|Dee  |02-Feb-2002 10:45:30     |2002-02-02 10:45:30 |     2002| 2002-02-02 10:45:30 UTC--2023-04-12 03:27:52 UTC|  21.18740|
+
+---
+
+class: middle
+
+# Creating Date-Time Objects with `make_datetime()`
+
+.pull-left-40[
+
+```r
+# Components of date and time
+year_component &lt;- 2023
+month_component &lt;- 3
+day_component &lt;- 23
+hour_component &lt;- 18
+minute_component &lt;- 45
+second_component &lt;- 30
+```
+]
+.pull-right-60[
+
+```r
+# Using make_datetime() to create a date-time object
+date_time_object &lt;- make_datetime(
+  year = year_component,
+  month = month_component,
+  day = day_component,
+  hour = hour_component,
+  min = minute_component,
+  sec = second_component
+)
+```
+]
+
+
+
+```r
+date_time_object %&gt;% knitr::kable()
+```
+
+
+
+|x                   |
+|:-------------------|
+|2023-03-23 18:45:30 |
+
+---
+
+# Combining Date and Time Objects
+
+
+```r
+date_only &lt;- ymd("2023-03-23")
+time_only &lt;- hms("18:45:30")
+
+date_time_combined &lt;- make_datetime(
+  year = year(date_only),
+  month = month(date_only),
+  day = day(date_only),
+  hour = hour(time_only),
+  min = minute(time_only),
+  sec = second(time_only)
+)
+
+date_time_combined %&gt;% knitr::kable()
+```
+
+
+
+|x                   |
+|:-------------------|
+|2023-03-23 18:45:30 |
+
+
+---
+
+class: middle
+
+# Extracting Components from Date-Time Objects
+
+
+```r
+date_components &lt;- tibble(
+  date_time = ymd_hms("2023-03-23 18:45:30")
+)
+
+date_components %&gt;%
+  mutate(
+    year = year(date_time),
+    month = month(date_time, label = TRUE),
+    day = day(date_time),
+    hour = hour(date_time),
+    minute = minute(date_time),
+    second = second(date_time)
+  ) %&gt;% knitr::kable()
+```
+
+
+
+|date_time           | year|month | day| hour| minute| second|
+|:-------------------|----:|:-----|---:|----:|------:|------:|
+|2023-03-23 18:45:30 | 2023|Mar   |  23|   18|     45|     30|
+
+---
+
+
+# Advanced Date-Time Arithmetic with Periods
+
+
+
+```r
+date_periods &lt;- tibble(
+  date = ymd("2023-01-31")
+)
+
+date_periods %&gt;%
+  mutate(
+    add_month = date + month(1),
+    add_year = date + years(1),
+    subtract_week = date - weeks(1)
+  ) %&gt;% knitr::kable()
+```
+
+
+
+|date       |add_month  |add_year   |subtract_week |
+|:----------|:----------|:----------|:-------------|
+|2023-01-31 |2023-02-01 |2024-01-31 |2023-01-24    |
+
+
+---
+
+# Duration and Time Differences
+
+
+
+```r
+time_diff_example &lt;- tibble(
+  start_date = ymd("2023-01-01"),
+  end_date = ymd("2023-12-31")
+)
+
+time_diff_example %&gt;%
+  mutate(
+    time_diff = end_date - start_date,
+    duration_days = as.duration(time_diff),
+    duration_weeks = duration_days / dweeks(1),
+    duration_months = duration_days / dmonths(1),
+    duration_years = duration_days / dyears(1)
+  )  %&gt;% knitr::kable()
+```
+
+
+
+|start_date |end_date   |time_diff |         duration_days| duration_weeks| duration_months| duration_years|
+|:----------|:----------|:---------|---------------------:|--------------:|---------------:|--------------:|
+|2023-01-01 |2023-12-31 |364 days  | 31449600s (~52 weeks)|             52|        11.95893|      0.9965777|
+
 
 ---
 
@@ -738,28 +746,16 @@ class: action, middle
 .pull-right-60[
 &lt;br&gt;
 &lt;br&gt;
-.bq[
-- Work on problems 2
+.bql[
+- Work on your turn 2
 - Ask me questions
-- Any hw-related questions? 
 ]
 ]
 
-<div class="countdown" id="timer_35406473" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_e54bde2c" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
-
-
----
-
-class: center, middle, inverse
-
-# Acknowledgements
-
-.Large[Parts of the slides are adapted from Jessica Minnier's OCTRI BERD R Courses instruction materials.]
-
-
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

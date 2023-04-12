@@ -106,9 +106,9 @@ background-size: 160px, 100% 100%
 
 class: middle
 
-# Question!
+# Let's start with a question!
 
-.bq[
+.bql.font80[
 The higher the standard error of a statistic, the $\ldots \ldots$ the uncertainty surrounding the statistic.
 
   1. higher
@@ -184,7 +184,7 @@ class: middle
 ]
 
 .pull-right[
-
+<br>
 .bql.font90[
 - Interval estimate: $60\% \pm 3\% = (57\% , 63\%)$
 - The percentage of American adults who would vote for a Muslim for president is likely between $57\%$ and $63\%$.
@@ -212,13 +212,16 @@ class: middle
 
 # Confidence Intervals
 
-.bq[
+.bql.font90[
 - A .bold[confidence interval] is an interval containing the most believable values for a parameter
 - A confidence interval is centered on the .bold[point estimate] and extends a certain number of .bold[standard errors] on either side of the estimate
 - The .bold[confidence level] tells us what percent of the intervals will contain the population parameter.
 ]
 
-.green-h[A 95% confidence interval will contain the true parameter for 95% of all samples.]
+<br>
+
+.bqt[
+A $95\%$ confidence interval will contain the true parameter for 95% of all samples.]
 
 
 ---
@@ -243,7 +246,8 @@ class: middle
 
 # $95\%$ Confidence Interval
 
-> If the sampling distribution is relatively .bold[symmetric] and .bold[bell-shaped], a $95\%$ confidence interval can be estimated using $$\mathbf{statistic} \pm 2 \times \mathbf{SE}$$
+.bql[
+If the sampling distribution is relatively .bold[symmetric] and .bold[bell-shaped], a $95\%$ confidence interval can be estimated using $$\mathbf{statistic} \pm 2 \times \mathbf{SE}$$]
 
 
 <br>
@@ -291,7 +295,7 @@ class: middle
 ]
 .pull-right[
 <center>
-<img src="images/skconfidence.png" width="70%" height="80%"><br>
+<img src="images/skconfidence.png" width="60%" height="70%"><br>
 <a style="font-size: smaller;">Repeated Sampling of 100 95% Confidence Intervals, Truth = Vertical Line</a></center>
 
 
@@ -311,75 +315,6 @@ class: middle
 
 ---
 
-# Bootstrap 
-
-<center>
-<a> Original sample (left) to population (right)</a>
-<img src="images/bootinf.png" width="60%" height="60%"><br>
-</center>
-
-.out-t[Creating a bootstrap sample is the same as using the data simulate a “population” that contains an infinite number of copies of the data.]
-
-
----
-
-# Bootstrap Sampling in R
-
-.bql[
-- resample a set of observations with replacement
-
-- same data points can appear multiple times
-]
-
-<br>
-
-&nbsp; | Data | Statistic 
----- | ---- | ---- 
-Original sample | $x_1, x_2, ..., x_n$ | $\bar{x}_n$ 
-Resample  | $x_1^*, x_2^*, ..., x_n^*$ | $\bar{x}^*_n$
-
-
-.pull-left-60[
-```{r, eval=FALSE}
-# R-code
-# In base R
-boot <- sample(x, size, replace = TRUE)
-```
-]
-
-.pull-right-40[
-
-```{r, eval=FALSE}
-# R-code
-library(CarletonStats)
-boot(x) 
-```
-
-]
-
----
-
-
-# Bootstrap Steps
-
-.bql[
-1. Generate a bootstrap sample.
-
-2. Compute the statistic of interest for your bootstrap sample.
-
-3. Repeat steps (1) –(2) many times. Plot the distribution of all your bootstrap statistics
-
-]
-
---
-
-<br>
-
-.out-t.center.Large[This is the bootstrap distribution!!]
-
-
----
-
 class: middle
 
 # Bootstrap Distribution
@@ -394,46 +329,20 @@ class: middle
 
 ---
 
-class: middle
 
-# Bootstrap Distribution
+`r chunk_reveal("bootstrap-demo", widths = c(0.4, 0.6), title = "## Bootstrap Distrubution using CarletonStats")`
 
-.pull-left[
-
-<br>
-
-.bqt.font90[
-Suppose $X = \{20, 24, 19, 23, 22, 16\}$
-\begin{align*}
-            X_1^* &= \{16, 19, 16 ,23 ,22, 24\}\\
-            X_2^* &= \{22, 19, 22, 19, 23, 19\}\\
-            X_3^* &= \{20, 22, 24, 16, 24, 16\}\\
-            \vdots & \qquad \qquad \cdots\\
-            \vdots & \qquad \qquad \cdots\\
-            X_{N}^* &= \{19, 24, 19, 19, 19, 22\}
-\end{align*}
-
-
-N = total number of simulations/samples
-
-]
+.font50[
+```{r bootstrap-demo, fig.width = 5, fig.height = 5, out.width = "80%", include=FALSE}
+library(CarletonStats)
+X <- c(20,24,19,23,22,16)
+boot(X)
+```
 ]
 
-.pull-right[
-![A bootstrap distribution](images/boot.png)
-]
 
----
 
-## Summary
 
-.bql.font90[
-- .bold[Interval estimates] let us infer a set of plausible values for a parameter
-- A 95% .bold[confidence interval] will contain the true parameter for 95% of all samples
-- Usually, we do not have access to the population and cannot do .bold[repeated sampling]
-- To get an estimate of standard error, can generate .bold[bootstrap samples] by sampling with replacement form the original sample, using the same sample size
-- Can use the bootstrap standard error to construct .bold[bootstrap confidence intervals]
-]
 
 ---
 
@@ -455,6 +364,6 @@ Go over the remaining portion of in class activity and let me know if you have a
 ]
 ]
 
-`r countdown(minutes = 25, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
