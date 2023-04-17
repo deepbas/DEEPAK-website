@@ -9,5 +9,5 @@ weight: 20
 ---
 
 
-Day 10 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}})
+Day 10 Slides ({{% staticref "stat220/Day10.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day10.html" "newtab" %}}html{{% /staticref %}})
 
