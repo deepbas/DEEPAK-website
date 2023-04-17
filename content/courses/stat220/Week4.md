@@ -1,0 +1,13 @@
+---
+title: Week 4 
+linktitle: Week 4
+lastmod: "2023-04-16"
+draft: false  
+toc: false  
+type: book  
+weight: 20
+---
+
+
+Day 10 Slides ({{% staticref "stat220/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day7.html" "newtab" %}}html{{% /staticref %}})
+
