@@ -364,7 +364,9 @@ Let $\mu_{\mathrm{s}}$ and $\mu_{\mathrm{c}}$ be the mean number of words recall
   4. $\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}>\mu_{\mathrm{c}}$
   5. $\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}<\mu_{\mathrm{c}}$
 ]
+
 <br>
+
 <details>
 <summary>.red[Click for answer]</summary>
 The correct answer is 2 (since we are looking for evidence that the means are different)
