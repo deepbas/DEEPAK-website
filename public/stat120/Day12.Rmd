@@ -1,5 +1,5 @@
 ---
-title: "RANDOMIZATION DISTRIBUTIONS & P-VALUES"
+title: "Randomization distribution and p-values"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -124,41 +124,33 @@ class: middle
 # Statistical Significance
 
 .bql[
-When results as extreme as the observed sample statistic are unlikely to occur by random chance alone (assuming the null
-hypothesis is true), we say the sample results are .bold[statistically significant]
-]
+Hypothesis testing is similar to how our justice system works (or is suppose to work).
 
---
+$$\mathrm{H}_{0} : \text{Defendant is innocent vs. } \mathrm{H}_{\mathrm{a}} \text{: Defendant is guilty}$$
+]
 
 <br>
 
 .bq.font90[
-- If our sample is .bold[statistically significant], we have convincing
-evidence against $H_0$, .bold[in favor of] $H_a$
-- If our sample is .bold[not statistically significant], our test is
-.bold[inconclusive. The null hypothesis may be true (or maybe not)].
+Assumption: Defendant is innocent $\left(\mathrm{H}_{0}\right)$
 
+Verdict:
+- .bold[Guilty:] evidence (data) “beyond a reasonable doubt” points to guilt (Statistically significant)
+- .bold[Not Guilty:] evidence (data) not beyond a reasonable doubt, but we don't know if they are truly innocent $\left(\mathrm{H}_{0}\right)$
 ]
 
 ---
 
-class: inverse, middle
 
-# Key Question: How unusual is it to see a sample statistic as extreme as that observed, if $H_0$ is true?
-
-
----
-
-# Extrasensory Perception
-
+## Extrasensory Perception (ESP)
 
 .pull-left[
-.bq[p= Proportion of correct guesses
+.hjls[p= Proportion of correct guesses]
 $$\begin{array}{l}
 \mathrm{H}_{0}: \boldsymbol{p}=\mathbf{1} / 5 \\
 \mathrm{H}_{\mathrm{a}}: \boldsymbol{p}>\mathbf{1} / \mathbf{5}
 \end{array}$$
-]
+
 ]
 
 .pull-right[
@@ -171,6 +163,7 @@ $$\begin{array}{l}
 
 --
 
+
 .bql.font80[
 - Suppose we try this $n=10$ times and get 3 correct guesses.
 - What kinds of statistics (sample proportions) would we observe just by chance, if the null were true and ESP does not exist?
@@ -179,31 +172,357 @@ $$\begin{array}{l}
 
 --
 
-.out-t[Simulate many samples of size $n=10$ with $p=0.2$ and look at the distribution of sample proportions.]
+.out-t[
+Simulate many samples of size $n=10$ with $p=0.2$ and look at the distribution of sample proportions.
+]
 
 
 ---
 
 # Randomization Distribution
 
-.bql[
-A randomization distribution is a collection of statistics from samples simulated assuming the null hypothesis is true
-]
+
+> A .bold[randomization distribution] is a collection of statistics from samples simulated assuming the null hypothesis is true
+
 
 <br>
 
-.bq[
-
+.bqt[
 - Also known as a .bold[permutation distribution].
-
-- A randomization distribution is .bold[centered] at the value of the .bold[parameter given in the null hypothesis].
-
+- A randomization distribution is centered at the value of the parameter given in the .bold[null hypothesis].
 ]
+
+---
+
+
+class: middle
+
+# Randomization Distribution for ESP
+
+<center>
+<img src="images/day11-1.png" width="60%" height="70%"> <br>
+<div style="position: absolute; top: 30%; left: 50%;">
+<span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;">
+</span>
+</div>
+<a></a>
+</center>
+
+---
+
+class: middle
+
+# Randomization Distribution for ESP
+
+<center>
+<img src="images/day11-1.png" width="60%" height="70%"> <br>
+<div style="position: absolute; top: 30%; left: 50%;">
+<span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;">
+  <p>This <b>randomization distribution</b> <br> is just the sampling distribution <br> for a sample proportion (n=10) <br> when the population proportion is <b>p=0.20</>.</p>
+</span>
+</div>
+<a></a>
+</center>
+
+
+---
+
+<br>
+<br>
+
+
+# P-value
+
+.bql[
+The .bold[p-value] is the chance of obtaining a sample statistic as extreme (or more extreme) than the observed sample statistic, if the null hypothesis is true
+]
+
+--
+
+<br>
+
+.bq.font80[
+- The p-value can be calculated as the proportion of statistics in a randomization distribution that are as extreme (or more extreme) than the observed sample statistic
+- .bold[“extreme”] is determined by the alternative hypothesis]
+
+
+---
+
+class: middle
+
+## [StatKey](http://www.lock5stat.com/statkey) ESP
+
+<center>
+<img src="images/day11-3.png" width="60%" height="70%"> <br>
+<div style="position: absolute; top: 30%; left: 50%;">
+<span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;">
+</span>
+</div>
+<a></a>
+</center>
+
 
 
 
 ---
 
+
+# p-value for ESP
+
+
+.bql.font80[The p-value is the chance of getting at least 3 out of 10 guesses correct, if p = 0.2.
+- P-value is about 0.318.
+- About 31% of the time we would get at least 3 out 10 guesses correct just by chance (no ESP). (interpretation)
+]
+
+--
+
+.hljs[Which conclusion does this p-value support?
+
+A. Inconclusive, little evidence that supports $\operatorname{ESP}\left(\mathrm{H}_{\mathrm{a}}\right)$
+
+B. Borderline, weak evidence for $\operatorname{ESP}\left(\mathrm{H}_{\mathrm{a}}\right)$
+
+C. Strong statistically significant evidence for $\operatorname{ESP}\left(\mathrm{H}_{\mathrm{a}}\right)$
+]
+
+<details>
+<summary class="answer">Click for answer</summary>
+The correct answer is A.
+</details>
+
+
+---
+
+
+class: middle
+
+## `Randomization Distribution`: Correlation
+
+.bqt.font80[
+Using the randomization distribution below to test
+
+\begin{align*}
+\mathrm{H}_0: \rho=0 \quad \text { vs } \quad \mathrm{H}_{\mathrm{a}}: \rho>0
+\end{align*}
+
+Match the sample statistics: $r=0.1$, $r=0.3$, and $r=0.5$
+
+With the p-values: $0.005$, $0.15$, and $0.35$, which sample statistic goes with which p-value?]
+
+<br>
+<center>
+<img src="images/day11-2.png" width="60%" height="70%"> <br>
+<div style="position: absolute; top: 30%; left: 50%;">
+<span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;">
+</span>
+</div>
+<a></a>
+</center>
+
+
+---
+
+class: middle
+
+# Alternative Hypothesis
+
+.bql[
+- A .b[one-sided] alternative contains either > or <
+- A .b[two-sided] alternative contains $\neq$
+- The p-value is the proportion in the tail in the direction specified by $\mathrm{H}_{\mathrm{a}}$
+- For a two-sided alternative, the $\mathrm{p}$-value is twice the proportion in the smallest tail
+]
+
+---
+
+
+.pull-left[
+## p-value and $H_a$
+
+<br>
+<br>
+
+.bql[
+
+\begin{align*}
+\text { Upper-tail } \quad & \mathrm{H}_0: \mu=0 \\
+\text { (Right Tail) }\quad & \mathrm{H}_{\mathrm{a}}: \mu>0 \\
+ \bar{x}& =2
+\end{align*}
+
+
+\begin{align*}
+\text { Lower-tail } \quad & \mathrm{H}_0: \mu=0 \\
+\text { (Left Tail) } \quad & \mathrm{H}_{\mathrm{a}}: \mu<0 \\
+ \bar{x}&=-1
+\end{align*}
+
+\begin{align*}
+\text { Two-tailed } \quad & \mathrm{H}_0: \mu=0 \\
+\quad & \mathrm{H}_{\mathrm{a}}: \mu \neq 0 \\
+ \bar{x}&=2
+\end{align*}
+
+]
+
+]
+
+.pull-right[
+
+<br>
+
+<center>
+<img src="images/day11-4.png" width="80%" height="70%"> <br>
+<div style="position: absolute; top: 30%; left: 50%;">
+<span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;">
+</span>
+</div>
+<a></a>
+</center>
+
+]
+
+
+---
+
+class: middle
+
+## Coccaine Addiction
+
+.bql[In a randomized experiment, 48 cocaine addicts attempting to quit were randomly assigned to take either desipramine (a new drug) or lithium (an existing drug) to test if `desipramine` is more effective than `lithium` at treating .b[cocaine addiction], with relapse as the response variable.
+]
+
+<br>
+
+&nbsp; | Relapse | No Relapse | total
+---- | ---- | ----- | -----
+`Desipramine` | 10 | 14 | 24
+`Lithium` | 18 | 6 | 24
+
+.out-t[ Is `desipramine` more effective than `lithium` at treating .b[cocaine addiction]?]
+
+
+---
+
+## [StatKey](http://www.lock5stat.com/statkey) Coccaine Addiction
+
+&nbsp; | Relapse | No Relapse | total
+---- | ---- | ----- | -----
+`Desipramine` | 10 | 14 | 24
+`Lithium` | 18 | 6 | 24
+
+
+
+.pull-left[
+
+
+- $\hat{p}_{D}$: proportion relapsed in `Desipramine`
+
+<br>
+
+
+\begin{aligned}
+& \mathrm{H}_0: p_{D}=p_{L} \\
+& \mathrm{H}_{\mathrm{a}}: p_{D}<p_{L}
+\end{aligned}
+
+]
+
+.pull-right[
+- $\hat{p}_{L}$: proportion relapsed in `Lithium`
+
+
+\begin{align*}
+\hat{p}_{D}=\frac{10}{24}= 0.42 \quad \hat{p}_{L}=\frac{18}{24}= 0.75
+\end{align*}
+So the sample statistic is:
+\begin{align*}
+\hat{p}_{D}-\hat{p}_{L}=0.42-0.75=-0.33
+\end{align*}
+
+]
+
+--
+
+.purple.Large[
+How extreme is -0.33, if $p_{D}=p_{L}$?
+]
+
+---
+
+
+class: middle
+
+# Randomization steps?
+
+.bq.font90[
+
+a. Randomly assign treatments (desipramine/lithium) to 48 participants.
+
+b. Create many simulated samples, assuming null hypothesis is true.
+
+c. Shuffle outcomes (relapse/no relapse) without regard to treatment.
+
+d. Calculate the difference in proportion of relapses for each sample.
+
+e. Repeat steps c and d multiple times (1000+).]
+
+
+---
+
+
+class: middle
+
+## [StatKey](http://www.lock5stat.com/statkey) Coccaine Addiction
+
+<center>
+<img src="images/day11-5.png" width="100%" height="70%"> <br>
+<div style="position: absolute; top: 20%; left: 15%;">
+<span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;">
+  <p>\[p-value &asymp; 0.021\]</p>
+</span>
+</div>
+
+<a></a>
+</center>
+
+
+---
+
+class: middle
+
+## [StatKey](http://www.lock5stat.com/statkey) Coccaine Addiction
+
+<center>
+<img src="images/day11-5.png" width="100%" height="70%"> <br>
+<div style="position: absolute; top: 20%; left: 15%;">
+<span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;">
+  <p>\[p-value &asymp; 0.021\]</p>
+</span>
+</div>
+
+<div style="position: absolute; top: 50%; left: 45%;">
+<span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;">
+  <p>If proportion relapse for desipramine  <br> is the same as that for lithium, <br> we would see differences this extreme <br> about 2.1% of the time</p>
+</span>
+</div>
+<a></a>
+</center>
+
+---
+
+class: middle
+
+# p-value and $H_0$
+
+.bql[
+- If the p-value is small, then a statistic as extreme as that observed would be unlikely if the null hypothesis were true, providing significant evidence against $\mathrm{H}_0$
+
+- .bold[The smaller the p-value, the stronger the evidence against the null hypothesis and in favor of the alternative]
+]
+
+---
 
 class: action
 
@@ -213,21 +532,15 @@ class: action
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
+
 <br>
-.bq[
+<br>
+.bql[
 
-Randomly choose a letter from A B C D E and write it down (don’t show anyone!)
-
-Find a partner, telepathically communicate your letter (no auditory or visual clues!) and have them guess your
-letter.
-
-Repeat a couple of times then switch roles.
-
-
+- Please work on the in-class activity and we will discuss this together!
+- Feel free to talk to your neighbor
+]
 ]
 
-.out-t[How often did you guess correctly?]
-]
-
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
