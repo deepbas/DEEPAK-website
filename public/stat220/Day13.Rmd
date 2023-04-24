@@ -139,14 +139,241 @@ class: title-slide, middle
 
 # .fancy[Advanced String Manipulation]
 
-### .fancy[Fall 2022]
+### .fancy[Spring 2023]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
 ---
 
 
-# Let's start with some positivity ...
+class: middle
+
+# Last time: Quantifiers and Special Characters
+
+
+.pull-left.font90[
+
+Preceding characters are matched ...
+..bq.font120[
+- .yellow-h[`*`] = 0 or more
+- .yellow-h[`?`] = 0 or 1
+- .yellow-h[`+`] = 1 or more
+- .yellow-h[`{n}`] = exactly n times
+]
+]
+.pull-right.font90[
+
+Matching character types 
+.bq.font120[
+- .yellow-h[`\\\d`] = digit
+- .yellow-h[`\\\s`] = white space
+- .yellow-h[`\\\w`] = word
+- .yellow-h[`\\\t`] = tab
+- .yellow-h[`\\\n`] = newline
+]
+]
+
+---
+
+
+class: middle
+
+# More quantifiers
+
+.font120[
+> useful when you want to match a pattern a specific number of times
+]
+
+.font130[
+
+- .out-t[`{n, }`] = n or more times
+
+- .out-t[`{, m}`] =  at most m times
+
+- .out-t[`{n, m}`] = between n & m times
+]
+
+---
+
+class: middle
+
+# Alternatives
+
+.font120[
+> useful for matching patterns more flexibly
+]
+
+.font130[
+- .out-t[`[abc]`] = one of .bold[a], .bold[b], or .bold[c]
+
+- .out-t[`[e-z]`] = a letter from .bold[e] to .bold[z]
+
+- .out-t[`[^abc]`] = anything other than .bold[a], .bold[b], or .bold[c]
+]
+
+---
+
+<br>
+
+# Duplicating Groups
+
+.bq[
+Use escaped numbers (\\\1, \\\2, etc) to repeat a group based on position
+]
+
+--
+
+Which numbers have the same 1st and 3rd digits?
+
+.code100[
+```{r}
+phone_numbers <- c("515 111 2244", 
+                   "310 549 6892", 
+                   "474 234 7548")
+str_view(phone_numbers, "(\\d)\\d\\1")
+```
+]
+
+<details>
+<summary class="answer">Explanation</summary>
+.hljs[
+`(\\d)`: This part of the pattern matches a single digit (from 0 to 9) and captures it into a capturing group. 
+
+`\\d`: This part matches another single digit (from 0 to 9).
+
+`\\1`: This part matches the same digit as the first captured group. 
+]
+</details>
+
+---
+
+
+class: middle
+
+# `str_view_all()`
+
+.code110[
+```{r}
+name_phone <- c("Moly Robins: 250-999-8878",  
+                "Ali Duluth: 416-908-2044",  
+                "Eli Mitchell: 204.192.9829", 
+                "May Flowers: 250.209.7047")
+```
+]
+
+.code100[
+```{r}
+str_view_all(name_phone,
+             pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})")
+```
+]
+
+<details>
+<summary class="answer">Explanation</summary>
+.hljs[
+([2-9][0-9]{2}) captures the area code (3 digits), ([0-9]{3}) captures the next 3 digits, ([0-9]{4}) captures the last 4 digits
+]
+</details>
+
+---
+
+<br>
+
+# `str_replace_all()`
+
+.code100[
+```{r}
+str_replace_all(name_phone,
+pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})",
+replacement = "XXX-XXX-XXXX"
+)
+```
+
+<br>
+
+
+```{r}
+str_replace_all(name_phone,
+                pattern = "([2-9][0-9]{2})[.-]([0-9]{3})[.-]([0-9]{4})",
+                replacement = "\\1-\\2-XXXX")
+```
+
+
+]
+
+---
+
+
+# `str_extract_all()`
+
+> pull all set of values matching the specified pattern
+
+
+.code100[
+```{r}
+name_phone <- c("Moly Robins: 250-999-8878", 
+                "Ali Duluth: 416-908-2044", 
+                "Eli Mitchell: 204-192-9829", 
+                "May Flowers: 250-209-7047")
+```
+]
+
+--
+
+.code100[
+```{r}
+str_extract_all(name_phone, "[:alpha:]{2,}", simplify = TRUE) 
+```
+]
+
+
+---
+
+## Repetition
+
+.code80[
+```{r}
+aboutMe <- c("my SSN is 536-76-9423 and my age is 55")
+```
+]
+
+--
+
+## Repetition using `?`
+
+.code80[
+```{r, collapse=TRUE}
+str_view_all(aboutMe, "\\s\\d?") # space followed by 0 or 1 digit
+```
+
+]
+
+--
+
+## Repetition using `+`
+
+
+.code80[
+```{r, , collapse=TRUE}
+str_view_all(aboutMe, "\\s\\d+")  # space followed by 1 or more digits
+```
+]
+
+--
+
+## Repetition using `*`
+
+
+.code80[
+```{r, , collapse=TRUE}
+str_view_all(aboutMe, "\\s\\d*")  # space followed by 0 or more digits
+
+```
+]
+
+---
+
+# Case conversion
 
 .code110[
 ```{r}
@@ -182,32 +409,7 @@ str_to_sentence("everything you can imagine is real")
 
 ---
 
-# Some more regexes
-
-.code120[
-```{r}
-aboutMe <- c("My phone number is 236-748-4508.")
-```
-]
-
---
-
-.code[
-```{r}
-str_view_all(aboutMe, "\\.") # literal period "."
-```
-]
-
---
-
-.code120[
-```{r}
-str_view_all(aboutMe, "[^(\\d)(\\s)(\\-)(\\.)]") # everything except
-```
-]
-
----
-
+<br>
 
 # Alternates: OR
 
@@ -219,21 +421,13 @@ aboutMe <- c("My phone number is 236-748-4508.")
 
 --
 
-
-.pull-left[
 .code120[
+
 ```{r}
 str_view(aboutMe,"8|6-")  
 ```
 ]
-]
-.pull-right[
-.code120[
-```{r}
-str_view(aboutMe,"(8|6-)")  
-```
-]
-]
+
 
 <br>
 --
@@ -253,7 +447,7 @@ str_view_all(aboutMe,"(8|6)-")
 
 .code100[
 ```{r}
-foo <- c("addidas", "missim")
+foo <- c("addidas", "racecar")
 ```
 ]
 
@@ -270,7 +464,7 @@ str_view(foo, "(.)\\1")
 .code100[
 ```{r}
 # strings like `xyzzyx`
-str_view(foo, "(.)(.)(.)\\3\\2\\1")
+str_view(foo, "(.)(.)(.).\\3\\2\\1")
 ```
 ]
 ]
@@ -279,76 +473,49 @@ str_view(foo, "(.)(.)(.)\\3\\2\\1")
 
 <br>
 
+.code120[
 ```{r}
 str_view(foo, "(.)(.)\\1")
 ```
-
+]
 
 ---
-
 
 # Finding patterns
 
 .pull-left[
-
+.code100[
 ```{r}
 # find the last word in a sentence
 str_view_all("it's a goat.", 
              "[a-z]+\\.")
 ```
 ]
+]
 .pull-right[
-
+.code100[
 ```{r}
 # find word with  `'s`
 str_view_all("it's a goat.", 
              "[a-z]+\\'\\w")
 ```
-
+]
 ]
 
 --
 
 <br>
-
+.code120[
 ```{r}
 # find a single letter word separated by spaces
 str_view_all("it's a goat.", 
              "(\\s)(\\w)\\s")
 ```
+]
 
 ---
 
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-<br>
-<br>
-.bq[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
-- Get the class activity 13.Rmd file
-- Work on activity 1
-- Knit to .html as .pdf won't work
-]
-
-]
-
-`r countdown(minutes = 6, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
----
-
-class: inverse, middle
-
-# .Large[Look ahead and look behind !!]
-
-
----
+class: middle
 
 
 <!-- 
@@ -361,6 +528,7 @@ class: inverse, middle
 - .out-t[`(?<!)`] = negative look behind, e.g. `(?<!e)i` = .bold[i] when it does not follow .bold[e]
 
 -->
+
 
 # What are these?
 
@@ -380,10 +548,12 @@ class: inverse, middle
 > .bold[Negative] version is `x(?![y])` (`x` when it comes before something that isn’t `y`)
 ]
 
+.code110[
 ```{r}
-str_view_all("it's a goat.", "t(?=[\\.])") # t before a period
+# t before a period
+str_view_all("it's a goat.", "t(?=[\\.])") 
 ```
-
+]
 
 ---
 
@@ -396,13 +566,50 @@ str_view_all("it's a goat.", "t(?=[\\.])") # t before a period
 ]
 
 
-
+.code110[
 ```{r}
-str_view_all("it's a goat.","[a-z]+(?=[\\.])") # 1+ letters before a period
+# 1+ letters before a period
+str_view_all("it's a goat.","[a-z]+(?=[\\.])") 
 ```
+]
 
 ---
 
+
+# Look ahead example
+
+.font110[
+> .bold[Positive look ahead] operator `x(?=[y])` will find `x` when it comes before `y`
+
+> .bold[Negative] version is `x(?![y])` (`x` when it comes before something that isn’t `y`)
+]
+
+
+.code110[
+```{r}
+# t NOT followed by a period
+str_view_all("it's a goat.", "t(?![\\.])")
+```
+]
+
+---
+
+# Look behind example
+
+.font110[
+> .bold[Positive look behind] operator `(?<=[x])y` will find `y` when it follows `x`
+
+> .bold[Negative] version is `(?<![x])y` (`y` when it does not follow `x`)
+]
+
+.code110[
+```{r}
+# one or more t, if preceded by a letter
+str_view_all("that is a top cat.","(?<=[a-z])t+") 
+```
+]
+
+---
 
 # Look behind example
 
@@ -413,26 +620,12 @@ str_view_all("it's a goat.","[a-z]+(?=[\\.])") # 1+ letters before a period
 ]
 
 
-```{r}
-str_view_all("that is a top cat.","(?<=[a-z])t+") # one or more t, if preceded by a letter
-```
-
----
-
-# Look behind example
-
-.font110[
-> .bold[Positive look behind] operator `(?<=[x])y` will find `y` when it follows `x`
-
-> .bold[Negative] version is `(?<![x])y` (`y` when it does not follow `x`)
-]
-
-
+.code110[
 ```{r}
 # t and one or more letter not preceded by a letter
 str_view_all("that is a top cat.","(?<![a-z])t[a-z]+") 
 ```
-
+]
 
 ---
 
@@ -446,182 +639,14 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
-.font120.bq[
-- Go back to the activity file
-- Continue working on activity 3
-- Ask me questions
-]
-
-]
-
-`r countdown(minutes = 8, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
----
-
-
-# Analyzing Trump tweets
-
-.font120[
-> What proportion of tweets (text) mention “Hillary” or “Clinton”?
-]
-
---
-
-```{r}
-tweets %>% 
-  summarize(prop = mean(str_detect(str_to_lower(text),"hillary|clinton"))) 
-```
-
---
-.font120[
-- About 17.4% of these tweets mention Hillary or Clinton.
-]
----
-
-# Analyzing Trump tweets
-
-.font120[
-> What proportion of these tweets include “crooked”?
-]
-
---
-
-```{r}
-tweets %>%   
-  filter(str_detect(str_to_lower(text), "hillary|clinton")) %>%
-  summarize(prop = mean(str_detect(str_to_lower(text), "crooked"))) 
-```
-
---
-.font120[
-- Of the Hillary/Clinton tweets, about 54% of include the word “crooked.”
-]
-
----
-
-`r chunk_reveal("demo1", widths = c(40, 40), font_size_code="100%", title = "## How are the hashtags used?")`
-
-```{r, demo1, eval=FALSE, echo=FALSE}
-tweets %>% 
-  mutate(ct = str_count(text, "#")) %>% 
-  select(ct, text) %>%
-  summarize(prop = mean(ct > 0))
-```
-
-
----
-
-# Finding URLs
-
-.font120[
-> URLs in tweets start with https://t.co/ followed by a string of letters or numbers
-]
-
-```{r}
-link <- "https://t.co/[A-Za-z\\d]+"
-tweets$text[992]
-```
-
---
-
-```{r}
-str_view(tweets$text[992], link)
-```
-
-
----
-
-# What proportion of tweets have links?
-
---
-
-```{r}
-tweets %>%
-  summarize(prop = mean(str_detect(text, link))) 
-```
-
---
-
-.font120[
-- about 34.2% of tweets have a link.
-]
-
----
-
-# Removing links from tweets
-
-.code120[
-```{r}
-tw_noLink <- tweets %>%
-  mutate(textNoLink = str_replace_all(text, link, "")) 
-```
-]
-
---
-
-```{r}
-tw_noLink$text[992]
-tw_noLink$textNoLink[992]
-```
-
-
----
-
-# Get the tweets with links
-
-```{r}
-tweets %>% 
-  filter(str_detect(text, link)) %>% 
-  select(text)
-```
-
-
----
-
-# Extract all tweets with links
-
-.scroll-box-20[
-
-```{r}
-tweets %>% select(text) %>%
-  str_extract_all(link)
-```
-]
-
----
-
-# Unlist the list entries 
-
-.scroll-box-20[
-
-```{r}
-tweets %>% select(text) %>%
-  str_extract_all(link) %>%
-  unlist()            # unlist and coerce into a vector #<<
-```
-]
-
----
-
-
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
 <br>
-<br>
-.bq[
-- Continue working on activity 3
-- Ask me questions
+.bql[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Get the class activity 13.Rmd file
+- Skim through the problems
 ]
 
 ]
 
-`r countdown(minutes = 8, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

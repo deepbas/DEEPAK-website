@@ -1,5 +1,5 @@
 ---
-title: "Additional topics in testing"
+title: "Hypothesis Testing: Significance"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -98,12 +98,119 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Additional topics in testing]
+# .fancy[Hypothesis Testing: Significance]
 
 ### .fancy[Stat 120]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
+
+---
+
+
+## Recap: Coccaine Addiction
+
+&nbsp; | Relapse | No Relapse | total
+---- | ---- | ----- | -----
+`Desipramine` | 10 | 14 | 24
+`Lithium` | 18 | 6 | 24
+
+
+<center>
+<img src="images/day13-desipramine1.png" width="100%" height="70%"> <br>
+<div style="position: absolute; top: 70%; left: 10%;">
+<span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;">
+  <p>Desipramine</p>
+</span>
+</div>
+<div style="position: absolute; top: 70%; left: 70%;">
+<span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;">
+  <p>Lithium</p>
+</span>
+</div>
+
+<a></a>
+</center>
+
+
+---
+
+class: middle
+
+## Recap: Randomization Distribution
+
+.bql.font90[
+- In the experiment, 28 people relapsed and 20 people did not relapse. Create cards or slips of paper with 28 "R" values and 20 "N" values.
+- Pool these response values together, and randomly divide them into two groups (representing .bold[Desipramine] and .bold[Lithium])
+- Calculate your difference in proportions
+- Plot your statistic on a dotplot like how `Statkey` does
+- To create an entire randomization distribution, we simulate this process many more times with technology: 
+]
+
+
+---
+
+# Randomization
+
+<center>
+<img src="images/day13-desipramine2.png" width="50%" height="70%"> <br>
+</center>
+
+--
+
+<center>
+<img src="images/day13-desipramine3.png" width="50%" height="70%"> <br>
+</center>
+
+---
+
+
+# Randomization
+
+<center>
+<img src="images/day13-desipramine2.png" width="50%" height="70%"> <br>
+</center>
+
+--
+
+<center>
+<img src="images/day13-desipramine4.png" width="50%" height="70%"> <br>
+</center>
+
+---
+
+
+# Randomization: Statkey
+
+<center>
+<img src="images/day11-5.png" width="100%" height="70%"> <br>
+</center>
+
+---
+
+class: middle
+
+# Formal Decisions
+
+.pull-left[.b[If the p-value is small:]
+
+.bq.font90[
+- REJECT $\mathrm{H}_0$
+- the sample would be extreme if $\mathrm{H}_0$ were true
+- the results are statistically significant
+- we have evidence for $\mathrm{H}_{\mathrm{a}}$
+]
+]
+
+.pull-right[.b[If the p-value is not small:]
+
+.bq.font90[
+- DO NOT REJECT $\mathrm{H}_0$ 
+- the sample would not be too extreme if $\mathrm{H}_0$ were true
+- the results are not statistically significant
+- the test is inconclusive; either $\mathrm{H}_0$ or $\mathrm{H}_{\mathrm{a}}$ may be true
+]
+]
 
 ---
 
@@ -117,7 +224,7 @@ class: middle
 $$ \mathrm{p} \text {-value }<\alpha \quad \Longrightarrow \quad \text { Reject } \mathrm{H}_0 $$
 $$\mathrm{p} \text {-value } \geq \alpha \quad \Longrightarrow \text { Do not Reject } \mathrm{H}_0$$
 Common levels:
-.bq[
+.bq.font80[
 - $10 \%$ : need some evidence to reject the null
 - $5 \%$ : need moderate evidence to reject the null
 - $1 \%$ : need strong evidence to reject the null
@@ -125,8 +232,70 @@ Common levels:
 
 ---
 
-# Errors
+# Statistical Conclusions
 
+Formal decision of hypothesis test, based on $\alpha = 0.05$ :
+
+<center>
+<img src="images/day13-2.png" width="100%" height="30%"> <br>
+</center>
+
+
+
+Informal strength of evidence against H0:
+
+
+<center>
+<img src="images/day13-3.png" width="100%" height="30%"> <br>
+</center>
+
+
+---
+
+# Never Accept $\mathrm{H}_0$
+
+.bql[
+- "Do not reject $\mathrm{H}_0$ " is not the same as "accept $\mathrm{H}_0$ "!
+- Lack of evidence against $\mathrm{H}_0$ is NOT the same as evidence for $\mathrm{H}_0$ !
+]
+
+.pull-left-60[
+
+<br>
+<br>
+
+```
+For the logical fallacy of believing that a hypothesis 
+has been proved to be true, merely because it is not 
+contradicted by the available facts, has no more right 
+to insinuate itself in statistical than in other kinds 
+of scientific reasoning …”
+```
+<div style="text-align: right; font-family: 'Brush Script MT', cursive;">
+  Sir R. A. Fisher
+</div>
+
+
+]
+
+.pull-right-40[
+<br>
+<center>
+<img src="images/Fisher.jpg" width=50%" height="30%"> <br>
+</center>
+
+]
+
+
+
+
+
+
+---
+
+class: middle
+
+# Errors in Hypothesis Testing
 
 |  | Reject $H_0$ | Do not reject $H_0$ |
 | :--- | :--- | :--- |
@@ -135,77 +304,247 @@ Common levels:
 
 <br>
 
-.bq[
+.bq.font90[
 - A Type I Error is rejecting a true null (false positive)
 - A Type II Error is not rejecting a false null (false negative)
 ]
 
 ---
 
-class: middle
 
-# Statistical Significance
 
-Hypothesis testing is similar to how our justice system works (or is supposed to work!).
+# Analogy to law
+
+
+
+<center>
+<p> A person is .red[innocent] until proven .green[guilty]. </p>
+<br>
+<br>
+
+
+<p> .red[Evidence] must be beyond the .green[shadow of a doubt] <p>
+
+
+
+</center>
+
+<br>
+<br>
+
+<br>
+
+.bql[
+Types of mistakes in a verdict?
+
+
+.font120[
 \begin{align*}
-H_0 & \text { : defendant is innocent }  \\ H_A & \text { : defendant is guilty }
+\text{Convict an innocent} &\Rightarrow \text{Type I error} \\
+\text{Release a guilty} &\Rightarrow \text{Type II error}
 \end{align*}
-
-Assumption: Defendant is innocent $(H_0)$
-
-.bq.font80[
-.bold[Verdicts:]
-
-Guilty: evidence (data) "beyond a reasonable doubt" points to guilt (Statistically significant)
-- Type I error possible: convict an innocent person
-
-Not Guilty: evidence (data) not beyond a reasonable doubt, but we don't know if they are truly innocent $\left(H_0\right)$
-- Type II error possible: release a guilty person
+]
 ]
 
----
-
-class: middle
-
-# Examples
-
-.bq.font80[
-Science study of gender stereotypes:
-- Comparing interest between 5-year-old boys and girls in a game for "really, really smart kids"
-- test using $\alpha=0.05$; reported $p$-value of $0.46$
-
-Decision?
-- Do not reject $\mathrm{H}_0$ : no evidence of a difference in mean interest level
-
-Possible error?
-- Type II: if a difference in mean interest level exists, then we would have made an error when not finding evidence of a gender difference in interest levels.
-
-Consequence of making this error?
-- Mislead the public about when gender stereotypes start emerging in young children
-]
 
 
 ---
 
-class: middle
+# Analogy to law
 
-# Examples
 
-.bq[
-Memory: test using $\alpha=0.05$; data gives $p$-value of $0.048$
+<center>
+<p> A person is .red[innocent] until proven .green[guilty]. </p>
+<br>
+<br>
+<div style="position: absolute; top: 8%; left: 43%;">
+<span style="content: '\2192'; font-size: 30px; color: #FF0000; text-align: center; white-space: pre-line;">
+  <p>H<sub>0</sub></p>
+</span>
+</div>
 
-Decision?
-- Reject $\mathrm{H}_0$
+<p> .red[Evidence] must be beyond the .green[shadow of a doubt] <p>
 
-Possible error?
-- Type I: if there is no difference in treatments, then we would have made an error in claiming that there was.
 
-Consequences of making this error?
-- Mislead the public about the benefits of sleep over caffeine.
-- The nice thing about type I errors is that we can control the chance of such an error...
+</center>
+
+<br>
+<br>
+
+<br>
+
+.bql[
+Types of mistakes in a verdict?
+
+
+.font120[
+\begin{align*}
+\text{Convict an innocent} &\Rightarrow \text{Type I error} \\
+\text{Release a guilty} &\Rightarrow \text{Type II error}
+\end{align*}
+]
+]
+
+
+---
+
+
+
+# Analogy to law
+
+
+<center>
+<p> A person is .red[innocent] until proven .green[guilty]. </p>
+<br>
+<br>
+<div style="position: absolute; top: 8%; left: 43%;">
+<span style="content: '\2192'; font-size: 30px; color: #FF0000; text-align: center; white-space: pre-line;">
+  <p>H<sub>0</sub></p>
+</span>
+</div>
+
+
+
+<div style="position: absolute; top: 8%; left: 70%;">
+<span style="content: '\2192'; font-size: 30px; color: #008000; text-align: center; white-space: pre-line;">
+  <p>H<sub>a</sub></p>
+</span>
+</div>
+
+<p> .red[Evidence] must be beyond the .green[shadow of a doubt] <p>
+
+
+</center>
+
+<br>
+<br>
+
+<br>
+
+.bql[
+Types of mistakes in a verdict?
+
+
+.font120[
+\begin{align*}
+\text{Convict an innocent} &\Rightarrow \text{Type I error} \\
+\text{Release a guilty} &\Rightarrow \text{Type II error}
+\end{align*}
+]
+]
+
+
+---
+
+# Analogy to law
+
+
+<center>
+<p> A person is .red[innocent] until proven .green[guilty]. </p>
+<br>
+<br>
+<div style="position: absolute; top: 8%; left: 43%;">
+<span style="content: '\2192'; font-size: 30px; color: #FF0000; text-align: center; white-space: pre-line;">
+  <p>H<sub>0</sub></p>
+</span>
+</div>
+
+<div style="position: absolute; top: 25%; left: 20%;">
+<span style="content: '\2192'; font-size: 30px; color: #FF0000; text-align: center; white-space: pre-line;">
+  <p>p-value </p>
+</span>
+</div>
+
+
+
+<div style="position: absolute; top: 8%; left: 70%;">
+<span style="content: '\2192'; font-size: 30px; color: #008000; text-align: center; white-space: pre-line;">
+  <p>H<sub>a</sub></p>
+</span>
+</div>
+
+<p> .red[Evidence] must be beyond the .green[shadow of a doubt] <p>
+
+
+</center>
+
+<br>
+<br>
+
+<br>
+
+.bql[
+Types of mistakes in a verdict?
+
+
+.font120[
+\begin{align*}
+\text{Convict an innocent} &\Rightarrow \text{Type I error} \\
+\text{Release a guilty} &\Rightarrow \text{Type II error}
+\end{align*}
+]
 ]
 
 ---
+
+
+
+# Analogy to law
+
+
+<center>
+<p> A person is .red[innocent] until proven .green[guilty]. </p>
+<br>
+<br>
+<div style="position: absolute; top: 8%; left: 43%;">
+<span style="content: '\2192'; font-size: 30px; color: #FF0000; text-align: center; white-space: pre-line;">
+  <p>H<sub>0</sub></p>
+</span>
+</div>
+
+<div style="position: absolute; top: 25%; left: 20%;">
+<span style="content: '\2192'; font-size: 30px; color: #FF0000; text-align: center; white-space: pre-line;">
+  <p>p-value </p>
+</span>
+</div>
+
+<div style="position: absolute; top: 25%; left: 65%;">
+<span style="content: '\2192'; font-size: 30px; color: #008000; text-align: center; white-space: pre-line;">
+  <p>&alpha;</p>
+</span>
+</div>
+
+<div style="position: absolute; top: 8%; left: 70%;">
+<span style="content: '\2192'; font-size: 30px; color: #008000; text-align: center; white-space: pre-line;">
+  <p>H<sub>a</sub></p>
+</span>
+</div>
+
+<p> .red[Evidence] must be beyond the .green[shadow of a doubt] <p>
+
+
+</center>
+
+<br>
+<br>
+
+<br>
+
+.bql[
+Types of mistakes in a verdict?
+
+
+.font120[
+\begin{align*}
+\text{Convict an innocent} &\Rightarrow \text{Type I error} \\
+\text{Release a guilty} &\Rightarrow \text{Type II error}
+\end{align*}
+]
+]
+
+
+---
+
 
 class: middle
 
@@ -216,8 +555,8 @@ The significance level $\alpha$ controls the type I error rate.
 ]
 
 .pull-left[
-
-.bq.font80[
+<br>
+.bq.font70[
 - Recall the Florida Lakes slope test: $$\mathrm{H}_0: \beta=0 \quad \mathrm{H}_{\mathrm{a}}: \beta<0$$
 
 - If $\mathrm{H}_0$ is true and $\alpha=0.05$, then $5 \%$ of sample slopes will be lower red tail $(b \leq 0.06)$.
@@ -248,8 +587,8 @@ The significance level $\alpha$ controls the type I error rate.
 ]
 
 .pull-left[
-
-.bq.font80[
+<br>
+.bq.font70[
 - Recall the Florida Lakes slope test: $$\mathrm{H}_0: \beta=0 \quad \mathrm{H}_{\mathrm{a}}: \beta<0$$
 
 - If $\mathrm{H}_0$ is true and $\alpha=0.05$, then $5 \%$ of sample slopes will be lower red tail $(b \leq 0.06)$.
@@ -264,7 +603,7 @@ The significance level $\alpha$ controls the type I error rate.
 
 <center>
 <img src="images/day13-1.png" width="90%" height="90%"> <br>
-<div style="position: absolute; top: 50%; left: 50%;">
+<div style="position: absolute; top: 55%; left: 50%;">
 <span style="content: '\2192'; font-size: 20px; color: #920; text-align: center; white-space: pre-line;">
   <p>Any b here will <br> mean we reject <br> null</p>
    <i class="gg-arrow-long-right"></i>
@@ -281,7 +620,7 @@ class: middle
 
 # Selecting a significance level
 
-.bq[
+.bql.font90[
 Decreasing $\alpha$ will lower your Type I error rate (makes it harder to reject the null)
   - but it will also increase your type II error rate (makes it harder to accept a true alternative)
 ]
@@ -341,209 +680,6 @@ The power of a test is the chance that it will correctly reject the null, or
 $$1 - \text{Prob(Type II error)}$$
 ]
 
-
----
-
-# Statistical Conclusions
-
-Formal decision of hypothesis test, based on a = 0.05 :
-
-<center>
-<img src="images/day13-2.png" width="100%" height="30%"> <br>
-</center>
-
-
-
-Informal strength of evidence against H0:
-
-
-<center>
-<img src="images/day13-3.png" width="100%" height="30%"> <br>
-</center>
-
----
-
-class: middle
-
-# Strength of evidence
-
-.bql[
-
-- Smaller p-values give us stronger and stronger evidence for the alternative hypothesis.
-
-- Larger p-values indicate little evidence for the alternative hypothesis. 
-
-]
-
-
----
-
-# Example: bootstrap or randomization?
-
-<center>
-<img src="images/day13-4.png" width="60%" height="30%"> <br>
-</center>
-
----
-
-# Example: bootstrap or randomization?
-
-<center>
-<img src="images/day13-5.png" width="60%" height="30%"> <br>
-</center>
-
----
-
-class: middle
-
-# Using confidence intervals for hypothesis testing
-
-.bq.font110[
-If a $95 \%$ CI contains the parameter in $\mathrm{H}_0$, then a two-tailed test should not reject $\mathrm{H}_0$ at a $5 \%$ significance level.
-]
-
-<br>
-
-.bq.font110[
-If a $95 \%$ CI misses the parameter in $\mathrm{H}_0$, then a two-tailed test should reject $\mathrm{H}_0$ at a $5 \%$ significance level.
-]
-
----
-
-<center>
-<img src="images/day13-6.png" width="60%" height="30%"> <br>
-</center>
-
-.bq[The 95% confidence interval misses null difference of 0. Reject the null at 5% level]
-
-
----
-
-<center>
-<img src="images/day13-7.png" width="60%" height="30%"> <br>
-</center>
-
-
-.bq[The 99% confidence interval contains null difference of 0. Do not reject the null at 1% level]
-
----
-
-class: middle
-
-# Sample Size and Statistical Significance
-
-.bql[
-- With small sample sizes, even large differences or effects may not be significant.
-- With large sample sizes, even a very small difference or effect can be significant
-]
-
----
-
-# Randomization distribution with $n=10$
-
-<center>
-<img src="images/day13-8.png" width="60%" height="30%"> <br>
-</center>
-
-
----
-
-# Randomization distribution with $n=100$
-
-
-<center>
-<img src="images/day13-9.png" width="60%" height="30%"> <br>
-</center>
-
----
-
-class: middle
-
-# Multiple Testing/Comparison
-
-
-.bql[
-When multiple hypothesis tests are conducted, the chance that at least one test incorrectly rejects a true null hypothesis increases with the number of tests.
-
-- If the null hypotheses are all true, $\alpha$ of the tests will yield statistically significant results just by random chance.
-]
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-
-.bq[
-- Are certain foods in your diet associated with whether or not you conceive a boy or a girl? 
-- To study this, researchers asked women about their eating habits, including asking whether or not they ate 133 different foods regularly
-]
-
-
-.footnote[http://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys.html]
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-.hljs[For each of the 133 foods studied, a hypothesis test was conducted for a difference between mothers who conceived boys and girls in the proportion who consume each food]
-
-
-.bq[What are the null and alternative hypotheses?
-
-Compare two populations: mothers who have boys vs. mothers who have girls
-
-$\boldsymbol{p}_b$ : proportion of mothers who have boys that consume the food regularly
-
-$\boldsymbol{p}_g$ : proportion of mothers who have girls that consume the food regularly
-]
-
-\begin{aligned}
-& \mathrm{H}_0: p_b=p_g \\
-& \mathrm{H}_a: p_b \neq p_g
-\end{aligned}
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-A significant difference was found for breakfast cereal (mothers of boys eat more), prompting the headline
-
-.green-h.center[“Breakfast Cereal Boosts Chances of 	Conceiving Boys”]
-
-How might you explain this?
-
-.bq[Random chance; several tests (about 6 or 7) are going to be significant, even if no differences exist]
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-> If there are NO differences (all 133 null hypotheses are true), about how many significant differences would be found using α = 0.05?
-
-$$133 \pm 0.05 = 6.65$$
-.bq[Expect about 6-7 statistically significant foods even if the rate of food consumption is equal for women who have boys and women who have girls]
-
-
----
-
-class: middle
-
-# Multiple Comparisons
-
-.bq[The most important thing is to be aware of this issue, and not to trust claims that are obviously one of many tests (unless they specifically mention an adjustment for multiple testing)]
-
-.bq[There are ways to account for this (e.g. Bonferroni’s Correction), but these are beyond the scope of this class]
-
-
-
 ---
 
 class: action
@@ -559,10 +695,8 @@ class: action
 
 .pull-right[
 <br>
-<br>
-<br>
 
-> Please go over the class activity for today and let me know if you have any questions.
+> Please go over the class activity for today and attempt the problems.
 
 ]
 
