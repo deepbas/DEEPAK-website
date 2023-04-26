@@ -213,7 +213,7 @@ If the new drug has potentially serious side effects, we should pick a significa
 .hljs[
 A. Relatively small (such as $1 \%$ )
 
-B. Middle of the road ($5\%$)
+B. Middle of the road ( $5\%$ )
 
 C. Relatively large (such as $10 \%$ )
 
