@@ -95,7 +95,7 @@ class: title-slide, middle
 
 # .fancy[Functions]
 
-### .fancy[Fall 2022]
+### .fancy[Spring 2023]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
