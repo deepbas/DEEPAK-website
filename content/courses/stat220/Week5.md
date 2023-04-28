@@ -14,6 +14,8 @@ Day 13 Slides ({{% staticref "stat220/Day13.pdf" "newtab" %}}pdf{{% /staticref %
 
 Day 14 Slides ({{% staticref "stat220/Day14.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day14.html" "newtab" %}}html{{% /staticref %}})
 
+Day 15 Slides ({{% staticref "stat220/Day15.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day15.html" "newtab" %}}html{{% /staticref %}})
+
 
 
 
