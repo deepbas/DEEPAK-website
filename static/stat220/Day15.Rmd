@@ -387,7 +387,7 @@ class: action, middle
 ]
 .pull-right-60[
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
 - Get the class activity 15.Rmd file
 - Work on activity 1
 - Ask me questions
