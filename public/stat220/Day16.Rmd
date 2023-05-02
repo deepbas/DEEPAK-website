@@ -1,6 +1,6 @@
 ---
 title: "Web Scraping"
-subtitle: "<br/> Fall 2022"
+subtitle: "<br/> Spring 2023"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
 output:
@@ -179,23 +179,23 @@ class: title-slide, middle
 
 # .fancy[Web Scraping]
 
-### .fancy[Fall 2022]
+### .fancy[Spring 2023]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
 ---
-
-
 
 class: inverse, middle
 
 .Large[Web scraping]
 
 
-# the process of downloading, parsing, and extracting data presented in an HTML file and then converting it into a structured format that allows us to analyze it.
+.bql.Large[
+the process of downloading, parsing, and extracting data presented in an HTML file and then converting it into a structured format that allows us to analyze it.]
 
 
 ---
+
 class: middle
 
 # .purple[Two different scenarios:]
@@ -210,16 +210,17 @@ class: middle
 ---
 
 class: middle
+
+
 background-image: url("images/polite.png") 
 background-position: left 
-background-size: 360px, 100% 100%
+background-size: 300px, 90% 90%
+
+##  `polite` package
 
 
 .pull-right-60[
 
-.font120[
-
-##  `polite` package
 
 .bq[
 
@@ -227,7 +228,7 @@ background-size: 360px, 100% 100%
 - Builds on awesome toolkits for defining and managing http sessions using `rvest`
 ]
 ]
-]
+
 
 .footnote[[Polite Documentation](https://www.rdocumentation.org/packages/polite/versions/0.1.2)]
 
@@ -242,12 +243,11 @@ background-size: cover
 
 <br>
 <br>
+<br>
 
-.center.green[https://www.mncorn.org/corn-facts/]
+## .yellow.font150[Can we scrape this webpage?]
 
---
 
-## .yellow.bold.font150[Can we scrape this webpage?]
 
 ---
 
@@ -260,7 +260,7 @@ class: middle
 .font120[
 ```{r}
 session <- bow("https://www.mncorn.org/corn-facts/", 
-               user_agent = "Polite tutorial")
+               user_agent = "data enthusiast")
 ```
 
 ```{r, highlight.output = 5}
@@ -320,7 +320,7 @@ class: middle
 
 # HyperText Markup Language (HTML)
 
-> While it is structured (hierarchical/tree based) it often is not available in a form useful for analysis (flat / tidy).
+> While it is structured (hierarchical/tree based) it often is not available in a form useful for analysis (flat/tidy).
 
 <br>
 
@@ -337,6 +337,8 @@ class: middle
 ```
 ]
 
+.footnote[Try HTML code yourself by clicking [here](https://www.w3schools.com/html/tryit.asp?filename=tryhtml_default_default)]
+
 ---
 
 ## HTML tags
@@ -352,28 +354,26 @@ Tag         |  Example
 heading     | `<h1>My Title</h1>`
 paragraph   | `<p>A paragraph of content...</p>`
 table       | `<table> ... </table>`
-anchor (with attribute)     | `<a href="http://www.ratebeer.com">click here for link</a>`
+anchor (with attribute)     | `<a href="https://www.mncorn.org/">click here for link</a>`
 ]
-
----
-background-image: url(https://github.com/rstudio/hex-stickers/raw/master/PNG/rvest.png)
-background-position: left
-background-size: 48%
-class: clear, middle
-
-
-.pull-right[
-#  Makes basic processing and manipulation of HTML data straight forward.
-]
-
 
 ---
 
 class: middle
 
-## Core `rvest` functions
+.pull-left-40[
 
-.font150[
+<img src="images/rvest.png"  width="200" height="150" class="center">
+
+
+]
+
+.pull-right-60[
+# `Rvest`: collection of functions that make basic processing and manipulation of HTML data straight forward.
+]
+
+
+.font100[
 Function      | Description
 --------------|---------------------------------------------
 `read_html`   | Read HTML data from a url or character string
@@ -413,6 +413,7 @@ class: middle, inverse
 
 # CSS 
 
+.bql[
 - CSS (Cascading Style Sheets) is a language that describes how HTML elements should be displayed. 
 
 - .bold[CSS selectors:] 
@@ -420,16 +421,18 @@ class: middle, inverse
   * shortcuts for selecting HTML elements to style  
   * can also be used to extract the content of these elements
 
+]
+
 ---
 
 # SelectorGadget
 
-.bq[SelectorGadget is a point-and-click CSS selector, specifically for .bold[Chrome],  and it comes as a [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb) .red[(Click to install!)]
+.bq.font80[SelectorGadget is a point-and-click CSS selector, specifically for .bold[Chrome],  and it comes as a [Chrome Extension](https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb) .red[(Click to install!)]
 ]
 
 <br>
 
-![](images/selector-gadget.png)
+![](images/best-picture-2023.png)
 
 .footnote[Click [here](https://www.w3schools.com/cssref/css_selectors.asp) for a list of selectors ]
 ---
@@ -508,9 +511,8 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
-<br>
-.bq[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
+.bql[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
 - Get the class activity 16.Rmd file
 - Work on activity 1
 - Ask me questions
@@ -523,7 +525,7 @@ class: action, middle
 
 ---
 
-background-image: url(images/imdb_tvshows.png)
+background-image: url(images/imdb_tvshows_2023.png)
 background-position: center
 background-size: 100% 98%
 

@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Hypothesis Tests and Confidence Intervals using Normal Distribution!</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Stat 230&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[Hypothesis Tests and Confidence Intervals using Normal Distribution!]
+
+### .fancy[Stat 120]
+
+ May 02 2023
+
+
+---
+
+class: middle
+
+# How do Malaria parasites impact mosquito behavior?
+.pull-left[
+&lt;center&gt;
+&lt;img src="images/mosquito.png" width="100%" height="100%"&gt; &lt;br&gt;
+&lt;/center&gt;
+]
+.pull-right[
+&lt;br&gt;
+.bq.font90[
+- This experiment looks at the behavior of mosquito when exposed to malaria infected mice and healthy mice. 
+- The parasites go through two stages: not yet infectious (Days 1-8) and infectious (Days 9-28). 
+]
+
+]
+
+---
+
+class: middle
+
+ # Malaria Parasites and Mosquitoes
+
+.bql.font80[
+- The response variable is whether the mosquito approached a human in a cage with them. 
+- The experiment looks to see if this behavior differs by exposed vs control, and if it differs by infection stage. 
+
+]
+
+.footnote[Cator LJ, George J, Blanford S, Murdock CC, Baker TC, Read AF, Thomas MB. (2013). [‘Manipulation’ without the parasite: altered feeding behaviour of mosquitoes is not dependent on infection with malaria parasites](http://www.thereadgroup.net/wp-content/uploads/Cator-et-al.-2013-PRSB-eprint.pdf). Proc R Soc B 280: 20130711. ]
+
+---
+
+class: middle
+
+ # Malaria Parasites and Mosquitoes
+
+.bql[
+Malaria parasites would benefit if:
+- Mosquitoes approached humans less often after being exposed, but before becoming infectious, because humans are risky 
+- Mosquitoes approached humans more often after becoming infectious, to pass on the infection
+]
+
+
+---
+
+# Days 1-8
+
+.bql[
+We'll first look at the mosquitoes before they become infectious (days 1-8).
+
+`\(p_C:\)` proportion of controls to approach human
+
+`\(p_E:\)` proportion of exposed to approach human
+]
+
+What are the relevant hypotheses?
+
+A. `\(\mathrm{H}_0: p_{\mathrm{E}}=p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}&lt;p_{\mathrm{C}}\)`
+
+в. `\(\mathrm{H}_0: p_{\mathrm{E}}=p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}&gt;p_{\mathrm{C}}\)`
+
+c. `\(\mathrm{H}_0: p_{\mathrm{E}}&lt;p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}=p_{\mathrm{C}}\)`
+
+D. `\(H_0: p_{\mathrm{E}}&gt;p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}=p_{\mathrm{C}}\)`
+
+
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is A. (since it favors parasites if exposed mosquitoes do not approach humans during this stage)
+&lt;/details&gt;
+
+
+---
+
+class: middle
+
+&lt;center&gt;
+&lt;img src="images/day16-1.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 10%; left: 20%;"&gt;
+&lt;span style="content: '\2192'; font-size: 24px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;p&amp;#770;&lt;sub&gt;E&lt;/sub&gt; - p&amp;#770;&lt;sub&gt;C&lt;/sub&gt; = 20/113 - 36/117 = 0.177 - 0.308 = -0.131&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+
+---
+
+class: middle
+
+
+&lt;center&gt;
+&lt;img src="images/day16-2.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+
+---
+
+class: middle
+
+
+.pull-left[
+
+&lt;center&gt;
+&lt;img src="images/day16-31.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+&lt;center&gt;
+&lt;img src="images/day16-32.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+]
+
+.pull-right[
+
+&lt;center&gt;
+&lt;img src="images/day16-33.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+
+&lt;center&gt;
+&lt;img src="images/day16-34.png" width="90%" height="90%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+]
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 80%; left: 4%;"&gt;
+&lt;span style="content: '\2192'; font-size: 30px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;What do you notice?&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Central Limit Theorem
+
+.bql[
+For random samples with a sufficiently large sample size, the distribution of sample statistics for a .red[mean] or a .red[proportion] is .bolder[normally distributed]
+]
+
+
+---
+
+class: middle
+
+# The catch: "sufficiently large sample size"
+
+.bqt[
+
+- The .b[more skewed] the original distribution of data/population is, the larger `\(n\)` has to be for the CLT to work
+- For quantitative variables that are not very skewed, `\(\boldsymbol{n} \geq \mathbf{3 0}\)` is usually sufficient
+- For categorical variables, counts of .b[at least 10] within each category is usually sufficient
+]
+
+
+---
+
+class: middle
+
+# Which normal distribution should we use to approximate this?
+
+&lt;center&gt;
+&lt;img src="images/day16-4.png" width="80%" height="50%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+.pull-left[
+`\begin{aligned}
+A. \quad &amp; \mathrm{N}(0,-0.131) \\
+B. \quad&amp; \mathrm{N}(0,0.056) \\
+C. \quad&amp; \mathrm{N}(-0.131,0.056) \\
+D. \quad&amp; \mathrm{N}(0.056,0)
+\end{aligned}`
+]
+.pull-right[
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is B. (since the distribution is centered at 0 and has standard deviation of 0.056)
+&lt;/details&gt;
+]
+
+
+---
+
+
+# Normal Distribution
+
+&lt;center&gt;
+&lt;img src="images/day16-5.png" width="70%" height="40%"&gt; 
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 20%; left: 22%;"&gt;
+&lt;span style="content: '\2192'; font-size: 30px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;N(0, 0.056)&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+.blue-h[We can compare the original statistic to this Normal distribution to find the p-value!]
+
+---
+
+class: middle
+
+# [Statkey](https://www.lock5stat.com/StatKey/index.html): p-value from N(null, SE)
+
+&lt;center&gt;
+&lt;img src="images/day16-6.png" width="80%" height="50%"&gt; 
+&lt;/center&gt;
+
+
+---
+
+class: middle
+
+# Connecting Normal model to hypothesis tests
+
+.bql[
+Suppose: randomization distribution is bell shaped.
+
+- Center: hypothesized null parameter value
+- Spread: the standard error given in the randomization graph (or by formula)
+- P-value: computed from the normal model the "usual" way - the chance of being as extreme, or more extreme, than the observed statistic.
+]
+
+---
+
+class: middle
+
+# Standardized Statistic
+
+&gt; The standardized test statistic (also known as a z-statistic) is
+`\begin{align*}
+z=\frac{\text { statistic }-\text { null }}{S E}
+\end{align*}`
+
+
+.hljs[Calculating the number of standard errors a statistic is from the null lets us assess extremity on a common scale.]
+
+---
+
+class: middle
+
+# Malaria and Mosquitos
+
+&gt; Does infecting mosquitoes with Malaria actually impact the mosquitoes’ behavior to favor the parasite?
+- After the parasite becomes infectious, do infected mosquitoes approach humans more often, so as to pass on the infection?
+
+
+---
+
+class: middle
+
+# Days 9 – 28
+
+.hljs[For the data after the mosquitoes become infectious (Days `\(9-28\)`), what are the relevant hypotheses?]
+
+`\begin{align}
+\boldsymbol{p}_{C}: &amp; \text{proportion of controls to approach human}\\ 
+\boldsymbol{p}_{E}: &amp; \text{proportion of exposed to approach human}
+\end{align}`
+
+`\begin{aligned}
+A. \quad &amp; \mathrm{H}_0: p_{\mathrm{E}}=p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}&lt;p_{\mathrm{C}} \\
+B. \quad &amp; \mathrm{H}_0: p_{\mathrm{E}}=p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}&gt;p_{\mathrm{C}} \\
+C. \quad &amp; \mathrm{H}_0: p_{\mathrm{E}}&lt;p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}=p_{\mathrm{C}} \\
+D. \quad &amp; \mathrm{H}_0: p_{\mathrm{E}}&gt;p_{\mathrm{C}}, \mathrm{H}_{\mathrm{a}}: p_{\mathrm{E}}=p_{\mathrm{C}}
+\end{aligned}`
+
+
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is B. (since it now favors parasites if exposed mosquitoes approach humans more during this stage)
+&lt;/details&gt;
+
+
+---
+
+class: middle
+
+# Before and after
+
+
+.pull-left[
+&lt;center&gt;
+&lt;img src="images/day16-1.png" width="90%" height="90%"&gt; 
+&lt;/center&gt;
+]
+
+.pull-right[
+&lt;center&gt;
+&lt;img src="images/day16-8.png" width="90%" height="90%"&gt; 
+&lt;/center&gt;
+]
+
+---
+
+class: middle
+
+
+# Is the difference significant?
+
+.pull-left[
+.bq[The difference in proportions is 0.151 and the standard error is 0.05.  Is this significant?
+
+A. Yes
+
+B. No
+
+]
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;center&gt;
+&lt;img src="images/day16-9.png" width="90%" height="90%"&gt; 
+&lt;/center&gt;
+]
+
+---
+
+class: middle
+
+# Malaria and Mosquitoes
+
+.bql[
+It appears that mosquitoes infected by malaria parasites do, in fact, behave in ways advantageous to the parasites!
+- Exposed mosquitos are less likely to approach before becoming infectious (so more likely to stay alive)
+- Exposed mosquitos are more likely to approach humans after becoming infectious (so more likely to pass on disease)
+]
+
+---
+
+class: middle
+
+# Formula for p-values Using N(0,1)
+&lt;br&gt;
+&lt;br&gt;
+.Large[
+`\begin{align*}
+z=\frac{\text { sample statistic }-\text { null value }}{\text { SE }}
+\end{align*}`
+]
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 35%; left: 35%;"&gt;
+&lt;span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;From original &lt;br&gt; data&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 40%; left: 62%;"&gt;
+&lt;span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;From H&lt;sub&gt;o&lt;/sub&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 60%; left: 45%;"&gt;
+&lt;span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;From &lt;br&gt;randomization &lt;br&gt;distribution&lt;/sub&gt;&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Connecting Normal model to Confidence Intervals
+
+.bql[
+Confidence Intervals
+- Suppose: bootstrap distribution is bell-shaped.
+- Center: sample statistic
+- Spread: the standard error given in the bootstrap graph (or by formula)
+]
+
+---
+
+class: middle
+
+# Connecting Normal model to Confidence Intervals
+
+
+&gt; To get a `\(95 \%\)` confidence interval we compute:
+`$$statistic \pm 2(SE)$$`
+
+.bql[
+Why 2 SE's?
+- `\(95 \%\)` of all sample means fall within 2 SE's of the population mean
+- The value 2 is a z-score!
+- Well, actually the precise z-score under a normal model is `\(z=1.96\)` instead of 2 !
+]
+
+---
+
+class: middle
+
+# N(0,1) model
+
+&lt;center&gt;
+&lt;img src="images/day16-10.png" width="80%" height="90%"&gt; 
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 40%; left: 62%;"&gt;
+&lt;span style="content: '\2192'; font-size: 30px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;95% of all values fall within 1.96 SE’s of the mean&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+class: inverse
+
+# What if we wanted a 90% CI? What z-score should we use to get the margin of error?
+
+--
+
+.pull-left[
+&lt;center&gt;
+&lt;img src="images/day16-11.png" width="80%" height="90%"&gt; 
+&lt;/center&gt;
+
+
+```r
+qnorm(0.95)
+[1] 1.644854
+```
+
+90% Confidence: `\(z^*=1.645\)`
+
+
+]
+
+.pull-right[
+&lt;center&gt;
+&lt;img src="images/day16-12.png" width="80%" height="90%"&gt; 
+&lt;/center&gt;
+
+```r
+qnorm(0.995)
+[1] 2.575829
+```
+99% Confidence: `\(z^*=2.576\)`
+
+]
+
+---
+
+class: middle
+
+# Confidence Interval using N(0,1)
+
+.bqt[
+If a statistic is normally distributed, we find a confidence interval for the parameter using
+`$$statistic \pm z^* SE$$`
+where the area between `\(-z^*\)` and `\(+z^*\)` in the standard normal distribution is the desired level of confidence.
+]
+
+---
+
+class: middle
+
+# Global Warming
+
+.bqt[
+What percentage of Americans believe in global warming?
+
+A survey on 2,251 randomly selected individuals conducted in October 2010 found that 1328 answered "Yes" to the question
+
+.b.center["Is there solid evidence of global warming?"]
+
+Give and interpret a `\(95 \% \mathrm{CI}\)` for the proportion of Americans who believe there is solid evidence of global warming.
+]
+
+
+
+.footnote[Source: “Wide Partisan Divide Over Global Warming”, Pew Research Center, 10/27/10. s]
+
+---
+
+class: middle
+
+&lt;img src="images/day16-13.png" width="80%" height="90%"&gt; 
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 30%; left: 7%;"&gt;
+&lt;span style="content: '\2192'; font-size: 20px; color: blue; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;0.59 +/- 1.96(0.01) = &lt;br&gt; (0.570, 0.610)&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 45%; left: 55%;"&gt;
+&lt;span style="content: '\2192'; font-size: 26px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;We are 95% confident that the true percentage of all Americans that believe there is solid evidence of global warming is between 57.0% and 61.0%&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Global Warming
+
+.bql[What is a `\(90 \%\)` confidence interval for the proportion of US adults who believe in global warming?
+
+`$$0.59 \pm 1.645(0.01)=(0.574,0.606)$$`]
+
+--
+
+&lt;br&gt;
+
+.bql[What is a `\(99 \%\)` confidence interval? 
+
+`$$0.59\pm2.576(0.01)=(0.564,0.616)$$`]
+
+--
+
+.green-h[Remember, more confidence = wider interval. So how do these compare to the bootstrap CI?]
+
+---
+
+class: middle
+
+# Global Warming: 90% CI
+
+&lt;center&gt;
+&lt;img src="images/day16-14.png" width="70%" height="90%"&gt; 
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 25%; left: 21%;"&gt;
+&lt;span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;Normal curve: 
+0.59 +/- 1.645(0.01) &lt;br&gt;= (0.574, 0.606)&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 25%; left: 61%;"&gt;
+&lt;span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;Bootstrap %-tile:
+ (0.573, 0.608)&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Global Warming: 99% CI
+
+&lt;center&gt;
+&lt;img src="images/day16-15.png" width="70%" height="90%"&gt; 
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 25%; left: 21%;"&gt;
+&lt;span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;Normal curve:
+0.59 +/- 2.576(0.01) &lt;br&gt;= (0.564, 0.616)&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 25%; left: 61%;"&gt;
+&lt;span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;Bootstrap %-tile:
+ (0.563, 0.617)&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+.bq[
+
+Let's go over to the class activity .Rmd file and complete the tasks for today.
+
+
+]
+
+]
+
+<div class="countdown" id="timer_cad74dfc" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
