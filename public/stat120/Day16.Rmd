@@ -109,19 +109,37 @@ background-size: 160px, 100% 100%
 class: middle
 
 # How do Malaria parasites impact mosquito behavior?
-.pull-left[
+
+.pull-left-40[
 <center>
-<img src="images/mosquito.png" width="100%" height="100%"> <br>
+<img src="images/mosquito.png" width="90%" height="100%"> <br>
 </center>
 ]
-.pull-right[
-<br>
-.bq.font90[
-- This experiment looks at the behavior of mosquito when exposed to malaria infected mice and healthy mice. 
-- The parasites go through two stages: not yet infectious (Days 1-8) and infectious (Days 9-28). 
+
+.pull-right-60[
+
+.bql.font50[## Experiment Design
+
+- Mosquitoes are exposed to two groups of mice:
+
+  - Malaria-infected mice (experimental group)
+  - Healthy mice (control group)
+  
+- Malaria-infected mice go through two stages of infection:
+
+  - `Stage 1`: Not yet infectious (Days 1-8)
+  - `Stage 2`: Infectious (Days 9-28)
+  
+- `Response Variable`: Whether the mosquito approaches a human.
 ]
 
+
 ]
+
+.hljs.font60[.b[Research Questions]: Does mosquito behavior differ when exposed to malaria-infected mice compared to healthy mice? Does mosquito behavior differ based on the infection stage of the malaria-infected mice?]
+
+
+.footnote.font50[Cator LJ, George J, Blanford S, Murdock CC, Baker TC, Read AF, Thomas MB. (2013). [‘Manipulation’ without the parasite: altered feeding behaviour of mosquitoes is not dependent on infection with malaria parasites](http://www.thereadgroup.net/wp-content/uploads/Cator-et-al.-2013-PRSB-eprint.pdf). Proc R Soc B 280: 20130711. ]
 
 ---
 
@@ -129,24 +147,22 @@ class: middle
 
  # Malaria Parasites and Mosquitoes
 
-.bql.font80[
-- The response variable is whether the mosquito approached a human in a cage with them. 
-- The experiment looks to see if this behavior differs by exposed vs control, and if it differs by infection stage. 
-
-]
-
-.footnote[Cator LJ, George J, Blanford S, Murdock CC, Baker TC, Read AF, Thomas MB. (2013). [‘Manipulation’ without the parasite: altered feeding behaviour of mosquitoes is not dependent on infection with malaria parasites](http://www.thereadgroup.net/wp-content/uploads/Cator-et-al.-2013-PRSB-eprint.pdf). Proc R Soc B 280: 20130711. ]
-
----
-
-class: middle
-
- # Malaria Parasites and Mosquitoes
+.pull-left-60[
 
 .bql[
-Malaria parasites would benefit if:
-- Mosquitoes approached humans less often after being exposed, but before becoming infectious, because humans are risky 
-- Mosquitoes approached humans more often after becoming infectious, to pass on the infection
+
+## Malaria parasites would benefit if
+
+  - Mosquitoes approached humans `less often` after being exposed, but before becoming infectious, because humans are risky 
+  - Mosquitoes approached humans `more often` after becoming infectious, to pass on the infection
+]
+]
+
+.pull-right-40[
+<br>
+<center>
+<img src="images/mosquito.png" width="90%" height="100%"> <br>
+</center>
 ]
 
 
@@ -184,14 +200,14 @@ The correct answer is A. (since it favors parasites if exposed mosquitoes do not
 class: middle
 
 <center>
-<img src="images/day16-1.png" width="90%" height="90%"> <br>
+<img src="images/day16-1.png" width="80%" height="90%"> <br>
 </center>
 
 --
 
 <center>
-<div style="position: absolute; top: 10%; left: 20%;">
-<span style="content: '\2192'; font-size: 24px; color: #FF00FF; text-align: center; white-space: pre-line;">
+<div style="position: absolute; top: 10%; left: 24%;">
+<span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;">
 <p><b>p&#770;<sub>E</sub> - p&#770;<sub>C</sub> = 20/113 - 36/117 = 0.177 - 0.308 = -0.131</b></p>
 </span>
 </div>
@@ -231,7 +247,7 @@ class: middle
 .pull-right[
 
 <center>
-<img src="images/day16-33.png" width="90%" height="90%"> <br>
+<img src="images/day16-33.png" width="85%" height="90%"> <br>
 </center>
 
 
@@ -253,24 +269,19 @@ class: middle
 
 ---
 
-class: middle
+# Central Limit Theorem (CLT)
 
-# Central Limit Theorem
-
-.bql[
+.bql.font[
 For random samples with a sufficiently large sample size, the distribution of sample statistics for a .red[mean] or a .red[proportion] is .bolder[normally distributed]
 ]
 
+--
 
----
+### The catch: "sufficiently large sample size"
 
-class: middle
+.bq.font80[
+The .b[more skewed] the original distribution of data/population is, the larger $n$ has to be for the CLT to work
 
-# The catch: "sufficiently large sample size"
-
-.bqt[
-
-- The .b[more skewed] the original distribution of data/population is, the larger $n$ has to be for the CLT to work
 - For quantitative variables that are not very skewed, $\boldsymbol{n} \geq \mathbf{3 0}$ is usually sufficient
 - For categorical variables, counts of .b[at least 10] within each category is usually sufficient
 ]
@@ -305,29 +316,6 @@ The correct answer is B. (since the distribution is centered at 0 and has standa
 
 ---
 
-
-# Normal Distribution
-
-<center>
-<img src="images/day16-5.png" width="70%" height="40%"> 
-</center>
-
---
-
-<center>
-<div style="position: absolute; top: 20%; left: 22%;">
-<span style="content: '\2192'; font-size: 30px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>N(0, 0.056)</b></p>
-</span>
-</div>
-</center>
-
---
-
-.blue-h[We can compare the original statistic to this Normal distribution to find the p-value!]
-
----
-
 class: middle
 
 # [Statkey](https://www.lock5stat.com/StatKey/index.html): p-value from N(null, SE)
@@ -346,9 +334,9 @@ class: middle
 .bql[
 Suppose: randomization distribution is bell shaped.
 
-- Center: hypothesized null parameter value
-- Spread: the standard error given in the randomization graph (or by formula)
-- P-value: computed from the normal model the "usual" way - the chance of being as extreme, or more extreme, than the observed statistic.
+- `Center`: hypothesized null parameter value
+- `Spread`: the standard error given in the randomization graph (or by formula)
+- `P-value`: computed from the normal model the "usual" way - the chance of being as extreme, or more extreme, than the observed statistic.
 ]
 
 ---
@@ -507,11 +495,10 @@ class: middle
 
 # Connecting Normal model to Confidence Intervals
 
-.bql[
-Confidence Intervals
-- Suppose: bootstrap distribution is bell-shaped.
-- Center: sample statistic
-- Spread: the standard error given in the bootstrap graph (or by formula)
+.bql[## Suppose: bootstrap distribution is bell-shaped.
+
+- `Center`: sample statistic
+- `Spread`: the standard error given in the bootstrap graph (or by formula)
 ]
 
 ---
@@ -521,8 +508,10 @@ class: middle
 # Connecting Normal model to Confidence Intervals
 
 
-> To get a $95 \%$ confidence interval we compute:
+.hljs[
+To get a $95 \%$ confidence interval we compute:
 $$statistic \pm 2(SE)$$
+]
 
 .bql[
 Why 2 SE's?
@@ -598,140 +587,6 @@ where the area between $-z^*$ and $+z^*$ in the standard normal distribution is 
 
 ---
 
-class: middle
-
-# Global Warming
-
-.bqt[
-What percentage of Americans believe in global warming?
-
-A survey on 2,251 randomly selected individuals conducted in October 2010 found that 1328 answered "Yes" to the question
-
-.b.center["Is there solid evidence of global warming?"]
-
-Give and interpret a $95 \% \mathrm{CI}$ for the proportion of Americans who believe there is solid evidence of global warming.
-]
-
-
-
-.footnote[Source: “Wide Partisan Divide Over Global Warming”, Pew Research Center, 10/27/10. s]
-
----
-
-class: middle
-
-<img src="images/day16-13.png" width="80%" height="90%"> 
-
---
-
-<center>
-<div style="position: absolute; top: 30%; left: 7%;">
-<span style="content: '\2192'; font-size: 20px; color: blue; text-align: center; white-space: pre-line;">
-<p><b>0.59 +/- 1.96(0.01) = <br> (0.570, 0.610)</b></p>
-</span>
-</div>
-</center>
-
-
---
-
-<center>
-<div style="position: absolute; top: 45%; left: 55%;">
-<span style="content: '\2192'; font-size: 26px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>We are 95% confident that the true percentage of all Americans that believe there is solid evidence of global warming is between 57.0% and 61.0%</b></p>
-</span>
-</div>
-</center>
-
----
-
-class: middle
-
-# Global Warming
-
-.bql[What is a $90 \%$ confidence interval for the proportion of US adults who believe in global warming?
-
-$$0.59 \pm 1.645(0.01)=(0.574,0.606)$$]
-
---
-
-<br>
-
-.bql[What is a $99 \%$ confidence interval? 
-
-$$0.59\pm2.576(0.01)=(0.564,0.616)$$]
-
---
-
-.green-h[Remember, more confidence = wider interval. So how do these compare to the bootstrap CI?]
-
----
-
-class: middle
-
-# Global Warming: 90% CI
-
-<center>
-<img src="images/day16-14.png" width="70%" height="90%"> 
-</center>
-
---
-
-<center>
-<div style="position: absolute; top: 25%; left: 21%;">
-<span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>Normal curve: 
-0.59 +/- 1.645(0.01) <br>= (0.574, 0.606)</b></p>
-</span>
-</div>
-</center>
-
---
-
-
-<center>
-<div style="position: absolute; top: 25%; left: 61%;">
-<span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>Bootstrap %-tile:
- (0.573, 0.608)</b></p>
-</span>
-</div>
-</center>
-
----
-
-class: middle
-
-# Global Warming: 99% CI
-
-<center>
-<img src="images/day16-15.png" width="70%" height="90%"> 
-</center>
-
---
-
-<center>
-<div style="position: absolute; top: 25%; left: 21%;">
-<span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>Normal curve:
-0.59 +/- 2.576(0.01) <br>= (0.564, 0.616)</b></p>
-</span>
-</div>
-</center>
-
---
-
-
-<center>
-<div style="position: absolute; top: 25%; left: 61%;">
-<span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;">
-<p><b>Bootstrap %-tile:
- (0.563, 0.617)</b></p>
-</span>
-</div>
-</center>
-
----
 
 class: action
 
