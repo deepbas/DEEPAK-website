@@ -392,7 +392,6 @@ The correct answer is B. (since it now favors parasites if exposed mosquitoes ap
 
 ---
 
-class: middle
 
 # Before and after
 
@@ -408,6 +407,25 @@ class: middle
 <img src="images/day16-8.png" width="90%" height="90%"> 
 </center>
 ]
+
+
+<center>
+<div style="position: absolute; top: 70%; left: 4%;">
+<span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;">
+<p><b>p&#770;<sub>E</sub> - p&#770;<sub>C</sub> = <br> 20/113 - 36/117 = <br> 0.177 - 0.308 = -0.131</b></p>
+</span>
+</div>
+</center>
+
+
+
+<center>
+<div style="position: absolute; top: 70%; left: 64%;">
+<span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;">
+<p><b>p&#770;<sub>E</sub> - p&#770;<sub>C</sub> = <br> 37/149 - 14/144 = <br> 0.248 - 0.097 = 0.151</b></p>
+</span>
+</div>
+</center>
 
 ---
 
@@ -441,8 +459,8 @@ class: middle
 
 .bql[
 It appears that mosquitoes infected by malaria parasites do, in fact, behave in ways advantageous to the parasites!
-- Exposed mosquitos are less likely to approach before becoming infectious (so more likely to stay alive)
-- Exposed mosquitos are more likely to approach humans after becoming infectious (so more likely to pass on disease)
+- Exposed mosquitos are `less likely` to approach before becoming infectious (so more likely to stay alive)
+- Exposed mosquitos are `more likely` to approach humans after becoming infectious (so more likely to pass on disease)
 ]
 
 ---
@@ -491,6 +509,33 @@ z=\frac{\text { sample statistic }-\text { null value }}{\text { SE }}
 
 ---
 
+<br>
+<br>
+
+# Proportion of infected?
+
+.bql.font90[
+- All mosquitoes in the infected group were exposed to the malaria parasites, but not all mosquitoes were actually infected
+- Of the 201 mosquitoes in the infected group that we actually have data on, only 90 were actually infected $(90 / 201=0.448)$
+- What proportion of mosquitoes eating from a malaria infected mouse become infected?
+]
+
+--
+
+.out-t[We want a confidence interval!]
+
+---
+
+# Bootstrap Interval
+
+
+<center>
+<img src="images/bootstrap_mosquito.png" width="70%" height="70%"> 
+</center>
+
+
+---
+
 class: middle
 
 # Connecting Normal model to Confidence Intervals
@@ -500,6 +545,32 @@ class: middle
 - `Center`: sample statistic
 - `Spread`: the standard error given in the bootstrap graph (or by formula)
 ]
+
+---
+
+class: middle
+
+# Bootstrap Distributions
+
+
+.bql[If a bootstrap distribution is normally distributed, we can write it as
+
+A. $\mathrm{N} (parameter, SD)$
+
+B. $\mathrm{N}  (statistic, SD)$
+
+C. $\mathrm{N} (parameter, SE)$
+
+D. $\mathrm{N} (statistic, SE)$
+]
+
+<details>
+<summary>.red[Click for answer]</summary>
+The correct answer is D. (center = statistic, spread = SE)
+</details>
+
+
+
 
 ---
 
@@ -606,5 +677,5 @@ Let's go over to the class activity .Rmd file and complete the tasks for today.
 
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

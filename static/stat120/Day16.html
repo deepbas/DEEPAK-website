@@ -344,7 +344,6 @@ The correct answer is B. (since it now favors parasites if exposed mosquitoes ap
 
 ---
 
-class: middle
 
 # Before and after
 
@@ -360,6 +359,25 @@ class: middle
 &lt;img src="images/day16-8.png" width="90%" height="90%"&gt; 
 &lt;/center&gt;
 ]
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 70%; left: 4%;"&gt;
+&lt;span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;p&amp;#770;&lt;sub&gt;E&lt;/sub&gt; - p&amp;#770;&lt;sub&gt;C&lt;/sub&gt; = &lt;br&gt; 20/113 - 36/117 = &lt;br&gt; 0.177 - 0.308 = -0.131&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 70%; left: 64%;"&gt;
+&lt;span style="content: '\2192'; font-size: 22px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;p&amp;#770;&lt;sub&gt;E&lt;/sub&gt; - p&amp;#770;&lt;sub&gt;C&lt;/sub&gt; = &lt;br&gt; 37/149 - 14/144 = &lt;br&gt; 0.248 - 0.097 = 0.151&lt;/b&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
 
 ---
 
@@ -393,8 +411,8 @@ class: middle
 
 .bql[
 It appears that mosquitoes infected by malaria parasites do, in fact, behave in ways advantageous to the parasites!
-- Exposed mosquitos are less likely to approach before becoming infectious (so more likely to stay alive)
-- Exposed mosquitos are more likely to approach humans after becoming infectious (so more likely to pass on disease)
+- Exposed mosquitos are `less likely` to approach before becoming infectious (so more likely to stay alive)
+- Exposed mosquitos are `more likely` to approach humans after becoming infectious (so more likely to pass on disease)
 ]
 
 ---
@@ -443,6 +461,33 @@ z=\frac{\text { sample statistic }-\text { null value }}{\text { SE }}
 
 ---
 
+&lt;br&gt;
+&lt;br&gt;
+
+# Proportion of infected?
+
+.bql.font90[
+- All mosquitoes in the infected group were exposed to the malaria parasites, but not all mosquitoes were actually infected
+- Of the 201 mosquitoes in the infected group that we actually have data on, only 90 were actually infected `\((90 / 201=0.448)\)`
+- What proportion of mosquitoes eating from a malaria infected mouse become infected?
+]
+
+--
+
+.out-t[We want a confidence interval!]
+
+---
+
+# Bootstrap Interval
+
+
+&lt;center&gt;
+&lt;img src="images/bootstrap_mosquito.png" width="70%" height="70%"&gt; 
+&lt;/center&gt;
+
+
+---
+
 class: middle
 
 # Connecting Normal model to Confidence Intervals
@@ -452,6 +497,32 @@ class: middle
 - `Center`: sample statistic
 - `Spread`: the standard error given in the bootstrap graph (or by formula)
 ]
+
+---
+
+class: middle
+
+# Bootstrap Distributions
+
+
+.bql[If a bootstrap distribution is normally distributed, we can write it as
+
+A. `\(\mathrm{N} (parameter, SD)\)`
+
+B. `\(\mathrm{N}  (statistic, SD)\)`
+
+C. `\(\mathrm{N} (parameter, SE)\)`
+
+D. `\(\mathrm{N} (statistic, SE)\)`
+]
+
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is D. (center = statistic, spread = SE)
+&lt;/details&gt;
+
+
+
 
 ---
 
@@ -562,9 +633,9 @@ Let's go over to the class activity .Rmd file and complete the tasks for today.
 
 ]
 
-<div class="countdown" id="timer_ae8e8564" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_2df81a32" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
     </textarea>
