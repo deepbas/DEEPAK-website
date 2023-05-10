@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Shiny Reactivity and Interactive Graphs</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Shiny Reactivity]
+
+### .fancy[Spring 2023]
+
+ May 10 2023
+
+
+---
+
+class: middle
+
+
+# Shiny reactivity
+
+&lt;center&gt;
+&lt;img src="images/reactivity.png" width="80%" height="60%"&gt; &lt;br&gt;
+&lt;a&gt;Shiny reactivity 101&lt;/a&gt;
+&lt;/center&gt;
+
+
+.footnote[[Shiny reactivity](https://shiny.rstudio.com/articles/understanding-reactivity.html)]
+
+
+---
+
+class: middle
+
+# `Shiny Reactivity:` Responding to User Input
+
+
+.bql[
+- Shiny .b[reactivity] is a system for managing data dependencies and updates in response to user input.
+
+- Unlike typical R code, Shiny apps are .b[event-driven] and react to user interactions.
+
+- Shiny monitors events and .b[triggers] the necessary code to update the app's state and output.
+]
+
+
+.footnote[[Understanding reactivity in R](https://shiny.rstudio.com/articles/understanding-reactivity.html)]
+
+---
+
+class: middle
+
+# Reactive Expressions: Connecting Inputs and Outputs
+
+.hljs.center[ "Reactive expressions transform reactive inputs into reactive outputs."]
+
+.bql[
+- .b[Reactive expressions] are the building blocks of Shiny reactivity.
+
+- They are used to manage data dependencies and cache results.
+
+- They automatically update when input values change, ensuring your app stays up-to-date.
+]
+
+---
+
+class: middle
+
+# Examples of common use cases
+
+.bqt[
+- Accessing a database based on user input.
+- Reading data from a file when the user selects a new file.
+- Downloading data over the network in response to user actions.
+- Performing expensive computations that depend on user input.
+]
+
+
+---
+
+class: middle
+
+# Reactive values: Storing and Sharing Data
+
+.hljs["Reactive values contain values that can be read by other reactive objects."]
+
+.pull-left-40[
+.bql.font90[
+- .b[Reactive values] allow you to store and share data across different parts of your Shiny app.
+- The input object is a special instance of .b[ReactiveValues] that holds user inputs.
+]
+]
+
+.pull-right-60[
+```
+library(shiny)
+ui &lt;- fluidPage(
+  titlePanel("Updating Plot Based on User Input"),
+  sidebarLayout(
+    sidebarPanel(
+      numericInput("obs", "Number of observations:", 
+                   value = 100, min = 1)
+    ),
+    mainPanel( plotOutput("distPlot"))
+  )
+)
+server &lt;- function(input, output) {
+  output$distPlot &lt;- renderPlot({
+    hist(rnorm(input$obs))
+  })
+}
+shinyApp(ui, server)
+```
+
+]
+
+---
+
+
+class: middle
+
+# Triggering reactivity with `eventReactive()`
+
+.pull-left[
+.bql.font90[
+- `eventReactive()` is used to create reactive expressions that only update when a specific event occurs.
+- It takes an input, typically an action button, to trigger the update.
+- Useful for controlling when calculations or updates occur, reducing unnecessary computation.
+]
+]
+
+
+.pull-right[
+```
+ui &lt;- fluidPage(
+  mainPanel(
+    actionButton("addButton", "Add 1"),
+    textOutput("result")
+  )
+)
+
+server &lt;- function(input, output) {
+  sum_so_far &lt;- eventReactive(input$addButton, {
+    if (is.null(input$addButton)) {
+      0
+    } else {
+      input$addButton
+    }
+  })
+
+  output$result &lt;- renderText({
+    paste("Sum so far:", sum_so_far())
+  })
+}
+
+shinyApp(ui, server)
+```
+]
+
+---
+
+class: middle
+
+# `actionButton()`: Triggering Actions on Demand
+
+.hljs["actionButton() creates a button that lets users manually trigger reactive events."]
+
+
+.pull-left[
+.bql.font70[
+- Use `actionButton()` to create a button in the UI that users can click to trigger specific actions.
+
+- Combine with `eventReactive()` to execute code only when the button is clicked.
+
+- Ideal for cases where you want to give users control over when certain actions are executed, rather than updating automatically.
+
+]
+
+]
+
+
+.pull-right[
+
+```
+ui &lt;- fluidPage(
+  mainPanel(
+    numericInput("obs", "Number of observations", value = 100, min = 1),
+    actionButton("updateButton", "Update Plot"),
+    plotOutput("distPlot")
+  )
+)
+
+server &lt;- function(input, output) {
+  data_to_plot &lt;- eventReactive(input$updateButton, {
+    rnorm(input$obs)
+  })
+
+  output$distPlot &lt;- renderPlot({
+    hist(data_to_plot())
+  })
+}
+
+shinyApp(ui, server)
+
+```
+
+]
+
+---
+
+
+class: middle
+
+# Storing and managing state with `reactiveValues()`
+
+.pull-left-40[
+.bql.font80[
+- `reactiveValues()` is used to create mutable, reactive objects.
+- They can store multiple named values that can be updated independently.
+- Useful for managing complex state or sharing data between multiple reactive expressions.
+]
+]
+
+.pull-right-60[
+```
+ui &lt;- fluidPage(
+  mainPanel(
+    numericInput("numInput", "Enter a number:", value = 1),
+    actionButton("incrementButton", "Increment"),
+    textOutput("incrementedValue")
+  )
+)
+server &lt;- function(input, output) {
+  values &lt;- reactiveValues(num = 1)
+  incrementedValue &lt;- reactive({
+    if (input$incrementButton &gt; 0) {
+      values$num &lt;- input$numInput + input$incrementButton
+    }
+    values$num
+  })
+  output$incrementedValue &lt;- renderText(paste("Incremented value:", 
+  incrementedValue()))
+}
+shinyApp(ui, server)
+```
+
+]
+
+---
+
+class: middle
+
+# Observers: Responding to Changes in Reactive Values
+.hljs[`observeEvent()` is used to create observers that react to specific events, often triggered by user interactions like button clicks.
+]
+
+.pull-left-40[
+
+.bql.font80[
+- Executes code in response to a specified event
+- Can be used with `actionButton()` to perform actions when a button is clicked
+- Doesn't return a value, but causes side effects (e.g., updating output or triggering other reactive expressions)
+]
+]
+
+
+.pull-right-60[
+```
+ui &lt;- fluidPage(
+  mainPanel(
+    actionButton("showAlert", "Show Alert"),
+    textOutput("alertCount")
+  )
+)
+server &lt;- function(input, output) {
+  alert_counter &lt;- reactiveValues(count = 0)
+  observeEvent(input$showAlert, {
+    showModal(modalDialog(
+      title = "Alert",
+      "This is an alert message!"
+    ))
+    alert_counter$count &lt;- alert_counter$count + 1
+  })
+  output$alertCount &lt;- renderText({
+    paste("Number of alerts shown:", alert_counter$count)
+  })
+}
+shinyApp(ui, server)
+```
+
+
+
+]
+
+
+
+---
+
+class: middle
+
+# Controlling reactivity with `isolate()`
+
+.pull-left-40[
+.bql.font80[
+- The `isolate()` function is used to prevent reactivity within a reactive context.
+- It allows you to use an input or reactive value without triggering a reaction.
+- Useful when you want to control when a reactive expression or output updates.
+]
+]
+
+.pull-right-60[
+```
+ui &lt;- fluidPage(
+  mainPanel(
+    textInput("textInput", "Enter some text"),
+    actionButton("submitButton", "Submit"),
+    textOutput("outputText")
+  )
+)
+
+server &lt;- function(input, output) {
+  observeEvent(input$submitButton, {
+    output$outputText &lt;- renderText({
+      paste("You submitted:", isolate(input$textInput))
+    })
+  })
+}
+
+shinyApp(ui, server)
+
+```
+
+]
+
+
+
+
+---
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+.bql[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Get the class activity 19.Rmd file
+- Let's work on the class activity together
+- Ask me questions
+]
+
+]
+
+<div class="countdown" id="timer_f8364eb5" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
