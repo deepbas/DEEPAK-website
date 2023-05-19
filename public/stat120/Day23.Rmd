@@ -1,5 +1,5 @@
 ---
-title: "Post-ANOVA"
+title: "Comparing Two or more Means"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -69,7 +69,12 @@ theme_set(theme_tufte(base_size = 10))
 
 yt <- 0
 
+set.seed(1234)
+
+
+
 # read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
+
 ```
 
 
@@ -91,7 +96,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Post-ANOVA]
+# .fancy[Comparing Two or more Means]
 
 ### .fancy[Stat 120]
 
@@ -101,366 +106,439 @@ class: title-slide, middle
 
 class: middle
 
-# Post-ANOVA
-
-.bql.font90[ Inference .b[AFTER] doing .b[ANOVA] to compare means for several groups:
-- Confidence interval for a single mean
-- Confidence interval for a difference in two means
-- Pairwise t-test for a difference in two means
-- Multiple comparisons
-]
-
----
-
-class: middle
-
-# ANOVA for Difference in Means
-
-.bqt.font90[.b[Data:] Random samples of size $n_1, n_2, \cdots , n_k$ from each of k populations (or groups)
-
-.b[Summary statistics:]
-
-  - Sample mean for each group
-  - Std. dev. for each group
-  - Mean and std. dev. for all values
-]
-
----
-
-class: middle
-
-# ANOVA for Difference in Means
-
-.bql[
-$$H_0:\mu_1 = \mu_2 = \cdots = \mu_k$$
-$$H_a: \text{at least one } \mu_i \text{ is different}$$
-
-- .bold[Conditions:] Similar variability AND either sample sizes in each group are large (each $n_i \geq 30$) OR the data are relatively normally distributed
-]
-
----
-
-
-# Cuckoo Birds
-
-.pull-left-60[
-.bql.font80[
-- Cuckoo birds lay their eggs in the nests of other birds
-
-- When the cuckoo baby hatches, it kicks out all the original eggs/babies
-
-- If the cuckoo is lucky, the mother will raise the cuckoo as if it were her own
-]
-]
-
-.pull-right-40[
-<br>
-<br>
-<center>
-<img src="images/cuckoo.jpg" width="80%" height="80%"> <br>
-<a>Cuckoo bird in nest</a><br>
-</center>
-<br>
-]
-
---
-
-.green-h.font110[Do cuckoo bird eggs found in nests of different species differ in size?]
-
----
-
-class: middle
-
-# Cuckoo Dataset
+# Inference tools (Classical methods)
 
 .pull-left[
-.bql.font80[
-- .bold[cuckoo] dataset contains information on 120 Cuckoo eggs, obtained from randomly selected "foster" nests.
+.bq.font80[
+Categorical Response
 
-- researchers have measured the `length` (in mm) and established the `type` (species) of foster parent.
+1. One proportion: .blue[sample z test/CI]
+
+2. Difference in 2 props: .blue[2 sample z test/CI OR chi-square test]
+
+3. Association between 2 categorical variables: .blue[chi-square test]
+]
+]
+.pull-right[
+.bq.font80[
+Quantitative Response
+
+1. One mean: .blue[1 sample t test/CI]
+  
+2. Difference in 2 means: .blue[2 independent sample t test/CI OR Matched pairs]
+  
+3. Compare >2 means: .b[One-way ANOVA]
+  <br>
+
+]
 ]
 
+---
+
+class: middle
+
+# Multiple Categories
+
+.bqt[
+So far, we’ve learned how to do inference for a difference in means IF the categorical variable has .bold[only two categories (i.e. compare two groups)]
+]
+<br>
+
+.bqt[
+In this section, we’ll learn how to do hypothesis tests for a difference in means .bold[across multiple categories (i.e. compare more than two groups)]
+]
+
+---
+
+class: middle
+
+# Hypotheses
+
+.bql[To test for a difference in true/population means across k groups:
+
+\begin{align*}
+H_{0}:& \quad \mu_{1}=\mu_{2}=\ldots=\mu_{k}\\
+H_{a}:& \quad \text{At least one } \mu_{i} \neq \mu_{j}
+\end{align*}
+
+
+]
+
+---
+
+# Frisbee Example 
+
+.out-t[Does Frisbee grip affect the distance of a throw?]
+
+.hljs.font80[A student performed the following experiment: 3 grips, 8 throws using each grip
+    1. Normal grip
+    2. One finger out grip
+    3. Frisbee inverted grip]
+
+
+.bql.font80[A grip type is randomly assigned to each of the 24 throws she plans on making
+
+  - Response: measured in paces how far her throw went
+  - Question: How might you summarize her data?
+]
+
+---
+
+class: middle
+
+# Frisbee Example
+
+.pull-left[
+<center>
+<img src="images/frisbee.png" width="80%" height="80%"> <br>
+</center>
 ]
 .pull-right[
 <br>
-.bq.font80[
-- `Species=1`: Hedge Sparrow
-- `Species=2`: Meadow Pit
-- `Species=3`: Pied Wagtail
-- `Species=4`: European Robin
-- `Species=5`: Tree Pipit
-- `Species=6`: Eurasian Wren
-
-]
-
-]
-
----
-
-class: inverse, middle
-
-.b.large.bql[Goal: test if the type of foster parent has an effect on the average length of the cuckoo eggs.]
-
----
-
-`r chunk_reveal("cuckoo", widths= c(0.6,0.4), font_size_code="70%", title = "## ANOVA")`
-
-```{r cuckoo, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
-library(dplyr)
-Cuckoo <- read.csv("https://raw.githubusercontent.com/deepbas/stat120datasets/main/cuckoos.csv")
-Cuckoo <- Cuckoo %>%
-  mutate(species = as.factor(species))   # change species to a categorical variable
-
-stat <- Cuckoo %>% 
-  group_by(species) %>%  # group by type
-  summarize(mean(length), sd(length), length(length)) %>% # summarize various info
-  `colnames<-`(c( "type", "mean", "sd", "n")) %>%  # change column names 
-   as.data.frame() # change it to a data frame
-knitr::kable(stat)
-```
-
----
-
-`r chunk_reveal("boxplot", widths= c(0.4,0.6), font_size_code="70%", title = "## Side-by-side Boxplot (1a)")`
-
-.scroll-output[
-```{r boxplot, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
-Cuckoo %>%
-  ggplot(aes(x=species,y=length,fill=species)) +
-  theme_bw() +
-  geom_boxplot() +
-  geom_jitter(width = 0.2) +
-  labs(title ="Boxplot of the length of eggs per type", 
-       y = "length (mm)",
-       x = "type") + 
-  stat_summary(fun=mean, geom="point", shape=10, 
-               size=2, color="red", fill="black") +
-  ggthemes::theme_tufte() +
-  theme(axis.text.x = element_text(angle = 25, hjust = 1, vjust = 0.5)) 
-
-```
-]
-
----
-
-class: middle
-
-# Check Assumptions (1b)
-
-.bql[
-$$H_0: \text{The mean egg length is equal between the different bird tpyes.}$$
-$$H_a: \text{The mean egg length for at least one bird type is different }$$
-
-Make sure that all assumptions for ANOVA are met:
-
-- The data (length) must be normally distributed (in all groups)
-- The variability within all groups is similar
-]
-
----
-
-`r chunk_reveal("normality", widths= c(0.3,0.7), font_size_code="70%", title = "## Approximate normality in groups (1b)")`
-
-.scroll-output[
-```{r normality, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
-Cuckoo %>% 
-  ggplot(aes(sample=length)) + 
-  geom_qq() + 
-  geom_qq_line() + 
-  facet_grid(~species) +  
-  theme(strip.text.x = element_text(size = 6)) 
-```
-
-]
-
----
-
-# Fitting ANOVA (1c)
-
-```{r, highlight.output = c(2)}
-library(broom)
-fit_anova <- aov(length~species, Cuckoo)
-knitr::kable(tidy(fit_anova))
-```
-
 <br>
 
+&nbsp; | Finger-out | Inverted   | Normal
+-------- | ------------- | ----------- | -----------
+n | 8  |  8   |   8  
+Mean |  29.5  | 32.375    | 33.125
+SD |  4.175 | 3.159  |  3.944
+
+]
+
+.bql.font90[
+Question: Is this evidence that grip affects mean distance thrown? 
+\begin{align*}
+H_{0}:& \quad \mu_{1}=\mu_{2}=\mu_{3}\\
+H_{a}:& \quad \text{At least one } \mu_{1}, \mu_{2}, \mu_{3} \text{ is not the same}
+\end{align*}
+]
+
+---
+
+class: middle
+
+# Why Analyze Variability to Test for a Difference in Means?
+
+.pull-left-40[
+
+.bql.font80[
+- The group means in Datasets $A$ and $B$ are the same, but the boxes show different spread.
+
+- Datasets $A$ and $C$ have the same spread for the boxes, but different group means.
+]
+]
+.pull-right-60[
+<center>
+<img src="images/anova-plot.png" width="90%" height="90%"> <br>
+</center>
+.hljs[Which of these graphs appear to give strong visual evidence for a difference in the group means?]
+]
+
+---
+
+class: middle
+
+# Why Analyze Variability to Test for a Difference in Means?
+
+.pull-left-40[
+
+.bql.font90[
+- Dataset A = weakest evidence for a difference in means.
+- Datasets B and C = strong evidence for a difference in means.
+]
+]
+.pull-right-60[
+
+<center>
+<img src="images/anova-plot.png" width="90%" height="90%"> <br>
+</center>
+
+]
+
+---
+
+class: middle
+
+# Why Analyze Variability to Test for a Difference in Means?
+
+.pull-left-40[
+
+.bql.font90[
+.b[Conclusion:] An assessment of the difference in means between several groups depends on two kinds of variability:
+1. How different the means are between each groups
+2. The amount of variability within each groups
+]
+]
+.pull-right-60[
+<br>
+<center>
+<img src="images/anova-plot.png" width="90%" height="90%"> <br>
+</center>
+]
+
+---
+
+# Analysis of Variance
+
+.hljs[
+Analysis of Variance (ANOVA) compares the variability between groups to the variability within groups
+]
+
+<center>
+<img src="images/ANOVA-decomposition.png" width="90%" height="80%"> 
+</center>
+
+---
+
+class: middle
+
+# F-Statistic
+
+.bql.font90[
+The F-statistic is a ratio:
+$$F=\frac{M S G}{M S E}=\frac{\text { average between group variability }}{\text { average within group variability }}$$
+
+]
+
+.hljs[If there really is a difference between the groups $(H_A \text{ true})$, we would expect the F-statistic to be
+
+a) Large positive
+
+b) Large negative
+
+c) Close to 0
+]
+
+<details>
+<summary>.red[Click for answer]</summary>
+.hljs[
+The correct answer is a. If there is a difference, we expect the between group variability to be higher than within group variability. .red[RIGHT TAIL test!]]
+</details>
+
+---
+
+class: middle
+
+# Frisbee Example
+
+```{r}
+frisbee <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Frisbee.csv")
+frisbee.anova <- aov(Distance ~ Grip, data = frisbee) # fit an ANOVA model
+```
+
+
+
+```{r, highlight.output = c(2), collapse=TRUE}
+summary(frisbee.anova)
+```
+
+.hljs[
+F-test statistic: 2.045
+
+P-value: 0.154
+]
+
+---
+
+<br>
+<br>
+
+# How to determine significance?
+
+.out-t[We have a test statistic. What else do we need to perform the hypothesis test?]
+
+--
+
+.hljs[
+A distribution of the test statistic assuming $H_0$ is true.
+]
+
 --
 
 .bql[
-Since the .b[p-value] is very small, at the significance level of $5\%$, we have sufficient evidence to conclude that the mean egg length for at least one bird type is .b[different] from the mean egg length in at least one other bird type.
+How do we get this? Two options:
+  1. Simulation
+  2. Theory
 ]
 
---
+---
 
-.out-t.font100[But which of the species are different?]
+
+class: middle
+
+# F-Distribution
+
+.bql.font90[
+We can use the F-distribution to generate a p-value if:
+
+  1. Sample sizes in .b[each group] are large (each $n_{i} \geq 30$ ) OR the data within each group are relatively normally distributed
+  2. Variability is .b[similar] in all groups
+]
+<br>
+.hljs[
+- The F-distribution has two degrees of freedom, one for the numerator of the ratio $(\boldsymbol{k}-\mathbf{1})$ and one for the denominator $(n-k)$
+- For F-statistics, the p-value (the area as extreme or more extreme) is always the right tail
+
+]
 
 ---
 
 class: middle
 
-# Inference after ANOVA
+# F-distribution
 
-.bql[Compute a CI for any $\mu_i$
-
-$$\bar{x}_i \pm t^{*} \frac{s_i}{\sqrt{n_i}}$$
-]
-
-.b.font90[
-.b[BUT] after .b[ANOVA], estimate any $\sigma$ with the pooled standard deviation:
-
-$$\bar{x}_i \pm t^{*}\frac{\sqrt{MSE}}{\sqrt{n_i}}$$
-
-the corresponding `df=n-k`
-]
-
----
-
-# Cuckoo Eggs (1d)
-.bqt.font90[Find a 95% confidence interval for the mean cuckoo egg length in .b[European robin] nests (Type = 4).]
 
 .pull-left-60[
-.font80[
-```{r}
-MSE <- 0.8193847
-knitr::kable(tidy(fit_anova))
-```
-]
+<center>
+<img src="images/rand-frisbee-pvalue.png" width="100%" height="100%"> 
+</center>
 ]
 .pull-right-40[
-.font80[
-```{r, echo=FALSE}
-knitr::kable(stat)
-```
-]
-]
 
-$$\bar{x}_i \pm t^{*}\frac{\sqrt{MSE}}{\sqrt{n_i}}, \text{ df = n-k }$$
-
----
-
-# Inference after ANOVA
-
-$$H_0: \mu_i = \mu_j \text{ vs. } H_a: \mu_i \neq \mu_j$$
-
-
-.bql.font90[Compute a CI for $\mu_i - \mu_j$
-
-$$(\bar{x}_i - \bar{x}_j) \pm t^{*} \sqrt{\frac{s_i^2}{n_i} + \frac{s_j^2}{n_j}}$$
-
+.bql.font80[
+- An F-statistic as large as 2.045 would occur by chance about 16% of the time if the means were all equal.
+- Our results are inconclusive and do not support the claim that grips affects average distance.
 ]
 
-.b.font90[
-Use the usual procedures except estimate any $\sigma$ with the pooled standard deviation: $\sqrt{MSE}$ and use the error degrees of freedom, `df=n-k`, for any t-values
-  $$(\bar{x}_i - \bar{x}_j) \pm t^{*} \sqrt{MSE \left(\frac{1}{n_i} + \frac{1}{n_j}\right)}$$
-]
-
-
----
-
-# Cuckoo Eggs (1e)
-
-Find a 95% CI for the difference in mean egg length between .b[European robin](type = 4) and .b[Eurasian wren](type = 6) nests.
-
-.pull-left-60[
-
-.font80[
-```{r, echo=FALSE}
-knitr::kable(tidy(fit_anova))
-```
-]
-$$(22.556 - 21.120) \pm 1.981 \cdot \sqrt{0.8194\left(\frac{1}{16} + \frac{1}{15} \right)} = (0.792, 2.081)$$
-]
-.pull-right-40[
-.font80[
-```{r, echo=FALSE}
-knitr::kable(stat)
-```
-]
-]
-
-
-.code70[
 ```{r, collapse=TRUE}
-(stat[4,2] - stat[6,2]) + c(-1,1)* (qt(1-0.05/2, df=114))* sqrt(MSE*(1/stat[4,4] + 1/stat[6,4]))
+1 - pf(2.045,2,21)  # p-value
 ```
+
 ]
-
---
-
-.out-t.font80[Why is it important that the interval contains only positive values?]
 
 
 ---
 
-# Cuckoo Eggs (1f)
+class: middle
 
-.bql.font80[Find a 95% CI for the difference in mean egg length between .b[Pied Wagtail] (type = 3) and .b[European robin](type = 4)  nests.]
 
-.pull-left-60[
-.font80[
-```{r, echo=FALSE}
-knitr::kable(tidy(fit_anova))
-```
-]
-$$(22.887 - 22.556) \pm 1.981\cdot \sqrt{0.8194\left(\frac{1}{15} + \frac{1}{16} \right)} = (-0.314, 0.975)$$
+# Check assumptions: large sample size (or normality)
 
-]
-.pull-right-40[
-.font80[
-```{r, echo=FALSE}
-knitr::kable(stat)
-```
-]
-]
+.pull-left-40[
+<center>
+<img src="images/frisbee.png" width="80%" height="80%"> 
+</center>
 
-.code70[
 ```{r, collapse=TRUE}
-(stat[3,2] - stat[4,2]) + c(-1,1)* (qt(1-0.05/2, df=114))*sqrt(MSE*(1/stat[3,4] + 1/stat[4,4]))
+table(frisbee$Grip)  # check n's
 ```
+
+.hljs[
+Small $n_i$ but all groups are roughly normal
 ]
 
-
---
-
-.out-t.font80[What does it mean if the interval contains 0?]
-
----
-
-class: middle
-
-# Mutiple Comparisons 
-
-.bql.font90[Often, doing pairwise comparisons after ANOVA involves many tests
-
-  - e.g. $k$ groups/categories,then we have $\frac{k(k-1)}{2}$ comparisons
-  - $k=6$ bird species then 15 pairwise tests.
 ]
 
----
-
-class: middle
-
-# Mutiple Comparisons 
-
-
-.bql.font90[If each test has an $\alpha$ chance of a Type I error (finding a difference between a pair that aren’t different),  the overall Type I error rate can be much higher.
-]
-
-.bqt[
-Use a smaller $\alpha$ for each pairwise test (Bonferroni)
-  - $\alpha^{*} = \frac{\alpha}{k}$
-  - e.g $\alpha = 0.05$ and $k = 6$, then $\alpha^{*} = 0.05/6 =  0.0083$
-]
----
-
-
-# Cuckoo Eggs (1g)
-
-> Which means are “different” at a $5\%$ significance level?
+.pull-right[
 
 ```{r}
-pairwise.t.test(Cuckoo$length, Cuckoo$species, p.adjust.method =  "bonferroni")
+# checking normality with qq-plots
+ggplot(frisbee, aes(sample = Distance)) + 
+  geom_qq() + geom_qq_line() +  facet_wrap(~Grip) +  
+  theme(axis.text.x = element_text(size = 4))
+```
+
+]
+
+---
+
+class: middle
+
+
+# Check Assumptions: Equal Variance
+
+.bql[
+The F-distribution assumes equal within group variability for each group. This is also an assumption when using the .b[randomization distribution].
+
+- As a rough .bold[rule of thumb], this assumption is violated if the largest group standard deviation is more than double the smallest group standard deviation
+]
+
+.pull-left[
+```{r}
+tapply(frisbee$Distance, frisbee$Grip, sd)
+```
+]
+.pull-right[Check if:
+$$\frac{\text{largest }s}{\text{smallest }s} > 2$$
+]
+
+---
+
+class: middle
+
+
+# Frisbee Example: Inference
+
+.hljs[
+.bold[Question:] Is this evidence that grip affects mean distance thrown? 
+\begin{align*}
+H_{0}:& \quad \mu_{1}=\mu_{2}=\mu_{3}\\
+H_{a}:& \quad \text{At least one } \mu_{1}, \mu_{2}, \mu_{3} \text{ is not the same}
+\end{align*}
+$\mu_{\mathrm{i}}$ is the true mean distance thrown using grip $i$.
+$$F=2.05(\mathrm{df}=2,21), \text { P-value }=0.1543$$
+]
+
+
+
+
+.bq.font90[
+.b[Conclusion:] Do not reject the Null hypothesis. The difference in observed means is not statistically significant.
+
+About 15% of the time we would see the grip differences like those observed, or even bigger, when there is actually no difference between the true mean distances thrown with different grips.
+]
+
+---
+
+class: middle
+
+
+# Picturing the variation
+.pull-left[
+.left.green[Green: Variation within groups] ]
+
+.pull-right[
+.right.blue[Blue: Variation between groups]
+]
+<center>
+<img src="images/anova-picture.png" width="70%" height="70%"> <br>
+</center>
+
+
+---
+
+class: middle
+
+
+# ANOVA Table for Frisbee data
+
+$$\text{F test stat} = 29.29/14.32 = 2.045$$
+<br>
+
+Source | df | Sum of Squares   | Mean Square
+-------- | ------------- | ----------- | -----------
+Groups <br> &nbsp; | #groups -1 <br> .red.b[3-1 = 2]|  SSG <br> .red.b[58.583]  |   SSG/df <br> .red.b[58.583/2 = 29.29]
+Error <br> (residual) | n - #groups <br> .red.b[24-3 = 21]  | SSE <br>  .red.b[300.750] | SSE/df <br> .red.b[300.75/21= 14.32]
+Total |  n-1 <br> .red.b[24-1 = 23] | SSTotal <br> .red.b[359.333]  |  &nbsp;
+
+
+---
+
+# Frisbee Example: ANOVA table in R
+
+
+```{r}
+frisbee.anova <- aov(Distance ~ Grip, data = frisbee)
+```
+
+```{r, collapse=TRUE}
+summary(frisbee.anova)
+```
+
+
+```{r}
+library(broom) 
+knitr::kable(tidy(frisbee.anova)) # nicer summary tables
 ```
 
 ---
@@ -468,6 +546,7 @@ pairwise.t.test(Cuckoo$length, Cuckoo$species, p.adjust.method =  "bonferroni")
 class: action
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
+
 
 .pull-left-40[
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
@@ -478,8 +557,8 @@ class: action
 <br>
 
 .bql[
-- Go over to the in-class activity file
-- Complete the remaining activity 
+- Go over to the in class activity file
+- Complete the activity as much as possible
 ]
 ]
 
