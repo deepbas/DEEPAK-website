@@ -378,7 +378,7 @@ ggplot(cv_metrics %>% filter(.metric == "accuracy"), aes(x = neighbors, y = mean
 ```
 
 .hljs.purple[
-- Based on accuracy, $k=7$ appears best, We C=can look at other metrics. Notice that accuracy doesn't always decrease with $k$
+- Based on accuracy, $k=6$ appears best, We can look at other metrics. Notice that accuracy doesn't always decrease with $k$
 ]
 
 ---
