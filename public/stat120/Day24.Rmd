@@ -212,9 +212,10 @@ Cuckoo <- Cuckoo %>%
 
 stat <- Cuckoo %>% 
   group_by(species) %>%  # group by type
-  summarize(mean(length), sd(length), length(length)) %>% # summarize various info
-  `colnames<-`(c( "type", "mean", "sd", "n")) %>%  # change column names 
-   as.data.frame() # change it to a data frame
+  summarize(mean = mean(length),
+            sd = sd(length), 
+            n = length(length)) %>% 
+  as.data.frame()
 knitr::kable(stat)
 ```
 
