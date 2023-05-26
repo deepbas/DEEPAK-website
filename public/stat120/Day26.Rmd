@@ -1,5 +1,5 @@
 ---
-title: "Regression and ANOVA "
+title: "Regression"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -91,7 +91,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Regression and ANOVA]
+# .fancy[Regression Revisited]
 
 ### .fancy[Stat 120]
 

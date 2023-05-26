@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Regression</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+layout: true
+  
+---
+
+class: title-slide, middle
+
+# .fancy[Regression Revisited]
+
+### .fancy[Stat 120]
+
+ May 26 2023
+
+---
+
+
+# Simple Linear Model
+
+
+.hljs[
+The population/true simple linear model is:
+
+`\begin{align*}
+y=\beta_{0}+\beta_{1} x+\varepsilon
+\end{align*}`
+]
+
+.bql[
+- `\(\beta_{0}\)` and `\(\beta_{1}\)` are unknown parameters corresponding to the y-intercept and the slope, respectively
+- `\(\varepsilon\)` is the random error
+- Estimate with `\(b_{0}\)` and `\(b_{1}\)` from the least squares line `\(\hat{y}=b_{0}+b_{1} x\)`
+]
+
+--
+
+.out-t[How accurate are the estimates? ]
+
+---
+
+### Recall: Least Square Regression
+
+.pull-left[
+
+.hljs[
+X = Cricket chirp rate
+
+Y = Temperature
+]
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Chirps &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Temp &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 97 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 103 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 123 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 67.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 150 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 72.0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 182 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 78.5 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 195 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 83.0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+]
+.pull-right[
+
+`\begin{align*}
+\widehat{\text { Temp }}=37.7+0.23 \text { Chirps }
+\end{align*}`
+
+&lt;img src="Day26_files/figure-html/unnamed-chunk-2-1.svg" width="100%" /&gt;
+
+]
+
+--
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 25%; left: 35%;"&gt;
+&lt;span style="content: '\2192'; font-size: 30px; color: #920; text-align: center; white-space: pre-line;"&gt;
+  &lt;p&gt;What are the parameters being estimated? &lt;/p&gt;
+   &lt;i class="gg-arrow-long-right"&gt;&lt;/i&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Inference for the Slope
+
+.bql[
+Confidence intervals and hypothesis tests for the slope can be done using the familiar .b[formulas]:
+
+`\begin{align*}
+b_{1} \pm t^* \cdot S E \qquad\qquad t=\frac{b_{1}-\text { null slope }}{S E}
+\end{align*}`
+
+]
+
+---
+
+class: middle
+
+# Technology Examples
+
+### Slope estimate and Standard Error
+
+.font120[
+
+```r
+chirps.lm &lt;- lm(Temp ~ Chirps, data = data)
+summary(chirps.lm)
+```
+]
+
+```
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
+Chirps       0.23067    0.01423   16.21 1.63e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.528 on 5 degrees of freedom
+Multiple R-squared:  0.9813
+```
+
+---
+
+class: middle
+
+# Confidence Interval for Slope
+
+```
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
+Chirps       0.23067    0.01423   16.21 1.63e-05 ***
+```
+
+.hljs[
+We can use the values for `\(b_1\)` and `\(SE\)` from the regression output to form a confidence interval in the usual way:
+`\begin{align*}
+b_{1} \pm t^{*} \cdot S E
+\end{align*}`
+]
+
+.b[
+Here, `\(t^{*}\)` uses `\(n-2\)` degrees of freedom, since we are estimating two parameters in the simple linear model.
+]
+---
+
+class: middle
+
+# Confidence Interval for Slope
+
+
+.bqt[Find a 95% confidence interval for the slope of the cricket temperature model.]
+
+```r
+Temperature  =  37.7 + 0.231 Chirps
+Predictor       Coef    SE Coef      T    Pr(&gt;|t|)    
+Constant    37.67858    1.97817   19.05  7.35e-06 ***
+Chirps       0.23067    0.01423   16.21  1.63e-05 ***
+```
+
+.hljs[
+`\begin{align*}
+b_{1} \pm t^* \cdot S E
+\end{align*}`
+]
+
+---
+
+# Hypothesis Test for Slope
+
+.bql[Population Simple Linear Model: `\(y=\beta_{0}+\beta_{1} x+\varepsilon\)`
+
+`\begin{align*}
+H_0&amp; : \beta_1 = 0  \qquad \Longrightarrow \text{ No linear relationship }\\
+H_a&amp; : \beta_1 \neq 0  \qquad  \Longrightarrow \text{ Some relationship }
+\end{align*}`
+
+
+`\begin{align*}
+t=\frac{\text { statistic-null }}{S E}=\frac{b_{1}-0}{S E}=\frac{b_{1}}{S E}
+\end{align*}`
+]
+
+&lt;br&gt;
+
+.bq.font90[
+- Again, `\(\boldsymbol{b}_{1}\)` and SE come from R output.
+- We find the p-value by using a `\(t\)` distribution with `\(n-2\)` df
+]
+
+---
+
+class: middle
+
+# Hypothesis Test for Slope
+
+.bql[
+Confirm the .b[p-value] given by the regression output for testing the slope of the cricket chirp model.
+]
+
+```r
+Temperature  =  37.7 + 0.231 Chirps
+Predictor       Coef    SE Coef      T    Pr(&gt;|t|)    
+Constant    37.67858    1.97817   19.05  7.35e-06 ***
+Chirps       0.23067    0.01423   16.21  1.63e-05 ***
+```
+
+.hljs[
+.pull-left[
+.blockquote[
+`\begin{align*}
+H_0 :&amp; \beta_1 = 0 \\
+H_a :&amp; \beta_1 \neq 0
+\end{align*}`
+]
+]
+.pull-right[
+.blockquote[
+`\begin{align*}
+t=\frac{b_{1}}{S E}
+\end{align*}`
+]
+]
+]
+
+---
+
+# Hypothesis Test for Correlation
+
+.bqt[How else can we measure the strength of association between two quantitative variables?]
+
+--
+
+.hljs[
+.b[Recall:] `\(r\)` = sample correlation, `\(\rho\)` = population correlation
+]
+
+
+--
+
+.hljs[
+.pull-left-40[
+.b[
+`\begin{align*}
+H_0 :&amp; \rho = 0 \\
+H_a :&amp; \rho \neq 0
+\end{align*}`
+
+Find the p-value using a t-distribution with n - 2 df
+
+]
+]
+.pull-right-60[
+.b[
+`\begin{align*}
+t &amp; =\frac{\text { statistic -null }}{S E}=\frac{r-0}{\sqrt{\frac{1-r^{2}}{n-2}}} = =\frac{r}{\frac{\sqrt{1-r^{2}}}{\sqrt{n-2}}}\\&amp;=\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)
+\end{align*}`
+
+]
+]
+]
+
+---
+
+# Hypothesis Test for Correlation
+
+.bqt[The correlation for the .b[n = 7] cricket chirp data points is .b[r = 0.99062]. Compute the t-statistic for the test:]
+
+.hljs[
+`\begin{align*}
+H_0 :&amp; \rho = 0 \\
+H_a :&amp; \rho \neq 0
+\end{align*}`
+
+`\begin{align*}
+t &amp; =\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)\\
+&amp;=\frac{0.99062 \sqrt{7-2}}{\sqrt{1-0.99062^{2}}}=16.21
+\end{align*}`
+]
+
+---
+
+# Coefficient of Determination, `\(R^2\)`
+
+.hljs[
+.blue-h[Recall that for correlation:] `\(-1 \leq r \leq 1\)`
+
+If we square the correlation, we get the .b[coefficient of determination], which is a number between 0 and 1 that can be interpreted as a proportion or percentage.
+]
+
+&lt;br&gt;
+
+.bql[
+
+`\(R^{2}=\)` proportion of .b[variability] in the response variable, `\(Y\)`, that is "explained" by the explanatory variable, `\(X\)`.
+
+- By convention we use a capital `\(R^2\)`, although the value is just `\(r^2\)` for a single explanatory variable.
+]
+
+---
+
+# Checking Condition
+
+.hljs[
+`\begin{align*}
+y=\beta_{0}+\beta_{1} x+\varepsilon
+\end{align*}`
+
+For a simple linear model, we assume the errors `\((\varepsilon)\)` are randomly distributed above and below the line.
+]
+
+&lt;br&gt;
+
+.bql.font80[.b[Quick check] : Look at a scatterplot with regression line on it. Watch out for:
+- Curved (nonlinear) patterns in the data
+- Consistently changing variability
+- Outliers and influential points
+
+]
+
+
+---
+
+
+class: middle
+
+# Partitioning Variability
+
+.hljs[
+`\begin{align*}
+Y=\beta_{0}+\beta_{1} X+\varepsilon
+\end{align*}`
+
+`\begin{align*}
+\text { Data }=\text { Model }+\text { Error }
+\end{align*}`
+
+.b[Split the total variability in Y into two pieces, variability explained by the model + unexplained (residual error) variability]
+]
+
+
+&lt;center&gt;
+&lt;img src="images/anova-variability.png" width="100%" height="30%"&gt; 
+&lt;/center&gt;
+
+
+---
+
+class: middle
+
+# Measuring Variability
+
+&lt;center&gt;
+&lt;img src="images/anova-variability.png" width="100%" height="30%"&gt; 
+&lt;/center&gt;
+
+
+.bqt[
+Total variability in `\(Y: \quad\)` `\(SSTotal\)` `\(=\sum(y-\bar{y})^{2}\)`
+
+Explained variability: `\(\quad\)` `\(SSModel\)` `\(=\sum(\hat{y}-\bar{y})^{2}\)`
+
+Unexplained variability: `\(\quad S S E=\sum(y-\hat{y})^{2}\)`
+]
+
+---
+
+# Graphically
+
+.hljs[
+`$$Y=\beta_{0} + \beta_{1} X+\varepsilon \qquad \qquad \text { Data }=\text { Model }+\text { Error }$$`
+]
+
+&lt;center&gt;
+&lt;img src="images/residual-deviations.png" width="60%" height="60%"&gt; 
+&lt;/center&gt;
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+
+.bql[
+- Go over to the in class activity file
+- Complete the remaining activity 
+]
+]
+
+<div class="countdown" id="timer_a4bc79ba" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
