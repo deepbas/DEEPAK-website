@@ -5,18 +5,20 @@
 
 # Appearance
 
-theme: minimal
+# Appearance
+theme: 'colorful'  # change this to your chosen Hugo theme
 day_night: true
-font: ''
-font_size: L
+font: 'Open Sans'  # replace with your desired font, must be available in your chosen Hugo theme or via a custom CSS
+font_size: 'M'  # M for medium size
+
 
 # SEO
 
 site_type: Person
 local_business_type: ''
 org_name: ''
-description: ''
-twitter: ''
+description: 'Applied Statistician'
+twitter: 'aphsansar'
 
 # Contact (edit or remove options as required)
 
@@ -37,6 +39,14 @@ contact_links:
     icon_pack: fab
     name: DM Me
     link: 'https://twitter.com/aphsansar'
+  - icon: linkedin
+    icon_pack: fab
+    name: Connect with me
+    link: 'https://linkedin.com/in/dbastola'
+  - icon: github
+    icon_pack: fab
+    name: Follow me
+    link: 'https://github.com/deepbas'
  
 # Site header
 
@@ -85,7 +95,7 @@ section_pager: false
 docs_section_pager: true
 sharing: true
 copyright_license:
-  enable: false
+  enable: true
   allow_derivatives: false
   share_alike: true
   allow_commercial: false
@@ -94,7 +104,7 @@ abstract_length: 135
 plugins_js: []
 plugins_css: ["custom"]
 avatar:
-  gravatar: false
+  gravatar: true
   shape: circle
 publications:
   date_format: January 2006
