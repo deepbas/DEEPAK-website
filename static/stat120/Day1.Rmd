@@ -149,7 +149,7 @@ class: middle
 Before Class:
 
 .bqt[
-- Some reading/video to introduce some topics
+- Some reading to introduce some topics
 - Daily quizzes
 ]
 
@@ -169,59 +169,9 @@ class: inverse, middle
 .bql.font120[Statistics is the study of data and the uncertainties surrounding them. We will take a more conceptual route to statistics in this course.
 ]
 
----
-
-
-class: middle
-
-# Statistical Jargons
-
-
-
-
-<div class="bq" style="height: 5in;">
-
- <li> .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. </li>
-
-
-</div>
 
 ---
 
-class: middle
-
-# Statistical Jargons
-
-
-
-
-<div class="bq" style="height: 5in;">
-
- <li> .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. </li>
-
-<li> Statistical jargon can be used to help .green-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables. </li>
-
-</div>
-
-
----
-
-class: middle
-
-# Statistical Jargons
-
-
-<div class="bq" style="height: 5in;">
-
- <li> .green-h[Knowing basic statistical jargon] is essential to understand the results of a statistical analysis. </li>
-
-<li> Statistical jargon can be used to help .green-h[make decisions] based on data, such as whether or not to reject or accept a hypothesis or to determine if a correlation exists between two variables. </li>
-
-<li>  Understanding statistical terms can help to effectively .green-h[communicate the findings] of a statistical analysis. </li>
-
-</div>
-
----
 
 class: middle
 
@@ -237,105 +187,9 @@ Science of collecting, describing, analyzing and making decisions based on data
 
 .blue-h.font120[Allows us to make informed decisions in the face of uncertainty and let's us take an unbiased and evidence-based viewpoint]
 
----
-
-
-# General sentiment of the class
-
-```{r echo=FALSE, fig.width=7.5, fig.height=5.5, out.width="60%", fig.align='center'}
-# data
-library(tidytext)
-library(ggthemes)
-library(dplyr)
-library(ggplot2)
-
-review_02 <- read.csv("data/response.csv")
-
-
-review_02 %>%
-  select(What.do.you.hope.to.gain.from.taking.this.course.) %>%
-  unnest_tokens(output = word, input = What.do.you.hope.to.gain.from.taking.this.course.) %>%
-  inner_join(get_sentiments('nrc')) %>%
-  group_by(sentiment) %>%
-  count() %>%
-  ggplot(aes(x = reorder(sentiment, X = n), y = n, fill = sentiment)) +
-  geom_col() +
-  coord_flip() +
-  scale_fill_brewer(palette = "Paired") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
-    axis.title = element_text(size = 12, face = "bold"),
-    axis.text = element_text(size = 10)
-  ) + 
-  labs(title = "Sentiment of Class",
-       x = "Spectrum of Sentiments")
-```
 
 
 ---
-
-## Survey Responses: What do you hope to gain from taking this course?
-
-
-```{r echo=FALSE, fig.width=7.5, fig.height=5.5, out.width="60%", fig.align='center'}
-library(tidyverse)
-library(tidyr)
-library(tidytext)
-library(wordcloud)
-
-wordcloudData <- 
-  review_02 %>%
-  select(What.do.you.hope.to.gain.from.taking.this.course.) %>%
-  unnest_tokens(output = word, input = What.do.you.hope.to.gain.from.taking.this.course.) %>%
-  anti_join(stop_words)  %>%
-  count(word) %>%
-  data.frame()
-
-set.seed(42) # For reproducibility
-wordcloud(words = wordcloudData$word, 
-          freq = wordcloudData$n, 
-          min.freq = 1, 
-          max.words = 100, # Maximum number of words to display
-          random.order = FALSE, 
-          rot.per = 0.3, 
-          random.color = TRUE, 
-          colors = RColorBrewer::brewer.pal(8, "Dark2"), # Color palette
-          scale = c(3, 0.5)) # Font size range
-```
-
-
-
----
-
-## Survey Responses: Is there anything about this course that you are nervous about?
-
-
-```{r echo=FALSE, fig.width=7.5, fig.height=5.5, out.width="60%", fig.align='center'}
-wordcloudData <- 
-  review_02 %>%
-  select(Is.there.anything.about.this.course.that.you.are.nervous.about.) %>%
-  unnest_tokens(output = word, input = Is.there.anything.about.this.course.that.you.are.nervous.about.) %>%
-  anti_join(stop_words)  %>%
-  count(word) %>%
-  data.frame()
-
-set.seed(42) # For reproducibility
-wordcloud(words = wordcloudData$word, 
-          freq = wordcloudData$n, 
-          min.freq = 1, 
-          max.words = 100, # Maximum number of words to display
-          random.order = FALSE, 
-          rot.per = 0.3, 
-          random.color = TRUE, 
-          colors = RColorBrewer::brewer.pal(8, "Dark2"), # Color palette
-          scale = c(3, 0.5)) # Font size range
-```
-
-
-
----
-
 
 class: middle
 
@@ -383,7 +237,7 @@ class: middle
 
  <li> Statistical computing software called R </li>
 
-<li> RStudio gives nice user-friendly interface to R </li>
+<li> RStudio/Posit gives nice user-friendly interface to R </li>
 
 <li>  RMarkdown is platform in Rstudio to write your codes and results </li>
 
@@ -478,6 +332,8 @@ rates of cancer which are numbers (quantitative).
 
 ---
 
+class: middle
+
 # Variable manipulations
 
 .bql.font80[
@@ -487,21 +343,13 @@ Can use numbers to code categories of categorical variable
 
 <br>
 
---
 
 .bql.font80[
 Can convert quantitative variable into categorical groups
 - e.g. Income (0-50000 as Low, 50000+ as High)
 ]
 
-<br>
 
---
-
-.bql.font80[
-Categorical variables are sometimes collapsed into fewer levels
-- e.g. no HS degree, HS degree, some college, 2 year degree
-]
 
 ---
 
@@ -554,9 +402,8 @@ class: action, middle
 <br>
 .bq.font90[
 - Make a course folder called 'stat120' either on your Maize account or on your local computer 
-- Please download the in-class activity file for Day 1 from [moodle](https://moodle.carleton.edu/) and go to [class web page](https://stat120-spring23.netlify.app/) 
-- We will go over this .Rmd file together. 
-- Once you are done, knit to pdf or word and submit.
+- Please download the in-class activity file for Day 1 from [moodle](https://moodle.carleton.edu/course/view.php?id=42303) and go to [class helper web page](https://stat120-fall23.netlify.app/) 
+- We will go over this activity together. 
 ]
 
 ]

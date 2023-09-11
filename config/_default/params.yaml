@@ -6,19 +6,43 @@
 # Appearance
 
 # Appearance
-theme: 'colorful'  # change this to your chosen Hugo theme
-day_night: true
-font: 'Open Sans'  # replace with your desired font, must be available in your chosen Hugo theme or via a custom CSS
-font_size: 'M'  # M for medium size
-
+appearance:
+  theme_day: minimal
+  theme_night: minimal
+  font: minimal
+  font_size: L
 
 # SEO
 
-site_type: Person
-local_business_type: ''
-org_name: ''
-description: 'Applied Statistician'
-twitter: 'aphsansar'
+marketing:
+  seo:
+    site_type: Person
+    local_business_type: ''
+    org_name: ''
+    description: 'Applied Statistician'
+    twitter: 'aphsansar'
+  analytics:
+    google_analytics: ''
+    baidu_tongji: ''
+    google_tag_manager: ''
+    microsoft_clarity: ''  
+  verification:
+    google: ''
+    baidu: ''
+    
+
+# Site header
+
+header:
+  navbar:
+    enable: true
+    align: l
+    show_logo: true
+    show_language: false
+    show_day_night: true
+    show_search: true
+    highlight_active_link: true
+
 
 # Contact (edit or remove options as required)
 
@@ -48,16 +72,7 @@ contact_links:
     name: Follow me
     link: 'https://github.com/deepbas'
  
-# Site header
 
-main_menu:
-  enable: true
-  align: l
-  show_logo: true
-  show_language: false
-  show_day_night: true
-  show_search: true
-  highlight_active_link: true
 
 # Localization
 
@@ -152,3 +167,19 @@ cms:
 icon:
   pack:
     ai: false
+    
+    
+# Extensions
+
+extensions:
+  cms:
+    branch: main
+    local_backend: false
+  academicons:
+    enable: true
+
+# Security
+
+security:
+  # Allow frame for embedding speaker notes in slides
+  allow_frame: true
