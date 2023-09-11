@@ -402,8 +402,8 @@ class: action, middle
 <br>
 .bq.font90[
 - Make a course folder called 'stat120' either on your Maize account or on your local computer 
-- Please download the in-class activity file for Day 1 from [moodle](https://moodle.carleton.edu/course/view.php?id=42303) and go to [class helper web page](https://stat120-fall23.netlify.app/) 
-- We will go over this activity together. 
+- Please download the Assignment-0 template from [moodle](https://moodle.carleton.edu/course/view.php?id=42303) and go to [class helper web page](https://stat120-fall23.netlify.app/) 
+- We will go over this together. 
 ]
 
 ]
