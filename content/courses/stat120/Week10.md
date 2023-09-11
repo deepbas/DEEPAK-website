@@ -9,6 +9,8 @@ weight: 20
 ---
 
 
+<!--
+
 Day 27 Slides ({{% staticref "stat120/Day27.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day27.html" "newtab" %}}html{{% /staticref %}})
 
-
+-->
