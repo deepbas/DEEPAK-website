@@ -401,7 +401,7 @@ class: action, middle
 .pull-right-60[
 <br>
 .bq.font90[
-- Make a course folder called 'stat120' either on your Maize account or on your local computer 
+- Make a course folder called 'stat120' either on your [Maize](https://maize.mathcs.carleton.edu/auth-sign-in?appUri=%2F) account or on your local computer 
 - Please download the Assignment-0 template from [moodle](https://moodle.carleton.edu/course/view.php?id=42303) and go to [class helper web page](https://stat120-fall23.netlify.app/) 
 - We will go over this together. 
 ]
