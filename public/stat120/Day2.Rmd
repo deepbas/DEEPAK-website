@@ -240,9 +240,13 @@ class: action, middle
 <br>
 <br>
 .bql[
-- Go to the [google form](https://forms.gle/bsehnokiTrB4pWPb6)
 
-- Find the average word length and enter your answer
+Go to 
+
+  * [google form for section 01](https://forms.gle/H5bwYijgoZ1B2xco7)
+  * [google form for section 02](https://forms.gle/Cj2x7xv8iubsFzaa9)
+
+Find the average word length and enter your answer
 ]
 ]
 
@@ -307,11 +311,11 @@ class: middle
 
 class: action
 
-# [Danish study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688): Question order bias
+# [Swedish Study](https://link.springer.com/article/10.1007/s11109-020-09630-5): Response bias
 
 
 <center>
-<img src="images/abstract.png" width="80%" height="55%"> <br>
+<img src="images/swedish_study.png" width="70%" height="50%"> <br>
 </center>
 
 ---
@@ -319,14 +323,13 @@ class: action
 class: middle
 
 
-# Danish Study
+# Identified Sources of Bias in `Swedish Study`
 
-> Danish policy makers found out in the [study](https://onlinelibrary.wiley.com/doi/abs/10.1111/padm.12688) that order bias exists in Danish Public Services
 
-.font90[
-- When asked about overall satisfaction before being asked about specific services, the overall satisfaction was low.
+.bq.font90[
+`Political Bias:` The study experimentally primes the political affiliations of the respondents before asking questions about corruption. This bias arises when people's political leanings affect their perception and reporting of corruption levels.
 
-- When asked about overall satisfaction after being asked about specifc services, then the overall satifaction was high.
+`Sensitivity Bias:` Questions about one's experiences with corruption are sensitive in nature and may result in biased responses due to fear of retribution or social stigma.
 ]
 
 ---
@@ -366,7 +369,7 @@ class: middle
 - There is general unwillingness due to polar opposite opinions
 - The survey did not reach the right respondent
 
-.blue-h[e.g. A survey asking teenagers about best cigarette brands. Spam emails is also a prime reason for non-response bias]
+.blue-h[e.g. A survey asking teenagers about best cigarette brands.]
 
 ---
 
@@ -381,10 +384,11 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
-.bq[
+.bq.font80[
 
-- Go over to [moodle](https://moodle.carleton.edu/login/index.php) to get the class activity .Rmd file
-- Continue working with your neighbors and let me know of you have any questions
+- Identify one source of bias based on [The Effect of Question Order on Evaluations of Test Performance: Can the Bias Dissolve?](https://journals.sagepub.com/doi/full/10.1080/17470218.2016.1225108)
+
+- (Time permitting) Go over to [moodle](https://moodle.carleton.edu/login/index.php) to get the practice_template.Rmd file and work on a few problems together
 ]
 ]
 
