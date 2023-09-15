@@ -215,26 +215,6 @@ class: middle
 
 ---
 
-# Facebook and Greek Debt Crisis
-
-
-<center>
-<img src="images/confounding_facebook.png" width="60%" height="50%"> <br>
-</center>
-
-.footnote[https://www.bloomberg.com/news/articles/2011-12-01/correlation-or-causation]
-
----
-
-# Global Warming and Scientists
-
-<center>
-<img src="images/confounding_globalwarming.png" width="60%" height="50%"> <br>
-</center>
-
-.footnote[https://www.bloomberg.com/news/articles/2011-12-01/correlation-or-causation]
-
----
 
 class: middle
 
@@ -321,11 +301,8 @@ class: middle
 <img src="images/basic_randomization.png" width="70%" height="50%"> <br>
 </center>
 
-
-
-
-
 .footnote[Source: click [here](https://bookdown.org/jgscott/DSGI/experiments.html)]
+
 ---
 
 class: middle
@@ -336,11 +313,13 @@ class: middle
 - In a .b[randomized experiment], the explanatory variable for each
 unit is determined randomly, before the response variable is
 measured
+
 - The different levels of the explanatory variable are known as
 .b[treatments]
-- Randomly divide the units into groups, and randomly assign a
+
+  - Randomly divide the units into groups, and randomly assign a
 different treatment to each group
-- Observe the response variable after treatments are applied
+  - Observe the response variable after treatments are applied
 ]
 
 ---
@@ -385,55 +364,42 @@ activity and IQ, at least in mice?
 
 ---
 
-# Knee Surgery and Arthritis
+# Knee Surgery, Control Groups
 
-> Researchers conducted a study on the effectiveness of a knee
-surgery to cure arthritis. It was randomly determined whether
-people got the knee surgery. Everyone who underwent the
-surgery reported feeling less pain
+.bql[### Study Context
 
+- Researchers investigated the effectiveness of knee surgery for arthritis.
+- Patients who underwent surgery reported less pain.
+]
+
+<br>
 --
 
-- Is this evidence that the surgery causes a decrease in pain?
+.bql[### The Importance of a Control Group
 
---
-
-.out-t[Need a control or comparison group. What would happen without surgery?]
+- To validate if the surgery was effective, a control group received a fake knee surgery.
+- Results were indistinguishable between the control and treatment groups.
+]
 
 ---
 
-class: middle
 
 # Control Group
 
-.bql[
-- When determining whether a treatment is effective, it is
-important to have a comparison group, known as the .b[control group]
-
-- All randomized experiments need either a control group, or at
-least two different treatments to compare
-]
-
----
-
-
-# Knee Surgery for Arthritis
-
-.bql[
-- In the knee surgery study, those in the control group received a
-.b[fake knee surgery]. They were put under and cut open, but the
-doctor did not actually perform the surgery. All of these patients
-also reported less pain!
-
-- The improvement was .b[indistinguishable] between those receiving
-the real surgery and those receiving the fake surgery!
+.bq[
+### Placebo Effect
+- Control groups often get a placebo to measure the effect.
+- It is estimated that 75% of the effectiveness of anti-depressant medication is due to the placebo effect.
 ]
 
 --
 
-.center.font140.b[What is the reason?]
+<br>
 
-
+.bqt.font90[
+**Question:** Is this evidence that the surgery causes a decrease in pain?  
+**Answer:** No, control group results indicate that the placebo effect might be at play.
+]
 
 .footnote[Source: The Placebo Prescription, NY Times Magazine, 1/9/00]
 
@@ -441,47 +407,28 @@ the real surgery and those receiving the fake surgery!
 
 class: middle
 
-# Placebo Effect
-
-
-.bql[
--  Control groups are often given a .b[placebo], a fake treatment that resembles the active treatment as much as possible
-
-- People can experience the effect they think they should be
-experiencing, even if they aren’t actually receiving the treatment
-
-- One study estimated that 75% of the effectiveness of
-anti-depressant medication is due to the .b[placebo effect]
-
-]
-
----
-
-class: middle
-
 # Double-blinded Experiments
 
-> Neither the participants or the researchers evaluating participants should know which treatment the participants are actually getting
+> Nobody knows who gets what, not even the researchers.
 
 <br>
-.bql.font80[Example: Clinical trial testing new drug for reducing blood pressure
+.bq.font80[Example: A new pill for blood pressure
 
-- Participants split into drug and placebo groups
-- Drug and placebo made identical to ensure double-blinding, preventing participant knowledge and eliminating placebo effect
-- Researchers evaluating outcomes remain unaware of group assignments, avoiding unintentional biases and preserving result accuracy
+- Some people get the real pill, others a fake.
+- Both pills look the same so no one can tell.
+- Researchers checking results don't know either, so it's fair.]
 
-]
 
 
 ---
 
 class: middle
 
-# Randomized Experiments: randomized comparative experiment
+# Randomized Experiments Types: `randomized comparative experiment`
 
 .bql[
-- In this type of experiment, individuals are randomly assigned to a treatment or control group. 
-- This method is most effective when the investigator has no prior knowledge of the individuals who are part of the experiment. 
+- Individuals are randomly assigned to a treatment or control group. 
+- Most effective when the investigator has no prior knowledge of the individuals who are part of the experiment. 
 ]
 
 .blue-h[Example: A researcher randomly assigns participants to either a drug treatment group or a control group to measure the effectiveness of the drug.]
@@ -490,35 +437,64 @@ class: middle
 
 class: middle
 
-# Randomized Experiments: matched pairs experiment
+# Randomized Experiments Types: `matched pairs experiment`
 
 
 .bql[
-- In this type of experiment, each individual in the experimental group is matched with an individual in the control group based on a specific criterion. 
-- This method is most effective when the investigator has prior knowledge of the individuals involved in the experiment.
+- Each individual in the experimental group is matched with an individual in the control group based on a specific criterion. 
+- Most effective when the investigator has prior knowledge of the individuals involved in the experiment.
 ]
 
 .blue-h[Example: A researcher matches participants based on age, gender, and education level, then assigns one participant in the matched pair to the drug treatment group and the other to the control group to measure the effectiveness of the drug.]
 
 ---
 
-# Variations of matched pairs experiments:
+# Variations of matched pairs experiments: `Effectiveness of a training program`
 
-.pull-left[## Pretest-posttest design: 
-.bq.font90[
-- Match experimental and control group members based on pretest scores or baseline measurements
-- Apply intervention to experimental group
-- Compare posttest scores between matched pairs to evaluate treatment effect, accounting for initial differences
-<br>
+.pull-left[## Before-After Test: 
+.bq.font80[
+- Measure everyone's skill level before any training.
+
+  - .b[Example:] Time each runner's 100m sprint.
+  
+- Train only one group.
+
+- Measure again and compare.
+
+  - .b[Example:] Time the 100m sprint again and see who improved more.
 ]
 ]
-.pull-right[## Repeated measures design: 
-.bq.font90[
-- Each participant receives treatment and control interventions in random order
-- Measurements taken after each intervention; treatment effect evaluated by comparing outcomes within individuals
-- Reduces between-subject variability and often requires fewer participants for adequate statistical power
+.pull-right[## Two-Times Test: 
+.bq.font80[
+- Everyone gets both training and no training, but in random order.
+
+  - .b[Example:] Flip a coin to decide who gets training first.
+  
+- Measure skill after each.
+
+  - .b[Example:] Time each 100m sprint after both.
+  
+- Compare the same person's times to see which training worked.
 ]
 ]
+
+
+.footnote[[Sha’Carri Richardson wins 100-meter title](https://apnews.com/article/richardson-shacarri-world-championships-sprint-90b630b89309a85c37f08d9c787811ec)]
+
+<!--
+In the provided example, the "matching" comes from using the same individual to represent both the "before" and "after" states in the experiments. In paired designs, each subject essentially serves as their own control, which is a form of matching.
+
+Before-After Test: The matching here is temporal; the same individual's sprint time is measured before and after the training. By comparing these two measurements for each individual, the paired design accounts for many of the other variables that might affect sprint time, since each person serves as their own baseline or control.
+
+Two-Times Test (Repeated Measures): In this design, each individual undergoes both conditions (training and no training). The matching here is again based on the individual: the same person's performance under both conditions is compared. By doing so, the design controls for subject-specific variables.
+
+In both designs, the pairing or matching occurs at the level of the individual subject, reducing the impact of between-subject variability and thereby often providing a more precise estimate of the treatment effect.
+
+
+In summary, the choice between the two designs depends on the complexity of the research question, the limitations in resources, and the specific confounding variables that the experiment aims to control for.
+
+-->
+
 
 ---
 
@@ -536,11 +512,11 @@ class: action, middle
 <br>
 .bq[
 
-- Go over to [moodle](https://moodle.carleton.edu/login/index.php) to get the class activity .Rmd file
-- Continue working with your neighbors and let me know if you have any questions
+- Let's head over to [course helper page](https://stat120-fall23.netlify.app/) to see some case studies
+- Then we will work on a class activity
 ]
 ]
 
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
