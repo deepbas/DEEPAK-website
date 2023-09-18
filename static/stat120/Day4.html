@@ -59,7 +59,7 @@ background-size: 160px, 100% 100%
 
 ### .fancy[Stat 120]
 
- April 02 2023
+ September 18 2023
 
 ---
 
@@ -191,8 +191,8 @@ class: middle
 .bq.font80[In a pie chart, the relative area of each slice of the pie corresponds to the proportion in each category]
 
 
-<div id="htmlwidget-6808099d132ca3f86080" style="width:100%;height:432px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6808099d132ca3f86080">{"x":{"visdat":{"e83ba10f610b6":["function () ","plotlyVisDat"]},"cur_data":"e83ba10f610b6","attrs":{"e83ba10f610b6":{"labels":{},"values":{},"textposition":"inside","hoverinfo":"label+value+percent","textinfo":"label","insidetextfont":{"color":"#FFFFFF"},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Cell Phone Usage","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["Android","iPhone","Blackberry","Non Smartphone","No Cell Phone"],"values":[458,437,141,924,293],"textposition":["inside","inside","inside","inside","inside"],"hoverinfo":["label+value+percent","label+value+percent","label+value+percent","label+value+percent","label+value+percent"],"textinfo":"label","insidetextfont":{"color":"#FFFFFF"},"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d33f647b5eb61740ac72" style="width:100%;height:432px;"></div>
+<script type="application/json" data-for="htmlwidget-d33f647b5eb61740ac72">{"x":{"visdat":{"c1e5f290d603e":["function () ","plotlyVisDat"]},"cur_data":"c1e5f290d603e","attrs":{"c1e5f290d603e":{"labels":{},"values":{},"textposition":"inside","hoverinfo":"label+value+percent","textinfo":"label","insidetextfont":{"color":"#FFFFFF"},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Cell Phone Usage","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["Android","iPhone","Blackberry","Non Smartphone","No Cell Phone"],"values":[458,437,141,924,293],"textposition":["inside","inside","inside","inside","inside"],"hoverinfo":["label+value+percent","label+value+percent","label+value+percent","label+value+percent","label+value+percent"],"textinfo":"label","insidetextfont":{"color":"#FFFFFF"},"type":"pie","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(255,255,255,1)"}},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -282,11 +282,15 @@ round(ans,2)
 
 # Difference in proportions
 
-.bq[A difference in proportions is a difference in proportions for one categorical variable calculated for different levels of the other categorical variable]
+.bq.font90[A difference in proportions is a difference in proportions for one categorical variable calculated for different levels of the other categorical variable]
 
- - Example: `\(\text{proportion}_{\text{Females}}\)` - `\(\text{proportion}_{\text{Males}}\)`
+ - Example: Difference in proportions of male and female that are in a relationship:
+ 
+`\begin{align}
+  \text{proportion}_{\text{Females}} - \text{proportion}_{\text{Males}} = 
+  \hat{p}_F - \hat{p}_M = \frac{32}{107} - \frac{10}{62} = 0.14
+\end{align}`
 
- `$$\hat{p}_F - \hat{p}_M = \frac{32}{107} - \frac{10}{62} = 0.14$$`
 
 
 ```r
@@ -294,7 +298,7 @@ round(ans,2)
 prop.female &lt;- 32/107
 prop.male &lt;- 10/62
 prop.diff &lt;- prop.female - prop.male
-round(prop.diff,2)
+round(prop.diff,2) # round the final answer to 2 significant digits
 [1] 0.14
 ```
 
@@ -304,8 +308,8 @@ round(prop.diff,2)
 
 .bq.font80[The height of each bar is the number of the corresponding cell in the two-way table]
 
-<div id="htmlwidget-4c4f6c5c82a2e175795b" style="width:100%;height:432px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4c4f6c5c82a2e175795b">{"x":{"visdat":{"e83ba499ff457":["function () ","plotlyVisDat"]},"cur_data":"e83ba499ff457","attrs":{"e83ba499ff457":{"x":{},"y":{},"name":"In a relationship","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"e83ba499ff457.1":{"x":{},"y":{},"name":"It's complicated","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true},"e83ba499ff457.2":{"x":{},"y":{},"name":"Single","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of People"},"barmode":"group","xaxis":{"domain":[0,1],"automargin":true,"title":"Gender","type":"category","categoryorder":"array","categoryarray":["Female","Male"]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Female","Male"],"y":[32,10],"name":"In a relationship","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[12,7],"name":"It's complicated","type":"bar","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[63,45],"name":"Single","type":"bar","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-4e6fbec6b7df1438825a" style="width:100%;height:432px;"></div>
+<script type="application/json" data-for="htmlwidget-4e6fbec6b7df1438825a">{"x":{"visdat":{"c1e5f2ca21e6c":["function () ","plotlyVisDat"]},"cur_data":"c1e5f2ca21e6c","attrs":{"c1e5f2ca21e6c":{"x":{},"y":{},"name":"In a relationship","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"c1e5f2ca21e6c.1":{"x":{},"y":{},"name":"It's complicated","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true},"c1e5f2ca21e6c.2":{"x":{},"y":{},"name":"Single","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of People"},"barmode":"group","xaxis":{"domain":[0,1],"automargin":true,"title":"Gender","type":"category","categoryorder":"array","categoryarray":["Female","Male"]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Female","Male"],"y":[32,10],"name":"In a relationship","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[12,7],"name":"It's complicated","type":"bar","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[63,45],"name":"Single","type":"bar","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 
 
 
@@ -318,37 +322,12 @@ round(prop.diff,2)
 .bq.font80[A segmented bar chart is like a side-by-side bar chart, but the bars are stacked instead of side-by-side]
 
 
-<div id="htmlwidget-782ba640ef3a5b14112f" style="width:100%;height:432px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-782ba640ef3a5b14112f">{"x":{"visdat":{"e83ba5878a1c1":["function () ","plotlyVisDat"]},"cur_data":"e83ba5878a1c1","attrs":{"e83ba5878a1c1":{"x":{},"y":{},"name":"In a relationship","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"e83ba5878a1c1.1":{"x":{},"y":{},"name":"It's complicated","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true},"e83ba5878a1c1.2":{"x":{},"y":{},"name":"Single","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of People"},"barmode":"stack","xaxis":{"domain":[0,1],"automargin":true,"title":"Gender","type":"category","categoryorder":"array","categoryarray":["Female","Male"]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Female","Male"],"y":[32,10],"name":"In a relationship","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[12,7],"name":"It's complicated","type":"bar","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[63,45],"name":"Single","type":"bar","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fc6a7eaedd76b7aeea93" style="width:100%;height:432px;"></div>
+<script type="application/json" data-for="htmlwidget-fc6a7eaedd76b7aeea93">{"x":{"visdat":{"c1e5f2c7baa7d":["function () ","plotlyVisDat"]},"cur_data":"c1e5f2c7baa7d","attrs":{"c1e5f2c7baa7d":{"x":{},"y":{},"name":"In a relationship","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"c1e5f2c7baa7d.1":{"x":{},"y":{},"name":"It's complicated","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true},"c1e5f2c7baa7d.2":{"x":{},"y":{},"name":"Single","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Number of People"},"barmode":"stack","xaxis":{"domain":[0,1],"automargin":true,"title":"Gender","type":"category","categoryorder":"array","categoryarray":["Female","Male"]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Female","Male"],"y":[32,10],"name":"In a relationship","type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[12,7],"name":"It's complicated","type":"bar","marker":{"color":"rgba(255,127,14,1)","line":{"color":"rgba(255,127,14,1)"}},"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Female","Male"],"y":[63,45],"name":"Single","type":"bar","marker":{"color":"rgba(44,160,44,1)","line":{"color":"rgba(44,160,44,1)"}},"error_y":{"color":"rgba(44,160,44,1)"},"error_x":{"color":"rgba(44,160,44,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-class: action
-
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-
-&lt;br&gt;
-&lt;br&gt;
-.bq[
-
-- Let's go over this [article](https://features.apmreports.org/in-the-dark/mississippi-da-doug-evans-striking-black-people-from-juries/)
-- Download the Class Activity .Rmd file for today and skim through the corresponding problems
-]
-]
-
-<div class="countdown" id="timer_4c27f674" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
-
----
-
-# Flowers v. Mississippi
+# Case Study:` Flowers v. Mississippi`
 
 .bql.font80[2019 Supreme Court case:
 - Has Mississippi prosecutor Doug Evans deliberately use “peremptory challenges” to strike black jurors from jury pools?
@@ -388,10 +367,14 @@ Look at the first .b[three rows] of the data set
 
 ```r
 jurors[c(1,2,3), ]  #[rows, columns]
-  trial__id  race        struck_state defendant_race      same_race                     struck_by
-1         4 Black Not struck by State          White different race Juror chosen to serve on jury
-2         4 Black     Struck by State          White different race           Struck by the state
-3         4 White Not struck by State          White      same race Juror chosen to serve on jury
+  trial__id  race        struck_state defendant_race      same_race
+1         4 Black Not struck by State          White different race
+2         4 Black     Struck by State          White different race
+3         4 White Not struck by State          White      same race
+                      struck_by
+1 Juror chosen to serve on jury
+2           Struck by the state
+3 Juror chosen to serve on jury
 ```
 ]
 ---
@@ -403,8 +386,10 @@ class: middle
 
 ```r
 jurors$struck_state[1:10] # first 10 entries in the `struck_state` variable
- [1] "Not struck by State" "Struck by State"     "Not struck by State" "Not struck by State" "Struck by State"    
- [6] "Not struck by State" "Struck by State"     "Not struck by State" "Not struck by State" "Not struck by State"
+ [1] "Not struck by State" "Struck by State"     "Not struck by State"
+ [4] "Not struck by State" "Struck by State"     "Not struck by State"
+ [7] "Struck by State"     "Not struck by State" "Not struck by State"
+[10] "Not struck by State"
 ```
 
 ---
@@ -437,9 +422,40 @@ Not struck by State     Struck by State
 
 ---
 
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Work&amp;nbsp;1&lt;/i&gt;       
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+&lt;br&gt;
+&lt;br&gt;
+.bq[
+
+- Let's go over a tutorial on data visualization in R using `ggplot2` on [course helper page](https://stat120-fall23.netlify.app/tutorial-2-dive-deeper-into-data-visualization-and-statistics-in-r)
+]
+]
+
+<div class="countdown" id="timer_c4cb21cf" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+
+
+
+
+
+---
+
 count: false
  
-## Graphical summary: bar plot
+## Graphical summary: bar plot using ggplot2
 .panel1-bar-plot-auto[
 
 ```r
@@ -454,75 +470,34 @@ count: false
 ---
 count: false
  
-## Graphical summary: bar plot
+## Graphical summary: bar plot using ggplot2
 .panel1-bar-plot-auto[
 
 ```r
 library(ggplot2)  # load the library
-*counts_df &lt;- data.frame(x=c("Not Struck by State", "Struck by State"),
-*                       y=c(1084, 433))
+*ggplot(jurors, aes(x=struck_state))
 ```
 ]
  
 .panel2-bar-plot-auto[
-
+&lt;img src="Day4_files/figure-html/bar-plot_auto_02_output-1.svg" width="100%" /&gt;
 ]
 
 ---
 count: false
  
-## Graphical summary: bar plot
+## Graphical summary: bar plot using ggplot2
 .panel1-bar-plot-auto[
 
 ```r
 library(ggplot2)  # load the library
-counts_df &lt;- data.frame(x=c("Not Struck by State", "Struck by State"),
-                        y=c(1084, 433))
-*ggplot(counts_df, aes(x=x, y=y))
+ggplot(jurors, aes(x=struck_state)) +
+* geom_bar(fill="maroon")
 ```
 ]
  
 .panel2-bar-plot-auto[
 &lt;img src="Day4_files/figure-html/bar-plot_auto_03_output-1.svg" width="100%" /&gt;
-]
-
----
-count: false
- 
-## Graphical summary: bar plot
-.panel1-bar-plot-auto[
-
-```r
-library(ggplot2)  # load the library
-counts_df &lt;- data.frame(x=c("Not Struck by State", "Struck by State"),
-                        y=c(1084, 433))
-ggplot(counts_df, aes(x=x, y=y)) +
-* geom_col(fill="lightblue")
-```
-]
- 
-.panel2-bar-plot-auto[
-&lt;img src="Day4_files/figure-html/bar-plot_auto_04_output-1.svg" width="100%" /&gt;
-]
-
----
-count: false
- 
-## Graphical summary: bar plot
-.panel1-bar-plot-auto[
-
-```r
-library(ggplot2)  # load the library
-counts_df &lt;- data.frame(x=c("Not Struck by State", "Struck by State"),
-                        y=c(1084, 433))
-ggplot(counts_df, aes(x=x, y=y)) +
-  geom_col(fill="lightblue") +
-* labs(x="", y="Count", title="Counts")
-```
-]
- 
-.panel2-bar-plot-auto[
-&lt;img src="Day4_files/figure-html/bar-plot_auto_05_output-1.svg" width="100%" /&gt;
 ]
 
 &lt;style&gt;
@@ -551,7 +526,6 @@ ggplot(counts_df, aes(x=x, y=y)) +
   font-size: 50%
 }
 &lt;/style&gt;
-
 
 
 
@@ -599,7 +573,7 @@ jurors[(1:10), (2:3)]
 
 .font80[`table` gives two-way tables when two variables are included.] 
 
-.code80[
+.code70[
 
 ```r
 mytable &lt;- table(jurors$race, jurors$struck_state)
@@ -827,7 +801,7 @@ ggplot(jurors, aes(x = race, fill = struck_state)) +
 
 class: action
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Work&amp;nbsp;2&lt;/i&gt;       
 
 .pull-left-40[
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
@@ -838,15 +812,14 @@ class: action
 &lt;br&gt;
 .bq[
 
-- Please go over the in-class activity 
-- Talk to your neighbor
-- Let me know if you have any questions
+- Let's go over some more examples at the [course helper page](https://stat120-fall23.netlify.app/)
+- We will then do a class activity together
 ]
 ]
 
-<div class="countdown" id="timer_460d02ed" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_a0d0a1ef" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">20</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 
