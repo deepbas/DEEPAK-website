@@ -357,7 +357,7 @@ $$z = \dfrac{x - \text{mean}}{\text{SD}}$$]
 
 ---
 
-# Shape: Left Skew $\&$ Right Skew
+# Shape: Left Skew $\&$ Right Skew (Histograms)
 
 .pull-left[
 
@@ -403,7 +403,7 @@ median(survey$Exercise, na.rm = T)
 ```{r, echo=FALSE}
 ggplot(data = survey, aes(x = 1, y = GPA)) + 
   geom_boxplot() +
-  labs(x = "", y = "GPA") + coord_flip()
+  labs(x = "", y = "GPA", title = "Boxplot of GPA") + coord_flip()
 ```
 
 .code50[
@@ -420,7 +420,7 @@ median(survey$GPA, na.rm = T)
 ```{r, echo=FALSE}
 ggplot(data = survey, aes(x = 1, y = Exercise)) + 
   geom_boxplot() +
-  labs(x = "", y = "Exercise") + coord_flip()
+  labs(x = "", y = "Exercise", title = "Boxplot of Exercise") + coord_flip()
 ```
 
 .code50[
@@ -467,28 +467,32 @@ class: middle
 
 ## Adding a categorical variable: stats
 
-.bql.font70[Use `group_by()` and `summarise()` to get summary statistics using `dplyr` package to compare distributions across different levels of a categorical variable
+.bql.font60[Use `group_by()` and `summarise()` to get summary statistics using `dplyr` package to compare distributions across different levels of a categorical variable
 ]
 
 
 ```{r}
+library(dplyr)
 survey %>%
   group_by(Smoke) %>%
   summarise(
-    Min = min(Pulse, na.rm = TRUE),
-    Q1 = quantile(Pulse, 0.25, na.rm = TRUE),
-    Median = median(Pulse, na.rm = TRUE),
-    Mean = mean(Pulse, na.rm = TRUE),
-    Q3 = quantile(Pulse, 0.75, na.rm = TRUE),
-    Max = max(Pulse, na.rm = TRUE),
-    SD = sd(Pulse, na.rm = TRUE),
+    Min = min(Pulse),
+    Q1 = quantile(Pulse, 0.25),
+    Median = median(Pulse),
+    Mean = mean(Pulse),
+    Q3 = quantile(Pulse, 0.75),
+    Max = max(Pulse),
+    SD = sd(Pulse),
     N = n() )
 ```
 
 
-.hljs[
+.blue-h.font90[
 Pulse rate stats by smoking status: Smoker have a slightly higher mean pulse rate than non-smokers (71.8 vs. 69.3).
 ]
+
+
+.footnote[Link to [tutorial](https://stat120-fall23.netlify.app/tutorial-3-dive-deeper-into-data-manipulation-with-dplyr-in-r)]
 
 ---
 
@@ -533,11 +537,7 @@ ggplot(survey, aes(x = Smoke, y = Pulse)) +
 
 ]
 
-
-
 ---
-
-
 
 class: action
 
@@ -553,12 +553,11 @@ class: action
 <br>
 .bq[
 
-- Please go over the in-class activity 
-- Talk to your neighbor
-- Let me know if you have any questions
+- Let's head over to the [course helper page](https://stat120-fall23.netlify.app/) to see some more examples 
+- We will then do a class activity together
 ]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
