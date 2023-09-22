@@ -182,6 +182,8 @@ class: middle
 
 .blue-h[Correlation can be heavily affected by outliers. Plot your data!]
 
+## R-code:
+
 ```{r, eval=FALSE}
 # order of x and y doesn't matter!
 cor(data$x, data$y)  
@@ -251,7 +253,7 @@ class: middle
 
 - The regression line/equation should only be used if the association is approximately linear
 
-- Unlike correlation, for linear regression it does matter which is the explanatory variable and which is the response
+- .b[Unlike correlation], for linear regression it does matter which is the explanatory variable and which is the response
 ]
 
 ---
@@ -275,50 +277,44 @@ class: middle
 
 .pull-right-60[
 
-```{r,  echo=FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="90%"}
-# SAT sscores
+```{r,  echo=FALSE, fig.align='center', fig.width=4, fig.height=3.5, out.width="90%"}
+library(ggplot2)
 library(dplyr)
-sat <- read.csv("https://math.carleton.edu/Stats215/RLabManual/sat.csv")
-sat.MW <- filter(sat, region == "Midwest") # just MW states
-sat.lm <- lm(math ~ verbal, data=sat.MW)
 
-sat.lm.noIO <- lm( math ~ verbal, data=sat.MW, subset = -c(2,10)) 
-# same figure
-plot(math ~ verbal, data=sat.MW, pch=19, 
-     main="Average SAT for Midwest States",
-     xlab="Math SAT scores", 
-     ylab = "Verbal SAT scores",
-     cex.lab=0.7, cex.main = 0.7, cex.axis=0.7)
-abline(sat.lm)
-abline(sat.lm.noIO, col = "red")
-legend("topleft", legend = c("With IN and OH", "Without IN and OH"), col = c("black", "red"), lty = c(1,1), cex = 0.7)
-text(540, 535, "OH", ces = 0.5)
-text(500, 495, "IN", cex = 0.5)# Load necessary libraries
+# Load the data
+sat <- read.csv("https://math.carleton.edu/Stats215/RLabManual/sat.csv")
+
+# Filter for Midwest region
+sat.MW <- filter(sat, region == "Midwest")
+
+# Linear models
+sat.lm <- lm(math ~ verbal, data = sat.MW)
+sat.lm.noIO <- lm(math ~ verbal, data = sat.MW %>% slice(-c(2, 10)))
+
+# Coefficients for the line without IN and OH
+coeffs_noIO <- coef(sat.lm.noIO)
+
+# Create ggplot
+p <- ggplot(sat.MW, aes(x = verbal, y = math)) +
+  geom_point(shape = 19) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = "With IN and OH"), linetype = "solid") +
+  geom_segment(aes(x = min(verbal), y = coeffs_noIO[1] + coeffs_noIO[2] * min(verbal),
+                   xend = max(verbal), yend = coeffs_noIO[1] + coeffs_noIO[2] * max(verbal),
+                   color = "Without IN and OH"), linetype = "solid") +
+  scale_color_manual("Legend", values = c("With IN and OH" = "black", "Without IN and OH" = "red")) +
+  ggtitle("Average SAT for Midwest States") +
+  xlab("Verbal SAT scores") +
+  ylab("Math SAT scores") +
+  theme_minimal() +
+  theme(text = element_text(size = 8), legend.position = "bottom") +
+  annotate("text", x = 540, y = 535, label = "OH", size = 3) +
+  annotate("text", x = 500, y = 495, label = "IN", size = 3)
+
+# Show the plot
+print(p)
+
 ```
 ]
-
----
-
-class: action
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-
-<br>
-<br>
-.bq[
-
-Go to our class [moodle](https://moodle.carleton.edu) and skim through the class activity 
-
-Feel free to talk to your neighbor
-]
-]
-
-`r countdown(minutes = 3, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 ---
 
@@ -383,11 +379,10 @@ y-intercept Interpretation?
 .pull-left[
   
 ```{r, echo=TRUE, eval=FALSE}
-plot(BAC ~ Beers, data=bac, pch=19, 
-     main="Beer and BAC", 
-     xlab="Number of beers drank", 
-     ylab = "Blood Alcohol Content")
-abline(bac.lm) # adds regression line 
+library(ggplot2)
+ggplot(bac, aes(x = Beers, y = BAC)) +
+  geom_point(shape = 19) +
+  geom_smooth(method = "lm", se = FALSE)
 ```
   
 > If your friend drank 2 beers, what is your best guess at their BAC after 30 minutes?
@@ -397,12 +392,27 @@ abline(bac.lm) # adds regression line
 
 .pull-right[
 ```{r, echo=FALSE, eval=TRUE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="120%"}
-plot(BAC ~ Beers, data=bac, pch=19, 
-     main="Beer and BAC", 
-     xlab="Number of beers drank", 
-     ylab = "Blood Alcohol Content",
-     cex.lab=0.7, cex.main = 0.7, cex.axis=0.7)
-abline(bac.lm) # adds regression line 
+library(ggplot2)
+
+
+# Create ggplot
+p <- ggplot(bac, aes(x = Beers, y = BAC)) +
+  geom_point(shape = 19) +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Beer and BAC") +
+  xlab("Number of beers drank") +
+  ylab("Blood Alcohol Content") +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 8),
+    axis.text = element_text(size = 7),
+    axis.title = element_text(size = 7),
+    plot.title = element_text(size = 7)
+  )
+
+# Show the plot
+print(p)
+
 ```
 ]
 
@@ -424,73 +434,36 @@ abline(bac.lm) # adds regression line
 .pull-right[
  
 ```{r, echo = FALSE, eval=TRUE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="120%" }
-# Beer and BAC
+library(ggplot2)
 
+# Assuming you've read the data into a data frame named bac and fitted a linear model bac.lm
 bac <- read.csv("http://math.carleton.edu/kstclair/data/BAC.csv")
 bac.lm <- lm(BAC ~ Beers, data=bac)
 
-plot(BAC ~ Beers, data=bac, pch=19, 
-     main="Beer and BAC", 
-     xlab="Number of beers drank", 
-     ylab = "Blood Alcohol Content",
-     cex.lab=0.7, cex.main = 0.7, cex.axis=0.7)
-abline(bac.lm) # adds regression line to the plot
-segments(2, 0, 2, 0.023, lty = 2, col = "red")
-segments(0, 0.023, 2, 0.023, lty = 2, col = "red")
-text(1,0.018, "0.023", col = "red", cex = 0.5)
-segments(2, 0.023, 2, 0.03, lty = 3, col = "red", cex = 0.5)
-segments(0, 0.03, 2, 0.03, lty = 3, col = "blue", cex = 0.5)
-text(1, 0.035, "0.03", col = "blue", cex = 0.5)
-```
+# Create ggplot
+p <- ggplot(bac, aes(x = Beers, y = BAC)) +
+  geom_point(shape = 19) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_segment(aes(x = 2, y = 0, xend = 2, yend = 0.023), linetype = 2, color = "red") +
+  geom_segment(aes(x = 0, y = 0.023, xend = 2, yend = 0.023), linetype = 2, color = "red") +
+  geom_segment(aes(x = 2, y = 0.023, xend = 2, yend = 0.03), linetype = 3, color = "red") +
+  geom_segment(aes(x = 0, y = 0.03, xend = 2, yend = 0.03), linetype = 3, color = "blue") +
+  geom_text(aes(x = 1, y = 0.018, label = "0.023"), color = "red", size = 3) +
+  geom_text(aes(x = 1, y = 0.035, label = "0.03"), color = "blue", size = 3) +
+  ggtitle("Beer and BAC") +
+  xlab("Number of beers drank") +
+  ylab("Blood Alcohol Content") +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 8),
+    axis.text = element_text(size = 7),
+    axis.title = element_text(size = 7),
+    plot.title = element_text(size = 7)
+  )
 
-]
+# Show the plot
+print(p)
 
----
-
-# Residuals Plot
-
-.pull-left[
-
-```{r, echo = FALSE, eval=TRUE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="120%"}
-# residual size plot
-library(ggplot2)
-bac <- read.csv("http://math.carleton.edu/kstclair/data/BAC.csv")
-d <- bac
-
-fit <- lm(BAC ~ Beers, data = d) # fit the model
-d$predicted <- predict(fit)   # Save the predicted values
-d$residuals <- residuals(fit) # Save the residual values
-
-ggplot(d, aes(x = Beers, y = BAC)) +
-  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +     # regression line  
-  geom_segment(aes(xend = Beers, yend = predicted), alpha = .2) +      # draw line from point to line
-  geom_point(aes(color = abs(residuals), size = abs(residuals))) +  # size of the points
-  scale_color_continuous(low = "green", high = "red") +   
-  labs(title = "BAC Vs. Beers") +# colour of the points mapped to residual size - green smaller, red larger
-  guides(color = FALSE, size = FALSE) +                             # Size legend removed
-  geom_point(aes(y = predicted), shape = 1, size = 2) +
-  scale_x_continuous(breaks=1:9)+
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=10,face="bold"),
-        plot.title = element_text(size = 10, face = "bold"))
-
-```
-]
-
-.pull-right[
-
-```{r, echo = FALSE, eval=TRUE, fig.align='center', fig.width=4.5, fig.height=4.5, out.width="120%"}
-ggplot(d, aes(x = Beers, y = residuals)) +
-  geom_point() +
-  theme(legend.position = "none") +
-  geom_segment(aes(xend = Beers, yend = 0), alpha = .2) +
-  scale_color_continuous(low = "green", high = "red") +   
-  geom_point(aes(color = abs(residuals), size = abs(residuals))) +  # size of the points
-  geom_hline(yintercept = 0, col = "blue", size = 0.5, linetype = "dashed") + 
-  labs(title = "BAC Vs. Beers",
-       x = "Beers",
-       y = "Residuals") +
-  theme(plot.title = element_text(hjust=0.5, size=7, face='bold')) 
 ```
 
 ]
@@ -527,57 +500,31 @@ summary(bac.lm)
 ```
 ]
 
----
-
-# Additional Comments
-
-.bql[Include confounding variables when appropriate
-- augment scatterplot with colors for each category
-]
-
-```{r, echo = TRUE, eval=FALSE, fig.align='center', fig.width=4.5, fig.height=4, out.width="100%"}
-ggplot(data, aes(x=x,y=y,color=z)) + geom_point()
-```
-
---
-
-.bqt.font90[
-- split (subset) data by categories, run regressions for each group.
-- look for outliers that affect the fitted model and correlation
-- fit the model/correlation with and without case(s) to see the affects
-]
 
 ---
 
 class: middle
 
-# Adding a categorical variable
+# Adding a categorical variable (confounding variable)
 
 .pull-left[
 
 ```{r, echo = FALSE, eval=TRUE, fig.align='center', fig.width=4, fig.height=4, out.width="80%"}
-salarydata <- read.csv("https://www.lock5stat.com/datasets2e/SalaryGender.csv")
-salarydata$PhD <- as.factor(salarydata$PhD)
-salarydata$PhD <- ifelse(salarydata$PhD == "0", "No", "Yes")
-
-ggplot(salarydata, aes(x=Age, y=Salary, color=PhD)) + 
-  geom_point()+ theme(legend.position = "bottom")
-  
+ggplot(bac, aes(x = Beers, y = BAC, color = Sex)) + 
+  geom_point() 
 ```
 
 ]
 
 .pull-right[
-.code80[
+
 ```{r, eval=FALSE}
-ggplot(salarydata, aes(x=Age,  
-                       y=Salary,
-                       color=PhD)) + 
+ggplot(bac, aes(x = Beers, y = BAC, color = Sex)) + 
   geom_point()
 ```
-]
+
 .bq.font90[
-- Visually split the data by PhD status
+- Visually split the data by Sex
 - Potentially different trends
 ]
 ]
@@ -586,23 +533,29 @@ ggplot(salarydata, aes(x=Age,
 
 class: middle
 
-# Adding a categorical variable
+# Adding a categorical variable (confounding variable)
 
-.pull-left-60[
+.pull-left[
 
 ```{r, echo = FALSE, fig.align='center', fig.width=4, fig.height=4, out.width="85%"}
-ggplot(salarydata, aes(x=Age, y=Salary, color=PhD))+
-  geom_point() +
-  geom_smooth(method ="lm", se=FALSE)+
-  theme(legend.position = "bottom")
+ggplot(bac, aes(x = Beers, y = BAC, color = Sex)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
 ]
 
-.pull-right-40[
-<br>
+.pull-right[
+
+```{r, eval=FALSE}
+ggplot(bac, aes(x = Beers, y = BAC, color = Sex)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
 .bql[
-Visually infer difference in groups:
+Visually infer difference in Sex:
 - Different correlation
 - Different intercepts
 ]
@@ -616,21 +569,21 @@ Visually infer difference in groups:
 
 ```{r}
 library(dplyr)
-table(salarydata$PhD)
+table(bac$Sex)
 ```
 
 --
 
 ```{r}
-salary.NoPhD <- filter(salarydata, PhD == "No")
-salary.PhD <- filter(salarydata, PhD == "Yes")
+bac_female <- filter(bac, Sex == "female")
+bac_male <- filter(bac, Sex == "male")
 ```
 
 --
 
 ```{r}
-cor(salary.NoPhD$Salary,salary.NoPhD$Age)
-cor(salary.PhD$Salary,salary.PhD$Age)
+cor(bac_female$BAC,bac_female$Beers)
+cor(bac_male$BAC,bac_male$Beers)
 ```
 
 ---
@@ -642,7 +595,6 @@ class: middle
 
 .code80[
 ```{r}
-library(dplyr)
 sat <- read.csv("https://math.carleton.edu/Stats215/RLabManual/sat.csv")
 sat.MW <- filter(sat, region == "Midwest") # just MW states
 cor(sat.MW$math, sat.MW$verbal)
@@ -665,10 +617,16 @@ class: middle
 
 # Outliers: Average SAT by state, excluding Indiana and Ohio
 
-.code80[
+.code70[
 ```{r}
-which(sat.MW$verbal < 550)
-cor(sat.MW$math[-c(2,10)], sat.MW$verbal[-c(2,10)])
+library(dplyr)
+# Find the rows where 'verbal' is less than 550 using filter
+filtered_data <- filter(sat.MW, verbal < 550)
+
+# Exclude data corresponding to specific indices and calculate correlation
+filtered_sat_MW <- sat.MW %>%  slice(-c(2, 10))
+cor_result <- cor(filtered_sat_MW$math, filtered_sat_MW$verbal)
+
 sat.lm.noIO <- lm( math ~ verbal, data=sat.MW, subset = -c(2,10))
 sat.lm.noIO
 ```
@@ -678,7 +636,7 @@ summary(sat.lm.noIO)$r.squared
 ```
 ]
 
-.out-t.bold[Correlation = 0.8465, Regression slope = 0.9956 , R-squared = 71.66%]
+.out-t[Correlation = 0.8465, Regression slope = 0.9956 , R-squared = 71.66%]
 
 ---
 
@@ -697,11 +655,11 @@ class: action
 
 <br>
 
-Go over the remaining portion of in class activity and let me know if you have any questions!
+Go over some examples in [class helper page](https://stat120-fall23.netlify.app/) and complete the class activity and let me know if you have any questions!
 
 ]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
