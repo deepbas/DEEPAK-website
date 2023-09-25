@@ -504,7 +504,7 @@ class: action
 <br>
 .bq[
 
-Please go over the class activity and let me know if you have any questions.
+Please go over the class activity and [class helper page](https://stat120-fall23.netlify.app/) and let me know if you have any questions.
 
 ]
 ]
