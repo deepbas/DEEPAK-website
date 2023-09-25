@@ -486,64 +486,8 @@ class: middle
 
 .center.bold[This is the bootstrap distribution!]
 
----
 
-
-`r chunk_reveal("bootstrap", widths = c(0.6, 0.4), title = "## Bootstrap Distrubution")`
-
-
-
-.font70[
-```{r bootstrap, fig.width = 4, fig.height = 3.5, out.width = "100%", include=FALSE}
-set.seed(143); (X <- c(20,24,19,23,22,16)) # n = 6
-(X1_star <- sample(X, replace = TRUE))
-(X2_star <- sample(X, replace = TRUE))
-(X3_star <- sample(X, replace = TRUE))
-(X4_star <- sample(X, replace = TRUE))
-(X5_star <- sample(X, replace = TRUE))
-(XN_star <- sample(X, replace = TRUE))
-(mean(X))
-(mean(X1_star))
-(mean(X2_star))
-(mean(X3_star))
-(mean(X4_star))
-(mean(X5_star))
-(mean(XN_star))  # N = simulation size
-```
-]
-
----
-
-`r chunk_reveal("bootstrap-demo", widths = c(0.52, 0.48), title = "## Bootstrap Distrubution")`
-
-.font70[
-```{r bootstrap-demo, fig.width = 5, fig.height = 5, out.width = "100%", include=FALSE}
-library(purrr)
-set.seed(143) 
-X <- c(20,24,19,23,22,16)
-
-# Prototype simulation with N = 500
-bootstrapped_means <- tibble(
-  iteration = 1:500,
-  mean = map_dbl(iteration, 
-                 ~mean(sample(X, replace = TRUE)))
-)
-
-ggplot(bootstrapped_means, aes(x = mean)) +
-  geom_dotplot(dotsize = 0.7, 
-               stackratio = 0.9, 
-               binwidth = .13, 
-               color = "gold", 
-               fill = "blue") +
-  ggtitle("") + xlab("") + ylab("") +
-  scale_x_continuous(limits = c(17, 24), 
-                     expand = c(0, 0), 
-                     breaks = seq(17, 24, 1)) +
-  labs(title = "Bootstrap distribution of sample mean")
-```
-]
-
-
+.footnote[[Statkey Demo Page](https://www.lock5stat.com/StatKey/bootstrap_1_quant/bootstrap_1_quant.html)]
 
 ---
 
@@ -560,9 +504,9 @@ class: action
 <br>
 .bq[
 
-Please go through the remainder of the class activity file and try to answer the questions
+Please go over the class activity and let me know if you have any questions.
 
 ]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
