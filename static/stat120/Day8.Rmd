@@ -40,8 +40,6 @@ knitr::opts_chunk$set(echo = TRUE,
                       out.width = "100%"
                       )
 
-
-
 # load necessary packages
 library(tidyverse)
 library(countdown)
@@ -330,7 +328,7 @@ class: middle
 ---
 
 
-`r chunk_reveal("bootstrap-demo", widths = c(0.4, 0.6), title = "## Bootstrap Distrubution using CarletonStats")`
+`r chunk_reveal("bootstrap-demo", widths = c(0.4, 0.6), title = "## Bootstrap Distrubution using CarletonStats R Package")`
 
 .font50[
 ```{r bootstrap-demo, fig.width = 5, fig.height = 5, out.width = "80%", include=FALSE}
@@ -359,7 +357,7 @@ class: action
 <br>
 .bq[
 
-Go over the remaining portion of in class activity and let me know if you have any questions!
+Please go over the class activity and [class helper page](https://stat120-fall23.netlify.app/) and let me know if you have any questions.
 
 ]
 ]
