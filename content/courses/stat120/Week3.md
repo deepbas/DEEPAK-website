@@ -13,6 +13,8 @@ Day 7 Slides ({{% staticref "stat120/Day7.pdf" "newtab" %}}pdf{{% /staticref %}}
 
 Day 8 Slides ({{% staticref "stat120/Day8.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day8.html" "newtab" %}}html{{% /staticref %}})
 
+Day 9 Midterm 1
+
 <!--
 
 Day 9 Slides ({{% staticref "stat120/Day9.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day9.html" "newtab" %}}html{{% /staticref %}})

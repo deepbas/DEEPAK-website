@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Understanding Confidence Intervals and Bootstrap</title>
+    <title>Statistical Hypothesis Testing</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -49,371 +49,51 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Understanding Confidence Intervals and Bootstrap]
+# .fancy[Statistical Hypothesis Testing]
 
 ### .fancy[Stat 120]
 
- October 02 2023
+ September 30 2023
 
 
 ---
 
 class: middle
 
-## Confidence Interval Recap
-
-.bql[A .bold[confidence interval] for a parameter is an interval computed from sample data by a method that will capture the parameter for a specified proportion of all samples.
-
-`$$CI = PE \pm ME$$`
-.bold[95 % CI] $$ statistic \pm 2\times SE $$
-
-]
-
-
----
-
-## Confidence level analogy and recap
-
-.bql.font60[
-### Target Analogy:
-  - Target represents the data distribution and bullseye is the true mean of the data.
-]
-
-.pull-left[
-.bq.font60[
-### Shooting Arrows:
-
-    - Bow's confidence level determines accuracy.
-    
-    - A "95% confident" bow:
-      - 95 arrows hit inside the bullseye out of 100
-      - 5 arrows miss
-
-### Single Shot Principle:
-
-     - Each arrow either hits or misses.
-  
-     - No in-between or partial accuracy.
-
-
-]
-]
-
-
-
-.pull-right[
-&lt;br&gt;
-&lt;center&gt;
-&lt;img src="images/dart.png" width="60%" height="60%"&gt;&lt;br&gt;
-&lt;a style="font-size: smaller;"&gt;Confidence level analogy with throwing darts&lt;/a&gt;
-&lt;/center&gt;
-
-
-]
-
-
-
-
----
-
-class: middle
-
-#  Conceptual Understanding: Repeated Sampling
-
-.pull-left[
-&lt;br&gt;
-.bq.font90[
-- The success rate (proportion of all samples whose intervals contain the parameter) is known as the .bold[confidence level]
-
-- A 95% confidence interval will contain the true .bold[parameter] for 95% of all samples
-]
-]
-
-.pull-right[
-&lt;center&gt;
-&lt;img src="images/skconfidence.png" width="60%" height="60%"&gt;&lt;br&gt;
-&lt;a style="font-size: smaller;"&gt;Repeated Sampling of 100 95% Confidence Intervals, Truth = Vertical Line&lt;/a&gt;
-&lt;/center&gt;
-]
-
----
-
-
-# Example 1
-
-A survey of .bold[1,502] Americans in January 2012 found that .bold[86%] consider the economy a “top priority” for the president and congress. The standard error for this statistic is .bold[0.01]. 
-
-.bql[
-
-What is the .bold[95% confidence interval] for the true proportion of all Americans that considered the economy a “top priority” at that time?
-
-
-(1). (0.85, 0.87)
-
-(2). (0.84, 0.88)
-
-(3). (0.82, 0.90)
-
-]
-
-&lt;br&gt;
-&lt;details&gt;
-&lt;summary&gt;Click for answer&lt;/summary&gt;
-The correct answer is (2).
-&lt;/details&gt;
-
-.footnote[Click [here](https://www.pewresearch.org/politics/2012/01/23/public-priorities-deficit-rising-terrorism-slipping/) for the link]
-
----
-
-
-# Confidence Interval Interpretation
-
-.bql[
-
-Which of the following is an appropriate .bold[interpretation] for a 95% confidence interval:
-
-A. “we are 95% sure the interval contains the parameter”
-
-B. “there is a 95% chance the interval contains the parameter”
-
-C. Both A and B
-
-D. Neither A nor B
-]
-
-&lt;br&gt;
-&lt;details&gt;
-&lt;summary&gt;Click for answer&lt;/summary&gt;
-The correct answer is A.
-&lt;/details&gt;
-
-
-
----
-
-
-# Common Misintepretations
-
-.bql[
-- .bold[Misinterpretation 1:] “A 95% confidence interval contains 95% of the data in the population"
-- .bold[Misinterpretation 2:] “I am 95% sure that the mean of a sample will fall within a 95% confidence interval for the mean”
-- .bold[Misinterpretation 3:] “The probability that the population parameter is in this particular 95% confidence interval is 0.95”
-]
-
---
-
-
-.yellow-h.font120[.b[Correct:] I am 95% sure that the mean of a population will fall within a 95% confidence interval for the mean]
-
----
-
-
-&lt;br&gt;
-&lt;br&gt;
-
-# Example 2
-
-.bql[
-A 98% confidence interval for mean pulse rate is 65 to 71.  The interpretation “I am 98% sure that all students will have pulse rates between 65 and 71.” is
-
-A. Correct
-
-B. Incorrect
-
-]
-
-&lt;br&gt;
-&lt;details&gt;
-&lt;summary&gt;Click for answer&lt;/summary&gt;
-The correct answer is B.
-&lt;/details&gt;
-
----
-
-&lt;br&gt;
-&lt;br&gt;
-
-# Example 3
-
-.bql[
-A 98% confidence interval for mean pulse rate is 65 to 71.  The interpretation “I am 98% sure that the mean pulse rate for this sample of students will fall between 65 and 71” is
-
-
-A. Correct
-
-B. Incorrect
-
-]
-
-&lt;br&gt;
-&lt;details&gt;
-&lt;summary&gt;Click for answer&lt;/summary&gt;
-The correct answer is B.
-&lt;/details&gt;
-
----
-
-&lt;br&gt;
-&lt;br&gt;
-
-# Example 4
-
-.bql[
-A 98% confidence interval for mean pulse rate is 65 to 71.  The interpretation “I am 98% sure that the mean pulse rate for the population of all students will fall between 65 and 71” is
-
-
-A. Correct
-
-B. Incorrect
-
-]
-
-&lt;br&gt;
-&lt;details&gt;
-&lt;summary&gt;Click for answer&lt;/summary&gt;
-The correct answer is A.
-&lt;/details&gt;
-
----
-
-&lt;br&gt;
-&lt;br&gt;
-
-# Level of Confidence
-
-.bql[Which is wider? a 99% confidence interval or a 95% confidence interval?
-
-(a) 95% CI
-
-(b) 99% CI
-
-]
-
-&lt;br&gt;
-&lt;details&gt;
-&lt;summary&gt;Click for answer&lt;/summary&gt;
-The correct answer is (b). We need a larger interval (range of likely parameter values) to have more confidence.
-&lt;/details&gt;
-
----
-
-background-image: url("images/cireview.png") 
-background-position: cover
-background-size: 800px, 100% 100%
-
----
-
-&lt;br&gt;
-&lt;br&gt;
-
-# Recap: Sampling Distribution Vs Bootstrap Distribution
-
-.pull-left[
-
-.bq.font80[
-.bold[Sampling Distribution of a statistic]
-
-- Take .green[many samples] from the population, compute the statistic for each sample
-- .bold[Shape:] bell-shaped when n is large
-- .bold[Center:] population parameter
-- .bold[Spread:] called the SE of the statistic
-&lt;br&gt;
-&lt;br&gt;
-]
-]
-
-.pull-right[
-.bq.font80[
-
-.bold[Bootstrap Distribution of a statistic]
-
-- Take .green[many bootstrap samples] from the original sample, compute the statistic for each bootstrap sample
-- .bold[Shape:] bell-shaped when n is large
-- .bold[Center:] original sample statistic!
-- .bold[Spread:] called the bootstrap SE of the statistic
-]
-
-]
-
---
-
-&lt;br&gt;
-.out-t.center[The .bold[standard errors] from both approaches should be similar!!]
-
-
----
-
-# Percentile Method Bootstrap
-
-.bq.font90[If the bootstrap distribution is approximately symmetric, a P% confidence interval equals the percentiles in the bootstrap distribution so that the proportion of bootstrap statistics between the percentiles equal P%.]
+# Extrasensory Perception
 
 &lt;center&gt;
-&lt;img src="images/bootpercentile.png" width="60%" height="60%"&gt;&lt;br&gt;
-&lt;a&gt;Percentiles of a bootstrap distribution&lt;/a&gt;
+&lt;img src="images/psychic.jpg" width="80%" height="70%"&gt;&lt;br&gt;
+&lt;a&gt;&lt;/a&gt;
 &lt;/center&gt;
 
 ---
 
 class: middle
 
-# The Magic of Bootstrapping
+# Extrasensory Perception
 
-.bql.font90[
-- We can use bootstrapping to approximate the SE for .bold[many types] of sample statistic!
-    - Mean, proportion, differences, correlation, slope
-    - Standard deviation, *median*
-
-- What should the bootstrap distribution .bold[look] like?
-    - “smooth” (i.e. not a lot of spikey-ness)
-    - If using `\(95\% ME = 2SE\)`, should be symmetric and bell-shaped.
-]
-
-
----
-
-# Mercury and pH in Lakes
-
-For Florida lakes, what is the correlation between average mercury level (ppm) in fish taken from a lake and acidity (pH) of the lake?
+One way to test for ESP is with Zener cards:
 
 .pull-left[
-
-
+&lt;br&gt;
+&lt;br&gt;
 &lt;center&gt;
-&lt;img src="images/mercury.png" width="90%" height="90%"&gt;&lt;br&gt;
-&lt;a&gt;Mercury levels vs. pH&lt;/a&gt;
+&lt;img src="images/signs.png" width="70%" height="70%"&gt;&lt;br&gt;
+&lt;a&gt;&lt;/a&gt;
 &lt;/center&gt;
 
-
 ]
+
 .pull-right[
-
 &lt;center&gt;
-&lt;img src="images/lake.jpg" width="60%" height="60%"&gt;&lt;br&gt;
-&lt;a&gt;A lake in Florida&lt;/a&gt;
+&lt;img src="images/zenner.jpg" width="70%" height="70%"&gt;&lt;br&gt;
+&lt;a&gt;&lt;/a&gt;
 &lt;/center&gt;
 
-.bqt.font90[
-`\(r = -0.575\)`
-
-Give a 90% CI for `\(\rho\)`?
-]
 ]
 
-
-.footnote[Lange, Royals, and Connor, Transactions of the American Fisheries Society (1993)]
-
----
-
-## Mercury and pH in Lakes (Link to [Statkey](http://www.lock5stat.com/StatKey/index.html))
-
-&lt;center&gt;
-&lt;img src="images/rho.png" width="50%" height="50%"&gt;&lt;br&gt;
-&lt;a&gt;Bootstrapping correlation parameter.&lt;/a&gt;
-&lt;/center&gt;
-
-.out-t.font80[We are 90% confident that the true correlation between average mercury level and pH of Florida lakes is between -0.702 and -0.433.]
-
+&gt; Subjects draw a card at random and telepathically communicate this to someone who then guesses the symbol
 
 ---
 
@@ -425,22 +105,277 @@ class: action
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
+&lt;br&gt;
+.bq.font80[
+
+- Randomly choose a letter from A B C D E and write it down (don’t show anyone!)
+
+- Find a partner, telepathically communicate your letter (no auditory or visual clues!) and have them guess your
+letter.
+
+- Repeat a couple of times then switch roles.
+
+
+]
+
+.out-t[How often did you guess correctly?]
+]
+
+<div class="countdown" id="timer_d4ded6b3" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+---
+
+class: middle, inverse
+
+
+&gt; Suppose you did this 10 times and guessed correctly 3 times. Is this evidence that you have ESP abilities?
+
+---
+
+# Extrasensory Perception
+
+.bql[
+There are five cards with five different symbols. If there is no such thing as ESP, what proportion p of guesses should be correct?
+
+  1. `\(\mathrm{p}=0\)`
+  2. `\(\mathrm{p}=1/ 4\)`
+  3. `\(\mathrm{p}=1 / 5\)`
+  4. `\(\mathrm{p}=1 / 2\)`
+]
+
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is 3. (since there are five choices and we are randomly guessing)
+&lt;/details&gt;
+
+---
+
+# Extrasensory Perception 
+
+.bql[
+Let `\(\hat{p}\)` denote the sample proportion of correct guesses. Which of the statistics below would give the strongest evidence for ESP?
+
+  1. `\(\hat{\mathrm{p}}=0\)`
+  2. `\(\hat{\mathrm{p}}=1 / 5\)`
+  3. `\(\hat{\mathrm{p}}=1 / 2\)`
+  4. `\(\hat{\mathrm{p}}=3 / 4\)`
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is 4. Since more correct means ESP. 
+&lt;/details&gt;
+
+
+---
+
+# Extrasensory Perception
+
+.bql.font120[
+- As we've learned, statistics vary from sample to sample
+- Even if the "population/true" proportion is `\(\mathrm{p}=1/5\)`, not every sample proportion will be exactly `\(1/5\)`
+]
+
+--
+
+&lt;br&gt;
+&lt;br&gt;
+
+.out-t.font120[How do we determine when a sample proportion is far enough above 1/5 to provide evidence of ESP?]
+
+---
+
+&lt;br&gt;
+
+# Statistical Test
+
+.bql.font110[
+A statistical test uses data from a sample to assess a claim about a population or experiment
+
+
+.yellow-h.bold[Null Hypothesis:] `\(\left(\mathrm{H}_{0}\right)\)`
+Claim that there is no effect or difference.
+
+.yellow-h.bold[Alternative Hypothesis:] `\(\left(\mathrm{H}_{\mathrm{a}}\right)\)`
+Claim for which we seek evidence.
+
+]
+
+--
+
+&lt;br&gt;
+&lt;br&gt;
+
+.out-t.center[Always claims about .bold[population parameters.]]
+
+---
+
+class: middle
+
+# ESP Hypothesis
+.bql.font[
+For the ESP experiment:
+  - `\(\mathrm{H}_{0}: \mathrm{p}=1 / 5\)`
+  - `\(\mathrm{H}_{\mathrm{a}}: \mathrm{p}&gt;1 / 5\)`
+]
+
+---
+
+
+class: middle
+
+# Helpful hints
+
+.bq.font90[
+- `\(\mathrm{H}_{0}\)` usually includes `\(=\)`
+- `\(\mathrm{H}_{\mathrm{a}}\)` usually includes `\(&gt;,&lt;\)`, or `\(\neq\)`
+- The direction in `\(\mathrm{H}_{\mathrm{a}}\)` depends on the question being asked, not based on what the data shows!
+- The data should be used as an evidence supporting or refuting `\(\mathrm{H}_{\mathrm{a}}\)`.
+]
+
+---
+
+
+# Sleep Vs. Caffeine 
+
+.bql.font90[
+Students were given words to memorize, then randomly assigned to take either a 90 min nap, or a caffeine pill. `\(2 \frac{1}{2}\)` hours later, they were tested on their recall ability.
+- Explanatory variable: .bold[sleep or caffeine]
+- Response variable: .bold[number of words recalled]
+]
+
+
+&lt;br&gt;
+
+.green-h.font120[.b[Research Question]: Is sleep or caffeine better for memory?
+]
+
+.footnote[Mednick, Cai, Kanady, and Drummond (2008). “Comparing the benefits of caffeine, naps and placebo on verbal, motor and perceptual memory,” Behavioral Brain Research, 193, 79-86.]
+
+---
+
+
+# Sleep Vs. Caffeine
+
+.bqt.font90[
+
+What is the parameter of interest in the sleep versus caffeine experiment?
+
+  1. Proportion
+  2. Difference in proportions
+  3. Mean
+  4. Difference in means
+  5. Correlation
+  
+]
+
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is 4.
+
+.bq[Difference in mean responses `\(\mu_1 - \mu_2\)`, where `\(\mu_1\)` and `\(\mu_2\)` are the mean words recalled in the two different conditions]
+
+&lt;/details&gt;
+
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+
+# Sleep Vs. Caffeine
+
+.bqt[
+
+Let `\(\mu_{\mathrm{s}}\)` and `\(\mu_{\mathrm{c}}\)` be the mean number of words recalled after sleeping and after caffeine.
+
+]
+
+&lt;br&gt;
+
+--
+
+.bql[
+- Is there a difference in average word recall between sleep and caffeine?
+]
+
+---
+
+# Sleep Vs. Caffeine
+
+.bql.font90[
+- What are the null and alternative hypothesis?
+
+  1. `\(\mathrm{H}_{0}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}\)`
+  2. `\(\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}\)`
+  3. `\(\mathrm{H}_{0}: \mu_{\mathrm{s}} \neq \mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}&gt;\mu_{\mathrm{c}}\)`
+  4. `\(\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}&gt;\mu_{\mathrm{c}}\)`
+  5. `\(\mathrm{H}_{0}: \mu_{\mathrm{s}}=\mu_{\mathrm{c}}, \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{s}}&lt;\mu_{\mathrm{c}}\)`
+]
+
+&lt;br&gt;
+
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+The correct answer is 2 (since we are looking for evidence that the means are different)
+&lt;/details&gt;
+
+---
+
+class: middle
+
+# Statistical Significance
+
+&lt;center&gt;
+&lt;img src="images/boyfriend.png" width="90%" height="90%"&gt;&lt;br&gt;
+&lt;a href= "https://www.xkcd.com"&gt; xkcd.com &lt;/a&gt;
+&lt;/center&gt;
+
+
+---
+
+class: middle
+
+# Statistical Significance
+
+.bql[
+When results as extreme as the observed sample statistic are unlikely to occur by .bold[random chance] alone (assuming the null hypothesis is true), we say the sample results are .bold[statistically significant]
+- If our sample is .bold[statistically significant], we have convincing .bold[evidence against] `\(\mathrm{H}_{0}\)`, .bold[in favor of] `\(\mathrm{H}_{\mathrm{a}}\)`
+- If our sample is .bold[not statistically significant], our test is .bold[inconclusive]. The null hypothesis may be true (or maybe not).
+]
+
+---
+
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
 
 &lt;br&gt;
 &lt;br&gt;
 .bql[
 
-- Let's head over to the [course helper page](https://stat120-fall23.netlify.app/) to see some more examples 
-- We will then do a class activity together
-
+- Please work on the in-class activity and we will discuss this together!
+- We will also do a brief midterm review if time permits!
 ]
 ]
 
-<div class="countdown" id="timer_75ee7295" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_44d1fc39" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
-
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
