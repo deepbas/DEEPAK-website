@@ -24,3 +24,8 @@
     });
     </script>
     <!-- End of mathjax configuration -->
+    
+    
+{{ if .Params.avatar }}
+    <img src="{{ .Site.BaseURL }}{{ .Params.avatar }}" alt="{{ .Title }}">
+{{ end }}
