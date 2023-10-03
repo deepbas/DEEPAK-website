@@ -1,6 +1,6 @@
 ---
 bio: My research interests include Bayesian statistics and machine learning.
-
+avatar: avatar.JPEG
 education:
   courses:
   - course: PhD in Applied Statistics
@@ -12,7 +12,7 @@ education:
   - course: BS in Mathematics, Physics
     institution: Texas A & M University
     year: 2013
-email: ""
+email: "dbastola@carleton.edu"
 highlight_name: true
 interests:
 - Machine Learning/Data Science
