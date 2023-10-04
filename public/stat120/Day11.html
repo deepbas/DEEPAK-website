@@ -53,19 +53,45 @@ background-size: 160px, 100% 100%
 
 ### .fancy[Stat 120]
 
- October 02 2023
+ October 03 2023
 
+
+---
+
+
+## Introduction to Hypothesis Tests
+
+.bqt.font80[.bold[Objective: Using data from a sample to make decisions about the broader population.]]
+  
+.bql.font80[ 
+**Two Competing Hypotheses**: 
+  1. **Null Hypothesis `\((H_0)\)`**: Assumes no effect or no difference. 
+  2. **Alternative Hypothesis `\((H_a)\)`**: Suggests a specific effect or difference exists.
+]
+  
+
+.hljs.font70[  
+- **Specifying Hypotheses**: We frame these hypotheses in terms of population parameters (like mean, proportion, etc.).
+
+- **Example**: 
+  - `\(H_0\)`: The mean height of adults = 5.5 feet.
+  - `\(H_a\)`: The mean height of adults ≠ 5.5 feet.
+
+.bold[Our goal is to determine which hypothesis is more likely given our sample data.]
+]
 
 ---
 
 class: middle
 
-# Extrasensory Perception
+## Motivating Example: Extrasensory Perception
 
 &lt;center&gt;
 &lt;img src="images/psychic.jpg" width="80%" height="70%"&gt;&lt;br&gt;
 &lt;a&gt;&lt;/a&gt;
 &lt;/center&gt;
+
+.footnote[Source: [click here](http://www.gallup.com/poll/4483/Americans-Belief-Psychic-Paranormal-Phenomena-Over-Last-Decade.aspx)]
 
 ---
 
@@ -97,9 +123,40 @@ One way to test for ESP is with Zener cards:
 
 ---
 
+class: middle
+
+# Explaining Random Chance
+
+
+.pull-left.font80[
+.bql.font80[
+## Random Chance with a Coin Toss
+
+- A fair coin has an **equal** chance of landing **heads** or **tails**.
+- Sometimes sequences like "HHHTHH" might emerge.
+- Does it mean heads are more likely?
+
+## Toss More Times!
+
+- As we toss many more times, what happens to the ratio of heads to tails?
+]
+]
+.pull-right[
+
+&lt;br&gt;
+
+![](https://media.giphy.com/media/26gs8DLhlh9Drr7BS/giphy.gif)
+
+]
+
+
+.footnote[[Demo: Flipping a coin](https://seeing-theory.brown.edu/basic-probability/index.html)]
+
+---
+
 class: action
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Work&amp;nbsp;1&lt;/i&gt;      
 
 .pull-left-40[
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
@@ -121,7 +178,7 @@ letter.
 .out-t[How often did you guess correctly?]
 ]
 
-<div class="countdown" id="timer_e6889e5b" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_27222013" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -175,6 +232,20 @@ The correct answer is 4. Since more correct means ESP.
 
 ---
 
+class: middle
+
+# Hypothesis Testing: A Recap
+
+.bql[
+- **Goal**: Use sample data to assess population claims.
+- **Null Hypothesis `\((H_0)\)`**: No effect or difference.
+- **Alternative Hypothesis `\((H_a)\)`**: Evidence-seeking claim.
+- Tests reveal if observed stats suggest genuine difference or result from random chance.
+- .bold[Aim]: Refute `\(H_0\)` with enough evidence.
+]
+
+---
+
 # Extrasensory Perception
 
 .bql.font120[
@@ -187,32 +258,7 @@ The correct answer is 4. Since more correct means ESP.
 &lt;br&gt;
 &lt;br&gt;
 
-.out-t.font120[How do we determine when a sample proportion is far enough above 1/5 to provide evidence of ESP?]
-
----
-
-&lt;br&gt;
-
-# Statistical Test
-
-.bql.font110[
-A statistical test uses data from a sample to assess a claim about a population or experiment
-
-
-.yellow-h.bold[Null Hypothesis:] `\(\left(\mathrm{H}_{0}\right)\)`
-Claim that there is no effect or difference.
-
-.yellow-h.bold[Alternative Hypothesis:] `\(\left(\mathrm{H}_{\mathrm{a}}\right)\)`
-Claim for which we seek evidence.
-
-]
-
---
-
-&lt;br&gt;
-&lt;br&gt;
-
-.out-t.center[Always claims about .bold[population parameters.]]
+.hljs.font120[How do we determine when a sample proportion is far enough above 1/5 to provide evidence of ESP?]
 
 ---
 
@@ -236,11 +282,20 @@ class: middle
 - `\(\mathrm{H}_{0}\)` usually includes `\(=\)`
 - `\(\mathrm{H}_{\mathrm{a}}\)` usually includes `\(&gt;,&lt;\)`, or `\(\neq\)`
 - The direction in `\(\mathrm{H}_{\mathrm{a}}\)` depends on the question being asked, not based on what the data shows!
-- The data should be used as an evidence supporting or refuting `\(\mathrm{H}_{\mathrm{a}}\)`.
 ]
 
 ---
 
+
+class: inverse, middle, center
+
+
+# Moving Forward...
+
+
+.bql.font120[How to test if observed difference between groups is real or just due to random chance?]
+
+---
 
 # Sleep Vs. Caffeine 
 
@@ -253,7 +308,7 @@ Students were given words to memorize, then randomly assigned to take either a 9
 
 &lt;br&gt;
 
-.green-h.font120[.b[Research Question]: Is sleep or caffeine better for memory?
+.hljs.font120[.b[Research Question]: Is sleep or caffeine better for memory?
 ]
 
 .footnote[Mednick, Cai, Kanady, and Drummond (2008). “Comparing the benefits of caffeine, naps and placebo on verbal, motor and perceptual memory,” Behavioral Brain Research, 193, 79-86.]
@@ -263,7 +318,7 @@ Students were given words to memorize, then randomly assigned to take either a 9
 
 # Sleep Vs. Caffeine
 
-.bqt.font90[
+.bql.font90[
 
 What is the parameter of interest in the sleep versus caffeine experiment?
 
@@ -329,34 +384,21 @@ The correct answer is 2 (since we are looking for evidence that the means are di
 
 ---
 
-class: middle
+## Random chance using [Statkey](https://www.lock5stat.com/StatKey/index.html)
 
-# Statistical Significance
+.bq.font60[How can we be sure if an observed difference between two groups is real, or if it's just something that could happen by random chance?]
 
 &lt;center&gt;
-&lt;img src="images/boyfriend.png" width="90%" height="90%"&gt;&lt;br&gt;
-&lt;a href= "https://www.xkcd.com"&gt; xkcd.com &lt;/a&gt;
+&lt;img src="images/sleep_caffiene.png" width="60%" height="50%"&gt;&lt;br&gt;
+&lt;a&gt;&lt;/a&gt;
 &lt;/center&gt;
 
 
 ---
 
-class: middle
-
-# Statistical Significance
-
-.bql[
-When results as extreme as the observed sample statistic are unlikely to occur by .bold[random chance] alone (assuming the null hypothesis is true), we say the sample results are .bold[statistically significant]
-- If our sample is .bold[statistically significant], we have convincing .bold[evidence against] `\(\mathrm{H}_{0}\)`, .bold[in favor of] `\(\mathrm{H}_{\mathrm{a}}\)`
-- If our sample is .bold[not statistically significant], our test is .bold[inconclusive]. The null hypothesis may be true (or maybe not).
-]
-
----
-
-
 class: action
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;2&lt;/i&gt;    
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Work&amp;nbsp;2&lt;/i&gt;     
 
 .pull-left-40[
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
@@ -367,14 +409,14 @@ class: action
 &lt;br&gt;
 .bql[
 
-- Please work on the in-class activity and we will discuss this together!
-- We will also do a brief midterm review if time permits!
+- Let's go over some more examples at the [course helper page](https://stat120-fall23.netlify.app/)
+- We will then do a class activity together
 ]
 ]
 
-<div class="countdown" id="timer_e9057321" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_3d09ad1b" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">20</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
     </textarea>
