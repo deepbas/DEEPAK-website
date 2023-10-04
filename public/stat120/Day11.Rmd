@@ -207,7 +207,7 @@ class: action
 ]
 .pull-right-60[
 <br>
-.bq.font80[
+.bq.font70[
 
 - Randomly choose a letter from A B C D E and write it down (don’t show anyone!)
 
@@ -216,6 +216,7 @@ letter.
 
 - Repeat a couple of times then switch roles.
 
+- Record your answer to .bold[Problem (1a)]
 
 ]
 
@@ -223,6 +224,24 @@ letter.
 ]
 
 `r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+class: middle, inverse, center
+
+
+Let's see each others results! Please enter your answer (in decimals) to (1a) in the appropriate Google form:
+
+.bq[
+
+- [Google form Section 01](https://forms.gle/4ZDAnMka76LqdUVUA)
+
+- [Google form Section 02](https://forms.gle/rEzqai9TCCsG4fep8)
+]
+
+`r countdown(minutes = 2, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
 
 ---
 
@@ -455,5 +474,5 @@ class: action
 ]
 ]
 
-`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
