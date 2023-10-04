@@ -118,8 +118,8 @@ background-size: 160px, 100% 100%
 - **Specifying Hypotheses**: We frame these hypotheses in terms of population parameters (like mean, proportion, etc.).
 
 - **Example**: 
-  - $H_0$: The mean height of adults = 5.5 feet.
-  - $H_a$: The mean height of adults ≠ 5.5 feet.
+  - $H_0$: The mean weight of fish = 3 pounds.
+  - $H_a$: The mean weight of fish ≠ 3 pounds.
 
 .bold[Our goal is to determine which hypothesis is more likely given our sample data.]
 ]
@@ -216,7 +216,7 @@ letter.
 
 - Repeat a couple of times then switch roles.
 
-- Record your answer to .bold[Problem (1a)]
+- Record your answer in .bold[Problem (1a)]
 
 ]
 
@@ -228,12 +228,12 @@ letter.
 
 ---
 
-class: middle, inverse, center
+class: middle, center
 
 
-Let's see each others results! Please enter your answer (in decimals) to (1a) in the appropriate Google form:
+Let's see each other's results! Please enter your answer to (1a) in the appropriate Google form:
 
-.bq[
+.bqt[
 
 - [Google form Section 01](https://forms.gle/4ZDAnMka76LqdUVUA)
 
@@ -469,8 +469,9 @@ class: action
 <br>
 .bql[
 
-- Let's go over some more examples at the [course helper page](https://stat120-fall23.netlify.app/)
-- We will then do a class activity together
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the rest of the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
 ]
 ]
 
