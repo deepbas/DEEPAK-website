@@ -1,5 +1,6 @@
 ---
 bio: My research interests include Bayesian statistics and machine learning.
+avatar: "avatar.jpg"
 education:
   courses:
   - course: PhD in Applied Statistics
