@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Projects | Deepak Bastola</title>
-    <link>https://deepbas.netlify.app/project/</link>
-      <atom:link href="https://deepbas.netlify.app/project/index.xml" rel="self" type="application/rss+xml" />
+    <link>/project/</link>
+      <atom:link href="/project/index.xml" rel="self" type="application/rss+xml" />
     <description>Projects</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Fri, 27 Mar 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Projects</title>
-      <link>https://deepbas.netlify.app/project/</link>
+      <link>/project/</link>
     </image>
     
     <item>
       <title>Internal Project</title>
-      <link>https://deepbas.netlify.app/project/internal-project/</link>
+      <link>/project/internal-project/</link>
       <pubDate>Fri, 27 Mar 2020 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/project/internal-project/</guid>
+      <guid>/project/internal-project/</guid>
       <description>&lt;p&gt;It would be nice to predict the number of positive covid cases depending on past case evolution. Regression models based on recurrent neural networks (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions.&lt;/p&gt;
 &lt;p&gt;The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one feature to make informed predictions. LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.&lt;/p&gt;
 &lt;p&gt;The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.&lt;/p&gt;
@@ -346,9 +346,9 @@ change_percent = np.round(100 - (cases_today * 100)/predicted_cases)
     
     <item>
       <title>External Project</title>
-      <link>https://deepbas.netlify.app/project/external-project/</link>
+      <link>/project/external-project/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/project/external-project/</guid>
+      <guid>/project/external-project/</guid>
       <description></description>
     </item>
     

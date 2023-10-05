@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>data science | Deepak Bastola</title>
-    <link>https://deepbas.netlify.app/category/data-science/</link>
-      <atom:link href="https://deepbas.netlify.app/category/data-science/index.xml" rel="self" type="application/rss+xml" />
+    <link>/category/data-science/</link>
+      <atom:link href="/category/data-science/index.xml" rel="self" type="application/rss+xml" />
     <description>data science</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Wed, 23 Mar 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>data science</title>
-      <link>https://deepbas.netlify.app/category/data-science/</link>
+      <link>/category/data-science/</link>
     </image>
     
     <item>
       <title>How to predict covid case counts using machine learning models?</title>
-      <link>https://deepbas.netlify.app/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</link>
+      <link>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</link>
       <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</guid>
+      <guid>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</guid>
       <description>&lt;p&gt;It would be nice to predict the number of positive covid cases depending on past cases evolution. Regression models based on recurrent neural networks (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions.&lt;/p&gt;
 &lt;p&gt;The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one features to make informed predictions. LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.&lt;/p&gt;
 &lt;p&gt;The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.&lt;/p&gt;

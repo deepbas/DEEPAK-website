@@ -2,147 +2,147 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>📊 STAT 220: Introduction to Data Science | Deepak Bastola</title>
-    <link>https://deepbas.netlify.app/courses/stat220/</link>
-      <atom:link href="https://deepbas.netlify.app/courses/stat220/index.xml" rel="self" type="application/rss+xml" />
+    <link>/courses/stat220/</link>
+      <atom:link href="/courses/stat220/index.xml" rel="self" type="application/rss+xml" />
     <description>📊 STAT 220: Introduction to Data Science</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Fri, 10 Sep 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>📊 STAT 220: Introduction to Data Science</title>
-      <link>https://deepbas.netlify.app/courses/stat220/</link>
+      <link>/courses/stat220/</link>
     </image>
     
     <item>
       <title>Week 10</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week10/</link>
+      <link>/courses/stat220/week10/</link>
       <pubDate>Sun, 28 May 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week10/</guid>
-      <description>&lt;p&gt;Day 27 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day27.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day27.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week10/</guid>
+      <description>&lt;p&gt;Day 27 Slides (&lt;a href=&#34;/stat220/Day27.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day27.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 9</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week9/</link>
+      <link>/courses/stat220/week9/</link>
       <pubDate>Sun, 21 May 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week9/</guid>
-      <description>&lt;p&gt;Day 24 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day24.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day24.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 25 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day25.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day25.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week9/</guid>
+      <description>&lt;p&gt;Day 24 Slides (&lt;a href=&#34;/stat220/Day24.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day24.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 25 Slides (&lt;a href=&#34;/stat220/Day25.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day25.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 8</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week8/</link>
+      <link>/courses/stat220/week8/</link>
       <pubDate>Sun, 14 May 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week8/</guid>
-      <description>&lt;p&gt;Day 21 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day21.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day21.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 22 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day22.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day22.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 23 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day23.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day23.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week8/</guid>
+      <description>&lt;p&gt;Day 21 Slides (&lt;a href=&#34;/stat220/Day21.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day21.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 22 Slides (&lt;a href=&#34;/stat220/Day22.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day22.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 23 Slides (&lt;a href=&#34;/stat220/Day23.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day23.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 7</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week7/</link>
+      <link>/courses/stat220/week7/</link>
       <pubDate>Sun, 07 May 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week7/</guid>
-      <description>&lt;p&gt;Day 18 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day18.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day18.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 19 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day19.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day19.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 20 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day20.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day20.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week7/</guid>
+      <description>&lt;p&gt;Day 18 Slides (&lt;a href=&#34;/stat220/Day18.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day18.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 19 Slides (&lt;a href=&#34;/stat220/Day19.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day19.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 20 Slides (&lt;a href=&#34;/stat220/Day20.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day20.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 6</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week6/</link>
+      <link>/courses/stat220/week6/</link>
       <pubDate>Sun, 30 Apr 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week6/</guid>
-      <description>&lt;p&gt;Day 16 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day16.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day16.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 17 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day17.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day17.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week6/</guid>
+      <description>&lt;p&gt;Day 16 Slides (&lt;a href=&#34;/stat220/Day16.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day16.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 17 Slides (&lt;a href=&#34;/stat220/Day17.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day17.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 5</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week5/</link>
+      <link>/courses/stat220/week5/</link>
       <pubDate>Sun, 23 Apr 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week5/</guid>
-      <description>&lt;p&gt;Day 13 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day13.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day13.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 14 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day14.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day14.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 15 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day15.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week5/</guid>
+      <description>&lt;p&gt;Day 13 Slides (&lt;a href=&#34;/stat220/Day13.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day13.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 14 Slides (&lt;a href=&#34;/stat220/Day14.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day14.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 15 Slides (&lt;a href=&#34;/stat220/Day15.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day15.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 4</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week4/</link>
+      <link>/courses/stat220/week4/</link>
       <pubDate>Wed, 12 Apr 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week4/</guid>
-      <description>&lt;p&gt;Day 10 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day10.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day10.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 11 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week4/</guid>
+      <description>&lt;p&gt;Day 10 Slides (&lt;a href=&#34;/stat220/Day10.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day10.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 11 Slides (&lt;a href=&#34;/stat220/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 3</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week3/</link>
+      <link>/courses/stat220/week3/</link>
       <pubDate>Mon, 03 Apr 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week3/</guid>
-      <description>&lt;p&gt;Day 7 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day7.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day7.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 8 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day8.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day8.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 9 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day9.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day9.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week3/</guid>
+      <description>&lt;p&gt;Day 7 Slides (&lt;a href=&#34;/stat220/Day7.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day7.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 8 Slides (&lt;a href=&#34;/stat220/Day8.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day8.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 9 Slides (&lt;a href=&#34;/stat220/Day9.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day9.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 2</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week2/</link>
+      <link>/courses/stat220/week2/</link>
       <pubDate>Sun, 02 Apr 2023 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week2/</guid>
-      <description>&lt;p&gt;Day 4 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day4.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 5 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day5.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 6 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day6.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day6.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week2/</guid>
+      <description>&lt;p&gt;Day 4 Slides (&lt;a href=&#34;/stat220/Day4.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 5 Slides (&lt;a href=&#34;/stat220/Day5.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 6 Slides (&lt;a href=&#34;/stat220/Day6.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day6.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 1</title>
-      <link>https://deepbas.netlify.app/courses/stat220/week1/</link>
+      <link>/courses/stat220/week1/</link>
       <pubDate>Mon, 12 Sep 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/week1/</guid>
-      <description>&lt;p&gt;Day 1 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day1.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day1.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 2 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day2.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day2.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 3 Slides (&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day3.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;https://deepbas.netlify.app/stat220/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+      <guid>/courses/stat220/week1/</guid>
+      <description>&lt;p&gt;Day 1 Slides (&lt;a href=&#34;/stat220/Day1.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day1.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 2 Slides (&lt;a href=&#34;/stat220/Day2.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day2.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 3 Slides (&lt;a href=&#34;/stat220/Day3.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat220/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Link to cheatsheets</title>
-      <link>https://deepbas.netlify.app/courses/stat220/cheatsheets/</link>
+      <link>/courses/stat220/cheatsheets/</link>
       <pubDate>Thu, 06 Jan 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/cheatsheets/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/rmarkdown-2.0.pdf&#34; target=&#34;_blank&#34;&gt;R markdown Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/data-visualization.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;ggplot2&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/data-transformation.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;dplyr&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/lubridate.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;lubridate&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/strings.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;stringr&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/regex.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;regex&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/shiny.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;shiny&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/caret.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;caret&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/cheatsheets/leaflet.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;leaflet&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+      <guid>/courses/stat220/cheatsheets/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;/cheatsheets/rmarkdown-2.0.pdf&#34; target=&#34;_blank&#34;&gt;R markdown Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/data-visualization.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;ggplot2&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/data-transformation.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;dplyr&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/lubridate.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;lubridate&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/strings.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;stringr&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/regex.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;regex&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/shiny.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;shiny&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/caret.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;caret&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/cheatsheets/leaflet.pdf&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;leaflet&lt;/code&gt; Cheatsheet&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Link to datasets</title>
-      <link>https://deepbas.netlify.app/courses/stat220/data/</link>
+      <link>/courses/stat220/data/</link>
       <pubDate>Thu, 06 Jan 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/courses/stat220/data/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/data/simple-1.dat&#34; target=&#34;_blank&#34;&gt;Simple Data file&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/data/mild-1.csv&#34; target=&#34;_blank&#34;&gt;Medium Data file&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/data/tricky-1.csv&#34; target=&#34;_blank&#34;&gt;Tricky Data file&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://deepbas.netlify.app/data/tricky-2.csv&#34; target=&#34;_blank&#34;&gt;More Tricky Data file&lt;/a&gt;&lt;/p&gt;
+      <guid>/courses/stat220/data/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;/data/simple-1.dat&#34; target=&#34;_blank&#34;&gt;Simple Data file&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/data/mild-1.csv&#34; target=&#34;_blank&#34;&gt;Medium Data file&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/data/tricky-1.csv&#34; target=&#34;_blank&#34;&gt;Tricky Data file&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/data/tricky-2.csv&#34; target=&#34;_blank&#34;&gt;More Tricky Data file&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

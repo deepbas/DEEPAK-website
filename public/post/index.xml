@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts | Deepak Bastola</title>
-    <link>https://deepbas.netlify.app/post/</link>
-      <atom:link href="https://deepbas.netlify.app/post/index.xml" rel="self" type="application/rss+xml" />
+    <link>/post/</link>
+      <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Wed, 23 Mar 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://deepbas.netlify.app/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
+      <url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>Posts</title>
-      <link>https://deepbas.netlify.app/post/</link>
+      <link>/post/</link>
     </image>
     
     <item>
       <title>How to predict covid case counts using machine learning models?</title>
-      <link>https://deepbas.netlify.app/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</link>
+      <link>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</link>
       <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>https://deepbas.netlify.app/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</guid>
+      <guid>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</guid>
       <description>&lt;p&gt;It would be nice to predict the number of positive covid cases depending on past cases evolution. Regression models based on recurrent neural networks (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions.&lt;/p&gt;
 &lt;p&gt;The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one features to make informed predictions. LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.&lt;/p&gt;
 &lt;p&gt;The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.&lt;/p&gt;
@@ -346,11 +346,11 @@ change_percent = np.round(100 - (cases_today * 100)/predicted_cases)
     
     <item>
       <title>Simple R Markdown Example</title>
-      <link>https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/</link>
+      <link>/2020/12/01/simple-r-markdown-example/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
-      <guid>https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/</guid>
+      <guid>/2020/12/01/simple-r-markdown-example/</guid>
       <description>
-&lt;script src=&#34;https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;/2020/12/01/simple-r-markdown-example/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
 &lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
@@ -410,7 +410,7 @@ pie(
   init.angle = -50, border = NA
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;figure&#34;&gt;&lt;span style=&#34;display:block;&#34; id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;https://deepbas.netlify.app/2020/12/01/simple-r-markdown-example/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
+&lt;img src=&#34;/2020/12/01/simple-r-markdown-example/index.en_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: A fancy pie chart.
 &lt;/p&gt;
