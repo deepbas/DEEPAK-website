@@ -1,5 +1,6 @@
 ---
 bio: My research interests include Bayesian statistics and machine learning.
+avatar: "avatar.png"
 education:
   courses:
   - course: PhD in Applied Statistics
@@ -13,7 +14,6 @@ education:
     year: 2013
 email: "dbastola@carleton.edu"
 highlight_name: true
-avatar: "avatar.png"
 interests:
 - Machine Learning/Data Science
 - Applied Statistics
