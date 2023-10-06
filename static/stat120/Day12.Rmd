@@ -479,7 +479,7 @@ class: middle
 # p-value and $H_0$
 
 .bql[
-- If the p-value is small, then a statistic as extreme as that observed would be unlikely if the null hypothesis were true, providing "discernible" evidence against $\mathrm{H}_0$
+- If the p-value is small, then a statistic as extreme as that observed would be unlikely if the null hypothesis were true, providing statistically "discernible" evidence against $\mathrm{H}_0$
 
 - .bold[The smaller the p-value, the stronger the evidence against the null hypothesis and in favor of the alternative]
 ]
