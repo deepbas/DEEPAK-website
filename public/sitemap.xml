@@ -74,39 +74,31 @@
   <url>
     <loc>/event/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod></url>
   <url>
-    <loc>/authors/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
+    <loc></loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/categories/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/category/data-science/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/author/deepak-bastola/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
+    <loc></loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/projects/informer-timeseries/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
+    <loc>/posts/informer-timeseries/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/category/machine-learning/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/category/prediction/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
+    <loc>/posts/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/projects/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
+    <loc>/category/prediction/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/courses/</loc><lastmod>2023-10-01T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/courses/stat120/</loc><lastmod>2023-01-04T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/projects/jupyter-lstm/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+    <loc>/posts/jupyter-lstm/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/courses/stat220/</loc><lastmod>2021-09-10T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/courses/stat230/</loc><lastmod>2021-03-24T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>/category/r/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
-  <url>
-    <loc>/tag/r-markdown/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
-  <url>
-    <loc>/projects/r-rmarkdown/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
-  <url>
-    <loc>/tags/</loc><lastmod>2020-12-01T21:13:14-05:00</lastmod></url>
   <url>
     <loc>/publication-type/3/</loc><lastmod>2019-04-07T00:00:00+00:00</lastmod></url>
   <url>
@@ -118,16 +110,30 @@
   <url>
     <loc>/tag/source-themes/</loc><lastmod>2019-04-07T00:00:00+00:00</lastmod></url>
   <url>
+    <loc>/tags/</loc><lastmod>2019-04-07T00:00:00+00:00</lastmod></url>
+  <url>
     <loc>/slides/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/slides/example/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/tag/deep-learning/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/tag/demo/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/projects/example/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/projects/external-project/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/projects/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/publication-type/2/</loc><lastmod>2015-09-01T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/publication/journal-article/</loc><lastmod>2015-09-01T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/author/robert-ford/</loc><lastmod>2015-09-01T00:00:00+00:00</lastmod></url>
+    <loc></loc><lastmod>2015-09-01T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/publication-type/1/</loc><lastmod>2013-07-01T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/publication/conference-paper/</loc><lastmod>2013-07-01T00:00:00+00:00</lastmod></url></urlset>
+    <loc>/publication/conference-paper/</loc><lastmod>2013-07-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/posts/exoplanet-modeling/</loc></url></urlset>

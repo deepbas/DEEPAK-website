@@ -1,5 +1,6 @@
 ---
 bio: My research interests include Bayesian statistics and machine learning.
+
 education:
   courses:
   - course: PhD in Applied Statistics
@@ -11,15 +12,21 @@ education:
   - course: BS in Mathematics, Physics
     institution: Texas A & M University
     year: 2013
+    
 email: "dbastola@carleton.edu"
 highlight_name: true
+
 interests:
 - Machine Learning/Data Science
 - Applied Statistics
+- Bayesian Statistics
+
 organizations:
 - name: Carleton College
   url: https://www.carleton.edu/
+  
 role: Visiting Assistant Professor of Statistics
+
 social:
 - icon: envelope
   icon_pack: fas
@@ -39,11 +46,13 @@ social:
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/deepakbastola/
+  
 superuser: true
+
 title: Deepak Bastola
-avatar: avatar.jpg
 ---
 
-Deepak Bastola is a visiting assistant professor of statistics at Carleton College. His research interests include Bayesian statistics, time series methodology, and statistical computation. 
+My name is Deepak Bastola, a name synonymous with
+a blend of statistical acumen and cosmic curiosity. My academic journey, punctuated by a Ph.D. in Applied Statistics and a joint M.S. in Astronomy and Astrophysics, mirrors my relentless pursuit of knowledge. This journey has been marked by my fervor for leveraging statistical techniques to comprehend astronomical phenomena and devise insightful data‑driven narratives. My  research interests include Bayesian statistics, time series methodology, and statistical computation. 
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
