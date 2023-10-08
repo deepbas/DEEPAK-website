@@ -82,6 +82,8 @@
   <url>
     <loc></loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
+    <loc>/posts/exoplanet-modeling/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
+  <url>
     <loc>/posts/informer-timeseries/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/category/machine-learning/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
@@ -134,6 +136,4 @@
   <url>
     <loc>/publication-type/1/</loc><lastmod>2013-07-01T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/publication/conference-paper/</loc><lastmod>2013-07-01T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>/posts/exoplanet-modeling/</loc></url></urlset>
+    <loc>/publication/conference-paper/</loc><lastmod>2013-07-01T00:00:00+00:00</lastmod></url></urlset>

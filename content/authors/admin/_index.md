@@ -1,4 +1,7 @@
 ---
+
+avatar: "avatar.jpg"
+
 bio: My research interests include Bayesian statistics and machine learning.
 
 education:

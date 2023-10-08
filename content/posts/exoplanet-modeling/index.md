@@ -1,6 +1,20 @@
 ---
-title: "Exoplanet Modeling"
+authors:
+- admin
+categories: [machine learning, data science, prediction]
+date: "2023-10-07T00:00:00Z"
+image:
+  caption: ""
+  focal_point: ""
+lastMod: "2023-10-07T00:00:00Z"
+projects: []
+subtitle: Multivariate time series prediction using Informer model
+summary: 
+tags: []
+title: Exoplanet modeling
+css: "/css/custom.css"
 ---
+
 
 
 The figure below showcases a spectrum integral to exoplanet detection, charting the transit depth against the wavelength in microns. Every observation point in the spectrum carries an inherent uncertainty, denoted by the vertical error bars. To decode and potentially minimize this uncertainty, it's pivotal to fathom how features like `planet radius`, `planet temperature`, and the logarithmic concentrations of `H₂O`, `CO₂`, `CO`, `CH₄`, and `NH₃` influence the transit depth. Leveraging interpretative tools like SHAP can provide insights into how these exoplanetary features impact the observed transit depth, refining our understanding and accuracy in exoplanet spectral analysis.
