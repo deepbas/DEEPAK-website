@@ -2,6 +2,6 @@
 header:
   caption: ""
   image: ""
+layout: book
 title: Projects
-view: 1
 ---
