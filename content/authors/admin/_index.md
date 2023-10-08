@@ -41,7 +41,7 @@ social:
   link: https://www.linkedin.com/in/deepakbastola/
 superuser: true
 title: Deepak Bastola
-
+avatar: avatar.jpg
 ---
 
 Deepak Bastola is a visiting assistant professor of statistics at Carleton College. His research interests include Bayesian statistics, time series methodology, and statistical computation. 
