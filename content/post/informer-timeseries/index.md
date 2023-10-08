@@ -2,7 +2,7 @@
 authors:
 - admin
 categories: [machine learning, data science, prediction]
-date: "2022-03-23T00:00:00Z"
+date: "2023-10-07T00:00:00Z"
 image:
   caption: ""
   focal_point: ""
@@ -11,9 +11,15 @@ projects: []
 subtitle: Multivariate time series prediction using Informer model
 summary: 
 tags: []
-title: How to predict AAPL Stick price using multiple features capturing long term dependencies?
+title: How to predict AAPL Stick price using an Informer model to capture long term dependencies?
 css: "/css/custom.css"
 ---
+
+
+# Informer
+
+The Informer model variant is designed for multivariate prediction. Let's consider 'Open', 'High', 'Low', and 'Close' prices for simplicity. The provided code is designed to fetch and preprocess historical stock prices for Apple Inc. for the purpose of multivariate time series forecasting using an LSTM model. Initially, the code downloads Apple's stock data, specifically capturing four significant features: Open, High, Low, and Close prices. To make the data suitable for deep learning models, it is normalized to fit within a range of 0 to 1. The sequential data is then transformed into a format suitable for supervised learning, where the data from the past `look_back` days is used to predict the next day's features. Finally, the data is partitioned into training (67%) and test sets, ensuring separate datasets for model training and evaluation.
+
 
 
 ```python
@@ -37,9 +43,6 @@ data = yf.download("AAPL", start="2018-01-01", end="2023-09-01")
 ```
 
 
-# Informer
-
-The Informer model variant is designed for multivariate prediction. Let's consider 'Open', 'High', 'Low', and 'Close' prices for simplicity. The provided code is designed to fetch and preprocess historical stock prices for Apple Inc. for the purpose of multivariate time series forecasting using an LSTM model. Initially, the code downloads Apple's stock data, specifically capturing four significant features: Open, High, Low, and Close prices. To make the data suitable for deep learning models, it is normalized to fit within a range of 0 to 1. The sequential data is then transformed into a format suitable for supervised learning, where the data from the past `look_back` days is used to predict the next day's features. Finally, the data is partitioned into training (67%) and test sets, ensuring separate datasets for model training and evaluation.
 
 
 ```python

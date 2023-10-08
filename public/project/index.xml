@@ -344,13 +344,5 @@ change_percent = np.round(100 - (cases_today * 100)/predicted_cases)
 </description>
     </item>
     
-    <item>
-      <title>External Project</title>
-      <link>/project/external-project/</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/external-project/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>

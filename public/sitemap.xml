@@ -74,10 +74,6 @@
   <url>
     <loc>/event/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod></url>
   <url>
-    <loc>/courses/</loc><lastmod>2023-10-01T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>/courses/stat120/</loc><lastmod>2023-01-04T00:00:00+00:00</lastmod></url>
-  <url>
     <loc>/authors/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/categories/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
@@ -86,15 +82,19 @@
   <url>
     <loc>/author/deepak-bastola/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
-    <loc>/2022/03/23/how-to-predict-aapl-stick-price-using-multiple-features-capturing-long-term-dependencies/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
+    <loc>/2023/10/07/how-to-predict-aapl-stick-price-using-an-informer-model-to-capture-long-term-dependencies/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/category/machine-learning/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/post/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/category/prediction/</loc><lastmod>2023-10-07T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/courses/</loc><lastmod>2023-10-01T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/courses/stat120/</loc><lastmod>2023-01-04T00:00:00+00:00</lastmod></url>
+  <url>
+    <loc>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</loc><lastmod>2022-03-23T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/courses/stat220/</loc><lastmod>2021-09-10T00:00:00+00:00</lastmod></url>
   <url>
@@ -127,10 +127,6 @@
     <loc>/slides/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/slides/example/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>/tag/demo/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
-  <url>
-    <loc>/project/external-project/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod></url>
   <url>
     <loc>/publication-type/2/</loc><lastmod>2015-09-01T00:00:00+00:00</lastmod></url>
   <url>

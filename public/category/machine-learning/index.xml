@@ -5,7 +5,7 @@
     <link>/category/machine-learning/</link>
       <atom:link href="/category/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     <description>machine learning</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Wed, 23 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><copyright>Deepak Bastola</copyright><lastBuildDate>Sat, 07 Oct 2023 00:00:00 +0000</lastBuildDate>
     <image>
       <url>/media/icon_hua2ec155b4296a9c9791d015323e16eb5_11927_512x512_fill_lanczos_center_3.png</url>
       <title>machine learning</title>
@@ -13,11 +13,13 @@
     </image>
     
     <item>
-      <title>How to predict AAPL Stick price using multiple features capturing long term dependencies?</title>
-      <link>/2022/03/23/how-to-predict-aapl-stick-price-using-multiple-features-capturing-long-term-dependencies/</link>
-      <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>/2022/03/23/how-to-predict-aapl-stick-price-using-multiple-features-capturing-long-term-dependencies/</guid>
-      <description>&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;!pip install yfinance
+      <title>How to predict AAPL Stick price using an Informer model to capture long term dependencies?</title>
+      <link>/2023/10/07/how-to-predict-aapl-stick-price-using-an-informer-model-to-capture-long-term-dependencies/</link>
+      <pubDate>Sat, 07 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>/2023/10/07/how-to-predict-aapl-stick-price-using-an-informer-model-to-capture-long-term-dependencies/</guid>
+      <description>&lt;h1 id=&#34;informer&#34;&gt;Informer&lt;/h1&gt;
+&lt;p&gt;The Informer model variant is designed for multivariate prediction. Let&amp;rsquo;s consider &amp;lsquo;Open&amp;rsquo;, &amp;lsquo;High&amp;rsquo;, &amp;lsquo;Low&amp;rsquo;, and &amp;lsquo;Close&amp;rsquo; prices for simplicity. The provided code is designed to fetch and preprocess historical stock prices for Apple Inc. for the purpose of multivariate time series forecasting using an LSTM model. Initially, the code downloads Apple&amp;rsquo;s stock data, specifically capturing four significant features: Open, High, Low, and Close prices. To make the data suitable for deep learning models, it is normalized to fit within a range of 0 to 1. The sequential data is then transformed into a format suitable for supervised learning, where the data from the past &lt;code&gt;look_back&lt;/code&gt; days is used to predict the next day&amp;rsquo;s features. Finally, the data is partitioned into training (67%) and test sets, ensuring separate datasets for model training and evaluation.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;!pip install yfinance
 &lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
 import pandas as pd
@@ -30,8 +32,6 @@ import yfinance as yf
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Download historical data as dataframe
 data = yf.download(&amp;quot;AAPL&amp;quot;, start=&amp;quot;2018-01-01&amp;quot;, end=&amp;quot;2023-09-01&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;h1 id=&#34;informer&#34;&gt;Informer&lt;/h1&gt;
-&lt;p&gt;The Informer model variant is designed for multivariate prediction. Let&amp;rsquo;s consider &amp;lsquo;Open&amp;rsquo;, &amp;lsquo;High&amp;rsquo;, &amp;lsquo;Low&amp;rsquo;, and &amp;lsquo;Close&amp;rsquo; prices for simplicity. The provided code is designed to fetch and preprocess historical stock prices for Apple Inc. for the purpose of multivariate time series forecasting using an LSTM model. Initially, the code downloads Apple&amp;rsquo;s stock data, specifically capturing four significant features: Open, High, Low, and Close prices. To make the data suitable for deep learning models, it is normalized to fit within a range of 0 to 1. The sequential data is then transformed into a format suitable for supervised learning, where the data from the past &lt;code&gt;look_back&lt;/code&gt; days is used to predict the next day&amp;rsquo;s features. Finally, the data is partitioned into training (67%) and test sets, ensuring separate datasets for model training and evaluation.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Using multiple columns for multivariate prediction
 df = data[[&amp;quot;Open&amp;quot;, &amp;quot;High&amp;quot;, &amp;quot;Low&amp;quot;, &amp;quot;Close&amp;quot;]]
 
