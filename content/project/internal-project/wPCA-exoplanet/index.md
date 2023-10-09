@@ -7,7 +7,7 @@ image:
 summary: Dimension reduction in Exoplanet modeling
 tags:
 - Variable Importance, Dimension Reduction
-title: Exoplanet Detection using reduced dimensions for similar accuracy.
+title: Exoplanet Detection using reduced dimensions without compromising accuracy
 ---
 
 
@@ -405,6 +405,371 @@ To gain insights into which exoplanetary features most influence the observed tr
 5. **Visualization**: A horizontal bar chart was plotted to showcase the importance of each feature. The chart offers a clear visual comparison, with the y-axis representing the features and the x-axis indicating their importance. Special attention was paid to font size adjustments for better readability. Furthermore, before displaying the chart, it was saved as a PNG image with high resolution.
 
 The resulting visualization, titled 'Random Forest Feature Importance', provides a clear understanding of the relative significance of each feature in predicting the transit depth, as discerned by the Random Forest model.
+
+
+### Weighted Principal Component Analysis (PCA) on Exoplanet Data
+
+#### **Conceptual Overview**:
+
+PCA is a method used to emphasize variation and capture strong patterns in a dataset. The "weighted PCA" approach fine-tunes this by considering the importance of different features, effectively giving more attention to features deemed vital.
+
+#### **Detailed Breakdown**:
+
+1. **Standardization**:
+    - Before applying PCA, the dataset is standardized to give each feature a mean of 0 and a variance of 1. This is essential because PCA is influenced by the scale of the data.
+
+2. **Weighted Features**:
+    - Features are weighted according to their importance, as identified by the Random Forest model. Taking the square root of the weights ensures proper scaling during matrix multiplication in PCA.
+
+3. **PCA Application**:
+    - PCA projects the data into a new space defined by its principal components. The first two components often hold most of the dataset's variance, making them crucial for visualization.
+
+4. **Visualization**:
+    - The scatter plot visualizes the data in the space of the first two principal components. The color indicates `Transit Depth (x1)`, shedding light on how this parameter varies across the main patterns in the data.
+
+5. **Explained Variance**:
+    - This provides an understanding of how much original variance the first two components capture. A high percentage indicates that the PCA representation retains much of the data's original structure.
+
+#### **Significance**:
+
+1. **Data Compression**:
+    - PCA offers a simplified yet rich representation of the data, which can be invaluable for visualization and pattern recognition.
+
+2. **Feature Emphasis**:
+    - Using feature importances ensures the PCA representation highlights the most critical patterns related to influential features.
+
+3. **Framework for Further Exploration**:
+    - Observing patterns or groupings in the PCA plot can guide subsequent investigations, pinpointing areas of interest or potential clusters.
+
+4. **Efficient Data Overview**:
+    - The visualization provides a comprehensive but digestible overview of the data, suitable for a wide range of audiences.
+
+In essence, weighted PCA melds the dimensionality reduction capabilities of PCA with the interpretative power of feature importances, offering a profound view into the dataset's intricate structures and relationships.
+
+
+
+
+```python
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Standardize the feature matrix
+X_scaled = StandardScaler().fit_transform(X)
+
+# Multiply each feature by its square root of importance weight for weighted PCA
+# The square root is used because each feature contributes to both rows and columns in the dot product calculation
+X_weighted = X_scaled * np.sqrt(feature_importances)
+
+# Perform PCA on the weighted data
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_weighted)
+
+# Plotting the first two principal components
+plt.figure(figsize=(10, 7))
+plt.scatter(X_pca[:, 0], X_pca[:, 1], c=y, cmap='viridis', edgecolor='k', s=40)
+plt.colorbar().set_label('Transit Depth (x1)', rotation=270, labelpad=15)
+plt.xlabel('Weighted Principal Component 1')
+plt.ylabel('Weighted Principal Component 2')
+plt.title('Weighted PCA: First Two Principal Components')
+plt.show()
+
+# Variance explained by the first two principal components
+variance_explained = pca.explained_variance_ratio_
+variance_explained
+
+```
+
+
+    
+![png](./research_statement_15_0.png)
+    
+
+
+
+
+
+    array([0.71985328, 0.10370239])
+
+
+
+
+```python
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Your data initialization (this part is assumed, as you haven't provided it in the original code)
+# X, y, feature_importances = ...
+
+# Standardize the feature matrix
+X_scaled = StandardScaler().fit_transform(X)
+
+# Multiply each feature by its square root of importance weight for weighted PCA
+X_weighted = X_scaled * np.sqrt(feature_importances)
+
+# Perform PCA on the weighted data with three components
+pca = PCA(n_components=3)
+X_pca = pca.fit_transform(X_weighted)
+
+# Plotting the first three principal components
+fig = plt.figure(figsize=(10, 7))
+ax = fig.add_subplot(111, projection='3d')
+scatter = ax.scatter(X_pca[:, 0], X_pca[:, 1], X_pca[:, 2], c=y, cmap='viridis', edgecolor='k', s=40)
+plt.colorbar(scatter, ax=ax, pad=0.2).set_label('Transit Depth (x1)', rotation=270, labelpad=15)
+ax.set_xlabel('Weighted Principal Component 1')
+ax.set_ylabel('Weighted Principal Component 2')
+ax.set_zlabel('Weighted Principal Component 3')
+plt.title('Weighted PCA: First Three Principal Components')
+plt.show()
+
+# Variance explained by the first three principal components
+variance_explained = pca.explained_variance_ratio_
+variance_explained
+
+```
+
+
+    
+![png](./research_statement_16_0.png)
+    
+
+
+
+
+
+    array([0.71985328, 0.10370239, 0.07160805])
+
+
+
+
+```python
+# side by side
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Your data initialization (this part is assumed, as you haven't provided it in the original code)
+# X, y, feature_importances = ...
+
+# Standardize the feature matrix
+X_scaled = StandardScaler().fit_transform(X)
+
+# Multiply each feature by its square root of importance weight for weighted PCA
+X_weighted = X_scaled * np.sqrt(feature_importances)
+
+# Create a combined figure with subplots
+fig, axes = plt.subplots(1, 2, figsize=(20, 7))
+
+# Perform PCA on the weighted data with two components and plot
+pca2 = PCA(n_components=2)
+X_pca2 = pca2.fit_transform(X_weighted)
+scatter_2d = axes[0].scatter(X_pca2[:, 0], X_pca2[:, 1], c=y, cmap='viridis', edgecolor='k', s=40)
+fig.colorbar(scatter_2d, ax=axes[0], orientation='vertical').set_label('Transit Depth (x1)', rotation=270, labelpad=15)
+axes[0].set_xlabel('Weighted Principal Component 1')
+axes[0].set_ylabel('Weighted Principal Component 2')
+axes[0].set_title('Weighted PCA: First Two Principal Components')
+
+# Perform PCA on the weighted data with three components and plot
+pca3 = PCA(n_components=3)
+X_pca3 = pca3.fit_transform(X_weighted)
+ax3d = fig.add_subplot(1, 2, 2, projection='3d')
+scatter_3d = ax3d.scatter(X_pca3[:, 0], X_pca3[:, 1], X_pca3[:, 2], c=y, cmap='viridis', edgecolor='k', s=40)
+fig.colorbar(scatter_3d, ax=ax3d, pad=0.2).set_label('Transit Depth (x1)', rotation=270, labelpad=15)
+ax3d.set_xlabel('Weighted Principal Component 1')
+ax3d.set_ylabel('Weighted Principal Component 2')
+ax3d.set_zlabel('Weighted Principal Component 3')
+ax3d.set_title('Weighted PCA: First Three Principal Components')
+
+# Display the combined plot
+plt.tight_layout()
+plt.savefig('wPCA_2D_3D.png', bbox_inches='tight', dpi=300)  # 'bbox_inches' ensures the entire plot is saved
+
+plt.show()
+
+```
+
+
+    
+![png](./research_statement_17_0.png)
+    
+
+
+
+```python
+import pandas as pd
+import seaborn as sns
+
+# Your data initialization (this part is assumed, as you haven't provided it in the original code)
+# df, feature_columns, transit_depth_column = ...
+
+# Reconstruct the approximate original data using the first three principal components
+reconstructed_data = np.dot(X_pca, pca.components_[:3, :]) + np.mean(X_scaled, axis=0)
+
+# Create a DataFrame for the reconstructed data
+reconstructed_df = pd.DataFrame(reconstructed_data, columns=feature_columns)
+
+# Visualize the approximate original histograms
+fig, axes = plt.subplots(1, len(feature_columns) + 1, figsize=(18, 4))  # Adjusted for the number of features
+for i, col in enumerate(feature_columns):
+    sns.histplot(reconstructed_df[col], bins=20, kde=True, ax=axes[i], color='orange')
+    axes[i].set_title(f'Approx of {col}')
+
+# Add visualization for actual transit depth (since it was not part of the PCA)
+sns.histplot(df[transit_depth_column], bins=20, kde=True, ax=axes[-1], color='green')
+axes[-1].set_title(f'Actual {transit_depth_column}')
+
+plt.tight_layout()
+plt.show()
+
+```
+
+
+    
+![png](./research_statement_18_0.png)
+    
+
+
+
+```python
+
+fig, axes = plt.subplots(2, 8, figsize=(18, 8))
+
+# Original Data
+for i, col in enumerate(feature_columns):
+    sns.histplot(df[col], bins=20, kde=True, ax=axes[0, i])
+    axes[0, i].set_title(f'{col}\nMean: {feature_mean[col]:.2f}\nVariance: {feature_variance[col]:.2f}')
+
+sns.histplot(df[transit_depth_column], bins=20, kde=True, ax=axes[0, -1])
+axes[0, -1].set_title(f'{transit_depth_column}\nMean: {transit_depth_mean:.2f}\nVariance: {transit_depth_variance:.2f}')
+
+# Reconstructed Data
+for i, col in enumerate(feature_columns):
+    sns.histplot(reconstructed_df[col], bins=20, kde=True, ax=axes[1, i], color='orange')
+    axes[1, i].set_title(f'Surrogate of {col}')
+
+sns.histplot(df[transit_depth_column], bins=20, kde=True, ax=axes[1, -1], color='green')
+axes[1, -1].set_title(f'Actual {transit_depth_column}')
+
+plt.tight_layout()
+plt.show()
+
+```
+
+
+    
+![png](./research_statement_19_0.png)
+    
+
+
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Assuming data initialization and feature_importances, feature_columns, and transit_depth_column definitions exist
+
+# Standardize the feature matrix
+X_scaled = StandardScaler().fit_transform(X)
+
+# Multiply each feature by its square root of importance weight for weighted PCA
+X_weighted = X_scaled * np.sqrt(feature_importances)
+
+# Initialize the figure and axes
+fig, axes = plt.subplots(3, len(feature_columns) + 1, figsize=(18, 12))
+
+# Original Data histograms
+for i, col in enumerate(feature_columns):
+    sns.histplot(df[col], bins=20, kde=True, ax=axes[0, i])
+    axes[0, i].set_title(f'Original {col}')
+
+sns.histplot(df[transit_depth_column], bins=20, kde=True, ax=axes[0, -1])
+axes[0, -1].set_title(f'Original {transit_depth_column}')
+
+# Reconstruction using 2 PCs
+pca2 = PCA(n_components=2)
+X_pca2 = pca2.fit_transform(X_weighted)
+reconstructed_data_2PCs = np.dot(X_pca2, pca2.components_[:2, :]) + np.mean(X_scaled, axis=0)
+reconstructed_df_2PCs = pd.DataFrame(reconstructed_data_2PCs, columns=feature_columns)
+
+for i, col in enumerate(feature_columns):
+    sns.histplot(reconstructed_df_2PCs[col], bins=20, kde=True, ax=axes[1, i], color='orange')
+    axes[1, i].set_title(f'2 PCs of {col}')
+
+sns.histplot(df[transit_depth_column], bins=20, kde=True, ax=axes[1, -1], color='green')
+axes[1, -1].set_title(f'Original {transit_depth_column}')
+
+# Reconstruction using 3 PCs
+pca3 = PCA(n_components=3)
+X_pca3 = pca3.fit_transform(X_weighted)
+reconstructed_data_3PCs = np.dot(X_pca3, pca3.components_[:3, :]) + np.mean(X_scaled, axis=0)
+reconstructed_df_3PCs = pd.DataFrame(reconstructed_data_3PCs, columns=feature_columns)
+
+for i, col in enumerate(feature_columns):
+    sns.histplot(reconstructed_df_3PCs[col], bins=20, kde=True, ax=axes[2, i], color='purple')
+    axes[2, i].set_title(f'3 PCs of {col}')
+
+sns.histplot(df[transit_depth_column], bins=20, kde=True, ax=axes[2, -1], color='green')
+axes[2, -1].set_title(f'Original {transit_depth_column}')
+
+plt.tight_layout()
+plt.savefig('wPCA_combined_plot.png', bbox_inches='tight', dpi=500)  # 'bbox_inches' ensures the entire plot is saved
+
+plt.show()
+
+```
+
+
+    
+![png](./research_statement_20_0.png)
+    
+
+
+### Reconstruction of Exoplanet Data Using Principal Component Analysis (PCA)
+
+The code segment aims to reconstruct exoplanet data using different numbers of principal components (PCs) from PCA, offering insights into how much information retention occurs as we vary the number of PCs.
+
+#### **Data Standardization**:
+- The features undergo standardization, ensuring each feature has a mean of 0 and variance of 1. This normalization is crucial for PCA, as the algorithm is sensitive to varying scales across features.
+
+#### **Weighted Features**:
+- Features are adjusted based on their significance as ascertained by a prior model, specifically the Random Forest. Weighting the features adjusts the emphasis the PCA places on each feature during the dimensionality reduction process.
+
+#### **Data Reconstruction**:
+- After performing PCA, the algorithm seeks to transform the reduced data back to the original high-dimensional space. This "reconstructed" data is an approximation of the original but is built using fewer dimensions.
+
+#### **Visualization of Reconstructions**:
+1. **Original Data Histograms**:
+    - The initial histograms show the distributions of the original features and the transit depth.
+  
+2. **Reconstruction Using 2 Principal Components**:
+    - Using only the first two PCs, the data is reconstructed and its histograms visualized. This illustrates the patterns and distributions captured when only the first two components are considered.
+  
+3. **Reconstruction Using 3 Principal Components**:
+    - An analogous reconstruction is done with three PCs. The addition of a third dimension might capture more nuanced variations in the data.
+
+#### **Significance**:
+1. **Data Compression vs. Retention**:
+    - The visualizations enable us to compare the reconstructions against the original data. We discern how much information is retained and what is lost as we reduce dimensions.
+  
+2. **Guide for Dimensionality Decision**:
+    - By juxtaposing the original with the reconstructions, we gain insights into the optimal number of PCs to use for specific tasks, striking a balance between compression and information retention.
+  
+3. **Empirical Understanding**:
+    - These histograms and visual representations offer a tangible way to grasp the abstract notion of dimensionality reduction. They elucidate how PCA captures the essence of the data while diminishing dimensions.
+
+In conclusion, this analysis, coupled with the visualizations, equips us with a robust understanding of how PCA reconstructs data using varying numbers of components. It underscores the trade-offs involved and the implications of choosing specific dimensionality levels in data-driven tasks.
+
+
+
 
 
 ### Reference
