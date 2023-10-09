@@ -1,7 +1,7 @@
 ---
 authors:
 - admin
-categories: [machine learning, data science, prediction]
+categories: [machine learning, prediction]
 date: "2023-10-07T00:00:00Z"
 image:
   caption: ""
