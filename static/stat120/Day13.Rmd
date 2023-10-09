@@ -197,7 +197,7 @@ class: middle
 .bq.font90[
 - REJECT $\mathrm{H}_0$
 - the sample would be extreme if $\mathrm{H}_0$ were true
-- the results are statistically significant
+- the results are statistically discernible
 - we have evidence for $\mathrm{H}_{\mathrm{a}}$
 ]
 ]
@@ -207,7 +207,7 @@ class: middle
 .bq.font90[
 - DO NOT REJECT $\mathrm{H}_0$ 
 - the sample would not be too extreme if $\mathrm{H}_0$ were true
-- the results are not statistically significant
+- the results are not statistically discernible
 - the test is inconclusive; either $\mathrm{H}_0$ or $\mathrm{H}_{\mathrm{a}}$ may be true
 ]
 ]
@@ -218,7 +218,7 @@ class: middle
 
 # Significance Level $\&$ Formal  Decisions
 
-.bql[The .bold[significance level], $\alpha$ is  the threshold below which the p-value is deemed small enough to reject the null hypothesis (evidence is statistically significant).
+.bql[The .bold[significance level], $\alpha$ is  the threshold below which the p-value is deemed small enough to reject the null hypothesis (evidence is statistically discernible).
 ]
 
 $$ \mathrm{p} \text {-value }<\alpha \quad \Longrightarrow \quad \text { Reject } \mathrm{H}_0 $$
@@ -649,37 +649,6 @@ If a Type II error (not rejecting a false null) is much worse than a Type I erro
 ]
 
 
-
----
-
-class: middle
-
-# Probability of Type II Error
-
-.bq.font80[
-Not as simple to compute since the alternative is assumed to be true
-- E.g. which value in $\mathrm{H}_{\mathrm{a}}: \beta<0$ do we select to create an "alternative" randomization distribution?]
-<br>
-.bq.font80[
-The probability of making a Type II Error (not rejecting a false null) depends on
-- Effect size (how far the truth is from the null)
-- Sample size (bigger $\mathrm{n}$ means less uncertainty)
-- Variability of measurements
-- Significance level (bigger $\alpha$ means more false positives but fewer false negatives)]
-
-
-
----
-
-class: middle
-
-# Power of a test
-
-.bql[
-The power of a test is the chance that it will correctly reject the null, or
-$$1 - \text{Prob(Type II error)}$$
-]
-
 ---
 
 class: action
@@ -696,8 +665,12 @@ class: action
 .pull-right[
 <br>
 
-> Please go over the class activity for today and attempt the problems.
+.bql[
 
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
+]
 ]
 
 `r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`

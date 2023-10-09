@@ -52,7 +52,7 @@ background-size: 160px, 100% 100%
 
 ### .fancy[Stat 120]
 
- April 24 2023
+ October 08 2023
 
 
 ---
@@ -147,7 +147,7 @@ class: middle
 .bq.font90[
 - REJECT `\(\mathrm{H}_0\)`
 - the sample would be extreme if `\(\mathrm{H}_0\)` were true
-- the results are statistically significant
+- the results are statistically discernible
 - we have evidence for `\(\mathrm{H}_{\mathrm{a}}\)`
 ]
 ]
@@ -157,7 +157,7 @@ class: middle
 .bq.font90[
 - DO NOT REJECT `\(\mathrm{H}_0\)` 
 - the sample would not be too extreme if `\(\mathrm{H}_0\)` were true
-- the results are not statistically significant
+- the results are not statistically discernible
 - the test is inconclusive; either `\(\mathrm{H}_0\)` or `\(\mathrm{H}_{\mathrm{a}}\)` may be true
 ]
 ]
@@ -168,7 +168,7 @@ class: middle
 
 # Significance Level `\(\&amp;\)` Formal  Decisions
 
-.bql[The .bold[significance level], `\(\alpha\)` is  the threshold below which the p-value is deemed small enough to reject the null hypothesis (evidence is statistically significant).
+.bql[The .bold[significance level], `\(\alpha\)` is  the threshold below which the p-value is deemed small enough to reject the null hypothesis (evidence is statistically discernible).
 ]
 
 $$ \mathrm{p} \text {-value }&lt;\alpha \quad \Longrightarrow \quad \text { Reject } \mathrm{H}_0 $$
@@ -599,37 +599,6 @@ If a Type II error (not rejecting a false null) is much worse than a Type I erro
 ]
 
 
-
----
-
-class: middle
-
-# Probability of Type II Error
-
-.bq.font80[
-Not as simple to compute since the alternative is assumed to be true
-- E.g. which value in `\(\mathrm{H}_{\mathrm{a}}: \beta&lt;0\)` do we select to create an "alternative" randomization distribution?]
-&lt;br&gt;
-.bq.font80[
-The probability of making a Type II Error (not rejecting a false null) depends on
-- Effect size (how far the truth is from the null)
-- Sample size (bigger `\(\mathrm{n}\)` means less uncertainty)
-- Variability of measurements
-- Significance level (bigger `\(\alpha\)` means more false positives but fewer false negatives)]
-
-
-
----
-
-class: middle
-
-# Power of a test
-
-.bql[
-The power of a test is the chance that it will correctly reject the null, or
-`$$1 - \text{Prob(Type II error)}$$`
-]
-
 ---
 
 class: action
@@ -646,11 +615,15 @@ class: action
 .pull-right[
 &lt;br&gt;
 
-&gt; Please go over the class activity for today and attempt the problems.
+.bql[
 
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
+]
 ]
 
-<div class="countdown" id="timer_c37683a0" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_8e42d3e4" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
