@@ -543,7 +543,7 @@ Image(filename='PME.png')
 
 Using a modeling technique, the impact of different exoplanetary features on the observed transit depth was assessed, and their importance was visualized in the attached figure titled 'PME Feature Importance'. Here's a breakdown of the visual representation:
 
-1. **Most Influential Feature**: The `planet_radius` stands out as the most influential feature with the highest PME (Predictive Modeling Estimate) value. This suggests that the radius of the planet plays a pivotal role in determining the observed transit depth.
+1. **Most Influential Feature**: The `planet_radius` stands out as the most influential feature with the highest PME (Proportional Marginal Effects) value. This suggests that the radius of the planet plays a pivotal role in determining the observed transit depth.
 
 2. **Other Features**: Logarithmic concentrations of gases, such as `log_co2`, `log_co`, `log_nh3`, `log_h2o`, and `log_ch4`, also exhibit varying degrees of importance. Among these, `log_co2` and `log_co` are the more significant contributors compared to others.
 
@@ -558,7 +558,7 @@ By examining the 'PME Feature Importance' chart, one gains a deeper understandin
 
 ## Uncertainty Quantification and Feature Reduction in PME Feature Importance Analysis
 
-When delving deep into the realms of uncertainty quantification and feature reduction in predictive modeling, it's crucial to evaluate feature importance metrics critically. The provided PME (Predictive Modeling Estimate) Feature Importance Analysis offers a valuable lens for this task. Below is a nuanced exploration of its significance in the described contexts:
+When delving deep into the realms of uncertainty quantification and feature reduction in predictive modeling, it's crucial to evaluate feature importance metrics critically. The provided PME (Proportional Marginal Effects) Feature Importance Analysis offers a valuable lens for this task. Below is a nuanced exploration of its significance in the described contexts:
 
 ### **Uncertainty Quantification**:
 

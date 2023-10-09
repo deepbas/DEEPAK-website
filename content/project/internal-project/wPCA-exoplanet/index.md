@@ -501,9 +501,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-# Your data initialization (this part is assumed, as you haven't provided it in the original code)
-# X, y, feature_importances = ...
-
 # Standardize the feature matrix
 X_scaled = StandardScaler().fit_transform(X)
 
@@ -553,8 +550,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-# Your data initialization (this part is assumed, as you haven't provided it in the original code)
-# X, y, feature_importances = ...
 
 # Standardize the feature matrix
 X_scaled = StandardScaler().fit_transform(X)
@@ -604,8 +599,6 @@ plt.show()
 import pandas as pd
 import seaborn as sns
 
-# Your data initialization (this part is assumed, as you haven't provided it in the original code)
-# df, feature_columns, transit_depth_column = ...
 
 # Reconstruct the approximate original data using the first three principal components
 reconstructed_data = np.dot(X_pca, pca.components_[:3, :]) + np.mean(X_scaled, axis=0)
@@ -675,7 +668,6 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 
-# Assuming data initialization and feature_importances, feature_columns, and transit_depth_column definitions exist
 
 # Standardize the feature matrix
 X_scaled = StandardScaler().fit_transform(X)

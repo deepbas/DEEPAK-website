@@ -1,6 +1,6 @@
 ---
 
-avatar: "avatar.jpg"
+avatar: "static/img/avatar.jpg"
 
 bio: My research interests include Bayesian statistics and machine learning.
 
@@ -55,7 +55,6 @@ superuser: true
 title: Deepak Bastola
 ---
 
-My name is Deepak Bastola, a name synonymous with
-a blend of statistical acumen and cosmic curiosity. My academic journey, punctuated by a Ph.D. in Applied Statistics and a joint M.S. in Astronomy and Astrophysics, mirrors my relentless pursuit of knowledge. This journey has been marked by my fervor for leveraging statistical techniques to comprehend astronomical phenomena and devise insightful data‑driven narratives. My  research interests include Bayesian statistics, time series methodology, and statistical computation. 
+Deepak Bastola here, someone who is deeply passionate about the interplay between statistics and the mysteries of the cosmos. My educational background includes a Ph.D. in Applied Statistics and an M.S. in Astronomy and Astrophysics, both of which have equipped me to delve deeper into my quest for understanding. Throughout this academic path, I've been fortunate to employ statistical approaches in an effort to better understand astronomical events and to create meaningful data interpretations. My primary research areas are Bayesian statistics, time series methodology, statistical computation, and machine learning.
 
 {{< icon name="download" pack="fas" >}} Download my {{< staticref "uploads/resume.pdf" "newtab" >}}resumé{{< /staticref >}}.
