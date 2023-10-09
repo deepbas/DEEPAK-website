@@ -2,3 +2,123 @@
 .portrait-title h2 {
   font-size: 1.5rem;
 }
+
+
+/*-- scss:defaults --*/
+
+$white:    #ffffff !default;
+$gray-100: #eef2f7 !default;  // Lightened for better contrast
+$gray-200: #d4dae5 !default;
+$gray-300: #aab4c2 !default;
+$gray-400: #7f8a9a !default;
+$gray-500: #626f7e !default;
+$gray-600: #49565d !default;
+$gray-700: #30383d !default;
+$gray-800: #1b2122 !default;
+$gray-900: #0a0b0c !default;
+$black:    #000000 !default;
+
+$blue:    #007BFF !default;  // Classic web blue
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;  // Made less intense for better readability
+$pink:    #e83e8c !default;
+$red:     #dc3545 !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffc107 !default;
+$green:   #28a745 !default;  // A fresher shade of green
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+$primary:   $blue !default;  // Changed to blue for general appeal
+$secondary: $gray-600 !default;  // Darkened for better contrast
+$success:   $green !default;
+$info:      $cyan !default;
+$warning:   $yellow !default; 
+$danger:    $red !default;
+$light:     $gray-200 !default;
+$dark:      $black !default;
+
+// Links
+$link-color: $primary !default;
+$link-decoration: none !default;
+$link-hover-color: darken($primary, 10%) !default; // Darkens on hover for feedback
+$link-hover-decoration: underline !default;
+
+// Footer
+$footer-bg: $gray-800 !default;  // Darkened for a more modern look
+$footer-fg: $gray-200 !default;
+
+// Inline code
+$code-bg: $gray-100 !default;
+$code-color: $gray-700 !default;  // Darkened for better contrast
+
+// TOC
+$toc-color: $orange;
+$toc-font-size: 1em;
+
+// Code copy
+$btn-code-copy-color-active: darken($orange, 10%) !default; // Darkened for a subtle feedback
+
+
+
+
+
+/*-- scss:rules --*/
+
+
+.nav-footer {
+    align-items: flex-start;  // Align all flex items to the top
+    flex-wrap: wrap;
+    border: 0 !important;
+    min-height: 3em;
+    //font-family: $footer-font-family;
+
+    a {
+        color: $primary;
+    }
+
+    .faux-block {
+        display: block;
+        padding-bottom: 0.4em;
+    }
+
+    // In the default Quarto template, .nav-footer-center has position: absolute 
+    // turned on, which makes the div not be a flex item
+    // This changes that so that it *is* a flex item
+    .nav-footer-center {
+        text-align: center;
+        position: inherit;
+        margin-top: 0;
+
+        @media (max-width: map-get($grid-breakpoints, md)) {
+            margin-top: 0.5em;
+            margin-bottom: 1.5em;
+        }
+    }
+
+    // When the screen is medium or smaller, make each footer chunk be 100% width 
+    // and centered; otherwise make them be 33% width and left/right/centerd
+    .nav-footer-left,
+    .nav-footer-right,
+    .nav-footer-center {
+        text-align: center;
+        width: 100%;
+        min-height: 2em;
+    }
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
+        .nav-footer-left {
+            text-align: left;
+        }
+
+        .nav-footer-right {
+            text-align: right;
+        }
+
+        .nav-footer-left,
+        .nav-footer-right,
+        .nav-footer-center {
+            flex: 1 1 33%;
+        }
+    }
+}

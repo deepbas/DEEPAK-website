@@ -14,9 +14,9 @@
     
     <item>
       <title>Exoplanet modeling</title>
-      <link>/posts/exoplanet-modeling/</link>
+      <link>/2023/10/07/exoplanet-modeling/</link>
       <pubDate>Sat, 07 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>/posts/exoplanet-modeling/</guid>
+      <guid>/2023/10/07/exoplanet-modeling/</guid>
       <description>&lt;p&gt;The figure below showcases a spectrum integral to exoplanet detection, charting the transit depth against the wavelength in microns. Every observation point in the spectrum carries an inherent uncertainty, denoted by the vertical error bars. To decode and potentially minimize this uncertainty, it&amp;rsquo;s pivotal to fathom how features like &lt;code&gt;planet radius&lt;/code&gt;, &lt;code&gt;planet temperature&lt;/code&gt;, and the logarithmic concentrations of &lt;code&gt;H₂O&lt;/code&gt;, &lt;code&gt;CO₂&lt;/code&gt;, &lt;code&gt;CO&lt;/code&gt;, &lt;code&gt;CH₄&lt;/code&gt;, and &lt;code&gt;NH₃&lt;/code&gt; influence the transit depth. Leveraging interpretative tools like SHAP can provide insights into how these exoplanetary features impact the observed transit depth, refining our understanding and accuracy in exoplanet spectral analysis.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Import required libraries
 import numpy as np
@@ -1181,9 +1181,706 @@ plt.show()
     
     <item>
       <title>How to predict AAPL Stick price using an Informer model to capture long term dependencies?</title>
-      <link>/posts/informer-timeseries/</link>
+      <link>/2023/10/07/how-to-predict-aapl-stick-price-using-an-informer-model-to-capture-long-term-dependencies/</link>
       <pubDate>Sat, 07 Oct 2023 00:00:00 +0000</pubDate>
-      <guid>/posts/informer-timeseries/</guid>
+      <guid>/2023/10/07/how-to-predict-aapl-stick-price-using-an-informer-model-to-capture-long-term-dependencies/</guid>
+      <description>&lt;h1 id=&#34;informer&#34;&gt;Informer&lt;/h1&gt;
+&lt;p&gt;The Informer model variant is designed for multivariate prediction. Let&amp;rsquo;s consider &amp;lsquo;Open&amp;rsquo;, &amp;lsquo;High&amp;rsquo;, &amp;lsquo;Low&amp;rsquo;, and &amp;lsquo;Close&amp;rsquo; prices for simplicity. The provided code is designed to fetch and preprocess historical stock prices for Apple Inc. for the purpose of multivariate time series forecasting using an LSTM model. Initially, the code downloads Apple&amp;rsquo;s stock data, specifically capturing four significant features: Open, High, Low, and Close prices. To make the data suitable for deep learning models, it is normalized to fit within a range of 0 to 1. The sequential data is then transformed into a format suitable for supervised learning, where the data from the past &lt;code&gt;look_back&lt;/code&gt; days is used to predict the next day&amp;rsquo;s features. Finally, the data is partitioned into training (67%) and test sets, ensuring separate datasets for model training and evaluation.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;!pip install yfinance
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import mean_squared_error
+import tensorflow as tf
+import yfinance as yf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Download historical data as dataframe
+data = yf.download(&amp;quot;AAPL&amp;quot;, start=&amp;quot;2018-01-01&amp;quot;, end=&amp;quot;2023-09-01&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Using multiple columns for multivariate prediction
+df = data[[&amp;quot;Open&amp;quot;, &amp;quot;High&amp;quot;, &amp;quot;Low&amp;quot;, &amp;quot;Close&amp;quot;]]
+
+# Normalize the data
+scaler = MinMaxScaler(feature_range=(0, 1))
+df_scaled = scaler.fit_transform(df)
+
+# Prepare data for LSTM
+look_back = 10  # Number of previous time steps to use as input variables
+n_features = df.shape[1]  # number of features
+
+# Convert to supervised learning problem
+X, y = [], []
+for i in range(len(df_scaled) - look_back):
+    X.append(df_scaled[i:i+look_back, :])
+    y.append(df_scaled[i + look_back, :])
+X, y = np.array(X), np.array(y)
+
+# Reshape input to be [samples, time steps, features]
+X = np.reshape(X, (X.shape[0], X.shape[1], n_features))
+
+# Train-test split
+train_size = int(len(X) * 0.67)
+test_size = len(X) - train_size
+X_train, X_test = X[0:train_size], X[train_size:]
+y_train, y_test = y[0:train_size], y[train_size:]
+
+print(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;probsparse-self-attention&#34;&gt;ProbSparse Self-Attention:&lt;/h1&gt;
+&lt;p&gt;Self-attention involves computing a weighted sum of all values in the sequence, based on the dot product between the query and key. In ProbSparse, we don&amp;rsquo;t compute this for all query-key pairs, but rather select dominant ones, thus making the computation more efficient. The given code defines a custom Keras layer, &lt;code&gt;ProbSparseSelfAttention&lt;/code&gt;, which implements the multi-head self-attention mechanism, a critical component of Transformer models. This layer initializes three dense networks for the Query, Key, and Value matrices, and splits the input data into multiple heads to enable parallel processing. During the forward pass (&lt;code&gt;call&lt;/code&gt; method), the Query, Key, and Value matrices are calculated, scaled, and then used to compute attention scores. These scores indicate the importance of each element in the sequence when predicting another element. The output is a weighted sum of the input values, which is then passed through another dense layer to produce the final result.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class ProbSparseSelfAttention(tf.keras.layers.Layer):
+    def __init__(self, d_model, num_heads, **kwargs):
+        super(ProbSparseSelfAttention, self).__init__(**kwargs)
+        self.num_heads = num_heads
+        self.d_model = d_model
+
+        # Assert that d_model is divisible by num_heads
+        assert self.d_model % self.num_heads == 0, f&amp;quot;d_model ({d_model}) must be divisible by num_heads ({num_heads})&amp;quot;
+
+        self.depth = d_model // self.num_heads
+
+        # Defining the dense layers for Query, Key and Value
+        self.wq = tf.keras.layers.Dense(d_model)
+        self.wk = tf.keras.layers.Dense(d_model)
+        self.wv = tf.keras.layers.Dense(d_model)
+
+        self.dense = tf.keras.layers.Dense(d_model)
+
+    def split_heads(self, x, batch_size):
+        x = tf.reshape(x, (batch_size, -1, self.num_heads, self.depth))
+        return tf.transpose(x, perm=[0, 2, 1, 3])
+
+    def call(self, v, k, q):
+        batch_size = tf.shape(q)[0]
+
+        q = self.wq(q)
+        k = self.wk(k)
+        v = self.wv(v)
+
+        q = self.split_heads(q, batch_size)
+        k = self.split_heads(k, batch_size)
+        v = self.split_heads(v, batch_size)
+
+        # Fixing matrix multiplication
+        matmul_qk = tf.matmul(q, k, transpose_b=True)
+
+        d_k = tf.cast(self.depth, tf.float32)
+        scaled_attention_logits = matmul_qk / tf.math.sqrt(d_k)
+
+        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-1)
+        output = tf.matmul(attention_weights, v)
+
+        output = tf.transpose(output, perm=[0, 2, 1, 3])
+        concat_attention = tf.reshape(output, (batch_size, -1, self.d_model))
+
+        return self.dense(concat_attention)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;informer-encoder&#34;&gt;Informer Encoder:&lt;/h1&gt;
+&lt;p&gt;The &lt;code&gt;InformerEncoder&lt;/code&gt; is a custom Keras layer designed to process sequential data using a combination of attention and convolutional mechanisms. Within the encoder, the input data undergoes multi-head self-attention, utilizing the &lt;code&gt;ProbSparseSelfAttention&lt;/code&gt; mechanism, to capture relationships in the data regardless of their distance. Post attention, the data is transformed and normalized, then further processed using two 1D convolutional layers, emphasizing local features in the data. After another normalization step, the processed data is pooled to a lower dimensionality, ensuring the model captures global context, and then passed through a dense layer to produce the final output.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class InformerEncoder(tf.keras.layers.Layer):
+    def __init__(self, d_model, num_heads, conv_filters, **kwargs):
+        super(InformerEncoder, self).__init__(**kwargs)
+        self.d_model = d_model
+        self.num_heads = num_heads
+
+        # Assert that d_model is divisible by num_heads
+        assert self.d_model % self.num_heads == 0, f&amp;quot;d_model ({d_model}) must be divisible by num_heads ({num_heads})&amp;quot;
+
+        self.self_attention = ProbSparseSelfAttention(d_model=d_model, num_heads=num_heads)
+
+        self.norm1 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
+
+        # This dense layer will transform the input &#39;x&#39; to have the dimensionality &#39;d_model&#39;
+        self.dense_transform = tf.keras.layers.Dense(d_model)
+
+        self.conv1 = tf.keras.layers.Conv1D(conv_filters, 3, padding=&#39;same&#39;)
+        self.conv2 = tf.keras.layers.Conv1D(d_model, 3, padding=&#39;same&#39;)
+        self.norm2 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
+
+        self.global_avg_pooling = tf.keras.layers.GlobalAveragePooling1D()
+        self.dense = tf.keras.layers.Dense(d_model)
+
+    def call(self, x):
+        attn_output = self.self_attention(x, x, x)
+
+        # Transform &#39;x&#39; to have the desired dimensionality
+        x_transformed = self.dense_transform(x)
+        attn_output = self.norm1(attn_output + x_transformed)
+
+        conv_output = self.conv1(attn_output)
+        conv_output = tf.nn.relu(conv_output)
+        conv_output = self.conv2(conv_output)
+
+        encoded_output = self.norm2(conv_output + attn_output)
+
+        pooled_output = self.global_avg_pooling(encoded_output)
+        return self.dense(pooled_output)[:, -4:]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;input_layer = tf.keras.layers.Input(shape=(look_back, n_features))
+
+# Encoder
+encoder_output = InformerEncoder(d_model=360, num_heads=8, conv_filters=64)(input_layer)
+
+# Decoder (with attention)
+decoder_lstm = tf.keras.layers
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;InformerModel&lt;/code&gt; function is designed to create a deep learning architecture tailored for sequential data prediction. It takes an input sequence and processes it using the &lt;code&gt;InformerEncoder&lt;/code&gt;, a custom encoder layer, which captures both local and global patterns in the data. Following the encoding step, a decoder structure unravels the encoded data by first repeating the encoder&amp;rsquo;s output, then passing it through an LSTM layer to retain sequential dependencies, and finally making predictions using a dense layer. The resulting architecture is then compiled with the Adam optimizer and Mean Squared Error loss, ready for training on time series data.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from tensorflow.keras.layers import RepeatVector
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+
+
+def InformerModel(input_shape, d_model=64, num_heads=2, conv_filters=256, learning_rate= 1e-3):
+    # Input
+    input_layer = Input(shape=input_shape)
+
+    # Encoder
+    encoder_output = InformerEncoder(d_model=d_model, num_heads=num_heads, conv_filters=conv_filters)(input_layer)
+
+    # Decoder
+    repeated_output = RepeatVector(4)(encoder_output)  # Repeating encoder&#39;s output
+    decoder_lstm = LSTM(312, return_sequences=True)(repeated_output)
+    decoder_output = Dense(4)(decoder_lstm[:, -1, :])  # Use the last sequence output to predict the next value
+
+    # Model
+    model = Model(inputs=input_layer, outputs=decoder_output)
+    # Compile the model with the specified learning rate
+    optimizer = Adam(learning_rate=learning_rate)
+    model.compile(optimizer=optimizer, loss=&#39;mean_squared_error&#39;)
+
+
+
+    return model
+
+model = InformerModel(input_shape=(look_back, n_features))
+model.compile(optimizer=&#39;adam&#39;, loss=&#39;mean_squared_error&#39;)
+model.summary()
+
+
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Model: &amp;quot;model_10&amp;quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_12 (InputLayer)       [(None, 10, 4)]           0         
+                                                                 
+ informer_encoder_11 (Infor  (None, 4)                 108480    
+ merEncoder)                                                     
+                                                                 
+ repeat_vector_10 (RepeatVe  (None, 4, 4)              0         
+ ctor)                                                           
+                                                                 
+ lstm_10 (LSTM)              (None, 4, 312)            395616    
+                                                                 
+ tf.__operators__.getitem_1  (None, 312)               0         
+ 0 (SlicingOpLambda)                                             
+                                                                 
+ dense_82 (Dense)            (None, 4)                 1252      
+                                                                 
+=================================================================
+Total params: 505348 (1.93 MB)
+Trainable params: 505348 (1.93 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;model.fit&lt;/code&gt; method trains the neural network using the provided training data (&lt;code&gt;X_train&lt;/code&gt; and &lt;code&gt;y_train&lt;/code&gt;) for a total of 50 epochs with mini-batches of 32 samples. During training, 20% of the training data is set aside for validation to monitor and prevent overfitting.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;history = model.fit(
+    X_train, y_train,
+    epochs=50,
+    batch_size=64,
+    validation_split=0.3,
+    shuffle=True
+)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The code displays a visual representation of the model&amp;rsquo;s training and validation loss over the epochs using a line chart. The x-axis represents the number of epochs, while the y-axis indicates the mean squared error, allowing users to observe how the model&amp;rsquo;s performance evolves over time.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;plt.figure(figsize=(12, 6))
+plt.plot(history.history[&#39;loss&#39;], label=&#39;Training Loss&#39;)
+plt.plot(history.history[&#39;val_loss&#39;], label=&#39;Validation Loss&#39;)
+plt.title(&#39;Training and Validation Loss&#39;)
+plt.xlabel(&#39;Epoch&#39;)
+plt.ylabel(&#39;Mean Squared Error&#39;)
+plt.legend()
+plt.show()
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_15_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;test_predictions = model.predict(X_test)
+test_predictions = scaler.inverse_transform(test_predictions)
+true_values = scaler.inverse_transform(y_test)
+
+mse = mean_squared_error(true_values, test_predictions)
+print(f&amp;quot;Test MSE: {mse}&amp;quot;)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;15/15 [==============================] - 1s 3ms/step
+Test MSE: 462.6375895467179
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;plt.figure(figsize=(12, 6))
+plt.plot(true_values, label=&#39;True Values&#39;)
+plt.plot(test_predictions, label=&#39;Predictions&#39;, alpha=0.6)
+plt.title(&#39;Test Set Predictions vs. True Values&#39;)
+plt.legend()
+plt.show()
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_17_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;!pip install keras-tuner
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The code defines a function to construct a neural network model using varying hyperparameters, aiming to optimize its architecture. Subsequently, the RandomSearch method from Keras Tuner is employed to explore 200 different model configurations, assessing their performance to determine the best hyperparameters that minimize the validation loss.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from tensorflow.keras.layers import Input, RepeatVector, LSTM, Dense
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+import tensorflow as tf
+import kerastuner as kt
+
+def build_model(hp):
+    # Input
+    input_layer = Input(shape=(look_back, n_features))
+
+    # Encoder
+    encoder_output = InformerEncoder(d_model=hp.Int(&#39;d_model&#39;, min_value=32, max_value=512, step=16),
+                                     num_heads=hp.Int(&#39;num_heads&#39;, 2, 8, step=2),
+                                     conv_filters=hp.Int(&#39;conv_filters&#39;, min_value=16, max_value=256, step=16))(input_layer)
+
+    # Decoder
+    repeated_output = RepeatVector(4)(encoder_output)  # Repeating encoder&#39;s output
+    decoder_lstm = LSTM(312, return_sequences=True)(repeated_output)
+    decoder_output = Dense(4)(decoder_lstm[:, -1, :])  # Use the last sequence output to predict the next value
+
+    # Model
+    model = Model(inputs=input_layer, outputs=decoder_output)
+
+    # Compile the model with the specified learning rate
+    optimizer = Adam(learning_rate=hp.Choice(&#39;learning_rate&#39;, [1e-3, 1e-2, 1e-1]))
+    model.compile(optimizer=optimizer, loss=&#39;mean_squared_error&#39;)
+
+    return model
+
+# Define the tuner
+tuner = kt.RandomSearch(
+    build_model,
+    objective=&#39;val_loss&#39;,
+    max_trials=30,
+    executions_per_trial=5,
+    directory=&#39;hyperparam_search&#39;,
+    project_name=&#39;informer_model&#39;
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The code sets up two training callbacks: one for early stopping if validation loss doesn&amp;rsquo;t improve after 10 epochs, and another to save the model weights at their best performance. With these callbacks, the tuner conducts a search over the hyperparameter space using the training data, and evaluates model configurations over 100 epochs, saving the most optimal weights and potentially halting early if improvements stagnate.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+
+early_stopping = EarlyStopping(monitor=&#39;val_loss&#39;, patience=10, verbose=1, restore_best_weights=True)
+model_checkpoint = ModelCheckpoint(filepath=&#39;trial_best.h5&#39;, monitor=&#39;val_loss&#39;, verbose=1, save_best_only=True)
+
+tuner.search(X_train, y_train,
+             epochs=100,
+             validation_split=0.2,
+             callbacks=[early_stopping, model_checkpoint])
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Trial 30 Complete [00h 00m 01s]
+
+Best val_loss So Far: 0.0009468139498494566
+Total elapsed time: 00h 30m 43s
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Get the best hyperparameters
+best_hp = tuner.get_best_hyperparameters()[0]
+
+# Retrieve the best model
+best_model = tuner.get_best_models()[0]
+best_model.summary()
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Model: &amp;quot;model&amp;quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_1 (InputLayer)        [(None, 10, 4)]           0         
+                                                                 
+ informer_encoder (Informer  (None, 4)                 108480    
+ Encoder)                                                        
+                                                                 
+ repeat_vector (RepeatVecto  (None, 4, 4)              0         
+ r)                                                              
+                                                                 
+ lstm (LSTM)                 (None, 4, 312)            395616    
+                                                                 
+ tf.__operators__.getitem (  (None, 312)               0         
+ SlicingOpLambda)                                                
+                                                                 
+ dense_6 (Dense)             (None, 4)                 1252      
+                                                                 
+=================================================================
+Total params: 505348 (1.93 MB)
+Trainable params: 505348 (1.93 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;test_loss = best_model.evaluate(X_test, y_test)
+print(f&amp;quot;Test MSE: {test_loss}&amp;quot;)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;15/15 [==============================] - 0s 3ms/step - loss: 0.0086
+Test MSE: 0.008609036915004253
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;plt.figure(figsize=(20, 12))
+for i in range(true_values.shape[1]):
+    plt.subplot(2, 2, i+1)
+    plt.plot(true_values[:, i], label=&#39;True Values&#39;, color=&#39;blue&#39;)
+    plt.plot(test_predictions[:, i], label=&#39;Predictions&#39;, color=&#39;red&#39;, linestyle=&#39;--&#39;)
+    plt.title(f&amp;quot;Feature {i+1}&amp;quot;)
+    plt.legend()
+plt.tight_layout()
+plt.show()
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_25_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from sklearn.metrics import mean_absolute_error
+mae = mean_absolute_error(true_values, test_predictions)
+rmse = np.sqrt(test_loss)  # since loss is MSE
+print(f&amp;quot;MAE: {mae}, RMSE: {rmse}&amp;quot;)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;MAE: 19.377517553476185, RMSE: 0.09278489594219662
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;print(f&amp;quot;Best d_model: {best_hp.get(&#39;d_model&#39;)}&amp;quot;)
+print(f&amp;quot;Best num_heads: {best_hp.get(&#39;num_heads&#39;)}&amp;quot;)
+print(f&amp;quot;Best conv_filters: {best_hp.get(&#39;conv_filters&#39;)}&amp;quot;)
+print(f&amp;quot;Best learning_rate: {best_hp.get(&#39;learning_rate&#39;)}&amp;quot;)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Best d_model: 64
+Best num_heads: 2
+Best conv_filters: 256
+Best learning_rate: 0.001
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;!pip install shap
+import shap
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# The reference can be a dataset or just random data
+background = X_train[np.random.choice(X_train.shape[0], 300, replace=False)]  # Taking a random sample of the training data as background
+explainer = shap.GradientExplainer(best_model, background)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;shap_values = explainer.shap_values(X_test[:300])  # Computing for a subset for performance reasons
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for timestep in range(10):
+    print(f&amp;quot;Summary plot for timestep {timestep + 1}&amp;quot;)
+    shap.summary_plot(shap_values[0][:, timestep, :], X_test[:300, timestep, :])
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_1.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_3.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_5.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 4
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_7.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 5
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_9.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 6
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_11.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 7
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_13.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_15.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 9
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_17.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Summary plot for timestep 10
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./Multivariate_multistep_Informer_31_19.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h1 id=&#34;shapley-values&#34;&gt;Shapley values&lt;/h1&gt;
+&lt;p&gt;SHAP values are indicating by how much the presence of a particular feature influenced the model&amp;rsquo;s prediction, compared to if that feature was absent. The color represents the actual value of the feature itself. In the context of the present work, Shapley values are employed as a method to enhance the interpretability of the model. Shapley values provide insights into the contribution of each feature to the model&amp;rsquo;s predictions. Specifically, they quantify how each feature influences the prediction by evaluating its impact when combined with all other features. By calculating Shapley values, we gain a clear understanding of the relative importance of each feature in multivariate time series prediction.&lt;/p&gt;
+&lt;p&gt;Overall, Shapley values enhance model interpretability by offering a systematic and quantitative way to dissect complex models and understand their decision-making processes. They enable us to identify which features are the key drivers of predictions, helping us make more informed decisions and potentially improving model performance. This interpretability is crucial in various applications, from finance to healthcare, where understanding the factors influencing predictions is paramount for trust and decision-making.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to predict AAPL Stick price using an Informer model to capture long term dependencies?</title>
+      <link>/project/internal-project/informer-timeseries/</link>
+      <pubDate>Sat, 07 Oct 2023 00:00:00 +0000</pubDate>
+      <guid>/project/internal-project/informer-timeseries/</guid>
       <description>&lt;h1 id=&#34;informer&#34;&gt;Informer&lt;/h1&gt;
 &lt;p&gt;The Informer model variant is designed for multivariate prediction. Let&amp;rsquo;s consider &amp;lsquo;Open&amp;rsquo;, &amp;lsquo;High&amp;rsquo;, &amp;lsquo;Low&amp;rsquo;, and &amp;lsquo;Close&amp;rsquo; prices for simplicity. The provided code is designed to fetch and preprocess historical stock prices for Apple Inc. for the purpose of multivariate time series forecasting using an LSTM model. Initially, the code downloads Apple&amp;rsquo;s stock data, specifically capturing four significant features: Open, High, Low, and Close prices. To make the data suitable for deep learning models, it is normalized to fit within a range of 0 to 1. The sequential data is then transformed into a format suitable for supervised learning, where the data from the past &lt;code&gt;look_back&lt;/code&gt; days is used to predict the next day&amp;rsquo;s features. Finally, the data is partitioned into training (67%) and test sets, ensuring separate datasets for model training and evaluation.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;!pip install yfinance
@@ -1878,9 +2575,341 @@ explainer = shap.GradientExplainer(best_model, background)
     
     <item>
       <title>How to predict covid case counts using machine learning models?</title>
-      <link>/posts/jupyter-lstm/</link>
+      <link>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</link>
       <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
-      <guid>/posts/jupyter-lstm/</guid>
+      <guid>/2022/03/23/how-to-predict-covid-case-counts-using-machine-learning-models/</guid>
+      <description>&lt;p&gt;It would be nice to predict the number of positive covid cases depending on past cases evolution. Regression models based on recurrent neural networks (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions.&lt;/p&gt;
+&lt;p&gt;The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one features to make informed predictions. LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.&lt;/p&gt;
+&lt;p&gt;The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Import various libraries and routines needed for computation
+import math 
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import keras.backend as K
+from math import sqrt
+from numpy import concatenate
+from matplotlib import pyplot
+from pandas import read_csv, DataFrame
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, LSTM
+from keras.callbacks import EarlyStopping
+from datetime import date, timedelta, datetime 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Read in the data file that has relevant features 
+df = pd.read_csv(&#39;covid_final.csv&#39;)  
+dataset = df.set_index([&#39;date&#39;])
+# Drop the last 10 row as they are incomplete
+dataset.drop(dataset.tail(10).index,
+        inplace = True)
+values = dataset.values
+# Store the indexes (i.e., dates)
+date_index = dataset.index
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Clean up the dataset more for predictions and inverse transformations (Re-scaling)
+data_clean = dataset.copy()
+data_clean_ext = dataset.copy()
+data_clean_ext[&#39;new_cases_predictions&#39;] = data_clean_ext[&#39;new_cases_smoothed&#39;]
+data_clean.tail()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&lt;pre&gt;&lt;code&gt;.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;/style&gt;&lt;/p&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;new_cases_smoothed&lt;/th&gt;
+      &lt;th&gt;reproduction_rate&lt;/th&gt;
+      &lt;th&gt;new_tests_smoothed_per_thousand&lt;/th&gt;
+      &lt;th&gt;new_vaccinations_smoothed_per_million&lt;/th&gt;
+      &lt;th&gt;people_fully_vaccinated_per_hundred&lt;/th&gt;
+      &lt;th&gt;total_boosters_per_hundred&lt;/th&gt;
+      &lt;th&gt;stringency_index&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;date&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2022-03-08&lt;/th&gt;
+      &lt;td&gt;38934.286&lt;/td&gt;
+      &lt;td&gt;0.65&lt;/td&gt;
+      &lt;td&gt;2.748&lt;/td&gt;
+      &lt;td&gt;621&lt;/td&gt;
+      &lt;td&gt;65.24&lt;/td&gt;
+      &lt;td&gt;28.89&lt;/td&gt;
+      &lt;td&gt;53.24&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2022-03-09&lt;/th&gt;
+      &lt;td&gt;36641.429&lt;/td&gt;
+      &lt;td&gt;0.66&lt;/td&gt;
+      &lt;td&gt;2.699&lt;/td&gt;
+      &lt;td&gt;601&lt;/td&gt;
+      &lt;td&gt;65.25&lt;/td&gt;
+      &lt;td&gt;28.91&lt;/td&gt;
+      &lt;td&gt;53.24&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2022-03-10&lt;/th&gt;
+      &lt;td&gt;36330.429&lt;/td&gt;
+      &lt;td&gt;0.69&lt;/td&gt;
+      &lt;td&gt;2.613&lt;/td&gt;
+      &lt;td&gt;583&lt;/td&gt;
+      &lt;td&gt;65.27&lt;/td&gt;
+      &lt;td&gt;28.94&lt;/td&gt;
+      &lt;td&gt;53.24&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2022-03-11&lt;/th&gt;
+      &lt;td&gt;36104.714&lt;/td&gt;
+      &lt;td&gt;0.71&lt;/td&gt;
+      &lt;td&gt;2.580&lt;/td&gt;
+      &lt;td&gt;557&lt;/td&gt;
+      &lt;td&gt;65.29&lt;/td&gt;
+      &lt;td&gt;28.97&lt;/td&gt;
+      &lt;td&gt;53.24&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2022-03-12&lt;/th&gt;
+      &lt;td&gt;35464.143&lt;/td&gt;
+      &lt;td&gt;0.71&lt;/td&gt;
+      &lt;td&gt;2.561&lt;/td&gt;
+      &lt;td&gt;540&lt;/td&gt;
+      &lt;td&gt;65.30&lt;/td&gt;
+      &lt;td&gt;28.99&lt;/td&gt;
+      &lt;td&gt;53.24&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# number of rows in the data
+nrows = data_clean.shape[0]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The day-to-day case counts can be regarded as a time series and the data needs to be prepared before training a supervised learning model. For LSTM, the data is composed of inputs and outputs, and the inputs can be seen as a moving window blocks consisting of the feature values to predict the outcome. The size of the window is a free parameter that the user must optimize.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Convert the data to numpy values
+np_data_unscaled = np.array(data_clean)
+np_data = np.reshape(np_data_unscaled, (nrows, -1))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# ensure all data is float
+values = values.astype(&#39;float64&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Transform the data by scaling each feature to a range between 0 and 1
+scaler = MinMaxScaler()
+np_data_scaled = scaler.fit_transform(np_data_unscaled)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Creating a separate scaler that works on a single column for scaling predictions
+scaler_pred = MinMaxScaler()
+df_cases = pd.DataFrame(data_clean_ext[&#39;new_cases_smoothed&#39;])
+np_cases_scaled = scaler_pred.fit_transform(df_cases)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In LSTM methodology, it is required to reshape the input to be a 3D tensor of samples, time steps, and features. This is more important when we are fitting the model later.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Set the sequence length - this is the timeframe used to make a single prediction
+sequence_length = 31  # rolling window size
+
+# Prediction Index
+index_cases = dataset.columns.get_loc(&amp;quot;new_cases_smoothed&amp;quot;)
+
+# Split the training data into train and train data sets
+# As a first step, we get the number of rows to train the model on 80% of the data 
+train_data_len = math.ceil(np_data_scaled.shape[0] * 0.8)
+
+# Create the training and test data
+train_data = np_data_scaled[0:train_data_len, :]
+test_data = np_data_scaled[train_data_len - sequence_length:, :]
+
+# The RNN needs data with the format of [samples, time steps, features]
+# Here, we create N samples, sequence_length time steps per sample, and 6 features
+def partition_dataset(sequence_length, data):
+    x, y = [], []
+    data_len = data.shape[0]
+    for i in range(sequence_length, data_len):
+        x.append(data[i-sequence_length:i,:]) #contains sequence_length values 0-sequence_length * columsn
+        y.append(data[i, index_cases]) #contains the prediction values for validation,  for single-step prediction
+    
+    # Convert the x and y to numpy arrays
+    x = np.array(x)
+    y = np.array(y)
+    return x, y
+
+# Generate training data and test data
+x_train, y_train = partition_dataset(sequence_length, train_data)
+x_test, y_test = partition_dataset(sequence_length, test_data)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Configure the neural network model
+model = Sequential()
+# Model with n_neurons = inputshape Timestamps, each with x_train.shape[2] variables
+n_neurons = x_train.shape[1] * x_train.shape[2]
+model.add(LSTM(n_neurons, return_sequences=False, input_shape=(x_train.shape[1], x_train.shape[2])))
+model.add(Dense(1))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Check-points and early stopping parameters make our modeling easier
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+# Compiling the LSTM
+model.compile(optimizer = &#39;adam&#39;, loss = &#39;mean_squared_error&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Specfy the file and file path for the best model
+checkpoint_path = &#39;my_best_model.hdf5&#39;
+checkpoint = ModelCheckpoint(filepath=checkpoint_path, 
+                             monitor=&#39;val_loss&#39;,
+                             verbose=1, 
+                             save_best_only=True,
+                             mode=&#39;min&#39;)
+
+earlystopping = EarlyStopping(monitor=&#39;val_loss&#39;, patience=50, restore_best_weights=True, verbose =0)
+callbacks = [checkpoint, earlystopping]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Training the model
+epochs = 300
+batch_size = 20
+history = model.fit(x_train, y_train,
+                     batch_size=batch_size, 
+                     epochs=epochs,
+                     validation_data=(x_test, y_test),
+                     callbacks = callbacks,
+                     verbose = 0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Load the best model
+from tensorflow.keras.models import load_model
+model_from_saved_checkpoint = load_model(checkpoint_path)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Plot training &amp;amp; validation loss values
+plt.figure(figsize=(16,7))
+plt.plot(history.history[&#39;loss&#39;], label=&#39;train&#39;)
+plt.plot(history.history[&#39;val_loss&#39;], label=&#39;test&#39;)
+plt.legend()
+plt.show()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./covid_analysis_17_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Get the predicted values
+y_pred_scaled = model_from_saved_checkpoint.predict(x_test)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Unscale the predicted values
+y_pred = scaler_pred.inverse_transform(y_pred_scaled)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# reshape 
+y_test_unscaled = scaler_pred.inverse_transform(y_test.reshape(-1, 1))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Mean Absolute Error (MAE)
+MAE = mean_absolute_error(y_test_unscaled, y_pred)
+print(f&#39;Median Absolute Error (MAE): {np.round(MAE, 2)}&#39;)
+
+# Mean Absolute Percentage Error (MAPE)
+MAPE = np.mean((np.abs(np.subtract(y_test_unscaled, y_pred)/ y_test_unscaled))) * 100
+print(f&#39;Mean Absolute Percentage Error (MAPE): {np.round(MAPE, 2)} %&#39;)
+
+# Median Absolute Percentage Error (MDAPE)
+MDAPE = np.median((np.abs(np.subtract(y_test_unscaled, y_pred)/ y_test_unscaled)) ) * 100
+print(f&#39;Median Absolute Percentage Error (MDAPE): {np.round(MDAPE, 2)} %&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Plot of the true and predicted case counts
+plt.plot(y_test_unscaled, label=&#39;True&#39;)
+plt.plot(y_pred, label=&#39;LSTM&#39;)
+plt.title(&amp;quot;LSTM&#39;s_Prediction&amp;quot;)
+plt.xlabel(&#39;Time steps&#39;)
+plt.ylabel(&#39;Cases&#39;)
+plt.legend()
+plt.show()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;./covid_analysis_22_0.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# New data frame for predicting the next day count
+new_df = data_clean[-sequence_length:] # gets the last N days
+N = sequence_length
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Get the values of the last N day cases counts 
+# scale the data to be values between 0 and 1
+last_N_days = new_df[-sequence_length:].values
+last_N_days_scaled = scaler.transform(last_N_days)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Create an empty list and Append past N days
+X_test_new = []
+X_test_new.append(last_N_days_scaled)
+
+# Convert the X_test data set to a numpy array and reshape the data
+pred_cases_scaled = model_from_saved_checkpoint.predict(np.array(X_test_new))
+pred_cases_unscaled = scaler_pred.inverse_transform(pred_cases_scaled.reshape(-1, 1))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Print last price, predicted price, and change percent for the next day
+cases_today = np.round(new_df[&#39;new_cases_smoothed&#39;][-1])
+predicted_cases = np.round(pred_cases_unscaled.ravel()[0])
+change_percent = np.round(100 - (cases_today * 100)/predicted_cases)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Code used to produce this article in jupyter notebook in hugo academic blog post
+!jupyter nbconvert covid_analysis.ipynb --to markdown --NbConvertApp.output_files_dir=.
+!cat covid_analysis.md | tee -a index.md
+!rm covid_analysis.md
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to predict covid case counts using machine learning models?</title>
+      <link>/project/internal-project/jupyter-lstm/</link>
+      <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>/project/internal-project/jupyter-lstm/</guid>
       <description>&lt;p&gt;It would be nice to predict the number of positive covid cases depending on past cases evolution. Regression models based on recurrent neural networks (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions.&lt;/p&gt;
 &lt;p&gt;The model used in the following example is based on long-term short-term memory (LSTM) model that uses more than one features to make informed predictions. LSTMs are recurrent neural networks that avoid the vanishing gradient problem prevalent in feed-forward type of algorithms by imposing filtering mechanisms in the gates using a technique known as back-propagation.&lt;/p&gt;
 &lt;p&gt;The following set of codes loads all the required Python libraries, packages, and subroutines required for LSTM modeling. This blog post is just intended to give a high level summary of how to realize a covid case count prediction in the United States using some convenient features readily available.&lt;/p&gt;

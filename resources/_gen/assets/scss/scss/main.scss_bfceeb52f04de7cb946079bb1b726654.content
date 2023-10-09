@@ -9523,3 +9523,39 @@ div.chart {
 
 .portrait-title h2 {
   font-size: 1.5rem; }
+
+/*-- scss:defaults --*/
+/*-- scss:rules --*/
+.nav-footer {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border: 0 !important;
+  min-height: 3em; }
+  .nav-footer a {
+    color: #1565c0; }
+  .nav-footer .faux-block {
+    display: block;
+    padding-bottom: 0.4em; }
+  .nav-footer .nav-footer-center {
+    text-align: center;
+    position: inherit;
+    margin-top: 0; }
+    @media (max-width: 768px) {
+      .nav-footer .nav-footer-center {
+        margin-top: 0.5em;
+        margin-bottom: 1.5em; } }
+  .nav-footer .nav-footer-left,
+  .nav-footer .nav-footer-right,
+  .nav-footer .nav-footer-center {
+    text-align: center;
+    width: 100%;
+    min-height: 2em; }
+  @media (min-width: 768px) {
+    .nav-footer .nav-footer-left {
+      text-align: left; }
+    .nav-footer .nav-footer-right {
+      text-align: right; }
+    .nav-footer .nav-footer-left,
+    .nav-footer .nav-footer-right,
+    .nav-footer .nav-footer-center {
+      flex: 1 1 33%; } }
