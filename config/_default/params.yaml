@@ -3,11 +3,14 @@
 # Documentation: https://wowchemy.com/docs/
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
-# Appearance
 
 # Appearance
+
+day_night: true
+
+
 appearance:
-  theme_day: minimal
+  theme_day: forest
   theme_night: minimal
   font: minimal
   font_size: L
