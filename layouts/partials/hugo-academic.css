@@ -2,3 +2,9 @@ code .MathJax {
   color: purple;
   background-color: white;
 }
+
+
+.restricted-width {
+  width: 100%;
+  max-width: 100%;
+}
