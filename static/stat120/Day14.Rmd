@@ -213,7 +213,7 @@ If the new drug has potentially serious side effects, we should pick a significa
 .hljs[
 A. Relatively small (such as $1 \%$ )
 
-B. Middle of the road ( $5\%$ )
+B. Middle of the road $(5\%)$
 
 C. Relatively large (such as $10 \%$ )
 
@@ -229,67 +229,53 @@ The correct answer is A. Since a Type 1 error would be serious, we use a small s
 
 ---
 
+class: middle
 
-# Question 5
+# Factors Affecting Type I and Type II Error Rates
 
-.bql.font80[
-A new blood thinning drug is being tested against the current drug in a double-blind experiment, and the hypotheses are:
-$$\mathrm{H}_0: \mu_{\mathrm{n}}=\mu_{\mathrm{o}} \quad \text { vS } \quad \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{n}}>\mu_{\mathrm{o}}$$
 
-If the new drug has no real side effects and costs less than the old drug, we might pick a significance level that is:]
+## Sample Size
 
 .hljs[
-A. Relatively small (such as $1 \%$ )
+- **Larger Sample Sizes**:
+  - Improve the accuracy of the test.
+  - Decrease the chance of Type II error.
 
-B. Middle of the road ($5\%$)
-
-C. Relatively large (such as $10 \%$ )
-
+- **Smaller Sample Sizes**:
+  - Increase the risk of not detecting a true effect (Type II error).
 ]
-
-
-
-<details>
-<summary class="answer">Click for answer</summary>
-The correct answer is C. Since a Type 1 error is not at all serious here, we might use a large significance level
-</details>
 
 ---
 
-# Probability of Type II Error
+class: middle
 
+# Factors Affecting Type I and Type II Error Rates
 
-.bql.font80[
-How can we reduce the probability of making a Type II Error (not rejecting a false null)?]
-
+## Variability
 
 .hljs[
+- **Greater Variability**:
+  - Increases chances of both Type I and Type II errors.
 
-a) Decrease the sample size
-
-b) Increase the sample size
-
+- **Lesser Variability**:
+  - Reduces chances of both errors.
 ]
 
+--
 
-<details>
-<summary class="answer">Click for detailed answer</summary>
-.blue-h.fancy[The correct answer is b, increase the sample size. As the sample size increases, the power of the test increases, reducing Type II error. As the sample size increases, the variability in the sample estimates decreases, leading to a decrease in the standard error. This reduced variability increases the power of the test and decreases the chances of a Type II error.With larger sample sizes, confidence intervals become narrower, indicating a higher precision in estimating the population parameter. Narrower confidence intervals make it easier to detect a significant difference between the null hypothesis and the alternative hypothesis, thus reducing the probability of a Type II error. ] 
-</details>
+.blue-h[**Note**: Ensuring a sufficiently large sample and considering the inherent variability in the population are vital in hypothesis testing.]
 
 ---
 
-
-# Randomization distribution with $n=10$
+# Example: Randomization distribution with $n=10$
 
 <center>
 <img src="images/day13-8.png" width="60%" height="30%"> <br>
 </center>
 
-
 ---
 
-# Randomization distribution with $n=100$
+# Example: Randomization distribution with $n=100$
 
 
 <center>
@@ -304,7 +290,7 @@ b) Increase the sample size
 
 .pull-left[## .bold[Bootstrap Distribution]
 
-.bq.font90[
+.bq.font80[
 - Our best guess at the distribution of sample statistics
 
 - Centered around the observed sample statistic
@@ -315,12 +301,13 @@ b) Increase the sample size
 
 .pull-right[## .bold[Randomization Distribution]
 
-.bq.font90[
+.bq.font80[
 - Our best guess at the distribution of sample statistics, if $\mathrm{H}_0$ were true 
 
 - Centered around the null hypothesized value
 
 - Simulate samples assuming $\mathrm{H}_0$ were true
+<br>
 ]
 ]
 
@@ -348,7 +335,6 @@ b) Increase the sample size
 
 ---
 
-class: middle
 
 # Using confidence intervals for hypothesis testing
 
@@ -383,93 +369,13 @@ If a $95 \%$ CI misses the parameter in $\mathrm{H}_0$, then a two-tailed test s
 
 ---
 
-class: middle
+# Gender stereotypes in children
 
-# Multiple Testing/Comparison
+<center>
+<img src="images/gender_stereotypes.png" width="80%" height="60%"> <br>
+</center>
 
-
-.bql[
-When multiple hypothesis tests are conducted, the chance that at least one test incorrectly rejects a true null hypothesis increases with the number of tests.
-
-- If the null hypotheses are all true, $\alpha$ of the tests will yield statistically significant results just by random chance.
-]
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-
-.bql[
-- Are certain foods in your diet associated with whether or not you conceive a boy or a girl? 
-- To study this, researchers asked women about their eating habits, including asking whether or not they ate 133 different foods regularly
-]
-
-
-.footnote[http://www.newscientist.com/article/dn13754-breakfast-cereals-boost-chances-of-conceiving-boys.html]
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-.hljs[For each of the 133 foods studied, a hypothesis test was conducted for a difference between mothers who conceived boys and girls in the proportion who consume each food]
-
-
-.bql.font90[What are the null and alternative hypotheses?
-
-Compare two populations: mothers who have boys vs. mothers who have girls
-
-$\boldsymbol{p}_b$ : proportion of mothers who have boys that consume the food regularly
-
-$\boldsymbol{p}_g$ : proportion of mothers who have girls that consume the food regularly
-
-
-\begin{aligned}
-& \mathrm{H}_0: p_b=p_g \\
-& \mathrm{H}_a: p_b \neq p_g
-\end{aligned}
-]
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-A significant difference was found for breakfast cereal (mothers of boys eat more), prompting the headline
-
-.green-h.center[“Breakfast Cereal Boosts Chances of 	Conceiving Boys”]
-
-How might you explain this?
-
-.bq[.B[Random chance]: several tests (about 6 or 7) are going to be significant, even if no differences exist]
-
----
-
-class: middle
-
-# Diet and Sex of Baby
-
-> If there are NO differences (all 133 null hypotheses are true), about how many significant differences would be found using α = 0.05?
-
-$$133 \pm 0.05 = 6.65$$
-.bq[Expect about 6-7 statistically significant foods even if the rate of food consumption is equal for women who have boys and women who have girls]
-
-
----
-
-class: middle
-
-# Multiple Comparisons
-
-.bq[The most important thing is to be aware of this issue, and not to trust claims that are obviously one of many tests (unless they specifically mention an adjustment for multiple testing)]
-
-.bq[There are ways to account for this (e.g. Bonferroni’s Correction), but these are beyond the scope of this class]
-
-
+.footnote[[Click here for the article](https://www.science.org/doi/10.1126/science.aah6524)]
 
 ---
 
@@ -486,11 +392,12 @@ class: action
 
 .pull-right[
 <br>
-<br>
-
-> Please go over the class activity for today and let me know if you have any questions.
-
+.bql[
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
+]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
