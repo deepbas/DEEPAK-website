@@ -119,7 +119,7 @@ A new blood thinning drug is being tested against the current drug in a double-b
 .hljs[
 A. $\mathrm{H}_0: \mu_{\mathrm{n}}>\mu_0 \quad\mathrm{Vs}\quad \mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{n}}=\mu_{\mathrm{o}}$
 
-B. $H_0: \mu_n=\mu_0 \quad \mathrm{Vs} \quad H_2: \mu_n \neq \mu_0$
+B. $\mathrm{H}_0: \mu_{\mathrm{n}}=\mu_0\quad\mathrm{Vs}\quad\mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{n}} \neq \mu_0$
 
 C. $\mathrm{H}_0: \mu_{\mathrm{n}}=\mu_0\quad\mathrm{Vs}\quad\mathrm{H}_{\mathrm{a}}: \mu_{\mathrm{n}}>\mu_0$
 
