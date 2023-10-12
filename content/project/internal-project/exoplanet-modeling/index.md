@@ -1,13 +1,13 @@
 ---
 date: "2023-05-19T00:00:00Z"
 external_link: ""
-image:
-  caption: Photo by <a href="https://unsplash.com/@kenwhytock?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ken  Whytock</a> on <a href="https://unsplash.com/s/photos/union-protest-strike?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-  focal_point: Smart
 summary: A detailed analysis of Exoplanets Modeling
 tags:
 - Variable Importance, Uncertainty Quantification
 title: "Exoplanet Detection: Informed Parameters & Spectral Error Minimization"
+Authors: 
+  - admin
+image_preview: "/img/exoplanet.png"
 ---
 
 

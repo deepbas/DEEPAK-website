@@ -23,3 +23,34 @@
         max-width: 100%;
     }
 }
+
+
+.background-image-custom {
+    background-image: url('/img/exoplanet.png');
+    background-size: cover;
+    background-position: center center;
+}
+
+
+.project-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.project-text {
+    flex: 0 0 60%; /* adjust as needed */
+    padding-right: 2rem;
+}
+
+.project-image {
+    flex: 0 0 35%; /* adjust as needed */
+}
+
+.project-image img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+

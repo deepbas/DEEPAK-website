@@ -87,3 +87,8 @@ security:
     - WC_POST_CSS
   http:
     methods:
+    
+assets:
+    css:
+      - css/custom.css
+

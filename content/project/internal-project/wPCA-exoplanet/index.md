@@ -3,9 +3,9 @@ Title: Exoplanet Detection Using Reduced Dimensions
 Subtitle: Dimension reduction in Exoplanet modeling without compromising accuracy
 Date: 2023-06-19T00:00:00Z
 Summary: 
-Image:
-  Caption: Photo by [Ken Whytock](https://unsplash.com/@kenwhytock) on [Unsplash](https://unsplash.com/s/photos/union-protest-strike)
-  Focal Point: Smart
+backgroundImage: "exoplanet.png"
+Authors: 
+  - admin
 Tags: 
   - Variable Importance
   - Dimension Reduction
