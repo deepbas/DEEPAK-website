@@ -1,19 +1,22 @@
 ---
-authors:
-- admin
-categories: [machine learning, prediction]
-date: "2023-10-07T00:00:00Z"
-image:
-  caption: ""
-  focal_point: ""
-lastMod: "2023-10-07T00:00:00Z"
-projects: []
-subtitle: Multivariate time series prediction using Informer model
-summary: 
-tags: []
-title: How to predict AAPL Stock price using an Informer model to capture long term dependencies?
-css: "/css/custom.css"
+Title: "Predicting AAPL Stock Price with Informer Model"
+Subtitle: Multivariate time series prediction capturing long-term dependencies
+Date: 2023-10-07T00:00:00Z
+Last Modified: 2023-10-07T00:00:00Z
+Summary: 
+Authors: 
+  - admin
+Categories: 
+  - Machine Learning
+  - Prediction
+Tags: 
+Image:
+  Caption: 
+  Focal Point: 
+CSS: /css/custom.css
+Projects: []
 ---
+
 
 
 # Informer

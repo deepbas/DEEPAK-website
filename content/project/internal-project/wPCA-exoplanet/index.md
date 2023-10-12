@@ -1,13 +1,15 @@
 ---
-date: "2023-06-19T00:00:00Z"
-external_link: ""
-image:
-  caption: Photo by <a href="https://unsplash.com/@kenwhytock?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ken  Whytock</a> on <a href="https://unsplash.com/s/photos/union-protest-strike?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-  focal_point: Smart
-summary: Dimension reduction in Exoplanet modeling
-tags:
-- Variable Importance, Dimension Reduction
-title: Exoplanet Detection using reduced dimensions without compromising accuracy
+Title: Exoplanet Detection Using Reduced Dimensions 
+Subtitle: Dimension reduction in Exoplanet modeling without compromising accuracy
+Date: 2023-06-19T00:00:00Z
+Summary: 
+Image:
+  Caption: Photo by [Ken Whytock](https://unsplash.com/@kenwhytock) on [Unsplash](https://unsplash.com/s/photos/union-protest-strike)
+  Focal Point: Smart
+Tags: 
+  - Variable Importance
+  - Dimension Reduction
+External Link: 
 ---
 
 

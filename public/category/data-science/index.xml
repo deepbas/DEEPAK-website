@@ -2209,7 +2209,7 @@ change_percent = np.round(100 - (cases_today * 100)/predicted_cases)
     </item>
     
     <item>
-      <title>How to predict covid case counts using machine learning models?</title>
+      <title>Predicting COVID Case Counts with Machine Learning</title>
       <link>/project/internal-project/jupyter-lstm/</link>
       <pubDate>Wed, 23 Mar 2022 00:00:00 +0000</pubDate>
       <guid>/project/internal-project/jupyter-lstm/</guid>

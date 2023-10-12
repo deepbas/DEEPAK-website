@@ -1,18 +1,21 @@
 ---
-authors:
-- admin
-categories: [machine learning, data science, prediction]
-date: "2022-03-23T00:00:00Z"
-image:
-  caption: ""
-  focal_point: ""
-lastMod: "2022-03-23T00:00:00Z"
-projects: []
-subtitle: Predicting covid cases in the United States
-summary: 
-tags: []
-title: How to predict covid case counts using machine learning models?
-css: "/css/custom.css"
+Title: Predicting COVID Case Counts with Machine Learning
+Subtitle: Predicting covid cases in the United States
+Date: 2022-03-23T00:00:00Z
+Last Modified: 2022-03-23T00:00:00Z
+Summary: 
+Authors: 
+  - admin
+Categories: 
+  - Machine Learning
+  - Data Science
+  - Prediction
+Tags: 
+Image:
+  Caption: 
+  Focal Point: 
+CSS: /css/custom.css
+Projects: []
 ---
 
 It would be nice to predict the number of positive covid cases depending on past cases evolution. Regression models based on recurrent neural networks (RNNs) are proven to identify patterns in time series data and this allows us to make accurate short-term predictions. 
