@@ -16,3 +16,15 @@ body {
     margin: 0 auto;
 }
 
+.project-item {
+    margin: 15px 0;
+    box-shadow: 0px 0px 5px #aaa;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.project-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
