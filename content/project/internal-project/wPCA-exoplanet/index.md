@@ -10,6 +10,9 @@ Tags:
   - Variable Importance
   - Dimension Reduction
 External Link: 
+image:
+  caption: 
+  focal_point: 
 ---
 
 

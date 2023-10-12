@@ -7,7 +7,9 @@ tags:
 title: "Exoplanet Detection: Informed Parameters & Spectral Error Minimization"
 Authors: 
   - admin
-image_preview: "/img/exoplanet.png"
+image:
+  caption: 
+  focal_point: 
 ---
 
 

@@ -10,9 +10,9 @@ Categories:
   - Machine Learning
   - Prediction
 Tags: 
-Image:
-  Caption: 
-  Focal Point: 
+image:
+  caption: 
+  focal_point: 
 CSS: /css/custom.css
 Projects: []
 ---

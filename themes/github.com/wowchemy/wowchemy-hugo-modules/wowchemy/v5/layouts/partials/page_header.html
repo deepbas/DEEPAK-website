@@ -2,6 +2,7 @@
 {{ $featured := (.Resources.ByType "image").GetMatch "*featured*" }}
 {{ $anchor := $page.Params.image.focal_point | default "Smart" }}
 
+
 {{/* Set default titles for node pages */}}
 {{ $title := .Title }}
 {{ if and (not $title) .IsNode }}
