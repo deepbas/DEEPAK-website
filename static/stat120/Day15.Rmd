@@ -651,6 +651,23 @@ grid.arrange(p1, p2, ncol = 2)
     </div>
 </center>
 
+---
+
+class: center, middle
+
+# Big Idea for Normal Models: .bold[All we need is a z-score.]
+
+
+
+.bql.font180[
+## .b[Standard Normal:]
+
+\begin{align*}
+\mu=0, \sigma=1 \quad \Longrightarrow Z \sim N(0,1)
+\end{align*}
+
+]
+
 
 
 
@@ -667,23 +684,6 @@ When have we already been using normal models??
 - Normal models play a huge role in statistical inference.
 
 - If we know the .bold[(bootstrap/randomization) standard error] then we can just use a normal model rather than a resampling model (which requires more computational effort)
-]
-
----
-
-class: center, middle
-
-# Big Idea for Normal Models: .bold[All we need is a z-score.]
-
-
-
-.bql.font180[
-## .b[Standard Normal:]
-
-\begin{align*}
-\mu=0, \sigma=1 \quad \Longrightarrow Z \sim N(0,1)
-\end{align*}
-
 ]
 
 
