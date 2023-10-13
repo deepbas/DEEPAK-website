@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>The Normal Distribution!</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Bastola" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
+    <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
+    <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-font.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+layout: true
+  
+&lt;!-- &lt;div class="my-footer"&gt;&lt;span&gt;Stat 230&lt;/span&gt;&lt;/div&gt; --&gt;
+&lt;!-- this adds the link footer to all slides, depends on my-footer class in css--&gt;
+
+---
+
+class: title-slide, middle
+&lt;!-- background-image: url("assets/title-image2.jpg") --&gt;
+background-position: 10% 90%, 100% 50%
+background-size: 160px, 100% 100%
+
+# .fancy[The Normal Distribution!]
+
+### .fancy[Stat 120]
+
+ October 12 2023
+
+
+---
+
+class: middle
+
+## Overview
+
+.bql[
+.b[Core intro stats covered:] EDA for data comprehension, estimation with confidence, and hypothesis testing via p-values.
+
+.b[Upcoming focus:] Advanced inference methods, transitioning from simulations to probability models for bootstrap/randomization distributions.
+
+
+]
+
+
+
+---
+
+class: middle
+
+# Density Curve
+
+&gt; A density curve is a theoretical model to describe a distribution.
+
+&lt;br&gt;
+
+.bql.font80[
+Distribution for 
+- individual measurements in population (for a quantitative variable)
+- Sampling distribution for a statistic
+
+All density curves have an area under the curve of 1 (100%)
+- give proportions/percents as areas under the curve
+]
+
+---
+
+# Normal Distribution
+
+.bq.font80[A .b[normal distribution] has a symmetric bell-shaped density curve.]
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-1-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# The Normal Model: `\(X \sim N(\mu, \sigma)\)`
+
+.bq.font90[The mean and SD determine how a normal density curve looks.
+The normal model parameters are
+- `\(\mu\)` = model mean (center)
+- `\(\sigma=\)` model SD (variability)
+]
+
+&lt;br&gt;
+
+&lt;center&gt;
+&lt;img src="images/day14-1.png" width="50%" height="50%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+# Verbal SAT `\(\sim N(580,70)\)`
+
+## What proportion of people score above 650?
+
+--
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-2-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 20%; left: 70%;"&gt;
+&lt;span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;p&gt;&lt;strong&gt;Area under the curve &lt;br&gt; for scores 650 &amp; higher&lt;/strong&gt;&lt;/p&gt;
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+# How can we find areas under a normal density?
+
+
+
+.pull-left-40[
+.bq.font80[
+- The curve represents the normal distribution, denoted by `\(N(\mu, \sigma)\)`. 
+
+- .red[(CALCULUS!)] Calculating the exact area requires integration, as given by the formula: 
+
+ Area `\(=\int_a^b \frac{1}{\sqrt{2 \pi \sigma}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}} d x\)`
+ 
+-  We'll just utilize technological tools. 
+
+]
+]
+.pull-right-60[
+&lt;img src="Day15_files/figure-html/unnamed-chunk-3-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# [StatKey](https://www.lock5stat.com/StatKey/) – Verbal SAT population 
+
+&lt;center&gt;
+&lt;img src="images/day14-2.png" width="70%" height="50%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Some observations!
+
+.bql[
+- About `\(16 \%\)` of individuals scored 650 or above.
+
+- The `\(25^{th}\)` percentile score lies between 440 ( 2 SD below 580 ) and the median of 580 . 
+
+- Utilize `Statkey` to fine-tune the left-tail area to 0.25 for precise percentile calculation.
+
+
+]
+
+
+
+---
+
+# [StatKey](https://www.lock5stat.com/StatKey/) – Verbal SAT scores
+
+&lt;center&gt;
+&lt;img src="images/day14-3.png" width="50%" height="50%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 20%; left: 70%;"&gt;
+&lt;span style="content: '\2192'; font-size: 24px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;p&gt;The 25th percentile is 533.&lt;/p&gt;
+&lt;p&gt;About 75% of people in the population score above 533.&lt;/p&gt;
+
+
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+
+# Example: Verbal SAT scores Using R
+
+.pull-left[
+## What percent of the population scored 650 or higher?
+
+
+
+```r
+1 - pnorm(650, 580,70)
+[1] 0.1586553
+```
+
+
+
+
+
+]
+
+.pull-right[
+
+### Alternatively:
+
+
+```r
+pnorm(650, 580,70, lower.tail = FALSE)
+[1] 0.1586553
+```
+
+
+]
+
+--
+
+## What score is the `\(25^{th}\)` percentile?
+
+
+```r
+qnorm(.25,580,70)
+[1] 532.7857
+```
+
+--
+
+## What score is the `\(75^{th}\)` percentile?
+
+
+```r
+qnorm(.75,580,70)
+[1] 627.2143
+```
+
+
+---
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-8-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;center&gt;
+    &lt;div style="position: absolute; top: 10%; left: 4%; border: 2px solid black; display: inline-block; padding: 10px; height: 80px; line-height: 0;"&gt;
+        &lt;span style="content: '\2192'; font-size: 42px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+            &lt;strong&gt; \( N(580,70) \)&lt;/strong&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+    &lt;div style="position: absolute; top: 10%; left: 76%; border: 2px solid black; display: inline-block; padding: 10px; height: 80px; line-height: 0;"&gt;
+        &lt;span style="content: '\2192'; font-size: 42px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+            &lt;strong&gt; \( N(0.5,0.1) \)&lt;/strong&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+    &lt;div style="position: absolute; top: 60%; left: 4%; border: 2px solid black; display: inline-block; padding: 10px; height: 80px; line-height: 0;"&gt;
+        &lt;span style="content: '\2192'; font-size: 42px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+            &lt;strong&gt; \( N(29.1,0.9) \)&lt;/strong&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+&lt;/center&gt;
+
+
+--
+
+&lt;center&gt;
+    &lt;div style="position: absolute; top: 60%; left: 76%; border: 2px solid black; display: inline-block; padding: 10px; height: 80px; line-height: 0;"&gt;
+        &lt;span style="content: '\2192'; font-size: 42px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+            &lt;strong&gt; \( N(0,5) \)&lt;/strong&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+&lt;/center&gt;
+
+--
+
+&lt;center&gt;
+    &lt;div style="position: absolute; top: 45%; left: 6%; border: 1px dashed black; display: inline-block; padding: 10px; height: 30px; line-height: 0;"&gt;
+        &lt;span style="content: '\2192'; font-size: 22px; color: #800080; text-align: center; white-space: pre-line;"&gt;
+            &lt;strong&gt;Observation: about 68% should be within one  standard deviation of the mean &lt;/strong&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+&lt;/center&gt;
+
+
+---
+
+
+# Connecting any Normal model to the standard normal model
+
+## .center.blue-h[Area below x = Area below z]
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-9-1.svg" width="680%" style="display: block; margin: auto;" /&gt;
+
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 15%; left: 3%;"&gt;
+&lt;span style="content: '\2192'; font-size: 32px; color: #CC00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;strong&gt; \( X \text { is } N(\mu, \sigma)\) &lt;/strong&gt;
+\( \mu = 580, \sigma = 70\)&lt;/strong&gt;
+
+
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+
+
+---
+
+
+# Connecting any Normal model to the standard normal model
+
+## .center.blue-h[Area below x = Area below z]
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-10-1.svg" width="680%" style="display: block; margin: auto;" /&gt;
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 15%; left: 3%;"&gt;
+&lt;span style="content: '\2192'; font-size: 32px; color: #CC00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;strong&gt; \( X \text { is } N(\mu, \sigma)\) &lt;/strong&gt;
+\( \mu = 580, \sigma = 70\)&lt;/strong&gt;
+
+
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 10%; left: 79%;"&gt;
+&lt;span style="content: '\2192'; font-size: 32px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;p&gt;&lt;strong&gt; \( Z \text { is } N(0, 1) \)&lt;/strong&gt;&lt;/p&gt;
+
+
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+---
+
+# Connecting any Normal model to the standard normal model
+
+## .center.blue-h[Area below x = Area below z]
+
+&lt;img src="Day15_files/figure-html/unnamed-chunk-11-1.svg" width="680%" style="display: block; margin: auto;" /&gt;
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 15%; left: 3%;"&gt;
+&lt;span style="content: '\2192'; font-size: 32px; color: #CC00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;strong&gt; \( X \text { is } N(\mu, \sigma)\) &lt;/strong&gt;
+\( \mu = 580, \sigma = 70\)&lt;/strong&gt;
+
+
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+
+&lt;center&gt;
+&lt;div style="position: absolute; top: 10%; left: 79%;"&gt;
+&lt;span style="content: '\2192'; font-size: 32px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;p&gt;&lt;strong&gt; \( Z \text { is } N(0, 1) \)&lt;/strong&gt;&lt;/p&gt;
+
+
+&lt;/span&gt;
+&lt;/div&gt;
+&lt;/center&gt;
+
+&lt;center&gt;
+    &lt;div style="position: absolute; top: 40%; left: 40%; border: 2px solid black; display: inline-block; padding: 10px; height: 90px; line-height: 0;"&gt;
+        &lt;span style="content: '\2192'; font-size: 42px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+            &lt;strong&gt; \( z = \frac{x - \mu}{\sigma} \)&lt;/strong&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;
+&lt;/center&gt;
+
+
+
+
+---
+
+# Big picture
+
+.bql.font90[
+When have we already been using normal models??
+- .b[Bootstrap distributions] – get confidence intervals if a bootstrap distribution is roughly bell-shaped
+
+- .b[Randomization distributions] – many of these are bell-shaped. 
+
+- Normal models play a huge role in statistical inference.
+
+- If we know the .bold[(bootstrap/randomization) standard error] then we can just use a normal model rather than a resampling model (which requires more computational effort)
+]
+
+---
+
+class: center, middle
+
+# Big Idea for Normal Models: .bold[All we need is a z-score.]
+
+
+
+.bql.font180[
+## .b[Standard Normal:]
+
+`\begin{align*}
+\mu=0, \sigma=1 \quad \Longrightarrow Z \sim N(0,1)
+\end{align*}`
+
+]
+
+
+
+---
+
+class: action
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Your&amp;nbsp;Turn&amp;nbsp;1&lt;/i&gt;    
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+.bql[
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
+]
+
+]
+
+<div class="countdown" id="timer_c8b48bed" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLines": true,
+"highlightLanguage": ["r", "css", "yaml"],
+"countIncrementalSlides": true,
+"slideNumberFormat": "%current%",
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

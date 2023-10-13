@@ -21,8 +21,7 @@ Projects: []
 
 # Informer
 
-The Informer model variant is designed for multivariate prediction. Let's consider 'Open', 'High', 'Low', and 'Close' prices for simplicity. The provided code is designed to fetch and preprocess historical stock prices for Apple Inc. for the purpose of multivariate time series forecasting using an LSTM model. Initially, the code downloads Apple's stock data, specifically capturing four significant features: Open, High, Low, and Close prices. To make the data suitable for deep learning models, it is normalized to fit within a range of 0 to 1. The sequential data is then transformed into a format suitable for supervised learning, where the data from the past `look_back` days is used to predict the next day's features. Finally, the data is partitioned into training (67%) and test sets, ensuring separate datasets for model training and evaluation.
-
+We aim to predict stock prices for Apple Inc. using multivariate time series data, focusing on 'Open', 'High', 'Low', and 'Close' prices. The process begins by acquiring historical stock data from Yahoo Finance. Once acquired, we extract the four essential columns for prediction. To ensure optimal LSTM model performance, the data is normalized to fit between 0 and 1. We then transform this sequential data into a format suitable for supervised learning, where a sequence of 10 days' data predicts the following day's features. This structured data is divided into training and test sets, with 67% dedicated to training and the remaining 33% for testing. This pre-processed dataset is now primed for feeding into an LSTM model for forecasting.
 
 
 ```python
