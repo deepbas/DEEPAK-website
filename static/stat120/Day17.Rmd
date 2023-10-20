@@ -106,19 +106,8 @@ background-size: 160px, 100% 100%
 
 ---
 
-class: middle
 
-# Background
-
-.bq[
-- .b[Resampling] inference methods like the bootstrap (CI) and randomization tests require the use of computers!
-- We can achieve the same using statistical theory
-]
-
----
-
-
-# Why are most resampling distributions bell-shaped?
+# Recap: Why are most resampling distributions bell-shaped?
 
 > .b[CLT]: when n is big enough, means and proportions behave like a normal distribution.
 
@@ -194,7 +183,7 @@ S E_{\hat{p}}=\sqrt{\frac{p(1-p)}{n}}
 \end{align*}
 ]
 
-.green-h.center[The larger the sample size, the smaller the SE]
+.blue-h.center[The larger the sample size (n), the smaller the SE]
 
 ---
 
@@ -237,7 +226,7 @@ class: middle
 # Margin of Error 
 
 .bql[
-For a single proportion, what is the margin of error?
+For a single proportion, what is the margin of error (ME)?
 
 \begin{align*}
 \hat{p} \pm z^* \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
@@ -258,16 +247,16 @@ The correct answer is 2. (since margin of error is a numerical multiple of SE th
 
 class: middle
 
-# Margin of Error and Sample Size
+# Margin of Error (ME) and Sample Size (n)
 
 .bql[
 \begin{align*}
 M E=z^* \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
 \end{align*}
 
-You can choose your sample size in advance, depending on your desired margin of error!
+.b[You can choose your sample size in advance, depending on your desired margin of error!]
 
-Given the formula for margin of error, solve for n.
+  - Given the formula for margin of error, solve for n.
 
 - Neither $p$ nor $\hat{p}$ is known in advance. To be conservative, use $p=0.5$. For a $95 \%$ confidence interval, $z^* \approx 2$
 
@@ -278,13 +267,14 @@ n=\left(\frac{z^*}{M E}\right)^2 \hat{p}(1-\hat{p}) \qquad \Longleftrightarrow \
 
 ---
 
-# Margin of Error and p
+# Margin of Error (ME) and $p$ for fixed $n$
 
 <center>
 <img src="images/day17-2.png" width="80%" height="60%"> <br>
-<div style="position: absolute; top: 10%; left: 75%;">
-<span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;">
-  <p>\[n &asymp; \frac{1}{M E^2}\]</p>
+
+<div style="position: absolute; top: 40%; left: 37%;">
+<span style="content: '\2192'; font-size: 24px; color: blue; text-align: center; white-space: pre-line;">
+<p><b>Maximized at p = 0.5</b></p>
 </span>
 </div>
 </center>
@@ -292,9 +282,9 @@ n=\left(\frac{z^*}{M E}\right)^2 \hat{p}(1-\hat{p}) \qquad \Longleftrightarrow \
 --
 
 <center>
-<div style="position: absolute; top: 40%; left: 37%;">
-<span style="content: '\2192'; font-size: 24px; color: blue; text-align: center; white-space: pre-line;">
-<p><b>Maximized at p = 0.5</b></p>
+<div style="position: absolute; top: 55%; left: 25%;">
+<span style="content: '\2192'; font-size: 24px; color: #FF00FF; text-align: center; white-space: pre-line;">
+  <p>When our sample suggests an even split, <br> there's more room for variability, <br> leading to a larger ME</p>
 </span>
 </div>
 </center>
@@ -354,6 +344,8 @@ z&=\frac{\hat{p} -p_0}{\sqrt{\frac{p_0\left(1-p_0\right)}{n}}}
 
 --
 
+<br>
+
 .bq[
 If $np_0 ≥ 10$ and $n(1 – p_0) ≥ 10$, then the p-value can be computed as the area in the tail(s) of a standard normal beyond z.
 ]
@@ -363,7 +355,10 @@ If $np_0 ≥ 10$ and $n(1 – p_0) ≥ 10$, then the p-value can be computed as 
 
 # Recap: Global Warming
 
-.hljs[Do a majority of Americans believe in global warming?
+> A survey on 2,251 randomly selected individuals conducted in October 2010 found that 1328 answered “Yes” to the question. Do a majority of Americans believe in global warming?
+
+
+.hljs[
 
 \begin{aligned}
 & H_0: p=0.50 \\
@@ -372,7 +367,6 @@ If $np_0 ≥ 10$ and $n(1 – p_0) ≥ 10$, then the p-value can be computed as 
 
 $$p=\text { proportion of all Americans who believe in global warming }$$]
 
-> A survey on 2,251 randomly selected individuals conducted in October 2010 found that 1328 answered “Yes” to the question
 
 
 .out-t[“Is there solid evidence of global warming?”]
@@ -381,7 +375,7 @@ $$p=\text { proportion of all Americans who believe in global warming }$$]
 .footnote[Source: “Wide Partisan Divide Over Global Warming”, Pew Research Center, 10/27/10.s]
 ---
 
-# Is there solid evidence of global warming?
+# .bold[Global warming continued:] Is there solid evidence of global warming?
 
 .pull-left[
 .b[Sample proportion:]
@@ -413,7 +407,7 @@ z=\frac{0.590-0.50}{\sqrt{\frac{0.50(0.50)}{2251}}}=\frac{0.09}{0.0105}=8.54
 ]
 
 .bq.font80[
-.blue[P-value:] proportion above z=8.54 on a N(0,1) curve. Yes, there is strong evidence that the percentage of Americans that believe in global warming is greater than 50% (z=8.51, p<0.0001).
+.bold[P-value:] proportion above z=8.54 on a N(0,1) curve. Yes, there is statistically discernible evidence that the percentage of Americans that believe in global warming is greater than 50% (z=8.51, $p \approx 0$).
 
 .green[We are 95% confident that between 57% and 61% of Americans believe in global warming.]
 
@@ -460,12 +454,12 @@ class: action
 ]
 .pull-right-60[
 <br>
-.bq[
-
-Let's go over to the class activity .Rmd file and complete the tasks for today.
-
-
+.bql[
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
 ]
+
 
 ]
 

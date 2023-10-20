@@ -53,24 +53,13 @@ background-size: 160px, 100% 100%
 
 ### .fancy[Stat 120]
 
- May 05 2023
+ October 19 2023
 
 
 ---
 
-class: middle
 
-# Background
-
-.bq[
-- .b[Resampling] inference methods like the bootstrap (CI) and randomization tests require the use of computers!
-- We can achieve the same using statistical theory
-]
-
----
-
-
-# Why are most resampling distributions bell-shaped?
+# Recap: Why are most resampling distributions bell-shaped?
 
 &gt; .b[CLT]: when n is big enough, means and proportions behave like a normal distribution.
 
@@ -146,7 +135,7 @@ S E_{\hat{p}}=\sqrt{\frac{p(1-p)}{n}}
 \end{align*}`
 ]
 
-.green-h.center[The larger the sample size, the smaller the SE]
+.blue-h.center[The larger the sample size (n), the smaller the SE]
 
 ---
 
@@ -189,7 +178,7 @@ class: middle
 # Margin of Error 
 
 .bql[
-For a single proportion, what is the margin of error?
+For a single proportion, what is the margin of error (ME)?
 
 `\begin{align*}
 \hat{p} \pm z^* \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
@@ -210,16 +199,16 @@ The correct answer is 2. (since margin of error is a numerical multiple of SE th
 
 class: middle
 
-# Margin of Error and Sample Size
+# Margin of Error (ME) and Sample Size (n)
 
 .bql[
 `\begin{align*}
 M E=z^* \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
 \end{align*}`
 
-You can choose your sample size in advance, depending on your desired margin of error!
+.b[You can choose your sample size in advance, depending on your desired margin of error!]
 
-Given the formula for margin of error, solve for n.
+  - Given the formula for margin of error, solve for n.
 
 - Neither `\(p\)` nor `\(\hat{p}\)` is known in advance. To be conservative, use `\(p=0.5\)`. For a `\(95 \%\)` confidence interval, `\(z^* \approx 2\)`
 
@@ -230,13 +219,14 @@ n=\left(\frac{z^*}{M E}\right)^2 \hat{p}(1-\hat{p}) \qquad \Longleftrightarrow \
 
 ---
 
-# Margin of Error and p
+# Margin of Error (ME) and `\(p\)` for fixed `\(n\)`
 
 &lt;center&gt;
 &lt;img src="images/day17-2.png" width="80%" height="60%"&gt; &lt;br&gt;
-&lt;div style="position: absolute; top: 10%; left: 75%;"&gt;
-&lt;span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
-  &lt;p&gt;\[n &amp;asymp; \frac{1}{M E^2}\]&lt;/p&gt;
+
+&lt;div style="position: absolute; top: 40%; left: 37%;"&gt;
+&lt;span style="content: '\2192'; font-size: 24px; color: blue; text-align: center; white-space: pre-line;"&gt;
+&lt;p&gt;&lt;b&gt;Maximized at p = 0.5&lt;/b&gt;&lt;/p&gt;
 &lt;/span&gt;
 &lt;/div&gt;
 &lt;/center&gt;
@@ -244,9 +234,9 @@ n=\left(\frac{z^*}{M E}\right)^2 \hat{p}(1-\hat{p}) \qquad \Longleftrightarrow \
 --
 
 &lt;center&gt;
-&lt;div style="position: absolute; top: 40%; left: 37%;"&gt;
-&lt;span style="content: '\2192'; font-size: 24px; color: blue; text-align: center; white-space: pre-line;"&gt;
-&lt;p&gt;&lt;b&gt;Maximized at p = 0.5&lt;/b&gt;&lt;/p&gt;
+&lt;div style="position: absolute; top: 55%; left: 25%;"&gt;
+&lt;span style="content: '\2192'; font-size: 24px; color: #FF00FF; text-align: center; white-space: pre-line;"&gt;
+  &lt;p&gt;When our sample suggests an even split, &lt;br&gt; there's more room for variability, &lt;br&gt; leading to a larger ME&lt;/p&gt;
 &lt;/span&gt;
 &lt;/div&gt;
 &lt;/center&gt;
@@ -306,6 +296,8 @@ z&amp;=\frac{\hat{p} -p_0}{\sqrt{\frac{p_0\left(1-p_0\right)}{n}}}
 
 --
 
+&lt;br&gt;
+
 .bq[
 If `\(np_0 ≥ 10\)` and `\(n(1 – p_0) ≥ 10\)`, then the p-value can be computed as the area in the tail(s) of a standard normal beyond z.
 ]
@@ -315,7 +307,10 @@ If `\(np_0 ≥ 10\)` and `\(n(1 – p_0) ≥ 10\)`, then the p-value can be comp
 
 # Recap: Global Warming
 
-.hljs[Do a majority of Americans believe in global warming?
+&gt; A survey on 2,251 randomly selected individuals conducted in October 2010 found that 1328 answered “Yes” to the question. Do a majority of Americans believe in global warming?
+
+
+.hljs[
 
 `\begin{aligned}
 &amp; H_0: p=0.50 \\
@@ -324,7 +319,6 @@ If `\(np_0 ≥ 10\)` and `\(n(1 – p_0) ≥ 10\)`, then the p-value can be comp
 
 `$$p=\text { proportion of all Americans who believe in global warming }$$`]
 
-&gt; A survey on 2,251 randomly selected individuals conducted in October 2010 found that 1328 answered “Yes” to the question
 
 
 .out-t[“Is there solid evidence of global warming?”]
@@ -333,7 +327,7 @@ If `\(np_0 ≥ 10\)` and `\(n(1 – p_0) ≥ 10\)`, then the p-value can be comp
 .footnote[Source: “Wide Partisan Divide Over Global Warming”, Pew Research Center, 10/27/10.s]
 ---
 
-# Is there solid evidence of global warming?
+# .bold[Global warming continued:] Is there solid evidence of global warming?
 
 .pull-left[
 .b[Sample proportion:]
@@ -367,7 +361,7 @@ z=\frac{0.590-0.50}{\sqrt{\frac{0.50(0.50)}{2251}}}=\frac{0.09}{0.0105}=8.54
 ]
 
 .bq.font80[
-.blue[P-value:] proportion above z=8.54 on a N(0,1) curve. Yes, there is strong evidence that the percentage of Americans that believe in global warming is greater than 50% (z=8.51, p&lt;0.0001).
+.bold[P-value:] proportion above z=8.54 on a N(0,1) curve. Yes, there is statistically discernible evidence that the percentage of Americans that believe in global warming is greater than 50% (z=8.51, `\(p \approx 0\)`).
 
 .green[We are 95% confident that between 57% and 61% of Americans believe in global warming.]
 
@@ -414,16 +408,16 @@ class: action
 ]
 .pull-right-60[
 &lt;br&gt;
-.bq[
-
-Let's go over to the class activity .Rmd file and complete the tasks for today.
+.bql[
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
+]
 
 
 ]
 
-]
-
-<div class="countdown" id="timer_695d6aaf" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_9080a2d8" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
