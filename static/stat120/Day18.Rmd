@@ -236,7 +236,7 @@ class: middle
 .pull-left-60[
 <br>
 .bqt.font90[
-Is there a statistically significant difference in survival rates?
+Is there a statistically discernible difference in survival rates?
 \begin{align*}
 H_0: p_M=p_E \quad H_A: p_M \neq p_E
 \end{align*}
@@ -424,7 +424,7 @@ class: middle
 # Tagging Penguins
 
 .bql[
-A difference in survival rates as extreme, or more extreme, than $16 \%$ would occur by chance only about $0.08 \%$ of the time. There is a statistically significant difference $(\mathrm{z}=-3.34, \mathrm{p}=0.0008)$
+A difference in survival rates as extreme, or more extreme, than $16 \%$ would occur by chance only about $0.08 \%$ of the time. There is a statistically discernible difference $(\mathrm{z}=-3.34, \mathrm{p}=0.0008)$
 ]
 <br>
 
@@ -577,16 +577,15 @@ class: action
 ]
 .pull-right-60[
 <br>
-.bq[
-
-Let's go over to the class activity .Rmd file and complete the tasks for today.
-
-
+.bql[
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
 ]
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 
