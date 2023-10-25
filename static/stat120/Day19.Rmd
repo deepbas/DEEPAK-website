@@ -226,10 +226,17 @@ class: middle
 
 ---
 
+class: inverse, middle
 
-# Inference for means
+.Large.bql.center[Hypothesis Test for a Mean]
 
-.green-h[.purple[Check:] Check the one sample size conditions for the CLT]
+---
+
+
+
+# Inference for means: Hypothesis tests
+
+.blue-h[.purple[Check:] Check the one sample size conditions for the CLT]
 
 .pull-left[
 .bql[
@@ -335,7 +342,7 @@ $$H_0: \mu = 7 \qquad\qquad  H_A: \mu \neq 7$$
 - .bold[Interpret:] The p-value is 0.025. If the mean pH of all lakes is 7, then we would see a sample mean that is at least 2.31 SEs away from 7 about 2.5% of the time in samples of 53 lakes. 
 
 
-- .bold[Conclusion:] There is a statistically significant difference between the observed mean pH of 6.591 and the hypothesized mean of 7 (t=-2.31, df=52, p=0.025). 
+- .bold[Conclusion:] There is a statistically discernible difference between the observed mean pH of 6.591 and the hypothesized mean of 7 (t=-2.31, df=52, p=0.025). 
 ]
 ]
 
@@ -369,7 +376,7 @@ where $t^*$ corresponds to 95% confidence (97.5th percentile):
 qt(.975, df=53-1)
 ```
 
-..hljs[We are 95% confident that the mean pH of all lakes is between 6.236 and 6.946 (slightly acidic)]
+.hljs[We are 95% confident that the mean pH of all lakes is between 6.236 and 6.946 (slightly acidic)]
 
 ---
 
@@ -582,40 +589,6 @@ $\text {CI = statistic } \pm \text { margin of error }$
 
 class: middle
 
-# GPA
-
-.bql[Suppose we want to estimate average GPA at a college (where GPA's go from 0 to 4.0), with a margin of error of 0.1 with $95 \%$ confidence. How large a sample size do we need?
-
-(a) About 100
-
-(b) About 400
-
-(c) About 800
-
-(d) About 1000
-
-
-]
-
-<details>
-<summary>.red[Click for answer]</summary>
-\begin{aligned}
-& s \approx \frac{\max -\min }{4}=\frac{4-0}{4}=1.0 \\
-& n=\left(\frac{Z * s}{M E}\right)^2 \approx\left(\frac{2 \cdot 1}{0.1}\right)^2=400
-\end{aligned}
-</details>
-
-
----
-
-class: inverse, middle
-
-.Large.bql.center[Hypothesis Test for a Mean]
-
----
-
-class: middle
-
 # Chips Ahoy!
 
 .hljs[A group of Air Force cadets bought bags of Chips Ahoy! cookies from all over the country to verify this claim.  They hand counted the number of chips in 42 bags.]
@@ -721,34 +694,6 @@ class: middle
 
 ---
 
-# Sanity check!
-
-.bql[
-Which of the following properties is/are necessary for $t=\frac{\bar{X}-\mu_0}{s / \sqrt{n}}$ to have a $t$-distribution?
-
-a) the data is normal
-
-b) the sample size is large
-
-c) the null hypothesis is true
-
-d) $a$ or $b$
-
-e) $d$ and $c$
-
-]
-
-<br>
-<details>
-<summary>.red[Click for answer]</summary>
-.hljs[To use the t-distribution, either n has to be large or the population has to be normally distributed. If these conditions are met, then t has a t-distribution when the null hypothesis is true]
-</details>
-
-
-
-
----
-
 class: action
 
 # <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
@@ -758,15 +703,13 @@ class: action
 ]
 .pull-right-60[
 <br>
-<br>
 .bql[
-
-Let's go over to the class activity .Rmd file and complete the tasks for today.
-
-
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
 ]
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
