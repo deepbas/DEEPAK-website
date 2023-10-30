@@ -1,5 +1,5 @@
 ---
-title: "Comparing Two or more Means"
+title: "Inference for multiple proportions"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -60,7 +60,7 @@ library(DT)
 library(knitr)
 library(grid)
 library(gridExtra)
-
+library(kableExtra)
 
 select <- dplyr::select
 
@@ -96,7 +96,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Comparing Two or more Means]
+# .fancy[Inference for multiple proportions]
 
 ### .fancy[Stat 120]
 
@@ -106,442 +106,407 @@ class: title-slide, middle
 
 class: middle
 
-# Inference tools (Classical methods)
-
-.pull-left[
-.bq.font80[
-Categorical Response
-
-1. One proportion: .blue[sample z test/CI]
-
-2. Difference in 2 props: .blue[2 sample z test/CI OR chi-square test]
-
-3. Association between 2 categorical variables: .blue[chi-square test]
-]
-]
-.pull-right[
-.bq.font80[
-Quantitative Response
-
-1. One mean: .blue[1 sample t test/CI]
-  
-2. Difference in 2 means: .blue[2 independent sample t test/CI OR Matched pairs]
-  
-3. Compare >2 means: .b[One-way ANOVA]
-  <br>
-
-]
-]
-
----
-
-class: middle
-
-# Multiple Categories
-
-.bqt[
-So far, we’ve learned how to do inference for a difference in means IF the categorical variable has .bold[only two categories (i.e. compare two groups)]
-]
-<br>
-
-.bqt[
-In this section, we’ll learn how to do hypothesis tests for a difference in means .bold[across multiple categories (i.e. compare more than two groups)]
-]
-
----
-
-class: middle
-
-# Hypotheses
-
-.bql[To test for a difference in true/population means across k groups:
-
-\begin{align*}
-H_{0}:& \quad \mu_{1}=\mu_{2}=\ldots=\mu_{k}\\
-H_{a}:& \quad \text{At least one } \mu_{i} \neq \mu_{j}
-\end{align*}
-
-
-]
-
----
-
-# Frisbee Example 
-
-.out-t[Does Frisbee grip affect the distance of a throw?]
-
-.hljs.font80[A student performed the following experiment: 3 grips, 8 throws using each grip
-    1. Normal grip
-    2. One finger out grip
-    3. Frisbee inverted grip]
-
-
-.bql.font80[A grip type is randomly assigned to each of the 24 throws she plans on making
-
-  - Response: measured in paces how far her throw went
-  - Question: How might you summarize her data?
-]
-
----
-
-class: middle
-
-# Frisbee Example
-
-.pull-left[
-<center>
-<img src="images/frisbee.png" width="80%" height="80%"> <br>
-</center>
-]
-.pull-right[
-<br>
-<br>
-
-&nbsp; | Finger-out | Inverted   | Normal
--------- | ------------- | ----------- | -----------
-n | 8  |  8   |   8  
-Mean |  29.5  | 32.375    | 33.125
-SD |  4.175 | 3.159  |  3.944
-
-]
-
-.bql.font90[
-Question: Is this evidence that grip affects mean distance thrown? 
-\begin{align*}
-H_{0}:& \quad \mu_{1}=\mu_{2}=\mu_{3}\\
-H_{a}:& \quad \text{At least one } \mu_{1}, \mu_{2}, \mu_{3} \text{ is not the same}
-\end{align*}
-]
-
----
-
-class: middle
-
-# Why Analyze Variability to Test for a Difference in Means?
-
-.pull-left-40[
-
-.bql.font80[
-- The group means in Datasets $A$ and $B$ are the same, but the boxes show different spread.
-
-- Datasets $A$ and $C$ have the same spread for the boxes, but different group means.
-]
-]
-.pull-right-60[
-<center>
-<img src="images/anova-plot.png" width="90%" height="90%"> <br>
-</center>
-.hljs[Which of these graphs appear to give strong visual evidence for a difference in the group means?]
-]
-
----
-
-class: middle
-
-# Why Analyze Variability to Test for a Difference in Means?
-
-.pull-left-40[
-
-.bql.font90[
-- Dataset A = weakest evidence for a difference in means.
-- Datasets B and C = strong evidence for a difference in means.
-]
-]
-.pull-right-60[
-
-<center>
-<img src="images/anova-plot.png" width="90%" height="90%"> <br>
-</center>
-
-]
-
----
-
-class: middle
-
-# Why Analyze Variability to Test for a Difference in Means?
-
-.pull-left-40[
-
-.bql.font90[
-.b[Conclusion:] An assessment of the difference in means between several groups depends on two kinds of variability:
-1. How different the means are between each groups
-2. The amount of variability within each groups
-]
-]
-.pull-right-60[
-<br>
-<center>
-<img src="images/anova-plot.png" width="90%" height="90%"> <br>
-</center>
-]
-
----
-
-# Analysis of Variance
-
-.hljs[
-Analysis of Variance (ANOVA) compares the variability between groups to the variability within groups
-]
-
-<center>
-<img src="images/ANOVA-decomposition.png" width="90%" height="80%"> 
-</center>
-
----
-
-class: middle
-
-# F-Statistic
-
-.bql.font90[
-The F-statistic is a ratio:
-$$F=\frac{M S G}{M S E}=\frac{\text { average between group variability }}{\text { average within group variability }}$$
-
-]
-
-.hljs[If there really is a difference between the groups $(H_A \text{ true})$, we would expect the F-statistic to be
-
-a) Large positive
-
-b) Large negative
-
-c) Close to 0
-]
-
-<details>
-<summary>.red[Click for answer]</summary>
-.hljs[
-The correct answer is a. If there is a difference, we expect the between group variability to be higher than within group variability. .red[RIGHT TAIL test!]]
-</details>
-
----
-
-class: middle
-
-# Frisbee Example
-
-```{r}
-frisbee <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Frisbee.csv")
-frisbee.anova <- aov(Distance ~ Grip, data = frisbee) # fit an ANOVA model
-```
-
-
-
-```{r, highlight.output = c(2), collapse=TRUE}
-summary(frisbee.anova)
-```
-
-.hljs[
-F-test statistic: 2.045
-
-P-value: 0.154
-]
-
----
-
-<br>
-<br>
-
-# How to determine significance?
-
-.out-t[We have a test statistic. What else do we need to perform the hypothesis test?]
-
---
-
-.hljs[
-A distribution of the test statistic assuming $H_0$ is true.
-]
-
---
+# Tests for Categorical Variable(s)
 
 .bql[
-How do we get this? Two options:
-  1. Simulation
-  2. Theory
+Chi-square test for association
+
+- Determine if a relationship between two categorical variables is statistically significant
+- E.g. Does M&M color distribution depend on type (chocolate vs. peanut)?
 ]
 
 ---
 
+# Chi-square test for association hypothesis
+
+.bqt[Hypotheses look like:
+
+$$H_0: \textrm{two categorical variables are not associated}$$
+$$H_A: \textrm{two categorical variables are associated}$$
+]
+
+<br>
+
+.hljs[
+E.g. Does M&M color distribution depend on type (chocolate vs. peanut)?
+
+$$H_0: \text{there is no association between M&M color and type}$$
+$$H_A: \text{there is an association between M&M color and type}$$
+]
+
+---
 
 class: middle
 
-# F-Distribution
+# Expected Counts and p-value
 
 .bql.font90[
-We can use the F-distribution to generate a p-value if:
+The expected counts for each combination in a two-way table
 
-  1. Sample sizes in .b[each group] are large (each $n_{i} \geq 30$ ) OR the data within each group are relatively normally distributed
-  2. Variability is .b[similar] in all groups
+$$\textrm{expected count} = \dfrac{\textrm{row total} \times \textrm{column total}}{n}$$
+
+
+$$\chi^2 = \sum_{\textrm{all cells}}\dfrac{(\textrm{Observed} - \textrm{Expected})^2}{\textrm{Expected}}$$
+
+- Large chi-square test stat values support the .bold[alternative] hypothesis so: $p-value = P(\chi^2 \geq \text{observed } \chi^2)$
+
+- always a .bold[right-tailed] value
 ]
+
+---
+
+# Chi-Square test for association: P-VALUE
+
+.bqt.font90[.b[randomization/permutation:] simulate new data consistent with $H_0$ and recompute the $\chi^2$ test stat
+  - .bold[Association:] permute the values of one variable column to break the link that could exist in the data between both variables
+  ]
+  
+--
+
 <br>
-.hljs[
-- The F-distribution has two degrees of freedom, one for the numerator of the ratio $(\boldsymbol{k}-\mathbf{1})$ and one for the denominator $(n-k)$
-- For F-statistics, the p-value (the area as extreme or more extreme) is always the right tail
 
+.bqt.font90[.b[Chi-square distribution (probability model):]
+  - .bold[Association:] use $(r-1)(c-1)$ where $r=$ number of rows and $c=$ number of columns
+  - need $n$ large enough so expected counts are at least 5
 ]
 
 ---
 
 class: middle
 
-# F-distribution
-
-
-.pull-left-60[
-<center>
-<img src="images/rand-frisbee-pvalue.png" width="100%" height="100%"> 
-</center>
-]
-.pull-right-40[
-
-.bql.font80[
-- An F-statistic as large as 2.045 would occur by chance about 16% of the time if the means were all equal.
-- Our results are inconclusive and do not support the claim that grips affects average distance.
-]
-
-```{r, collapse=TRUE}
-1 - pf(2.045,2,21)  # p-value
-```
-
-]
-
-
----
-
-class: middle
-
-
-# Check assumptions: large sample size (or normality)
-
-.pull-left-40[
-<center>
-<img src="images/frisbee.png" width="80%" height="80%"> 
-</center>
-
-```{r, collapse=TRUE}
-table(frisbee$Grip)  # check n's
-```
-
-.hljs[
-Small $n_i$ but all groups are roughly normal
-]
-
-]
-
-.pull-right[
-
-```{r}
-# checking normality with qq-plots
-ggplot(frisbee, aes(sample = Distance)) + 
-  geom_qq() + geom_qq_line() +  facet_wrap(~Grip) +  
-  theme(axis.text.x = element_text(size = 4))
-```
-
-]
-
----
-
-class: middle
-
-
-# Check Assumptions: Equal Variance
-
-.bql[
-The F-distribution assumes equal within group variability for each group. This is also an assumption when using the .b[randomization distribution].
-
-- As a rough .bold[rule of thumb], this assumption is violated if the largest group standard deviation is more than double the smallest group standard deviation
-]
-
-.pull-left[
-```{r}
-tapply(frisbee$Distance, frisbee$Grip, sd)
-```
-]
-.pull-right[Check if:
-$$\frac{\text{largest }s}{\text{smallest }s} > 2$$
-]
-
----
-
-class: middle
-
-
-# Frisbee Example: Inference
-
-.hljs[
-.bold[Question:] Is this evidence that grip affects mean distance thrown? 
-\begin{align*}
-H_{0}:& \quad \mu_{1}=\mu_{2}=\mu_{3}\\
-H_{a}:& \quad \text{At least one } \mu_{1}, \mu_{2}, \mu_{3} \text{ is not the same}
-\end{align*}
-$\mu_{\mathrm{i}}$ is the true mean distance thrown using grip $i$.
-$$F=2.05(\mathrm{df}=2,21), \text { P-value }=0.1543$$
-]
-
-
-
+# Example: Does political comfort level depend on religion?
 
 .bq.font90[
-.b[Conclusion:] Do not reject the Null hypothesis. The difference in observed means is not statistically significant.
-
-About 15% of the time we would see the grip differences like those observed, or even bigger, when there is actually no difference between the true mean distances thrown with different grips.
+$H_0:$ There is no association between religion and comfort level 
+  - implies: the distribution of comfort level is the same for all three religion types 
 ]
 
----
-
-class: middle
-
-
-# Picturing the variation
-.pull-left[
-.left.green[Green: Variation within groups] ]
-
-.pull-right[
-.right.blue[Blue: Variation between groups]
-]
-<center>
-<img src="images/anova-picture.png" width="70%" height="70%"> <br>
-</center>
-
-
----
-
-class: middle
-
-
-# ANOVA Table for Frisbee data
-
-$$\text{F test stat} = 29.29/14.32 = 2.045$$
 <br>
 
-Source | df | Sum of Squares   | Mean Square
--------- | ------------- | ----------- | -----------
-Groups <br> &nbsp; | #groups -1 <br> .red.b[3-1 = 2]|  SSG <br> .red.b[58.583]  |   SSG/df <br> .red.b[58.583/2 = 29.29]
-Error <br> (residual) | n - #groups <br> .red.b[24-3 = 21]  | SSE <br>  .red.b[300.750] | SSE/df <br> .red.b[300.75/21= 14.32]
-Total |  n-1 <br> .red.b[24-1 = 23] | SSTotal <br> .red.b[359.333]  |  &nbsp;
+.bq.font90[
+$H_A:$ There is an association between religion and comfort level
+  - implies: the distribution of comfort level is the different for at least one religion type. 
+]
 
 
 ---
 
-# Frisbee Example: ANOVA table in R
-
-
-```{r}
-frisbee.anova <- aov(Distance ~ Grip, data = frisbee)
-```
+###  Association example
 
 ```{r, collapse=TRUE}
-summary(frisbee.anova)
+survey <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Survey.csv")
+survey %>% dplyr::select(Question.8, Question.9) %>% head(8)
+```
+
+--
+
+.font70[
+```{r, collapse=TRUE, echo=FALSE}
+
+kableExtra::kable(table(survey$Question.8, survey$Question.9), "html", 
+      caption = "Table 1: A two way table of religious preference and political comfortness") %>%
+  kable_styling(position = "center")
+
+```
+]
+
+
+---
+
+class: middle
+
+
+## Association example
+
+```{r, echo=FALSE, fig.width= 8, fig.height=3.7}
+library(ggplot2)
+ggplot(survey, aes(x=Question.8, fill=Question.9)) +
+  geom_bar(position="fill") +
+  labs(fill = "Comfort level", x = "Religious level", y = "proportion", title="Comfort level by religious level")+
+  scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 16))
 ```
 
 
-```{r}
-library(broom) 
-knitr::kable(tidy(frisbee.anova)) # nicer summary tables
+---
+
+## Association Example
+
+
+.bql.font80[EDA for two categorical variables
+- drop missing values, rename column names
+- change/shorten comfort level names 
+- reorder the levels
+]
+
+<br>
+
+--
+
+```{r, echo=FALSE}
+# and drop the rows containing missing values using the tidyr package
+survey <- survey %>% tidyr::drop_na()
+
+# rename comfort level using fct_recode() from the forcats package
+survey <- survey %>% mutate(comfortness = forcats::fct_recode(Question.9, 
+                          `rarely` = "rarely, if ever, comfortable",
+                          `sometimes` = "sometimes comfortable",
+                          `almost always` = "almost always comfortable"),
+                          comfortness = forcats::fct_relevel(comfortness, 
+                                                             "almost always",
+                                                             "sometimes", 
+                                                             "rarely"))
+
+# rename comfort level using fct_recode() from the forcats package
+survey <- survey %>%mutate(religiousness = forcats::fct_recode(Question.8, 
+                          `not religious` = "not religious",
+                          `religious not active` = "religious but not actively practicing",
+                          `religious active` = "religious and actively practicing my religion"),
+                          religiousness = forcats::fct_relevel(religiousness,
+                                                               "not religious",
+                                                               "religious not active",
+                                                               "religious active"))
+```
+
+
+.out-t[ Observed distribution of political comfort level given religiousness]
+
+```{r, collapse=TRUE, echo=FALSE}
+kableExtra::kable(table(survey$religiousness, survey$comfortness), 
+                  caption = "Table 2: A two way table of religious preference and political comfortness (cleaned-up factors)") %>%
+  kable_styling(position = "center")
+```
+
+
+---
+
+class: middle
+
+#  Association example
+
+```{r, collapse=TRUE}
+counts <- table(survey$religiousness, survey$comfortness)
+counts
+```
+
+
+```{r, collapse=TRUE}
+prop.table(counts,1)  
+```
+
+.hljs[There is a much higher rate of "almost always" comfortable for the not religious respondents (`r round(prop.table(counts,1),3)[1,1]*100`%) than those that are religious (not active: `r round(prop.table(counts,1),3)[2,1]*100`%; active: `r round(prop.table(counts,1),3)[3,1]*100`%).] 
+
+---
+
+# Association example
+
+```{r, echo=FALSE, fig.width= 8, fig.height=3.7}
+ggplot(survey, aes(x=religiousness, fill=comfortness)) +
+  geom_bar(position="fill") +
+  labs(fill = "Comfort level", x = "Religious level", y = "proportion", title="Comfort level by religious level") +
+  scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 16))
 ```
 
 ---
+
+class: middle
+
+#  Association example
+
+.bql.font80[Expected counts assuming no association (null)?
+  - expected number of respondents who are "not religious" and "almost always comfortable"?
+  - is .bold[not] 1/9 of all respondents!
+]
+
+---
+
+class: middle
+
+#  Association example
+
+.bqt.font90[
+- There are `r sum(counts[1,])` "not religious" respondents (row total)
+
+- The overall rate (ignoring religion) of "almost always comfortable" is $\dfrac{`r sum(counts[,1])`}{`r sum(counts)`}$, or about  `r round(prop.table(table(survey$Question.9))[1],3)*100`%. 
+
+- If religion isn't related to comfort level, the expected number is about
+$$\textrm{expected count} = \dfrac{\textrm{row total} \times \textrm{column total}}{n} = `r sum(counts[1,])` \times \dfrac{`r sum(counts[,1])`}{`r sum(counts)`} = `r round(sum(counts[1,])*sum(counts[,1])/sum(counts),3)`$$
+]
+
+---
+
+class: middle
+
+# Association example
+
+
+.hljs[Chi-square contribution for "not religious" and "almost always comfortable" cell?]
+
+
+.bql.font80[
+
+```{r, echo=FALSE}
+exp <- table(survey$religiousness)[1]*table(survey$comfortness)[1]/sum(counts)
+contr <- (counts[1,1] - exp)^2/exp
+```
+
+
+- The contribution to the chi-square test stat from this category is `r round(contr, 2)`.
+
+$$\dfrac{(`r counts[1,1]` - `r round(exp,3)`)^2}{`r round(exp,3)`} = `r round(contr,3)`$$
+]
+
+
+---
+
+class: middle
+
+# Association example: `chisq.test`
+
+```{r}
+ComfortReligion <- chisq.test(survey$religiousness, survey$comfortness)
+ComfortReligion
+```
+
+.bql.font90[
+- The test stat value is `r round(ComfortReligion$statistic,3)`. 
+- There are 3 categories for each variable, so the degrees of freedom will be $df = (3-1)(3-1) = 4$. 
+]
+
+---
+
+class: middle
+
+# Association example
+
+.bq.font90[
+- .bold[Interpret:]  If there is no association between comfort level and religiousness, then we would see a chi-square test stat of `r round(ComfortReligion$statistic,3)`, or one even larger, only about `r round(ComfortReligion$p.value,4)*100`% of the time. 
+
+- .bold[Conclusion:] We have strong evidence that there is an association between political comfort level and religiousness ( $\chi^2 = `r round(ComfortReligion$statistic,3)`$, df = `r ComfortReligion$parameter`, p-value = 0.0007).
+
+]
+
+---
+
+class: middle
+
+# Association example: Check Assumptions!
+
+
+.hljs[Are the expected counts above 5?]
+
+
+```{r}
+ComfortReligion <- chisq.test(survey$religiousness, survey$comfortness)
+ComfortReligion$expected
+```
+
+---
+
+# Association example
+
+.bq.font90[
+- If we get a red warning when running `chisq.test`, it usually means the sample size conditions aren't met to use the chi-square model. 
+
+- Instead run a randomization test with
+]
+
+
+```{r}
+chisq.test(survey$religiousness, survey$comfortness, 
+           simulate.p.value = TRUE)
+```
+
+
+
+---
+
+# Association example
+
+.bqt.font80[Describe the association! 
+
+  - which groups have the most different comfort levels?
+]
+    
+```{r, echo=FALSE, fig.width= 5, fig.height=2.5, out.width="70%", fig.align='center'}
+library(ggplot2)
+ggplot(survey, aes(x=religiousness, fill=comfortness)) +
+  geom_bar(position="fill") +
+  labs(fill = "Comfort level", x = "Religious level", y = "proportion", title="Comfort level by religious level")+
+  scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 16))
+
+```
+
+---
+
+# Association example
+
+.bql.font80[
+95% CI for the difference in the true proportions of "rarely comfortable" people in the not religious and actively religious groups.
+$$p = \textrm{proportion rarely comfortable}$$
+
+  - 95% CI for $p_{not.relig} - p_{active}$
+]
+
+```{r, collapse=TRUE}
+table(survey$religiousness)
+```
+$$n_{not.relig} = `r sum(counts[1,])` \ \ \ \ \ \ n_{active} = `r sum(counts[3,])`$$
+
+---
+
+class: middle
+
+# Association example
+
+
+.pull-left[
+
+```{r, collapse=TRUE}
+knitr::kable(counts)
+```
+
+]
+.pull-right[
+```{r, collapse=TRUE}
+knitr::kable(round(prop.table(counts,1),3))
+```
+
+]
+
+
+$$\hat{p}_{not.rel} = \dfrac{`r counts[1,3]`}{`r sum(counts[1,])`} = `r prop.table(counts,1)[1,3]`$$
+$$\hat{p}_{active} = \dfrac{`r counts[3,3]`}{`r sum(counts[3,])`} = `r prop.table(counts,1)[3,3]`$$
+
+---
+
+class: middle
+
+# Association example
+
+.bq.font90[
+95% CI for $p_{not.relig} - p_{active}$
+
+\begin{align*}
+`r prop.table(counts,1)[1,3]` - `r prop.table(counts,1)[3,3]`  \pm & 1.96 \sqrt{\dfrac{`r prop.table(counts,1)[1,3]`(1-`r prop.table(counts,1)[1,3]`)}{`r sum(counts[1,])`} + \dfrac{`r prop.table(counts,1)[3,3]`(1-`r prop.table(counts,1)[3,3]`)}{`r sum(counts[3,])`}} \\
+`r prop.table(counts,1)[1,3] - prop.table(counts,1)[3,3]`  \pm & 1.96 (`r sqrt( prop.table(counts,1)[1,3]*(1- prop.table(counts,1)[1,3])/sum(counts[1,]) + prop.table(counts,1)[3,3]*(1- prop.table(counts,1)[3,3])/sum(counts[3,]))`) \\
+(`r prop.table(counts,1)[1,3] - prop.table(counts,1)[3,3] - 1.96*sqrt( prop.table(counts,1)[1,3]*(1- prop.table(counts,1)[1,3])/sum(counts[1,]) + prop.table(counts,1)[3,3]*(1- prop.table(counts,1)[3,3])/sum(counts[3,]))`, &  `r prop.table(counts,1)[1,3] - prop.table(counts,1)[3,3] + 1.96*sqrt( prop.table(counts,1)[1,3]*(1- prop.table(counts,1)[1,3])/sum(counts[1,]) + prop.table(counts,1)[3,3]*(1- prop.table(counts,1)[3,3])/sum(counts[3,]))`)
+\end{align*}
+
+
+```{r, echo  = FALSE}
+CI <- prop.table(counts,1)[1,3] - prop.table(counts,1)[3,3] + c(-1,1)* 1.96*sqrt( prop.table(counts,1)[1,3]*(1- prop.table(counts,1)[1,3])/sum(counts[1,]) + prop.table(counts,1)[3,3]*(1- prop.table(counts,1)[3,3])/sum(counts[3,]))
+```
+
+]
+
+
+.hljs[
+I am 95% confident that the percentage of all non-religious students who are  rarely comfortable is between `r round(-CI[2]*100,1)` to `r round(-CI[1]*100,1)` percentage points lower than the actively religious students. 
+]
+
+
+---
+
 
 class: action
 
@@ -554,12 +519,12 @@ class: action
 .pull-right-60[
 
 <br>
-<br>
-
 .bql[
-- Go over to the in class activity file
-- Complete the activity as much as possible
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
 ]
 ]
 
 `r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
