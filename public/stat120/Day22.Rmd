@@ -94,7 +94,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Inference for multiple proportions]
+# .fancy[Inference for multiple proportions: One Categorical Variable]
 
 ### .fancy[Stat 120]
 

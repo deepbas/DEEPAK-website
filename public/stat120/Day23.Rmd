@@ -1,5 +1,5 @@
 ---
-title: "Inference for multiple proportions"
+title: "Inference for multiple proportions: Two Categorical Variables"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -96,7 +96,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Inference for multiple proportions]
+# .fancy[Inference for multiple proportions: Two Categorical Variables]
 
 ### .fancy[Stat 120]
 
