@@ -17,8 +17,6 @@
     <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
     <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
-    <script src="libs/kePrint/kePrint.js"></script>
-    <link href="libs/lightable/lightable.css" rel="stylesheet" />
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -47,535 +45,444 @@ class: title-slide, middle
 
 ### .fancy[Stat 120]
 
- May 17 2023
+ October 31 2023
 
 ---
 
 class: middle
 
-# Tests for Categorical Variable(s)
+# Tests for One Categorical Variable
 
-.bql[
-Chi-square test for association
+.bq.font80[**Goodness-of-fit test**
 
-- Determine if a relationship between two categorical variables is statistically significant
-- E.g. Does M&amp;M color distribution depend on type (chocolate vs. peanut)?
+- Test a claim about the distribution of one categorical variable
+- E.g. are 6 M&amp;M colors equally likely?
+- E.g. is Biden's approval rating 50%?
+]
+
+&lt;br&gt;
+
+
+---
+
+# Tests for One Categorical Variable
+
+.bql.font80[Seen single proportion tests before
+  - Example : Test if the proportion of Reese’s Pieces that are orange is different from 1/3.
+
+`\begin{aligned}
+H_0 : p = 1/3\\
+H_a : p \neq 1/3
+\end{aligned}`
+]
+
+&lt;br&gt;
+
+.bq.font80[What if we want to test proportions for several categories at once?
+
+  - Example: Are the three colors (orange, yellow, brown) of Reese’s Pieces equally likely?
+
+`\(H_0\)` specifies a proportion,  `\(p_i\)` , for each category.
 ]
 
 ---
 
-# Chi-square test for association hypothesis
+# Rock-Paper-Scissors
 
-.bqt[Hypotheses look like:
+.hljs[
+ROCK | PAPER | SCISSORS | TOTAL
+----| ---- | ------|-------
+36 | 12 | 37 | 85 
+]
 
-`$$H_0: \textrm{two categorical variables are not associated}$$`
-`$$H_A: \textrm{two categorical variables are associated}$$`
+.out-t[How would we test whether all of these categories are equally likely?]
+
+--
+
+.bql.font80[
+Conduct a hypothesis test
+  - State Hypothesis
+  - Calculate a test statistic, based on your sample data
+  - Create a distribution of this statistic, as it would be observed if the null hypothesis were true
+  - Measure how extreme your test statistic is, as compared to the distribution generated under null
+]
+
+---
+
+class: middle
+
+# Test Statistic
+
+.hljs[Why can’t we use the familiar formula to get the test statistic?
+
+`$$\frac{\text { sample statistic - null value }}{\text { SE }}$$`
+]
+
+- More than one sample statistic
+- More than one null value
+
+
+.out-t[We need something a bit more complicated ...]
+
+
+---
+
+# Observed Counts
+
+
+.hljs[The observed counts are the actual counts observed in the study
+
+ROCK | PAPER | SCISSORS | TOTAL
+----| ---- | ------|-------
+36 | 12 | 37 | 85 
+]
+
+--
+
+.bq.font80[
+- The expected counts are the expected counts if the null hypothesis were true
+- For each cell, the expected count is the sample size `\(n\)` times the null proportion, `\(p_o\)`
+]
+
+.hljs[
+&amp;nbsp; | ROCK | PAPER | SCISSORS | TOTAL
+----| ----| ---- | ------|-------
+Observed | 36 | 12 | 37 | 85 
+Expected | 28.33 | 28.33 | 28.33 | 85 
+]
+
+
+---
+
+class: middle
+
+# Chi-Square Statistic
+
+.bq.font80[
+- A test statistic is one number, computed from the data, which we can use to assess the null hypothesis
+- The chi-square statistic is a test statistic for categorical variables:
 ]
 
 &lt;br&gt;
 
 .hljs[
-E.g. Does M&amp;M color distribution depend on type (chocolate vs. peanut)?
 
-`$$H_0: \text{there is no association between M&amp;M color and type}$$`
-`$$H_A: \text{there is an association between M&amp;M color and type}$$`
+`\begin{aligned}
+\chi^2 = \sum{\frac{(observed - expected)^2}{expected}} = \sum{\frac{(O - E)^2}{E}}
+\end{aligned}`
+
 ]
 
 ---
 
 class: middle
 
-# Expected Counts and p-value
+#  Rock-Paper-Scissors
 
-.bql.font90[
-The expected counts for each combination in a two-way table
+.hljs[
+&amp;nbsp; | ROCK | PAPER | SCISSORS | TOTAL
+----| ----| ---- | ------|-------
+Observed | 36 | 12 | 37 | 85 
+Expected | 28.33 | 28.33 | 28.33 | 85 
 
-`$$\textrm{expected count} = \dfrac{\textrm{row total} \times \textrm{column total}}{n}$$`
 
-
-`$$\chi^2 = \sum_{\textrm{all cells}}\dfrac{(\textrm{Observed} - \textrm{Expected})^2}{\textrm{Expected}}$$`
-
-- Large chi-square test stat values support the .bold[alternative] hypothesis so: `\(p-value = P(\chi^2 \geq \text{observed } \chi^2)\)`
-
-- always a .bold[right-tailed] value
-]
-
----
-
-# Chi-Square test for association: P-VALUE
-
-.bqt.font90[.b[randomization/permutation:] simulate new data consistent with `\(H_0\)` and recompute the `\(\chi^2\)` test stat
-  - .bold[Association:] permute the values of one variable column to break the link that could exist in the data between both variables
-  ]
-  
---
-
-&lt;br&gt;
-
-.bqt.font90[.b[Chi-square distribution (probability model):]
-  - .bold[Association:] use `\((r-1)(c-1)\)` where `\(r=\)` number of rows and `\(c=\)` number of columns
-  - need `\(n\)` large enough so expected counts are at least 5
+`\begin{aligned}
+\chi^2 &amp;= \frac{(36-28.33)^2}{28.33} + \frac{(12 - 28.33)^2}{28.33} + \frac{(37 - 28.33)^2}{28.33}\\
+&amp;= 2.076 + 9.379 + 2.628 \\
+&amp;= 14.083
+\end{aligned}`
 ]
 
 ---
 
 class: middle
 
-# Example: Does political comfort level depend on religion?
+# What next?
 
-.bq.font90[
-`\(H_0:\)` There is no association between religion and comfort level 
-  - implies: the distribution of comfort level is the same for all three religion types 
+.bql[
+We have a test statistic.  What else do we need to perform the hypothesis test?
+- A distribution of the test statistic assuming `\(H_0\)` is true
 ]
 
 &lt;br&gt;
 
-.bq.font90[
-`\(H_A:\)` There is an association between religion and comfort level
-  - implies: the distribution of comfort level is the different for at least one religion type. 
-]
-
-
----
-
-###  Association example
-
-
-```r
-survey &lt;- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Survey.csv")
-survey %&gt;% dplyr::select(Question.8, Question.9) %&gt;% head(8)
-                             Question.8                Question.9
-1                         not religious almost always comfortable
-2                         not religious     sometimes comfortable
-3                         not religious almost always comfortable
-4 religious but not actively practicing almost always comfortable
-5                         not religious     sometimes comfortable
-6                         not religious almost always comfortable
-7 religious but not actively practicing     sometimes comfortable
-8                         not religious almost always comfortable
-```
-
---
-
-.font60[
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Table 1: A two way table of religious preference and political comfortness&lt;/caption&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; almost always comfortable &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; rarely, if ever, comfortable &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; sometimes comfortable &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; not religious &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious and actively practicing my religion &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 16 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 25 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious but not actively practicing &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 20 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-]
-
-
----
-
-class: middle
-
-
-## Association example
-
-&lt;img src="Day22_files/figure-html/unnamed-chunk-3-1.svg" width="100%" /&gt;
-
-
----
-
-## Association Example
-
-
-.bql.font80[EDA for two categorical variables
-- drop missing values, rename column names
-- change/shorten comfort level names 
-- reorder the levels
-]
-
-&lt;br&gt;
-
---
-
-
-
-
-.out-t[ Observed distribution of political comfort level given religiousness]
-
-&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
-&lt;caption&gt;Table 2: A two way table of religious preference and political comfortness (cleaned-up factors)&lt;/caption&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; almost always &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; sometimes &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; rarely &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; not religious &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 103 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious not active &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious active &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-
----
-
-class: middle
-
-#  Association example
-
-
-```r
-counts &lt;- table(survey$religiousness, survey$comfortness)
-counts
-                      
-                       almost always sometimes rarely
-  not religious                  103        76     15
-  religious not active            39        41     19
-  religious active                18        24     15
-```
-
-
-
-```r
-prop.table(counts,1)  
-                      
-                       almost always  sometimes     rarely
-  not religious           0.53092784 0.39175258 0.07731959
-  religious not active    0.39393939 0.41414141 0.19191919
-  religious active        0.31578947 0.42105263 0.26315789
-```
-
-.hljs[There is a much higher rate of "almost always" comfortable for the not religious respondents (53.1%) than those that are religious (not active: 39.4%; active: 31.6%).] 
-
----
-
-# Association example
-
-&lt;img src="Day22_files/figure-html/unnamed-chunk-8-1.svg" width="100%" /&gt;
-
----
-
-class: middle
-
-#  Association example
-
-.bql.font80[Expected counts assuming no association (null)?
-  - expected number of respondents who are "not religious" and "almost always comfortable"?
-  - is .bold[not] 1/9 of all respondents!
+.bql[How do we get this? Two options:
+1. Simulation
+2. Theoretical Distribution
 ]
 
 ---
 
-class: middle
-
-#  Association example
+# Simulation
 
 .bqt.font90[
-- There are 194 "not religious" respondents (row total)
+1. Take 3 scraps of paper and label them Rock, Paper, Scissors. Fold or crumple them so they are indistinguishable. Choose one at random and record the result.
 
-- The overall rate (ignoring religion) of "almost always comfortable" is `\(\dfrac{160}{350}\)`, or about  45.7%. 
+2. Repeat a number of times to match the original sample size and get a table of observed counts. 
 
-- If religion isn't related to comfort level, the expected number is about
-`$$\textrm{expected count} = \dfrac{\textrm{row total} \times \textrm{column total}}{n} = 194 \times \dfrac{160}{350} = 88.686$$`
+3. Calculate the `\(\chi^{2}\)`-statistic.
+
+4. Repeat this many times to get a randomization distribution of many `\(\chi^{2}\)`-statistics.
+
+5. How extreme is the actual test statistic in this randomization distribution?
 ]
 
 ---
 
 class: middle
 
-# Association example
+# [Statkey:](https://www.lock5stat.com/StatKey/index.html) Chi-Square Distribution
 
-
-.hljs[Chi-square contribution for "not religious" and "almost always comfortable" cell?]
-
-
-.bql.font80[
-
-
-
-
-- The contribution to the chi-square test stat from this category is 2.31.
-
-`$$\dfrac{(103 - 88.686)^2}{88.686} = 2.31$$`
-]
+&lt;center&gt;
+&lt;img src="images/chisimulation.png" width="85%" height="65%"&gt;&lt;br&gt;
+&lt;/center&gt;
 
 
 ---
 
 class: middle
 
-# Association example: `chisq.test`
+# Chi-Square Distribution
 
+.bql[
+If each of the expected counts are at least 5, AND if the null hypothesis is true, then the `\(\chi^2\)` statistic follows a `\(\chi^2\)` distribution, with degrees of freedom equal to
 
-```r
-ComfortReligion &lt;- chisq.test(survey$religiousness, survey$comfortness)
-ComfortReligion
+`$$df = \text{number of categories} -1$$`
+]
+
+.hljs[
+Rock-Paper-Scissors:
+
 ```
-
+df = 3 - 1 = 2 # degrees of freedom 
 ```
+]
+---
 
-	Pearson's Chi-squared test
+class: middle
 
-data:  survey$religiousness and survey$comfortness
-X-squared = 19.33, df = 4, p-value = 0.0006768
-```
+# Chi-Square Distribution
+
+&lt;center&gt;
+&lt;img src="images/chisquare.png" width="65%" height="65%"&gt;&lt;br&gt;
+&lt;/center&gt;
+
+
+---
+
+class: middle
+
+# [Statkey:](https://www.lock5stat.com/StatKey/index.html) p-value using Chi-square distribution
+
+&lt;center&gt;
+&lt;img src="images/chilock.png" width="75%" height="75%"&gt;&lt;br&gt;
+&lt;/center&gt;
+
+---
+
+class: middle
+
+# Goodness of Fit
+
+.bq[
+- A `\(\chi^2\)` test for goodness of fit test determines whether the distribution of a categorical variable is the same as some null hypothesized distribution
+
+- The null hypothesized proportions for each category do not have to be the same
+]
+
+---
+
+# Chi-Square Test for Goodness of Fit
 
 .bql.font90[
-- The test stat value is 19.33. 
-- There are 3 categories for each variable, so the degrees of freedom will be `\(df = (3-1)(3-1) = 4\)`. 
+- State null hypothesized proportions for each category, pi.  Alternative is that at least one of the proportions is different than specified in the null.
+
+- Calculate the expected counts for each cell as `\(n\cdot p_i\)`.  Make sure they are all greater than 5 to proceed.
+
+- Calculate the `\(\chi^2\)` statistic: `\(\chi^2 = \sum{\frac{(observed - expected)^2}{expected}}\)`
+
+- Compute the p-value as the area in the tail above the `\(\chi^2\)` statistic, for a `\(\chi^2\)` distribution with   `\(df = (\text{number of categories - 1})\)`.
+
+- Interpret the p-value in context.
 ]
 
 ---
 
 class: middle
 
-# Association example
+# Mendel’s Pea Experiment
 
-.bq.font90[
-- .bold[Interpret:]  If there is no association between comfort level and religiousness, then we would see a chi-square test stat of 19.33, or one even larger, only about 0.07% of the time. 
+.bq[
+Between 1856 and 1863 Gregor Mendel cultivated and tested roughly 29,000 pea plants. This study showed that one in four pea plants was pure-bred recessive, two out of four were hybrid and one out of four were pure-bred dominant. 
 
-- .bold[Conclusion:] We have strong evidence that there is an association between political comfort level and religiousness ( `\(\chi^2 = 19.33\)`, df = 4, p-value = 0.0007).
+Mendel's work was rejected at first and was not widely accepted until after he died. He is now known as the “father of modern genetics
+]
+.footnote[Source: Mendel, Gregor. (1866). Versuche ber Pflanzen-Hybriden. Verh. Naturforsch. Ver. Brünn 4: 3–47 (in English in 1901, Experiments in Plant Hybridization, J. R. Hortic. Soc. 26: 1–32)]
 
+---
+
+# Mendel’s Pea Experiment
+
+.pull-left-40[
+&lt;br&gt;
+&lt;center&gt;
+&lt;img src="images/pea.jpg" width="99%" height="75%"&gt;&lt;br&gt;
+&lt;/center&gt;
+
+]
+
+.pull-right-60[
+
+.hljs[
+S, Y: .bold[Dominant] and s, y: .bold[Recessive]
+
+Mate SSYY with ssyy: 1st Generation: all Ss Yy
+]
+
+.hljs.github[
+Mate 1st Generation: `\(\rightarrow\)` 2nd Generation
+
+Phenotype | Theoretical Proportion
+----| ---- 
+Round, Yellow | 9/16 
+Round, Green | 3/16
+Wrinkled, Yellow | 3/16
+Wrinkled, Green | 1/16
+]
 ]
 
 ---
 
-class: middle
+# Mendel’s Pea Experiment
+.hljs[ 
+Phenotype | Theoretical Proportion | Observed Counts
+----| ---- | ---- | ----
+Round, Yellow | 9/16 | 315
+Round, Green | 3/16 | 101
+Wrinkled, Yellow | 3/16 | 108
+Wrinkled, Green | 1/16 | 32
+]
+&lt;br&gt;
 
-# Association example: Check Assumptions!
+.bql[
+Let’s test this data against the null hypothesis of each `\(p_i\)` equal to the theoretical value, based on genetics
 
-
-.hljs[Are the expected counts above 5?]
-
-
-
-```r
-ComfortReligion &lt;- chisq.test(survey$religiousness, survey$comfortness)
-ComfortReligion$expected
-```
-
-```
-                      survey$comfortness
-survey$religiousness   almost always sometimes rarely
-  not religious             88.68571  78.15429  27.16
-  religious not active      45.25714  39.88286  13.86
-  religious active          26.05714  22.96286   7.98
-```
-
----
-
-# Association example
-
-.bq.font90[
-- If we get a red warning when running `chisq.test`, it usually means the sample size conditions aren't met to use the chi-square model. 
-
-- Instead run a randomization test with
+`$$H_{0}: p_{1}=9 / 16, p_{2}=3 / 16, p_{3}=3 / 16, p_{4}=1 / 16$$`
+`$$H_{a} : \text{ At least one } p_{i} \text{ is not as specified in } H_{0}$$`
 ]
 
-
-
-```r
-chisq.test(survey$religiousness, survey$comfortness, 
-           simulate.p.value = TRUE)
-```
-
-```
-
-	Pearson's Chi-squared test with simulated p-value (based on 2000
-	replicates)
-
-data:  survey$religiousness and survey$comfortness
-X-squared = 19.33, df = NA, p-value = 0.0009995
-```
-
-
-
 ---
 
-# Association example
+# Mendel’s Pea Experiment
 
-.bqt.font80[Describe the association! 
+.pull-left[
+.hljs[
+What is the expected count for round green peas?
 
-  - which groups have the most different comfort levels?
-]
-    
-&lt;img src="Day22_files/figure-html/unnamed-chunk-13-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+A. 0.182
 
----
+B. 108
 
-# Association example
+C. 104.25
 
-.bql.font80[
-95% CI for the difference in the true proportions of "rarely comfortable" people in the not religious and actively religious groups.
-`$$p = \textrm{proportion rarely comfortable}$$`
-
-  - 95% CI for `\(p_{not.relig} - p_{active}\)`
+D. 139
 ]
 
+&lt;br&gt;
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+.hljs[The correct answer is C. Since (315 + 101 + 108 + 32)* 3/16 = 104.25]
+&lt;/details&gt;
 
-```r
-table(survey$religiousness)
+]
 
-       not religious religious not active     religious active 
-                 194                   99                   57 
-```
-`$$n_{not.relig} = 194 \ \ \ \ \ \ n_{active} = 57$$`
+.pull-right[
+.hljs[
+Phenotype | Theoretical Proportion | Observed Counts
+----| ---- | ---- | ----
+Round, Yellow | 9/16 | 315
+Round, Green | 3/16 | 101
+Wrinkled, Yellow | 3/16 | 108
+Wrinkled, Green | 1/16 | 32
+]
+]
 
 ---
 
-class: middle
-
-# Association example
+# Mendel’s Pea Experiment
 
 
 .pull-left[
-
-
-```r
-knitr::kable(counts)
-```
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; almost always &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; sometimes &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; rarely &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; not religious &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 103 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious not active &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 39 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 41 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 19 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious active &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 24 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
+&lt;br&gt;
+.hljs[
+Phenotype | Theoretical Proportion | Observed Counts
+----| ---- | ---- | ----
+Round, Yellow | 9/16 | 315
+Round, Green | 3/16 | 101
+Wrinkled, Yellow | 3/16 | 108
+Wrinkled, Green | 1/16 | 32
+]
 ]
 .pull-right[
+.hljs.font90[
+The `\(\chi\)`^2 statistic is the sum of 4 components (because there are 4 categories).  What is the contribution to the `\(\chi\)`^2 statistic from the “Round, Yellow” category?
 
-```r
-knitr::kable(round(prop.table(counts,1),3))
-```
+1. 0.016
 
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; almost always &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; sometimes &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; rarely &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; not religious &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.531 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.392 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.077 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious not active &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.394 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.414 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.192 &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; religious active &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.316 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.421 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.263 &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+2. 1.05
 
+3. 5.21
+
+4. 107.2
 ]
 
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+.hljs[The correct answer is A. Since `\(\frac{(315 - 312.75)^2}{312.75}  = 0.016\)`]
+&lt;/details&gt;
 
-`$$\hat{p}_{not.rel} = \dfrac{15}{194} = 0.0773196$$`
-`$$\hat{p}_{active} = \dfrac{15}{57} = 0.2631579$$`
+]
 
 ---
 
-class: middle
+# Mendel’s Pea Experiment: `\(\chi^{2}=0.47\)`
 
-# Association example
-
-.bq.font90[
-95% CI for `\(p_{not.relig} - p_{active}\)`
-
-`\begin{align*}
-0.0773196 - 0.2631579  \pm &amp; 1.96 \sqrt{\dfrac{0.0773196(1-0.0773196)}{194} + \dfrac{0.2631579(1-0.2631579)}{57}} \\
--0.1858383  \pm &amp; 1.96 (0.061397) \\
-(-0.3061765, &amp;  -0.0655001)
-\end{align*}`
-
-
-
-
+.bql.font80[Two options:
+- Simulate a randomization distribution
+- Compare to a `\(\chi^{2}\)` distribution with `\(df = 4-1\)`
 ]
 
-
-.hljs[
-I am 95% confident that the percentage of all non-religious students who are  rarely comfortable is between 6.6 to 30.6 percentage points lower than the actively religious students. 
+.pull-left[
+&lt;center&gt;
+&lt;img src="images/pea_rand1.png" width="99%" height="75%"&gt;&lt;br&gt;
+&lt;/center&gt;
 ]
-
+.pull-right[
+&lt;center&gt;
+&lt;img src="images/pea_rand2.png" width="85%" height="75%"&gt;&lt;br&gt;
+&lt;/center&gt;
+]
 
 ---
 
+# Mendel’s Pea Experiment
+
+.bq[
+Does this prove Mendel’s theory of genetics?  Or at least prove that his theoretical proportions for pea phenotypes were correct?
+
+1. Yes
+2. No
+]
+
+&lt;br&gt;
+
+&lt;details&gt;
+&lt;summary&gt;.red[Click for answer]&lt;/summary&gt;
+.hljs[The correct answer is No. The .out-t[p-value = 0.925]. The test is inconclusive, so this does not prove Mendel's theory of genetics or his theoretical proportions for pea phenotypes.]
+&lt;/details&gt;
+
+
+---
 
 class: action
 
@@ -588,16 +495,16 @@ class: action
 .pull-right-60[
 
 &lt;br&gt;
-&lt;br&gt;
-
 .bql[
-- Complete the remaining class activity together
+- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Please do the class activity and let me know if you have any questions
+- Feel free to talk to your neighbor
 ]
 ]
 
-<div class="countdown" id="timer_6f4a6d54" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_328f0e2c" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
     </textarea>

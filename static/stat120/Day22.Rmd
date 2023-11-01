@@ -1,5 +1,5 @@
 ---
-title: "Inference for multiple proportions"
+title: "Inference for multiple proportions: One Categorical Variable"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -94,7 +94,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Inference for multiple proportions]
+# .fancy[Inference for multiple proportions: One Categorical Variable]
 
 ### .fancy[Stat 120]
 
@@ -136,22 +136,6 @@ H_a : p \neq 1/3
   - Example: Are the three colors (orange, yellow, brown) of Reese’s Pieces equally likely?
 
 $H_0$ specifies a proportion,  $p_i$ , for each category.
-]
-
----
-
-class: middle
-
-# Test for one categorical variable
-
-
-.bqt[
-The proportions do not have to be the same. e.g: Grade distribution
-
-\begin{align}
-H_0 &:p_{A}=0.2, \quad p_{B}=0.3, \quad p_{C}=0.3, \quad p_{D}=0.1, \quad p_{F}=0.1\\
-H_a &:\text{ at least one proportion different}
-\end{align}
 ]
 
 ---
@@ -256,8 +240,9 @@ Expected | 28.33 | 28.33 | 28.33 | 85
 
 
 \begin{aligned}
-\chi^2 &= \frac{(36-28.33)^2}{28.33} + \cdots + \cdots\\
-&\approx 2.076 + \cdots + \cdots
+\chi^2 &= \frac{(36-28.33)^2}{28.33} + \frac{(12 - 28.33)^2}{28.33} + \frac{(37 - 28.33)^2}{28.33}\\
+&= 2.076 + 9.379 + 2.628 \\
+&= 14.083
 \end{aligned}
 ]
 
