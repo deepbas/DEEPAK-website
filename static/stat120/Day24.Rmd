@@ -363,6 +363,17 @@ How do we get this? Two options:
 
 ---
 
+# Simulation: `CarletonStats` R package
+
+
+```{r, fig.height=3, out.width="60%", fig.align='center'}
+library(CarletonStats)
+permTestAnova(Distance ~ Grip, data = frisbee)
+```
+
+
+
+---
 
 class: middle
 
@@ -458,8 +469,8 @@ The F-distribution assumes equal within group variability for each group. This i
 tapply(frisbee$Distance, frisbee$Grip, sd)
 ```
 ]
-.pull-right[Check if:
-$$\frac{\text{largest }s}{\text{smallest }s} > 2$$
+.pull-right[Ensure:
+$$\frac{\text{largest }s}{\text{smallest }s} < 2$$
 ]
 
 ---
