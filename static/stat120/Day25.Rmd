@@ -221,7 +221,7 @@ knitr::kable(stat)
 
 ---
 
-`r chunk_reveal("boxplot", widths= c(0.4,0.6), font_size_code="70%", title = "## Side-by-side Boxplot (1a)")`
+`r chunk_reveal("boxplot", widths= c(0.4,0.6), font_size_code="70%", title = "## Side-by-side Boxplot")`
 
 .scroll-output[
 ```{r boxplot, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
@@ -245,7 +245,7 @@ Cuckoo %>%
 
 class: middle
 
-# Check Assumptions (1b)
+# Check Assumptions 
 
 .bql[
 $$H_0: \text{The mean egg length is equal between the different bird tpyes.}$$
@@ -276,7 +276,7 @@ Cuckoo %>%
 
 ---
 
-# Fitting ANOVA (1c)
+# Fitting ANOVA 
 
 ```{r, highlight.output = c(2)}
 library(broom)
@@ -317,7 +317,8 @@ the corresponding `df=n-k`
 
 ---
 
-# Cuckoo Eggs (1d)
+# Cuckoo Eggs 
+
 .bqt.font90[Find a 95% confidence interval for the mean cuckoo egg length in .b[European robin] nests (Type = 4).]
 
 .pull-left-60[
@@ -359,7 +360,7 @@ Use the usual procedures except estimate any $\sigma$ with the pooled standard d
 
 ---
 
-# Cuckoo Eggs (1e)
+# Cuckoo Eggs 
 
 Find a 95% CI for the difference in mean egg length between .b[European robin](type = 4) and .b[Eurasian wren](type = 6) nests.
 
@@ -394,7 +395,7 @@ knitr::kable(stat)
 
 ---
 
-# Cuckoo Eggs (1f)
+# Cuckoo Eggs 
 
 .bql.font80[Find a 95% CI for the difference in mean egg length between .b[Pied Wagtail] (type = 3) and .b[European robin](type = 4)  nests.]
 
@@ -456,7 +457,7 @@ Use a smaller $\alpha$ for each pairwise test (Bonferroni)
 ---
 
 
-# Cuckoo Eggs (1g)
+# Cuckoo Eggs 
 
 > Which means are “different” at a $5\%$ significance level?
 
