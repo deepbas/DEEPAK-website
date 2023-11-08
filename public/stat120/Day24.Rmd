@@ -607,6 +607,6 @@ class: action
 - Feel free to talk to your neighbor
 ]
 ]
-]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
