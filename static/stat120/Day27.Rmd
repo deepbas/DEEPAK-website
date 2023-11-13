@@ -1,5 +1,5 @@
 ---
-title: "More on Linear Regression"
+title: "Regression"
 subtitle: "<br/> STAT 120"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -29,7 +29,7 @@ options(htmltools.preserve.raw = FALSE)
 options(ggrepel.max.overlaps = Inf)
 
 knitr::opts_chunk$set(echo = TRUE, 
-                      dev = 'svg', 
+                      dev = 'svg',
                       collapse = FALSE, 
                       comment = NA,  # PRINTS IN FRONT OF OUTPUT, default is '##' which comments out output
                       prompt = FALSE, # IF TRUE adds a > before each code input
@@ -60,7 +60,6 @@ library(DT)
 library(knitr)
 library(grid)
 library(gridExtra)
-library(tikzDevice)
 
 
 select <- dplyr::select
@@ -92,7 +91,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[More on Linear Regression]
+# .fancy[Regression Revisited]
 
 ### .fancy[Stat 120]
 
@@ -101,376 +100,371 @@ class: title-slide, middle
 ---
 
 
-# Simple Linear Regression: Linear Regression of BAC (y) on Beers (x)
+# Simple Linear Model
 
-.hljs.font90[
-\begin{align*}
-\hat{\mu}(B A C \mid X) &=-0.0127+0.0180(\text { Beers })\\
-\hat{\sigma} &= 0.02044
-\end{align*}
-]
-
-```{r, echo=FALSE}
-# residual size plot
-library(ggplot2)
-bac <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/BAC.csv")
-bac.lm <- lm(BAC ~ Beers, data = bac) # fit the model
-summary(bac.lm)
-```
-
----
-
-# Inference using R-output
-
-.bql[
-
-.blue-h[Inference uses t-distributions with df = n-2]
-
-.b[Test:] Does X have an effect on the mean of Y?
-
-.b[Hypotheses:]
-\begin{align*}
-\mathrm{H}_0: &\beta_i=0 & \text { (no effect for predictor } \mathrm{i} \text { ) } \\
-\mathrm{H}_A: &\beta_i \neq 0 & \text { (predictor i has an effect on } \mathrm{y} \text { ) }
-\end{align*}
-
-.b[Test Stat:] labeled .b[t-value] in $\mathrm{R}$ output
-\begin{align*}
-t=\frac{\hat{\beta}_i-\mathbf{0}}{\operatorname{SE}\left(\hat{\beta}_i\right)}
-\end{align*}
-.b[P-value:] two-tailed, label "Pr $(>|\mathrm{t}|)$ " in $\mathrm{R}$ output 
-]
-
----
-
-class: middle
-
-# Confidence Interval
-
-.bql[
-C% confidence interval for $\beta_i$ is $\hat{\beta}_i \pm t^* \operatorname{SE}\left(\hat{\beta}_i\right)$
-
-- Get CIs for slope/intercept with `confint` command or compute using `qt(.975, df= )` to get t* for 95% CI
-]
-
-
-```{r, collapse=TRUE}
-confint(bac.lm)  # 95% C.I. 
-```
-
-
-
----
-
-# Inference for slope (effect of Beers on BAC)
 
 .hljs[
+The population/true simple linear model is:
+
 \begin{align*}
-\mathrm{H}_0: &\beta_i=0 & \text { (no effect for predictor } \mathrm{i} \text { ) } \\
-\mathrm{H}_A: &\beta_i \neq 0 & \text { (predictor i has an effect on } \mathrm{y} \text { ) }
+y=\beta_{0}+\beta_{1} x+\varepsilon
 \end{align*}
 ]
-
-
-```{r, echo=FALSE}
-library(broom)
-knitr::kable(tidy(bac.lm))
-```
-
-<br>
-
-.bq.font80[
-(a) For this example, the slope test statistic is
-\begin{align*}
-\mathrm{t}=\frac{(0.018-0)} {0.0024} =7.48
-\end{align*}
-and the $p$-value is less than $0.0001$.
-]
-
----
-
-## (b) Inference for slope (effect of Beers on BAC)
 
 .bql[
-- The observed slope of $0.018$ is $7.48 \mathrm{SE}$ 's away from the hypothesized slope of 0 .
-- If we repeated this experiment many times, less than $\mathbf{0 . 0 1 \%}$ of the time we would see an observed slope that is $7.48 \mathrm{SE}$ 's or more away from 0 if the true slope was 0.
-- The effect of the number of beers on $B A C$ is statistically significant $(t=7.48, \mathrm{df}=14, p<0.0001).$
+- $\beta_{0}$ and $\beta_{1}$ are unknown parameters corresponding to the y-intercept and the slope, respectively
+- $\varepsilon$ is the random error
+- Estimate with $b_{0}$ and $b_{1}$ from the least squares line $\hat{y}=b_{0}+b_{1} x$
 ]
 
 --
 
-.bold[How much of an effect?]
-
-
----
-
-## (c) Inference for slope (effect of Beers on BAC)
-
-.hljs[
-95% CI for true slope (effect on the mean):
-
-```{r}
-bac <- read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/BAC.csv")
-bac.lm <- lm(BAC ~ Beers, data = bac) # fit the model
-knitr::kable(confint(bac.lm)) # confidence interval
-```
-
-$$0.018 \pm 2.1448(0.0024)=(0.013,0.023)$$
-]
-
-.b[Each additional beer is associated with an average increase in BAC of 0.018 (95% CI 0.013 to 0.023).]
+.out-t[How accurate are the estimates? ]
 
 ---
 
-## Inference for intercept (predicted BAC at 0 beers)
+### Recall: Least Square Regression
+
+.pull-left[
 
 .hljs[
-\begin{align*}
-\mathrm{H}_0: &\beta_0=0 & \text{(true (population) intercept = 0)} \\
-\mathrm{H}_A: &\beta_0 \neq 0 & \text{(true (population) intercept is not 0)}
-\end{align*}
+X = Cricket chirp rate
+
+Y = Temperature
 ]
+
 
 ```{r, echo=FALSE}
-library(broom)
-knitr::kable(tidy(bac.lm))
+data <- data.frame(Chirps = c(81, 97, 103, 123, 150, 182, 195),
+                   Temp = c(54.5, 59.5, 63.5, 67.5, 72.0, 78.5, 83.0))
+
+knitr::kable(data, format = "html")
 ```
 
 
-.b[
-For this example, the intercept test statistic is
+]
+.pull-right[
+
 \begin{align*}
-\mathrm{t}= \frac{(-0.0127-0)}{0.0126} = -1.005
+\widehat{\text { Temp }}=37.7+0.23 \text { Chirps }
 \end{align*}
-and the $\mathrm{p}$-value is $0.332$. The predicted BAC at 0 beers is not significantly different from 0 $(\mathrm{t}=-1.01, \mathrm{df}=14, \mathrm{ p}$-value $=0.33)$.
+
+```{r, echo=FALSE}
+ggplot(data, aes(x = Chirps, y = Temp)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
 ]
 
----
+--
 
-# Summary 
-
-.bq[
-- Number of beers has a statistically significant effect on $\mathrm{BAC}$.
-- We can explain about $80 \%$ of the variation in BAC by knowing the number of beers drank.
-- How can we explain the other $20 \%$ of variation in $\mathrm{BAC}$ observed in this data?
-- .bold[Multiple regression: include more predictors (explanatory variables) of BAC.]
-]
+<center>
+<div style="position: absolute; top: 25%; left: 35%;">
+<span style="content: '\2192'; font-size: 30px; color: #920; text-align: center; white-space: pre-line;">
+  <p>What are the parameters being estimated? </p>
+   <i class="gg-arrow-long-right"></i>
+</span>
+</div>
+</center>
 
 ---
 
 class: middle
 
-# Multiple Linear Regression Model
+# Inference for the Slope
 
 .bql[
-Suppose you have $p$ explanatory variables
+Confidence intervals and hypothesis tests for the slope can be done using the familiar .b[formulas]:
 
-- Mean of $Y$ is a linear function of $\boldsymbol{x}_1, \boldsymbol{x}_2, \ldots, \boldsymbol{x}_p$ $\mu(Y \mid X)=\beta_0+\beta_1 X_1+\beta_2 X_2+\cdots+\beta_p X_p$
+\begin{align*}
+b_{1} \pm t^* \cdot S E \qquad\qquad t=\frac{b_{1}-\text { null slope }}{S E}
+\end{align*}
 
-- Model SD is $\boldsymbol{\sigma}$ for all values of $\mathrm{X}$.
 ]
 
 ---
-
-## Scatterplot matrix for BAC example
-
-```{r, echo = TRUE, fig.align='center', fig.width=3.5, fig.height=3, out.width="50%"}
-library(GGally)
-ggpairs(bac[, -c(1,2,3)]) + theme(axis.text.x = element_text(size = 3))
-```
-
----
-
-# Regression of BAC on Beers and Weight
-
-```{r, echo=FALSE}
-lm1.bac <- lm(BAC ~ Beers + Weight, data = bac) # fit the model
-summary(lm1.bac)
-```
-
-
-.b.font90[
-(d) The fitted model for BAC is $$\widehat{B A C}=\hat{\mu}(B A C \mid X)=0.0399+0.0200 (Beers)-0.00036(Weight).$$ Knowing number of beers and weight allows us to explain about $95 \%$ of the observed variation in BAC levels.
-]
-
----
-
 
 class: middle
 
-# Interpreting parameters in  $\mu(Y \mid X)=\beta_0+\beta_1 X_1+\beta_2 X_2+\cdots+\beta_p X_p$
+# Technology Examples
 
+### Slope estimate and Standard Error
 
-.bq.font90[
-The fitted model for BAC is
-$$\widehat{B A C}=\hat{\mu}(B A C \mid X)=0.0399+0.0200 (Beers)-0.00036(Weight).$$
-
-(e) John: weighs 160 lbs, drank 4 beers
-$$\widehat{B A C}=0.0399+0.0200(4)-0.00036(160)=0.0623$$
-
-
-(e) Bob: weighs 160 lbs, drank 5 beers $$\widehat{B A C}=0.0399+0.0200(5)-0.00036(160)=0.0823$$
-
-(e) Difference between John and Bob's predicted BAC?
-$$0.0823-0.0623=0.0200$$ 
-]
-
----
-
-# Inference
-
-.hljs[
-$$\begin{array}{ll}H_0: \beta_i=0 \\ H_A: \beta_i \neq 0\end{array} \quad \begin{aligned} & \text { (no effect for predictor i) }\end{aligned} \qquad \qquad \qquad t=\frac{\hat{\beta}_i-0}{\operatorname{SE}\left(\hat{\beta}_i\right)}$$
-]
-
-.bql.font80[
-- Inference (p-values, CI) based on .bold[t-distribution] with $\mathrm{df}=\mathrm{n}-(\mathrm{p}+1)=\mathrm{n}- \text{(betas in model)}$
-
-- .bold[R-squared:] proportion of variation in y explained by the model
-
-- .bold[Test:] Is $\boldsymbol{X}_{\boldsymbol{i}}$ needed in a model that already contains all other predictors?
-
-- .bold[C% confidence interval] for $\beta_i$ is $\hat{\beta}_i \pm t^* \mathbf{S E}\left(\hat{\beta}_i\right)$
-]
-
----
-
-## Regression of BAC on Beers and Weight
-
-```{r, echo=FALSE}
-knitr::kable(tidy(lm1.bac))
-knitr::kable(confint(lm1.bac))
-```
-
-.b[
-(h) Both number of beers and weight are statistically significant predictors of BAC (p-value $<0.0001$ ). Holding weight constant, we are $95 \%$ confident that the true effect of drinking one more beer is a $0.017$ to $0.23$ unit increase in mean $\mathrm{BAC}$.
-]
-
-
----
-
-# Scatterplot Matrix for BAC example
-
-```{r, echo = FALSE, fig.align='center', fig.width=3.5, fig.height=3, out.width="60%"}
-library(GGally)
-ggpairs(bac[, -c(1,2)]) + theme(axis.text.x = element_text(size = 3))
-```
-
----
-
-# Regression of BAC on Beers, Weight and Gender
-
-```{r, echo=FALSE}
-lm2.bac <- lm(BAC ~ Beers + Weight + Gender, data = bac) # fit the model
-```
-
+.font120[
 ```{r, eval=FALSE}
-lm2.bac <- lm(BAC ~ Beers + Weight + Gender, data = bac) # fit the model
-summary(lm2.bac)
+chirps.lm <- lm(Temp ~ Chirps, data = data)
+summary(chirps.lm)
 ```
+]
 
-
-```r
+```
 Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  3.871e-02  1.097e-02   3.528 0.004164 ** 
-Beers        1.990e-02  1.309e-03  15.196 3.35e-09 ***
-Weight      -3.444e-04  6.842e-05  -5.034 0.000292 ***
-Gendermale  -3.240e-03  6.286e-03  -0.515 0.615584    
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
+Chirps       0.23067    0.01423   16.21 1.63e-05 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.01072 on 12 degrees of freedom
-Multiple R-squared:  0.9528,	Adjusted R-squared:  0.941 
-F-statistic: 80.81 on 3 and 12 DF,  p-value: 3.162e-08
+Residual standard error: 1.528 on 5 degrees of freedom
+Multiple R-squared:  0.9813
 ```
 
+---
+
+class: middle
+
+# Confidence Interval for Slope
+
+```
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
+Chirps       0.23067    0.01423   16.21 1.63e-05 ***
+```
 
 .hljs[
-The fitted model for $\mathrm{BAC}$ is
+We can use the values for $b_1$ and $SE$ from the regression output to form a confidence interval in the usual way:
 \begin{align*}
-\widehat{B A C}=0.039+0.020(B e e r s)-0.00034(W e i g h t)-0.0032 \text { (Male) }
+b_{1} \pm t^{*} \cdot S E
 \end{align*}
 ]
 
+.b[
+Here, $t^{*}$ uses $n-2$ degrees of freedom, since we are estimating two parameters in the simple linear model.
+]
 ---
 
 class: middle
 
-# Regression of BAC on Beers, Weight and Gender
-
-$$\widehat{B A C}=0.039+0.020(B e e r s)-0.00034(W e i g h t)-0.0032 \text { (Male) }$$
+# Confidence Interval for Slope
 
 
-.bq.font90[
-"Male" is an indicator variable that equals 1 when we want to predict male $\mathrm{BAC}$ and 0 when we want to predict Female BAC.
-
-(i) Barb drank 4 beers, weighs 160 lbs and is female:
-\begin{align*}
-\widehat{B A C}=0.039+0.020(4)-0.00034(160)-0.0032(0)=0.0646
-\end{align*}
-(i) John drank 4 beers, weighs 160 lbs and is male:
-\begin{align*}
-\widehat{B A C}=0.039+0.020(4)-0.00034(160)-0.0032(1)=0.0614
-\end{align*}
-]
-
-
----
-
-class: middle
-
-# Regression of BAC on Beers, Weight and Gender
-
-.bq.font80[
-How is the effect of GenderMale $-0.0032$ interpreted?
-
-(j) Holding weight and beers constant, we predict that the BAC of males is $0.0032$ units lower than females.
-
-]
-
----
-
-class: middle
-
-# Regression of BAC on Beers, Weight and Gender
-
+.bqt[Find a 95% confidence interval for the slope of the cricket temperature model.]
 
 ```r
-Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  3.871e-02  1.097e-02   3.528 0.004164 ** 
-Beers        1.990e-02  1.309e-03  15.196 3.35e-09 ***
-Weight      -3.444e-04  6.842e-05  -5.034 0.000292 ***
-Gendermale  -3.240e-03  6.286e-03  -0.515 0.615584    
+Temperature  =  37.7 + 0.231 Chirps
+Predictor       Coef    SE Coef      T    Pr(>|t|)    
+Constant    37.67858    1.97817   19.05  7.35e-06 ***
+Chirps       0.23067    0.01423   16.21  1.63e-05 ***
 ```
 
-.bqt.font80[
-(k) But, is the effect of Gender statistically significant?
+.hljs[
+\begin{align*}
+b_{1} \pm t^* \cdot S E
+\end{align*}
+]
 
-- No - the p-value of $0.6155$ shows that there is no statistically significant difference between the mean BAC of males and females after accounting for their weight and number of beers drank!
+---
+
+# Hypothesis Test for Slope
+
+.bql[Population Simple Linear Model: $y=\beta_{0}+\beta_{1} x+\varepsilon$
+
+\begin{align*}
+H_0& : \beta_1 = 0  \qquad \Longrightarrow \text{ No linear relationship }\\
+H_a& : \beta_1 \neq 0  \qquad  \Longrightarrow \text{ Some relationship }
+\end{align*}
+
+
+\begin{align*}
+t=\frac{\text { statistic-null }}{S E}=\frac{b_{1}-0}{S E}=\frac{b_{1}}{S E}
+\end{align*}
+]
+
+<br>
+
+.bq.font90[
+- Again, $\boldsymbol{b}_{1}$ and SE come from R output.
+- We find the p-value by using a $t$ distribution with $n-2$ df
 ]
 
 ---
 
 class: middle
 
-# There is a lot more to cover ..
+# Hypothesis Test for Slope
 
-.bql.font70[
-.b[Model diagnostic tools]
-- Are model conditions met?
-- linearity, constant variance, independent observation
-
-.b[Outlier checks]
-- What is an "outlier" in multiple regression?
-- Can we determine how influential a case is?
-
-.b[More sophisticated models]
-- Transformations (logs, square roots)
-- Predictor interactions (does the effect of weight on BAC depend on gender?)
-- Logistic regression: response is categorical!
+.bql[
+Confirm the .b[p-value] given by the regression output for testing the slope of the cricket chirp model.
 ]
+
+```r
+Temperature  =  37.7 + 0.231 Chirps
+Predictor       Coef    SE Coef      T    Pr(>|t|)    
+Constant    37.67858    1.97817   19.05  7.35e-06 ***
+Chirps       0.23067    0.01423   16.21  1.63e-05 ***
+```
+
+.hljs[
+.pull-left[
+.blockquote[
+\begin{align*}
+H_0 :& \beta_1 = 0 \\
+H_a :& \beta_1 \neq 0
+\end{align*}
+]
+]
+.pull-right[
+.blockquote[
+\begin{align*}
+t=\frac{b_{1}}{S E}
+\end{align*}
+]
+]
+]
+
+---
+
+# Hypothesis Test for Correlation
+
+.bqt[How else can we measure the strength of association between two quantitative variables?]
+
+--
+
+.hljs[
+.b[Recall:] $r$ = sample correlation, $\rho$ = population correlation
+]
+
+
+--
+
+.hljs[
+.pull-left-40[
+.b[
+\begin{align*}
+H_0 :& \rho = 0 \\
+H_a :& \rho \neq 0
+\end{align*}
+
+Find the p-value using a t-distribution with n - 2 df
+
+]
+]
+.pull-right-60[
+.b[
+\begin{align*}
+t & =\frac{\text { statistic -null }}{S E}=\frac{r-0}{\sqrt{\frac{1-r^{2}}{n-2}}} = =\frac{r}{\frac{\sqrt{1-r^{2}}}{\sqrt{n-2}}}\\&=\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)
+\end{align*}
+
+]
+]
+]
+
+---
+
+# Hypothesis Test for Correlation
+
+.bqt[The correlation for the .b[n = 7] cricket chirp data points is .b[r = 0.99062]. Compute the t-statistic for the test:]
+
+.hljs[
+\begin{align*}
+H_0 :& \rho = 0 \\
+H_a :& \rho \neq 0
+\end{align*}
+
+\begin{align*}
+t & =\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)\\
+&=\frac{0.99062 \sqrt{7-2}}{\sqrt{1-0.99062^{2}}}=16.21
+\end{align*}
+]
+
+---
+
+# Coefficient of Determination, $R^2$
+
+.hljs[
+.blue-h[Recall that for correlation:] $-1 \leq r \leq 1$
+
+If we square the correlation, we get the .b[coefficient of determination], which is a number between 0 and 1 that can be interpreted as a proportion or percentage.
+]
+
+<br>
+
+.bql[
+
+$R^{2}=$ proportion of .b[variability] in the response variable, $Y$, that is "explained" by the explanatory variable, $X$.
+
+- By convention we use a capital $R^2$, although the value is just $r^2$ for a single explanatory variable.
+]
+
+---
+
+# Checking Condition
+
+.hljs[
+\begin{align*}
+y=\beta_{0}+\beta_{1} x+\varepsilon
+\end{align*}
+
+For a simple linear model, we assume the errors $(\varepsilon)$ are randomly distributed above and below the line.
+]
+
+<br>
+
+.bql.font80[.b[Quick check] : Look at a scatterplot with regression line on it. Watch out for:
+- Curved (nonlinear) patterns in the data
+- Consistently changing variability
+- Outliers and influential points
+
+]
+
+
+---
+
+
+class: middle
+
+# Partitioning Variability
+
+.hljs[
+\begin{align*}
+Y=\beta_{0}+\beta_{1} X+\varepsilon
+\end{align*}
+
+\begin{align*}
+\text { Data }=\text { Model }+\text { Error }
+\end{align*}
+
+.b[Split the total variability in Y into two pieces, variability explained by the model + unexplained (residual error) variability]
+]
+
+
+<center>
+<img src="images/anova-variability.png" width="100%" height="30%"> 
+</center>
+
+
+---
+
+class: middle
+
+# Measuring Variability
+
+<center>
+<img src="images/anova-variability.png" width="100%" height="30%"> 
+</center>
+
+
+.bqt[
+Total variability in $Y: \quad$ $SSTotal$ $=\sum(y-\bar{y})^{2}$
+
+Explained variability: $\quad$ $SSModel$ $=\sum(\hat{y}-\bar{y})^{2}$
+
+Unexplained variability: $\quad S S E=\sum(y-\hat{y})^{2}$
+]
+
+---
+
+# Graphically
+
+.hljs[
+$$Y=\beta_{0} + \beta_{1} X+\varepsilon \qquad \qquad \text { Data }=\text { Model }+\text { Error }$$
+]
+
+<center>
+<img src="images/residual-deviations.png" width="60%" height="60%"> 
+</center>
 
 ---
 
@@ -487,10 +481,9 @@ class: action
 <br>
 
 .bql[
-- Go over to the in class activity file
-- Complete the remaining activity 
+- Go over to the in-class activity file
+- Complete the remaining activity and practice further
 ]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
