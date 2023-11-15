@@ -120,28 +120,6 @@ summary(bac.lm)
 
 ---
 
-# Inference using R-output
-
-.bql[
-
-.blue-h[Inference uses t-distributions with df = n-2]
-
-.b[Test:] Does X have an effect on the mean of Y?
-
-.b[Hypotheses:]
-\begin{align*}
-\mathrm{H}_0: &\beta_i=0 & \text { (no effect for predictor } \mathrm{i} \text { ) } \\
-\mathrm{H}_A: &\beta_i \neq 0 & \text { (predictor i has an effect on } \mathrm{y} \text { ) }
-\end{align*}
-
-.b[Test Stat:] labeled .b[t-value] in $\mathrm{R}$ output
-\begin{align*}
-t=\frac{\hat{\beta}_i-\mathbf{0}}{\operatorname{SE}\left(\hat{\beta}_i\right)}
-\end{align*}
-.b[P-value:] two-tailed, label "Pr $(>|\mathrm{t}|)$ " in $\mathrm{R}$ output 
-]
-
----
 
 class: middle
 
@@ -162,6 +140,8 @@ confint(bac.lm)  # 95% C.I.
 
 ---
 
+class: middle
+
 # Inference for slope (effect of Beers on BAC)
 
 .hljs[
@@ -177,34 +157,10 @@ library(broom)
 knitr::kable(tidy(bac.lm))
 ```
 
-<br>
-
-.bq.font80[
-(a) For this example, the slope test statistic is
-\begin{align*}
-\mathrm{t}=\frac{(0.018-0)} {0.0024} =7.48
-\end{align*}
-and the $p$-value is less than $0.0001$.
-]
 
 ---
 
-## (b) Inference for slope (effect of Beers on BAC)
-
-.bql[
-- The observed slope of $0.018$ is $7.48 \mathrm{SE}$ 's away from the hypothesized slope of 0 .
-- If we repeated this experiment many times, less than $\mathbf{0 . 0 1 \%}$ of the time we would see an observed slope that is $7.48 \mathrm{SE}$ 's or more away from 0 if the true slope was 0.
-- The effect of the number of beers on $B A C$ is statistically significant $(t=7.48, \mathrm{df}=14, p<0.0001).$
-]
-
---
-
-.bold[How much of an effect?]
-
-
----
-
-## (c) Inference for slope (effect of Beers on BAC)
+## Inference for slope (effect of Beers on BAC)
 
 .hljs[
 95% CI for true slope (effect on the mean):
@@ -222,52 +178,15 @@ $$0.018 \pm 2.1448(0.0024)=(0.013,0.023)$$
 
 ---
 
-## Inference for intercept (predicted BAC at 0 beers)
-
-.hljs[
-\begin{align*}
-\mathrm{H}_0: &\beta_0=0 & \text{(true (population) intercept = 0)} \\
-\mathrm{H}_A: &\beta_0 \neq 0 & \text{(true (population) intercept is not 0)}
-\end{align*}
-]
-
-```{r, echo=FALSE}
-library(broom)
-knitr::kable(tidy(bac.lm))
-```
-
-
-.b[
-For this example, the intercept test statistic is
-\begin{align*}
-\mathrm{t}= \frac{(-0.0127-0)}{0.0126} = -1.005
-\end{align*}
-and the $\mathrm{p}$-value is $0.332$. The predicted BAC at 0 beers is not significantly different from 0 $(\mathrm{t}=-1.01, \mathrm{df}=14, \mathrm{ p}$-value $=0.33)$.
-]
-
----
-
-# Summary 
-
-.bq[
-- Number of beers has a statistically significant effect on $\mathrm{BAC}$.
-- We can explain about $80 \%$ of the variation in BAC by knowing the number of beers drank.
-- How can we explain the other $20 \%$ of variation in $\mathrm{BAC}$ observed in this data?
-- .bold[Multiple regression: include more predictors (explanatory variables) of BAC.]
-]
-
----
-
 class: middle
 
-# Multiple Linear Regression Model
+# Multiple regression: include more predictors (explanatory variables)
 
 .bql[
 Suppose you have $p$ explanatory variables
 
 - Mean of $Y$ is a linear function of $\boldsymbol{x}_1, \boldsymbol{x}_2, \ldots, \boldsymbol{x}_p$ $\mu(Y \mid X)=\beta_0+\beta_1 X_1+\beta_2 X_2+\cdots+\beta_p X_p$
 
-- Model SD is $\boldsymbol{\sigma}$ for all values of $\mathrm{X}$.
 ]
 
 ---
@@ -289,51 +208,11 @@ summary(lm1.bac)
 ```
 
 
-.b.font90[
-(d) The fitted model for BAC is $$\widehat{B A C}=\hat{\mu}(B A C \mid X)=0.0399+0.0200 (Beers)-0.00036(Weight).$$ Knowing number of beers and weight allows us to explain about $95 \%$ of the observed variation in BAC levels.
+.b.font90[The fitted model for BAC is $$\widehat{B A C}=\hat{\mu}(B A C \mid X)=0.0399+0.0200 (Beers)-0.00036(Weight).$$ 
 ]
 
 ---
 
-
-class: middle
-
-# Interpreting parameters in  $\mu(Y \mid X)=\beta_0+\beta_1 X_1+\beta_2 X_2+\cdots+\beta_p X_p$
-
-
-.bq.font90[
-The fitted model for BAC is
-$$\widehat{B A C}=\hat{\mu}(B A C \mid X)=0.0399+0.0200 (Beers)-0.00036(Weight).$$
-
-(e) John: weighs 160 lbs, drank 4 beers
-$$\widehat{B A C}=0.0399+0.0200(4)-0.00036(160)=0.0623$$
-
-
-(e) Bob: weighs 160 lbs, drank 5 beers $$\widehat{B A C}=0.0399+0.0200(5)-0.00036(160)=0.0823$$
-
-(e) Difference between John and Bob's predicted BAC?
-$$0.0823-0.0623=0.0200$$ 
-]
-
----
-
-# Inference
-
-.hljs[
-$$\begin{array}{ll}H_0: \beta_i=0 \\ H_A: \beta_i \neq 0\end{array} \quad \begin{aligned} & \text { (no effect for predictor i) }\end{aligned} \qquad \qquad \qquad t=\frac{\hat{\beta}_i-0}{\operatorname{SE}\left(\hat{\beta}_i\right)}$$
-]
-
-.bql.font80[
-- Inference (p-values, CI) based on .bold[t-distribution] with $\mathrm{df}=\mathrm{n}-(\mathrm{p}+1)=\mathrm{n}- \text{(betas in model)}$
-
-- .bold[R-squared:] proportion of variation in y explained by the model
-
-- .bold[Test:] Is $\boldsymbol{X}_{\boldsymbol{i}}$ needed in a model that already contains all other predictors?
-
-- .bold[C% confidence interval] for $\beta_i$ is $\hat{\beta}_i \pm t^* \mathbf{S E}\left(\hat{\beta}_i\right)$
-]
-
----
 
 ## Regression of BAC on Beers and Weight
 
@@ -343,7 +222,7 @@ knitr::kable(confint(lm1.bac))
 ```
 
 .b[
-(h) Both number of beers and weight are statistically significant predictors of BAC (p-value $<0.0001$ ). Holding weight constant, we are $95 \%$ confident that the true effect of drinking one more beer is a $0.017$ to $0.23$ unit increase in mean $\mathrm{BAC}$.
+Both number of beers and weight are statistically significant predictors of BAC (p-value $<0.0001$ ). Holding weight constant, we are $95 \%$ confident that the true effect of drinking one more beer is a $0.017$ to $0.23$ unit increase in mean $\mathrm{BAC}$.
 ]
 
 
@@ -416,81 +295,6 @@ $$\widehat{B A C}=0.039+0.020(B e e r s)-0.00034(W e i g h t)-0.0032 \text { (Ma
 ]
 
 
----
-
-class: middle
-
-# Regression of BAC on Beers, Weight and Gender
-
-.bq.font80[
-How is the effect of GenderMale $-0.0032$ interpreted?
-
-(j) Holding weight and beers constant, we predict that the BAC of males is $0.0032$ units lower than females.
-
+.out-t[Holding weight and beers constant, we predict that the BAC of males is $0.0032$ units lower than females.
 ]
-
----
-
-class: middle
-
-# Regression of BAC on Beers, Weight and Gender
-
-
-```r
-Coefficients:
-              Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  3.871e-02  1.097e-02   3.528 0.004164 ** 
-Beers        1.990e-02  1.309e-03  15.196 3.35e-09 ***
-Weight      -3.444e-04  6.842e-05  -5.034 0.000292 ***
-Gendermale  -3.240e-03  6.286e-03  -0.515 0.615584    
-```
-
-.bqt.font80[
-(k) But, is the effect of Gender statistically significant?
-
-- No - the p-value of $0.6155$ shows that there is no statistically significant difference between the mean BAC of males and females after accounting for their weight and number of beers drank!
-]
-
----
-
-class: middle
-
-# There is a lot more to cover ..
-
-.bql.font70[
-.b[Model diagnostic tools]
-- Are model conditions met?
-- linearity, constant variance, independent observation
-
-.b[Outlier checks]
-- What is an "outlier" in multiple regression?
-- Can we determine how influential a case is?
-
-.b[More sophisticated models]
-- Transformations (logs, square roots)
-- Predictor interactions (does the effect of weight on BAC depend on gender?)
-- Logistic regression: response is categorical!
-]
-
----
-
-class: action
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Your&nbsp;Turn&nbsp;`r (yt <- yt + 1)`</i>    
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-
-<br>
-<br>
-
-.bql[
-- Go over to the in class activity file
-- Complete the remaining activity 
-]
-]
-
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
