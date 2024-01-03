@@ -218,7 +218,7 @@ class: middle
 
  <li> Statistical computing software called R </li>
 
-<li> RStudio gives nice user-friendly interface to R </li>
+<li> RStudio/Posit gives nice user-friendly interface to R </li>
 
 
 </div>
@@ -402,8 +402,8 @@ class: action, middle
 <br>
 .bq.font90[
 - Make a course folder called 'stat120' either on your [Maize](https://maize.mathcs.carleton.edu/auth-sign-in?appUri=%2F) account or on your local computer 
-- Please download the Assignment-0 template from [moodle](https://moodle.carleton.edu/course/view.php?id=42303) and go to [class helper web page](https://stat120-fall23.netlify.app/) 
-- We will go over this together. 
+- Please download the Class-Activity-1 template from [moodle](https://moodle.carleton.edu/course/view.php?id=42303) and go to [class helper web page](https://stat120-fall23.netlify.app/) 
+- Let's do this together and have fun. 
 ]
 
 ]

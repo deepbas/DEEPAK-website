@@ -111,7 +111,7 @@ class: middle
 .pull-left[
 
 .bq[
-- Second year at Carleton
+- Third year at Carleton
 - Originally from Nepal
 - Research in Bayesian computation and machine learning
 - Avid learner and traveler
@@ -189,6 +189,21 @@ class: middle
   + effective visualization
 ]
 
+---
+
+
+background-image: url("images/data_science.png")
+background-position: center
+background-size: 60%
+class: clear
+
+# Must have skill!!
+
+
+.footnote[Source, [click here](https://www.linkedin.com/pulse/crucial-role-data-science-age-generative-ai-call-learn-ceni-babaoglu-smioc/)]
+
+
+
 
 ---
 
@@ -241,7 +256,7 @@ class: middle
 
 .pull-right[
 
-![](https://media.giphy.com/media/1QhkRAFtcjO90zNZFi/giphy.gif)
+<iframe src="https://giphy.com/embed/Tq8B3WOqXToBlrqClZ" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/new-post-creative-Tq8B3WOqXToBlrqClZ">via GIPHY</a></p>
 
 
 ]
@@ -288,13 +303,13 @@ class: middle
 
 # Class Pipelines
 
-.font140.center[[https://stat220-spring23.netlify.app](https://stat220-spring23.netlify.app)]
+.font140.center[[https://stat220-spring23.netlify.app](https://stat220-winter24.netlify.app)]
 
 
 .bql[
 
-- Please bookmark this page: should be checked multiple times a day
-- Most of the course information and schedule will be posted in [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Please bookmark this page: should be checked for tutorials and solutions to class activities.
+- Most of the course information and schedule will be posted in [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Use moodle for submitting class activity and seeing grades
 - Use Github for homework and projects
 ]
@@ -338,9 +353,9 @@ class: middle
 #  What you need to do next . ...
 
 .bq[
-- read the [Rstudio for Stat220](https://stat220-spring23.netlify.app/rstudio.html) page
-- read the [GitHub for Stat220](https://stat220-spring23.netlify.app/github.html) page
-- read the [Software for Stat220](https://stat220-spring23.netlify.app/software.html) page
+- read the [Rstudio for Stat220](https://stat220-winter24.netlify.app/rstudio.html) page
+- read the [GitHub for Stat220](https://stat220-winter24.netlify.app/github.html) page
+- read the [Software for Stat220](https://stat220-winter24.netlify.app/software.html) page
 ]
 
 
@@ -461,9 +476,9 @@ class: action, middle
 <br>
 .bq.font90[
 - Work on the class_activity_1.Rmd file
-- You can get the file from [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- You can get the file from [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Talk to your neighbor
-- Submit your compiled .pdf file to moodle
+- Remember to submit your compiled .pdf file to moodle by the deadline
 ]
 ]
 
