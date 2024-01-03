@@ -8,10 +8,10 @@ type: book
 weight: 20
 ---
 
+
+Day 1 Slides ({{% staticref "stat120/Day1.html" "newtab" %}}html{{% /staticref %}})
+
 <!--
-
-Day 1 Slides ({{% staticref "stat120/Day1.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day1.html" "newtab" %}}html{{% /staticref %}})
-
 
 
 Day 2 Slides ({{% staticref "stat120/Day2.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day2.html" "newtab" %}}html{{% /staticref %}})
