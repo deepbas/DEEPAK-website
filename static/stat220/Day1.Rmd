@@ -303,7 +303,7 @@ class: middle
 
 # Class Pipelines
 
-.font140.center[[https://stat220-spring23.netlify.app](https://stat220-winter24.netlify.app)]
+.font140.center[[https://stat220-winter24.netlify.app](https://stat220-winter24.netlify.app)]
 
 
 .bql[
