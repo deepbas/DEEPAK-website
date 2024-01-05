@@ -15,8 +15,8 @@
     <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
     <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
-    <link href="libs/font-awesome/css/all.css" rel="stylesheet" />
-    <link href="libs/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -45,7 +45,7 @@ class: title-slide, middle
 
 ### .fancy[Spring 23]
 
- March 29 2023
+ January 04 2024
 
 ---
 
@@ -95,14 +95,14 @@ class: action, middle
 ]
 .pull-right-60[
 .bq.font90[
-- Let's go over to maize server/ local Rstudio to connect it with the class [Github repository](https://github.com/DataScienceSpring23)
+- Let's go over to maize server/ local Rstudio to connect it with the class [Github repository](https://github.com/DataScienceWinter24)
 - Clone hw0-yourusername repository to your course folder as an R project using version control methods
 - Make changes to hw and commit those changes
 - Tip: push the changes regularly back to Github
 ]
 ]
 
-<div class="countdown" id="timer_79be2105" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_f4a857a7" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -118,69 +118,6 @@ class: action, middle
 
 
 &lt;img src="images/rmarkdown2.png" width="110%" height="110%"&gt; &lt;br&gt;
-
----
-
-# Metadata and output types
-
-.pull-left.font80[
-
-**YAML** (yet another markup language)
-
-- data serialization language that is often used for writing configuration files.
-
-
-Basic recipe: 
-```yaml
----
-key: value
----
-```
-
-
-Example:
-
-```yaml
----
-title: My title
-output:
-  github_document
-    toc: true
-    theme: flatly
----
-```
-
-]
-
---
-
-.pull-right.font80[
-
-**Output types**
-
-- html_document (can’t view in GitHub repo)
-- pdf_document (need MikTex, MacTex, or TinyTex installed)
-- github_document (creates a .md Markdown doc, viewable on
-GitHub)
-
-
-```yaml
----
-title: "Baby Name Trends"
-output: github_document
----
-```
-
-```yaml
----
-title: "Baby Name Trends"
-output: github_document
-params: 
-  attribute: value
----
-```
-
-]
 
 ---
 
@@ -458,56 +395,6 @@ knitr::opts_chunk$set(
 
 ---
 
-
-# Math in R
-
-
-.pull-left[
-
-
-```r
-&gt; 10^2
-[1] 100
-```
-
-
-```r
-&gt; 3 ^ 7
-[1] 2187
-```
-
-
-```r
-&gt; 6/9
-[1] 0.6666667
-```
-
-
-```r
-&gt; 9-43
-[1] -34
-```
-]
-
-
---
-
-.pull-right[
-* Rules for order of operations are followed
-* Spaces between numbers and characters are ignored
-
-
-```r
-&gt; 4^3-2* 7+9 /2
-[1] 54.5
-```
-
-
-The equation above is computed as `$$4^3 − (2 \cdot 7) + \frac{9}{2}$$` 
-]
-
----
-
 # Variables
 
 &gt; Variables are used to store data, figures, model output, etc.
@@ -569,45 +456,6 @@ class: middle
 ---
 
 
-# Data frames (aka "tibbles" in tidyverse)
-
-.pull-left[
-__Vectors__ vs. __data frames__: a data frame is a collection (or array or table) of vectors
-
-
-```r
-&gt; df &lt;- tibble(
-+   IDs=1:3, 
-+   gender=c("Male", "Female", "Male"), 
-+   age=c(28, 36, 23),
-+   trt = c("control", "treatment", "treatment"),
-+   Diabetes = c(FALSE, TRUE, TRUE)
-+   )
-&gt; df
-# A tibble: 3 × 5
-    IDs gender   age trt       Diabetes
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;     &lt;lgl&gt;   
-1     1 Male      28 control   FALSE   
-2     2 Female    36 treatment TRUE    
-3     3 Male      23 treatment TRUE    
-```
-
-]
-.pull-right.font80[
-
-&lt;br&gt;
-&lt;br&gt;
-
-.bq[
-- Allows different columns to be of different data types (i.e. numeric vs. text)
-
-- Both numeric and text can be stored within a column (stored together as *text*).
-
-
-]
-]
-
----
 
 class: middle
 
@@ -624,92 +472,6 @@ class: middle
 
 .footnote[[Data structures in R](https://excelunplugged.com/2021/11/19/r-beginner-tutorial-lists/). Source: Ceballos and Cardiel 2013.]
 
----
-
-# Variable (column) types
-
-type | description
----|---
-integer | integer-valued numbers
-numeric | numbers that are decimals
-factor | categorical variables stored with levels (groups)
-character | text, "strings"
-logical | boolean (TRUE, FALSE)
-
-&lt;!-- Each variable (column) in a data frame can be of a different type. --&gt;
-
-* View the __structure__ of our data frame to see what the variable types are:
-
-
-```r
-&gt; str(df)
-tibble [3 × 5] (S3: tbl_df/tbl/data.frame)
- $ IDs     : int [1:3] 1 2 3
- $ gender  : chr [1:3] "Male" "Female" "Male"
- $ age     : num [1:3] 28 36 23
- $ trt     : chr [1:3] "control" "treatment" "treatment"
- $ Diabetes: logi [1:3] FALSE TRUE TRUE
-```
-
-&lt;!-- * Note that the ID column is _integer_ type since the values are all whole numbers, although we likely would think of it as being a categorical variable and thus prefer it to be a factor. --&gt;
-
----
-
-# Data frame cells, rows, or columns
-
-
-&lt;!-- * Our data frame `df` --&gt;
-.pull-left.font90[
-Show whole data frame
-
-```r
-&gt; df
-# A tibble: 3 × 5
-    IDs gender   age trt       Diabetes
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;     &lt;lgl&gt;   
-1     1 Male      28 control   FALSE   
-2     2 Female    36 treatment TRUE    
-3     3 Male      23 treatment TRUE    
-```
-
-Specific cell: `DataSetName[row#, column#]`
-
-
-```r
-&gt; # Second row, Third column
-&gt; df[2, 3]
-# A tibble: 1 × 1
-    age
-  &lt;dbl&gt;
-1    36
-```
-]
-
-.pull-right.font90[
-Entire col: `DataSetName[, column#]`
-
-```r
-&gt; # Third column
-&gt; df[, 3]
-# A tibble: 3 × 1
-    age
-  &lt;dbl&gt;
-1    28
-2    36
-3    23
-```
-
-Entire row: `DataSetName[row#, ]`
-
-```r
-&gt; # Second row
-&gt; df[2,]
-# A tibble: 1 × 5
-    IDs gender   age trt       Diabetes
-  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;     &lt;lgl&gt;   
-1     2 Female    36 treatment TRUE    
-```
-]
 
 
 ---
@@ -723,13 +485,14 @@ class: action, middle
 ]
 .pull-right-60[
 &lt;br&gt;
-.bq.font80[Go to class_activity_2.Rmd in [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+&lt;br&gt;
+.bq.font80[Go to class_activity_2.Rmd in [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 1. Read through the activity answering any questions asked
-4. Submit to moodle when done.
+4. Submit to moodle by the deadline.
 ]
 ]
 
-<div class="countdown" id="timer_49fa67fb" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_448df83d" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

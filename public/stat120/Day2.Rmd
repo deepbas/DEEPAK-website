@@ -173,7 +173,7 @@ sample to the population
 
 --
 
-.green-h.center[To eliminate sampling bias always take a RANDOM SAMPLE!]
+.center.bold.font140[To eliminate sampling bias always take a .red[RANDOM SAMPLE!]]
 
 ---
 
@@ -239,12 +239,10 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
+<br>
 .bql[
 
-Go to 
-
-  * [google form for section 01](https://forms.gle/H5bwYijgoZ1B2xco7)
-  * [google form for section 02](https://forms.gle/Cj2x7xv8iubsFzaa9)
+Go to the  [google form](https://forms.gle/rmKmHPbRoFbWEGXg7)
 
 Find the average word length and enter your answer
 ]
@@ -384,11 +382,10 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
-.bq.font80[
+.bq.font90[
 
-- Identify one source of bias based on [The Effect of Question Order on Evaluations of Test Performance: Can the Bias Dissolve?](https://journals.sagepub.com/doi/full/10.1080/17470218.2016.1225108)
-
-- (Time permitting) Go over to [moodle](https://moodle.carleton.edu/login/index.php) to get the practice_template.Rmd file and work on a few problems together
+- Go over to [moodle](https://moodle.carleton.edu/course/view.php?id=43041) to get the `class-activity-2.Rmd` file and work on a few problems together
+- Dont forget to submit the .pdf file by the deadline
 ]
 ]
 

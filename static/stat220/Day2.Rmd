@@ -153,7 +153,7 @@ class: action, middle
 ]
 .pull-right-60[
 .bq.font90[
-- Let's go over to maize server/ local Rstudio to connect it with the class [Github repository](https://github.com/DataScienceSpring23)
+- Let's go over to maize server/ local Rstudio to connect it with the class [Github repository](https://github.com/DataScienceWinter24)
 - Clone hw0-yourusername repository to your course folder as an R project using version control methods
 - Make changes to hw and commit those changes
 - Tip: push the changes regularly back to Github
@@ -173,69 +173,6 @@ class: action, middle
 
 
 <img src="images/rmarkdown2.png" width="110%" height="110%"> <br>
-
----
-
-# Metadata and output types
-
-.pull-left.font80[
-
-**YAML** (yet another markup language)
-
-- data serialization language that is often used for writing configuration files.
-
-
-Basic recipe: 
-```yaml
----
-key: value
----
-```
-
-
-Example:
-
-```yaml
----
-title: My title
-output:
-  github_document
-    toc: true
-    theme: flatly
----
-```
-
-]
-
---
-
-.pull-right.font80[
-
-**Output types**
-
-- html_document (can’t view in GitHub repo)
-- pdf_document (need MikTex, MacTex, or TinyTex installed)
-- github_document (creates a .md Markdown doc, viewable on
-GitHub)
-
-
-```yaml
----
-title: "Baby Name Trends"
-output: github_document
----
-```
-
-```yaml
----
-title: "Baby Name Trends"
-output: github_document
-params: 
-  attribute: value
----
-```
-
-]
 
 ---
 
@@ -518,46 +455,6 @@ knitr::opts_chunk$set(
 
 ---
 
-
-# Math in R
-
-
-.pull-left[
-
-```{r}
-10^2
-```
-
-```{r}
-3 ^ 7
-```
-
-```{r}
-6/9
-```
-
-```{r}
-9-43
-```
-]
-
-
---
-
-.pull-right[
-* Rules for order of operations are followed
-* Spaces between numbers and characters are ignored
-
-```{r prompt = TRUE, comment = NA}
-4^3-2* 7+9 /2
-```
-
-
-The equation above is computed as $$4^3 − (2 \cdot 7) + \frac{9}{2}$$ 
-]
-
----
-
 # Variables
 
 > Variables are used to store data, figures, model output, etc.
@@ -611,38 +508,6 @@ class: middle
 ---
 
 
-# Data frames (aka "tibbles" in tidyverse)
-
-.pull-left[
-__Vectors__ vs. __data frames__: a data frame is a collection (or array or table) of vectors
-
-```{r}
-df <- tibble(
-  IDs=1:3, 
-  gender=c("Male", "Female", "Male"), 
-  age=c(28, 36, 23),
-  trt = c("control", "treatment", "treatment"),
-  Diabetes = c(FALSE, TRUE, TRUE)
-  )
-df
-```
-
-]
-.pull-right.font80[
-
-<br>
-<br>
-
-.bq[
-- Allows different columns to be of different data types (i.e. numeric vs. text)
-
-- Both numeric and text can be stored within a column (stored together as *text*).
-
-
-]
-]
-
----
 
 class: middle
 
@@ -659,61 +524,6 @@ class: middle
 
 .footnote[[Data structures in R](https://excelunplugged.com/2021/11/19/r-beginner-tutorial-lists/). Source: Ceballos and Cardiel 2013.]
 
----
-
-# Variable (column) types
-
-type | description
----|---
-integer | integer-valued numbers
-numeric | numbers that are decimals
-factor | categorical variables stored with levels (groups)
-character | text, "strings"
-logical | boolean (TRUE, FALSE)
-
-<!-- Each variable (column) in a data frame can be of a different type. -->
-
-* View the __structure__ of our data frame to see what the variable types are:
-
-```{r}
-str(df)
-```
-
-<!-- * Note that the ID column is _integer_ type since the values are all whole numbers, although we likely would think of it as being a categorical variable and thus prefer it to be a factor. -->
-
----
-
-# Data frame cells, rows, or columns
-
-
-<!-- * Our data frame `df` -->
-.pull-left.font90[
-Show whole data frame
-```{r}
-df
-```
-
-Specific cell: `DataSetName[row#, column#]`
-
-```{r}
-# Second row, Third column
-df[2, 3]
-```
-]
-
-.pull-right.font90[
-Entire col: `DataSetName[, column#]`
-```{r}
-# Third column
-df[, 3]
-```
-
-Entire row: `DataSetName[row#, ]`
-```{r}
-# Second row
-df[2,]
-```
-]
 
 
 ---
@@ -727,9 +537,10 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
-.bq.font80[Go to class_activity_2.Rmd in [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+<br>
+.bq.font80[Go to class_activity_2.Rmd in [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 1. Read through the activity answering any questions asked
-4. Submit to moodle when done.
+4. Submit to moodle by the deadline.
 ]
 ]
 
