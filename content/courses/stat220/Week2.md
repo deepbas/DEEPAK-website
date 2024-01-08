@@ -8,6 +8,9 @@ type: book
 weight: 20
 ---
 
+Day 3 Slides ({{% staticref "stat220/Day3.html" "newtab" %}}html{{% /staticref %}})
+
+
 <!--
 
 Day 4 Slides ({{% staticref "stat220/Day4.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day4.html" "newtab" %}}html{{% /staticref %}})

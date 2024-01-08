@@ -670,10 +670,11 @@ class: action, middle
 .pull-right-60[
 <br>
 .bq.font80[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 3 file
 - Please work on the problems 
 - Talk to your neighbor or ask me questions
+- Submit to moodle by the deadline
 ]
 ]
 

@@ -338,6 +338,7 @@ different treatment to each group
 
 ---
 
+
 # Exercise and the Brain
 
 .bql[
@@ -350,12 +351,49 @@ then breezed through mazes and other tests of rodent IQ"
 compared to the sedentary mice
 ]
 
---
+.footnote[Reynolds, "Phys Ed: Your Brain on Exercise", NY Times, July 7, 2010]
 
-Is this evidence that exercise causes an increase in brain
-activity and IQ, at least in mice?
 
---
+---
+
+# Exercise and the Brain
+
+.bql[
+- A sample of mice were divided randomly into two groups. One
+group was given access to an exercise wheel, the other group
+was kept sedentary
+- "The brains of mice and rats that were allowed to run on wheels
+pulsed with vigorous, newly born neurons, and those animals
+then breezed through mazes and other tests of rodent IQ"
+compared to the sedentary mice
+]
+
+
+
+.hljs[Is this evidence that exercise causes an increase in brain
+activity and IQ, at least in mice?]
+
+.footnote[Reynolds, "Phys Ed: Your Brain on Exercise", NY Times, July 7, 2010]
+
+---
+
+# Exercise and the Brain
+
+.bql[
+- A sample of mice were divided randomly into two groups. One
+group was given access to an exercise wheel, the other group
+was kept sedentary
+- "The brains of mice and rats that were allowed to run on wheels
+pulsed with vigorous, newly born neurons, and those animals
+then breezed through mazes and other tests of rodent IQ"
+compared to the sedentary mice
+]
+
+
+
+.hljs[Is this evidence that exercise causes an increase in brain
+activity and IQ, at least in mice?]
+
 
 .center.out-t[Randomized experiment can yield causal conclusions!]
 
@@ -363,6 +401,7 @@ activity and IQ, at least in mice?
 .footnote[Reynolds, "Phys Ed: Your Brain on Exercise", NY Times, July 7, 2010]
 
 ---
+
 
 # Knee Surgery, Control Groups
 
@@ -510,10 +549,11 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
-.bq[
+.bq.font90[
 
-- Let's head over to [course helper page](https://stat120-fall23.netlify.app/) to see some case studies
+- Let's head over to [course helper page](https://stat120-winter24.netlify.app/) to see some case studies
 - Then we will work on a class activity
+- Submit the class activity by the deadline
 ]
 ]
 

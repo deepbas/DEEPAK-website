@@ -13,12 +13,3 @@ Day 1 Slides ({{% staticref "stat220/Day1.html" "newtab" %}}html{{% /staticref %
 
 Day 2 Slides ({{% staticref "stat220/Day2.html" "newtab" %}}html{{% /staticref %}})
 
-
-<!--
-
-Day 3 Slides ({{% staticref "stat220/Day3.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat220/Day3.html" "newtab" %}}html{{% /staticref %}})
-
--->
-
-
-
