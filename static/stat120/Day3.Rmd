@@ -309,7 +309,7 @@ class: middle
 
 # Randomized Experiments
 
-.bql[
+.bql.font90[
 - In a .b[randomized experiment], the explanatory variable for each
 unit is determined randomly, before the response variable is
 measured
@@ -411,7 +411,6 @@ activity and IQ, at least in mice?]
 - Patients who underwent surgery reported less pain.
 ]
 
-<br>
 --
 
 .bql[### The Importance of a Control Group
@@ -488,7 +487,7 @@ class: middle
 
 ---
 
-# Variations of matched pairs experiments: `Effectiveness of a training program`
+## Variations of matched pairs experiments: `Training program effectiveness`
 
 .pull-left[## Before-After Test: 
 .bq.font80[
