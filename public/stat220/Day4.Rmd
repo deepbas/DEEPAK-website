@@ -115,7 +115,7 @@ class: title-slide, middle
 
 # .fancy[Graphics with ggplot2]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -261,14 +261,13 @@ ggplot(data = melted_cor_matrix, aes(x = Var1, y = Var2, fill = value)) +
 
 .pull-right-60[
 
-# Which question do I want to answer?
+## Which question do I want to answer?
 
 .bq.font80[
 - "Is the distribution normal (or uniform or...)?" $\rightarrow$ Histogram, density plot, Q-Q plot
 - "Are univariate distributions across subgroups different?" $\rightarrow$ Boxplots
 - "How do differences in amounts between groups compare?" $\rightarrow$ Barplot
 - "What is the relationship between $\mathrm{x}$ and $\mathrm{y}$ ?" $\rightarrow$ Scatterplot, contour plot, hex bins
-- "What are the correlations in a set of variables?" $\rightarrow$ Correlogram, small multiples
 - "Are the data clustered by subgroup?" $\rightarrow$ Scatterplot with color
 - "How uncertain are estimates? $\rightarrow$ Error bars, confidence bands
 ]
@@ -366,6 +365,8 @@ ggplot(name_of_your_df, aes(x = your_x_axis_variable, y = your_y_axis_variable))
 
 ---
 
+class: middle
+
 ### Theme and Axes
 
 .hljs[At this stage, our plot might require a few finishing touches. We might want to adjust the axis names or remove the default gray background. To accomplish this, we should add another layer, preceded by a plus sign .b[(+)].
@@ -403,13 +404,14 @@ ggplot(data) +    # data
 
 
 
-`r chunk_reveal("hist", font_size_code="70%", width= c(0.5, 0.5), title = "## Histogram")`
+`r chunk_reveal("hist", font_size_code="70%", width= c(0.5, 0.5), title = "# Histogram")`
 
 ```{r hist, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-# Histogram of mpg (miles per gallon) in the mtcars dataset
+# Histogram of mpg in the mtcars dataset
 ggplot(mtcars, aes(x = mpg)) +
-  geom_histogram(binwidth = 2) +
-  theme_minimal()
+  geom_histogram(binwidth = 2, fill = "cornflowerblue") +
+  theme_minimal() +
+  labs(title = "Distribution of Miles per Gallon (mpg)")
 ```
 
 
@@ -419,56 +421,43 @@ ggplot(mtcars, aes(x = mpg)) +
 `r chunk_reveal("density", font_size_code="70%", width= c(0.5, 0.5), title = "## Density Plot")`
 
 ```{r density, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-# Density plot of mpg (miles per gallon)
+# Histogram with density overlay for mpg in the mtcars dataset
 ggplot(mtcars, aes(x = mpg)) +
-  geom_density() +
-  theme_minimal()
+  geom_histogram(aes(y = ..density..), binwidth = 2, fill = "skyblue", alpha = 0.5) +
+  geom_density(color = "firebrick") +
+  theme_minimal() +
+  labs(title = "Histogram and Density of Miles per Gallon (mpg)")
 ```
 
 
 ---
 
+`r chunk_reveal("barplot", font_size_code="70%", width= c(0.5, 0.5), title = "## Bar Plot")`
 
-`r chunk_reveal("histo-dens", font_size_code="70%", width= c(0.5, 0.5), title = "## Histogram with density overlay")`
-
-```{r histo-dens, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-# Density plot of mpg (miles per gallon)
-ggplot(mtcars, aes(x = mpg)) +
-  geom_histogram(aes(y = ..density..), 
-                 binwidth = 2, 
-                 alpha = 0.5,
-                 fill = "blue") +
-  geom_density(color = "red") +
-  theme_minimal()
+```{r barplot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Barplot of number of cars by number of cylinders in the mtcars dataset
+ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar(fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Count of Cars by Cylinder Count", x = "Number of Cylinders", y = "Count")
 ```
 
----
 
+
+
+---
 
 `r chunk_reveal("boxplot", font_size_code="70%", width= c(0.5, 0.5), title = "## Boxplot")`
 
 ```{r boxplot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 # Boxplot of mpg by number of cylinders in the mtcars dataset
 ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
-  geom_boxplot() +
-  theme_minimal()
+  geom_boxplot(fill = "lightgreen") +
+  theme_minimal() +
+  labs(title = "Miles per Gallon (mpg) by Cylinder Count", x = "Number of Cylinders", y = "mpg")
 ```
 
 ---
-
-
-
-`r chunk_reveal("barplot", font_size_code="70%", width= c(0.5, 0.5), title = "## Barplot")`
-
-```{r barplot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-# Barplot of number of cars by number of cylinders in the mtcars dataset
-ggplot(mtcars, aes(x = factor(cyl))) +
-  geom_bar() +
-  theme_minimal()
-```
-
----
-
 
 
 `r chunk_reveal("scatter-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Scatter plot")`
@@ -476,8 +465,9 @@ ggplot(mtcars, aes(x = factor(cyl))) +
 ```{r scatter-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 # Scatterplot of mpg vs. weight in the mtcars dataset
 ggplot(mtcars, aes(x = wt, y = mpg)) +
-  geom_point() +
-  theme_minimal()
+  geom_point(color = "purple") +
+  theme_minimal() +
+  labs(title = "Miles per Gallon (mpg) vs. Weight", x = "Weight", y = "mpg")
 ```
 
 ---
@@ -489,27 +479,45 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 ```{r contour-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 # Contour plot of mpg vs. weight in the mtcars dataset
 ggplot(mtcars, aes(x = wt, y = mpg)) +
-  geom_density_2d() +
-  theme_minimal()
+  geom_density_2d(color = "chocolate") +
+  theme_minimal() +
+  labs(title = "Miles per Gallon (mpg) vs. Weight", x = "Weight", y = "mpg")
 ```
 
 ---
 
 
-`r chunk_reveal("hexbins-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Hex  Bins plot")`
+`r chunk_reveal("QQ-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## QQ plot")`
 
-```{r hexbins-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-# Hex bins plot of mpg vs. weight in the mtcars dataset
-ggplot(mtcars, aes(x = wt, y = mpg)) +
-  geom_hex(bins = 8) +
-  theme_minimal()
+```{r QQ-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Q-Q plot for mpg in the mtcars dataset
+ggplot(mtcars, aes(sample = mpg)) + 
+  stat_qq(color = "darkorange") +
+  geom_qq_line(color = "maroon") +
+  theme_minimal() +
+  labs(title = "Q-Q Plot for Miles per Gallon (mpg)")
 ```
+
 
 ---
 
 `r chunk_reveal("errorbar-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Error Bars plot")`
 
 ```{r errorbar-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+# Error bars for mpg by number of cylinders in the mtcars dataset
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "turquoise") +
+  geom_errorbar(stat = "summary", fun.data = "mean_se", width = 0.2) +
+  theme_minimal() +
+  labs(title = "Mean mpg by Number of Cylinders", x = "Number of Cylinders", y = "Mean mpg")
+```
+
+
+---
+
+`r chunk_reveal("ebars-plot", font_size_code="70%", width= c(0.5, 0.5), title = "## Error Bars Line plot")`
+
+```{r ebars-plot, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 # Example data for trend plot
 set.seed(42)
 example_data <- data.frame(
@@ -517,7 +525,6 @@ example_data <- data.frame(
   y = 2 * (1:10) + rnorm(10, mean = 0, sd = 3),
   se = runif(10, min = 1, max = 3)
 )
-
 # Trend plot with error bars
 ggplot(example_data, aes(x = x, y = y)) +
   geom_point(color = "skyblue", linewidth = 3) +
@@ -525,6 +532,8 @@ ggplot(example_data, aes(x = x, y = y)) +
   geom_errorbar(aes(ymin = y - se, ymax = y + se), width = 0.2) +
   theme_minimal()
 ```
+
+
 
 
 ---
@@ -587,9 +596,6 @@ ggplot(example_data, aes(x = x, y = y)) +
 ```
 
 
-
-
-
 ---
 
 
@@ -606,45 +612,67 @@ glimpse(hate_crimes)
 
 ---
 
-`r chunk_reveal("layering-geoms", font_size_code="70%", width= c(0.5, 0.5), title = "## Layering geoms")`
+`r chunk_reveal("layering-geoms", font_size_code="70%", width= c(0.5, 0.5), title = "## Layering geoms with patchwork")`
 
 ```{r layering-geoms, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-base <- ggplot(hate_crimes, 
-               aes(x=median_household_income,
-                   y=hate_crimes_per_100k_splc)) 
-base
+library(ggplot2)
+library(patchwork)
+
+# Layering geoms
+p1 <- ggplot(hate_crimes, aes(x = median_household_income,
+                              y = hate_crimes_per_100k_splc)) +
+  geom_point() +
+  labs(y = "hate crimes", x = "household income")
+
+p2 <- p1 + geom_smooth(method = "lm")
+
+# Combine the plots using patchwork
+p1 + p2 +
+  plot_layout(ncol = 1) +
+  plot_annotation(title = "Layering Geoms with Patchwork")
+
 ```
 
 <!-- When you are iteratively building plots, it's useful to store the .yellow-h[base plot] as an object] -->
 
----
-
-`r chunk_reveal("layering-geoms1", font_size_code="70%", width= c(0.5, 0.5), title = "## Layering geoms")`
-
-```{r layering-geoms1, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-base + 
-  geom_point()
-```
 
 ---
 
-`r chunk_reveal("layering-geoms2", font_size_code="60%", width= c(0.5, 0.5), title = "## A better plot")`
 
-```{r layering-geoms2, fig.align='center', echo=FALSE, out.width="120%", eval=FALSE}
-library(ggrepel)
-base + 
-  geom_text_repel(aes(label=state_code,
-                      color=region)) 
+`r chunk_reveal("ggradar", font_size_code="70%", width= c(0.5, 0.5), title = "## Radar Chart with ggradar")`
+
+```{r ggradar, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
+library(ggradar)
+library(scales) # to automatically match the scales
+
+# Sample data for radar chart
+radar_data <- data.frame(
+  group = c("A", "B"),
+  var1 = c(0.2, 0.8),
+  var2 = c(0.6, 0.4),
+  var3 = c(0.9, 0.1)
+)
+
+# Radar chart
+ggradar(radar_data, grid.min = 0, 
+        grid.mid = 0.5, 
+        grid.max = 1,
+        axis.label.size = 3,
+        grid.label.size = 3) +
+  theme_minimal() +
+  labs(title = "Radar Chart with ggradar")
 ```
+
+
 
 ---
 
 class: middle
 
-## Multi-panel plots in a grid
+## Multi-panel plots in a grid using `gridExtra`
 
 .pull-left.font60[
-
+.code90[
 ```{r}
 plot1 <- ggplot(data = mtcars, aes(x = hp, y = mpg)) +
   geom_point() +
@@ -662,11 +690,11 @@ plot2 <- ggplot(data = mtcars, aes(x = wt, y = mpg)) +
   theme(plot.title = element_text(size = 6)) +
   theme_minimal()
 ```
-
+]
 ]
 
 .pull-right.font60[
-
+.code90[
 ```{r}
 plot3 <- ggplot(data = mtcars, aes(x = drat, y = mpg)) +
   geom_point() +
@@ -684,6 +712,7 @@ plot4 <- ggplot(data = mtcars, aes(x = qsec, y = mpg)) +
   theme(plot.title = element_text(size = 6)) +
   theme_minimal()
 ```
+]
 ]
 
 ---
@@ -707,12 +736,13 @@ class: action, middle
 .pull-right-60[
 <br>
 .bq.font90[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 4 file
 - Please work on the problems 
-- Ask me questions
+- Talk to your neighbor or ask me questions
+- Submit to moodle by the deadline
 ]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_linewidth = "2em")`
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_linewidth = "2em")`
 

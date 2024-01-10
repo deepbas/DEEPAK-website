@@ -13,29 +13,29 @@
     </image>
     
     <item>
-      <title>Week 4</title>
-      <link>/courses/stat120/week4/</link>
-      <pubDate>Mon, 22 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>/courses/stat120/week4/</guid>
-      <description>&lt;!--
-
-
-Day 10 Slides (&lt;a href=&#34;/stat120/Day10.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day10.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
-
-
-Day 11 Slides (&lt;a href=&#34;/stat120/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
-
-
-Day 12 Slides (&lt;a href=&#34;/stat120/Day12.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day12.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
-
---&gt;
+      <title>Week 2</title>
+      <link>/courses/stat120/week2/</link>
+      <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>/courses/stat120/week2/</guid>
+      <description>&lt;p&gt;Day 3 Slides (&lt;a href=&#34;/stat120/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 4 Slides (&lt;a href=&#34;/stat120/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Week 1</title>
+      <link>/courses/stat120/week1/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>/courses/stat120/week1/</guid>
+      <description>&lt;p&gt;Day 1 Slides (&lt;a href=&#34;/stat120/Day1.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;Day 2 Slides (&lt;a href=&#34;/stat120/Day2.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Week 3</title>
       <link>/courses/stat120/week3/</link>
-      <pubDate>Sun, 14 Jan 2024 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
       <guid>/courses/stat120/week3/</guid>
       <description>&lt;!--
 
@@ -53,31 +53,22 @@ Day 9 Slides (&lt;a href=&#34;/stat120/Day9.pdf&#34; target=&#34;_blank&#34;&gt;
     </item>
     
     <item>
-      <title>Week 2</title>
-      <link>/courses/stat120/week2/</link>
-      <pubDate>Sun, 07 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>/courses/stat120/week2/</guid>
-      <description>&lt;p&gt;Day 3 Slides (&lt;a href=&#34;/stat120/Day3.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;!--
+      <title>Week 4</title>
+      <link>/courses/stat120/week4/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>/courses/stat120/week4/</guid>
+      <description>&lt;!--
 
 
-Day 4 Slides (&lt;a href=&#34;/stat120/Day4.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day4.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
+Day 10 Slides (&lt;a href=&#34;/stat120/Day10.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day10.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
 
-Day 5 Slides (&lt;a href=&#34;/stat120/Day5.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day5.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
 
-Day 6 Slides (&lt;a href=&#34;/stat120/Day6.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day6.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
+Day 11 Slides (&lt;a href=&#34;/stat120/Day11.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day11.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
+
+
+Day 12 Slides (&lt;a href=&#34;/stat120/Day12.pdf&#34; target=&#34;_blank&#34;&gt;pdf&lt;/a&gt;/&lt;a href=&#34;/stat120/Day12.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)
 
 --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Week 1</title>
-      <link>/courses/stat120/week1/</link>
-      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>/courses/stat120/week1/</guid>
-      <description>&lt;p&gt;Day 1 Slides (&lt;a href=&#34;/stat120/Day1.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
-&lt;p&gt;Day 2 Slides (&lt;a href=&#34;/stat120/Day2.html&#34; target=&#34;_blank&#34;&gt;html&lt;/a&gt;)&lt;/p&gt;
 </description>
     </item>
     

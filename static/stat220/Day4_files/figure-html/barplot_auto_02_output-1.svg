@@ -76,11 +76,11 @@
 </symbol>
 </g>
 </defs>
-<g id="surface317">
+<g id="surface217">
 <rect x="0" y="0" width="288" height="216" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
-<path style=" stroke:none;fill-rule:nonzero;fill:rgb(34.901961%,34.901961%,34.901961%);fill-opacity:1;" d="M 41.816406 177.816406 L 112.992188 177.816406 L 112.992188 48.484375 L 41.816406 48.484375 Z M 41.816406 177.816406 "/>
-<path style=" stroke:none;fill-rule:nonzero;fill:rgb(34.901961%,34.901961%,34.901961%);fill-opacity:1;" d="M 120.898438 177.816406 L 192.074219 177.816406 L 192.074219 95.515625 L 120.898438 95.515625 Z M 120.898438 177.816406 "/>
-<path style=" stroke:none;fill-rule:nonzero;fill:rgb(34.901961%,34.901961%,34.901961%);fill-opacity:1;" d="M 199.980469 177.816406 L 271.15625 177.816406 L 271.15625 13.214844 L 199.980469 13.214844 Z M 199.980469 177.816406 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(27.45098%,50.980392%,70.588235%);fill-opacity:1;" d="M 41.816406 177.816406 L 112.992188 177.816406 L 112.992188 48.484375 L 41.816406 48.484375 Z M 41.816406 177.816406 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(27.45098%,50.980392%,70.588235%);fill-opacity:1;" d="M 120.898438 177.816406 L 192.074219 177.816406 L 192.074219 95.515625 L 120.898438 95.515625 Z M 120.898438 177.816406 "/>
+<path style=" stroke:none;fill-rule:nonzero;fill:rgb(27.45098%,50.980392%,70.588235%);fill-opacity:1;" d="M 199.980469 177.816406 L 271.15625 177.816406 L 271.15625 13.214844 L 199.980469 13.214844 Z M 199.980469 177.816406 "/>
 <g style="fill:rgb(30.196078%,30.196078%,30.196078%);fill-opacity:1;">
   <use xlink:href="#glyph0-1" x="21.472656" y="180.280273"/>
 </g>

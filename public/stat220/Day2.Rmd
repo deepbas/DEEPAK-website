@@ -101,7 +101,7 @@ class: title-slide, middle
 
 # .fancy[R and R Markdown Basics]
 
-### .fancy[Spring 23]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 

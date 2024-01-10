@@ -1,7 +1,7 @@
 ---
 title: Week 4 
 linktitle: Week 4
-lastmod: "2024-01-22"
+lastmod: "2024-01-01"
 draft: false  
 toc: false  
 type: book  

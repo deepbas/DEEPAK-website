@@ -246,22 +246,6 @@ ggplot(cell_phone_data, aes(x = Type, y = Frequency)) +
 
 ---
 
-# Pie Chart
-
-.bq.font80[In a pie chart, the relative area of each slice of the pie corresponds to the proportion in each category]
-
-
-```{r, echo=FALSE, fig.height=6}
-plot_ly(cell_phone_data, labels = ~Type, values = ~Frequency, type = 'pie',
-        textposition = 'inside', hoverinfo = 'label+value+percent',
-        textinfo = 'label', insidetextfont = list(color = '#FFFFFF')) %>%
-  layout(title = 'Cell Phone Usage',
-         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-
-```
-
----
 
 # Two Categorical Variables
 
@@ -281,58 +265,57 @@ plot_ly(cell_phone_data, labels = ~Type, values = ~Frequency, type = 'pie',
 
 ---
 
-# Relationship status and Gender
+class: middle
 
-.font90[
-Proportion of students that are in a relationship?
+.pull-left[
 
-```{r}
-ans <- 42/169
-round(ans,2) 
-```
-]
+## Relationship status and Gender
 
---
 
-.font90[
 Proportion of students in a relationship that are female?
 
 ```{r}
-ans <- 32/42
-round(ans,2)
+prop.relation.female <- 32/42
+round(prop.relation.female,2)
 ```
-]
 
---
 
-.font90[
+
+
 Proportion of students in a relationship that are male?
 
 ```{r}
-ans <- 10/42
-round(ans,2)
+prop.relation.male <- 10/42
+round(prop.relation.male,2)
 ```
+
+
+
 ]
-  
----
 
-class: middle
+.pull-right[
 
-# Relationship status and Gender
+## Relationship status and Gender
 
 Proportion of males that are in a relationship?
 
 ```{r}
-ans <- 10/62
-round(ans,2) 
+prop.male <- 10/62
+round(prop.male,2) 
 ```
 
 Proportion of females that are in a relationship?
 
 ```{r}
-ans <- 32/107
-round(ans,2)
+prop.female <- 32/107
+round(prop.female,2)
 ```
+
+
+]
+
+.footnote[Statkey for Data Visualization: https://www.lock5stat.com/StatKey/index.html]
+
 
 ---
 
@@ -355,44 +338,6 @@ prop.female <- 32/107
 prop.male <- 10/62
 prop.diff <- prop.female - prop.male
 round(prop.diff,2) # round the final answer to 2 significant digits
-```
-
----
-
-# Side-by-Side bar Chart
-
-.bq.font80[The height of each bar is the number of the corresponding cell in the two-way table]
-
-```{r, echo=FALSE, fig.height=6}
-data <- data.frame(
-  Gender = c("Female", "Male"),
-  In_a_relationship = c(32, 10),
-  Its_complicated = c(12, 7),
-  Single = c(63, 45)
-)
-
-plot_ly(data, x = ~Gender, y = ~In_a_relationship, type = 'bar', name = 'In a relationship') %>%
-  add_trace(y = ~Its_complicated, name = 'It\'s complicated') %>%
-  add_trace(y = ~Single, name = 'Single') %>%
-  layout(yaxis = list(title = 'Number of People'), barmode = 'group')
-```
-
-
-
-.footnote[Source: https://www.lock5stat.com/StatKey/index.html]
-
----
-
-# Segmented Bar Chart
-
-.bq.font80[A segmented bar chart is like a side-by-side bar chart, but the bars are stacked instead of side-by-side]
-
-
-```{r, echo=FALSE, fig.height=6}
-plot_ly(data, x = ~Gender, y = ~In_a_relationship, type = 'bar', name = 'In a relationship') %>%
-  add_trace(y = ~Its_complicated, name = 'It\'s complicated') %>%
-  add_trace(y = ~Single, name = 'Single') %>%
-  layout(yaxis = list(title = 'Number of People'), barmode = 'stack')
 ```
 
 ---
@@ -430,11 +375,12 @@ dim(jurors) # dimension of dataset
 
 Look at the first .b[three rows] of the data set
 
-.code80[
+
 ```{r}
-jurors[c(1,2,3), ]  #[rows, columns]
+jurors[c(1,2,3), ]  #jurors[rows, columns]
 ```
-]
+
+
 ---
 
 class: middle
@@ -450,18 +396,20 @@ jurors$struck_state[1:10] # first 10 entries in the `struck_state` variable
 # Numeric summaries: counts and proportions
 
 
-`table` gives counts of whether the state struck a juror: 
+`table()` gives counts of whether the state struck a juror: 
 
 ```{r}
 counts <- table(jurors$struck_state)
 counts
 ```
 
-`prop.table` turns these counts into proportions:
+`prop.table()` turns these counts into proportions:
 
 ```{r}
 prop.table(counts)
 ```
+
+--
 
 .out-t[What proportion of eligible jurors were struck by the state from the jury pool?]
 
@@ -481,11 +429,11 @@ class: action
 <br>
 .bq[
 
-- Let's go over a tutorial on data visualization in R using `ggplot2` on [course helper page](https://stat120-fall23.netlify.app/tutorial-2-dive-deeper-into-data-visualization-and-statistics-in-r)
+- Let's go over a tutorial on data visualization in R using `ggplot2` on [course helper page](https://stat120-winter24.netlify.app/tutorial-2-dive-deeper-into-data-visualization-and-statistics-in-r)
 ]
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 
@@ -552,16 +500,19 @@ prop.table(mytable, margin = 1)
 
 .bq.font90[
 - Of all eligible black jurors, about 57.9% were struck by the state.
-- What proportion of eligible white jurors were struck by the state?
 ]
 
 <br>
+--
+.out-t[What proportion of eligible white jurors were struck by the state?]
 
+<br>
+--
 .out-t[Is there evidence of an association between juror race and state strikes?]
 
 ---
 
-# Stacked bar graph
+# Stacked bar graph (with labels!)
 
 We can graph a conditional distribution using the `ggplot2` graphing package. 
 
@@ -619,11 +570,11 @@ class: action
 .pull-right-60[
 
 <br>
-<br>
 .bq[
 
-- Let's go over some more examples at the [course helper page](https://stat120-fall23.netlify.app/)
+- Let's go over to [course helper page](https://stat120-winter24.netlify.app/)
 - We will then do a class activity together
+- Submit the activity before the deadline
 ]
 ]
 

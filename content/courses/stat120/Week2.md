@@ -10,14 +10,6 @@ weight: 20
 
 Day 3 Slides ({{% staticref "stat120/Day3.html" "newtab" %}}html{{% /staticref %}})
 
-<!--
+Day 4 Slides ({{% staticref "stat120/Day4.html" "newtab" %}}html{{% /staticref %}})
 
-
-Day 4 Slides ({{% staticref "stat120/Day4.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day4.html" "newtab" %}}html{{% /staticref %}})
-
-Day 5 Slides ({{% staticref "stat120/Day5.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day5.html" "newtab" %}}html{{% /staticref %}})
-
-Day 6 Slides ({{% staticref "stat120/Day6.pdf" "newtab" %}}pdf{{% /staticref %}}/{{% staticref "stat120/Day6.html" "newtab" %}}html{{% /staticref %}})
-
--->
 
