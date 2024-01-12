@@ -132,38 +132,9 @@ class: title-slide, middle
 
 # .fancy[More Data Visualization Tools]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
-
----
-
-class: middle
-
-# So far ..
-
-.bql.font90[.b[We know]
-
-- A basic set of geometries
-- How to map variables to aesthetics
-- How to layer `geoms`
-- How to change axis labels and titles
-- Common statistical graphs
-]
-
-
----
-
-class: middle
-
-# More to learn ...
-
-.bql.font90[.b[Today]
-- Changing scales
-- Changing coordinates
-- Mapping spatial data
-]
-
 
 ---
 
@@ -205,9 +176,13 @@ class: middle
 
 - [Using colors in R](http://stat545.com/block018_colors.html)
 
+- [Dealing with colors in ggplot2](https://r-graph-gallery.com/ggplot2-color.html)
+
 - [Taking control of qualitative colors in ggplot2](http://stat545.com/block019_enforce-color-scheme.html)
 
 - [Data journalism](https://datajournalism.com/read/)
+
+- [R Color Brewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3)
 
 ]
 
@@ -315,29 +290,6 @@ ggplot(data) +
 ]
 ]
 ]
-
----
-
-
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-<br>
-.bql.font80[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
-- Get the class activity 5 .Rmd file
-- Work on Problem 1
-- Ask me questions
-]
-]
-
-`r countdown(minutes = 6, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 ---
@@ -472,17 +424,7 @@ ggplot(states, aes(x=long, y=lat, group=group)) +
 
 ---
 
-`r chunk_reveal("scale", font_size_code="70%", width= c(0.5, 0.5), title = "## Why is scale so important in a map?")`
-
-```{r scale, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
-ggplot(states, aes(x=long, y=lat, group=group)) + 
-    geom_polygon(color="black", fill="lightblue") + 
-    coord_fixed(ratio=3) 
-```
-
----
-
-# Covid mapping
+# Application: Covid mapping
 
 ```{r, echo = FALSE}
 glimpse(covid)
@@ -492,7 +434,7 @@ glimpse(covid)
 
 ---
 
-# Combining datasets
+# Application: Combining datasets
 
 We need to add the covid info to the state polygon data set
 
@@ -570,7 +512,6 @@ ggplot(covid_data) +
 
 ---
 
-
 # Cloropleth maps
 
 .bq.font90[
@@ -613,12 +554,13 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
-.bql.font90[
-- Please work on the remaining problems 
-- Please feel free to talk to me or your neighbor
-- Submit a pdf to moodle when done
+.bql.font80[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
+- Get the class activity 5 .Rmd file
+- Work on the class activity together
+- Ask me questions
 ]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

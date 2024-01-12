@@ -97,7 +97,7 @@ class: title-slide, middle
 background-position: 10% 90%, 100% 50%
 background-size: 160px, 100% 100%
 
-# .fancy[Describing Variables]
+# .fancy[Describing Quantitative Variables]
 
 ### .fancy[Stat 120]
 
@@ -516,9 +516,8 @@ ggplot(survey, aes(x=Pulse)) +
 ```{r echo=FALSE, fig.height=3, out.width="60%", fig.align='center'}
 ggplot(survey, aes(x = Smoke, y = Pulse)) +
   geom_boxplot() +
-  facet_wrap(~ Smoke, scales = "free_x") +
-  labs(x = "Smoking Status", y = "Pulse Rate") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+  labs(x = "Smoking Status", y = "Pulse Rate")
+
 ```
 ]
 
@@ -530,8 +529,8 @@ ggplot(survey, aes(x = Smoke, y = Pulse)) +
 # Create boxplots using facet_wrap()
 ggplot(survey, aes(x = Smoke, y = Pulse)) +
   geom_boxplot() +
-  facet_wrap(~ Smoke, scales = "free_x") +
   labs(x = "Smoking Status", y = "Pulse Rate")
+
 ```
 ]
 
@@ -553,7 +552,7 @@ class: action
 <br>
 .bq[
 
-- Let's head over to the [course helper page](https://stat120-fall23.netlify.app/) to see some more examples 
+- Let's head over to the [course helper page](https://stat120-winter24.netlify.app/) to see some more examples 
 - We will then do a class activity together
 ]
 ]

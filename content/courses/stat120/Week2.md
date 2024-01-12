@@ -12,4 +12,5 @@ Day 3 Slides ({{% staticref "stat120/Day3.html" "newtab" %}}html{{% /staticref %
 
 Day 4 Slides ({{% staticref "stat120/Day4.html" "newtab" %}}html{{% /staticref %}})
 
+Day 5 Slides ({{% staticref "stat120/Day5.html" "newtab" %}}html{{% /staticref %}})
 
