@@ -251,7 +251,7 @@ class: action, middle
 <br>
 
 .bql.font80[
-- Let's go over to [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 7.Rmd file
 - Work on problem 1
 ]
@@ -646,7 +646,7 @@ df2 <- tibble(x = 1:2, y = 1:2)
 ```
 
 
-.pull-left.code80[
+.pull-left.code70[
 ```{r, echo=FALSE}
 df1 <- tibble(x = 1:2, y = c(1,1))
 ```

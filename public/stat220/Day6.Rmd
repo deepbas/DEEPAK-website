@@ -546,6 +546,7 @@ class: middle
 babynames %>%
   filter(name == "Aaron", sex == "M") %>%
   arrange(year) %>%
+  ungroup() %>% # mentioned later in the slides
   mutate(change_in_n = if_else(row_number() == 1, n, n - lag(n, 1, default = n[1])))
 ```
 
