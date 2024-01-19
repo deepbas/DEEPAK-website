@@ -405,6 +405,7 @@ BP_long2
 ```
 ]
 
+.footnote[[`readr` cheat sheet]https://deepbas.io/cheatsheets/readr.pdf)]
 
 ---
 
@@ -512,6 +513,7 @@ class: middle
 
 
 ```{r}
+library(lubridate)
 complex_dates <- tibble(
   name = c("Yi", "Mo", "Dee"),
   dob = c("31-October-1952 14:30:15",
@@ -522,7 +524,8 @@ complex_dates <- tibble(
 complex_dates %>%
   mutate(
     dob_date = dmy_hms(dob),
-  ) %>% knitr::kable()
+  ) %>% 
+  knitr::kable()  # to make nice tables
 ```
 
 
@@ -540,8 +543,9 @@ complex_dates %>%
     dob_date = dmy_hms(dob),
     dob_year = year(dob_date),
     time_since_birth = interval(dob_date, now()),
-    age_exact = as.duration(time_since_birth) / dyears(1),
-  ) %>% knitr::kable()
+    age_exact = time_length(time_since_birth, unit = "years")
+  ) %>%
+  knitr::kable()
 ```
 
 ---
@@ -553,11 +557,11 @@ class: middle
 .pull-left-40[
 ```{r}
 # Components of date and time
-year_component <- 2023
-month_component <- 3
-day_component <- 23
-hour_component <- 18
-minute_component <- 45
+year_component <- 2024
+month_component <- 1
+day_component <- 19
+hour_component <- 9
+minute_component <- 03
 second_component <- 30
 ```
 ]
@@ -577,69 +581,28 @@ date_time_object <- make_datetime(
 
 
 ```{r}
-date_time_object %>% knitr::kable()
+date_time_object 
 ```
-
----
-
-# Combining Date and Time Objects
-
-```{r}
-date_only <- ymd("2023-03-23")
-time_only <- hms("18:45:30")
-
-date_time_combined <- make_datetime(
-  year = year(date_only),
-  month = month(date_only),
-  day = day(date_only),
-  hour = hour(time_only),
-  min = minute(time_only),
-  sec = second(time_only)
-)
-
-date_time_combined %>% knitr::kable()
-```
-
 
 ---
 
 class: middle
-
-# Extracting Components from Date-Time Objects
-
-```{r}
-date_components <- tibble(
-  date_time = ymd_hms("2023-03-23 18:45:30")
-)
-
-date_components %>%
-  mutate(
-    year = year(date_time),
-    month = month(date_time, label = TRUE),
-    day = day(date_time),
-    hour = hour(date_time),
-    minute = minute(date_time),
-    second = second(date_time)
-  ) %>% knitr::kable()
-```
-
----
-
 
 # Advanced Date-Time Arithmetic with Periods
 
 
 ```{r}
 date_periods <- tibble(
-  date = ymd("2023-01-31")
+  date = ymd("2024-01-13", "2024-03-06", "2025-06-30")
 )
 
 date_periods %>%
   mutate(
-    add_month = date + month(1),
-    add_year = date + years(1),
-    subtract_week = date - weeks(1)
-  ) %>% knitr::kable()
+    add_month = date %m+% months(1), # not
+    add_year = date %m+% years(1),
+    subtract_week = date %m-% weeks(1)
+  ) %>% 
+  knitr::kable()
 ```
 
 
@@ -650,18 +613,20 @@ date_periods %>%
 
 ```{r}
 time_diff_example <- tibble(
-  start_date = ymd("2023-01-01"),
-  end_date = ymd("2023-12-31")
+  start_date = ymd("2024-01-03"),
+  end_date = ymd("2024-03-17")
 )
 
 time_diff_example %>%
   mutate(
     time_diff = end_date - start_date,
-    duration_days = as.duration(time_diff),
-    duration_weeks = duration_days / dweeks(1),
-    duration_months = duration_days / dmonths(1),
-    duration_years = duration_days / dyears(1)
-  )  %>% knitr::kable()
+    duration_days = time_length(time_diff, unit = "days"),
+    duration_weeks = as.duration(time_diff) / dweeks(1),
+    duration_months = as.duration(time_diff) / dmonths(1),
+    duration_years = as.duration(time_diff) / dyears(1)
+  )  %>% 
+  knitr::kable()
+
 ```
 
 
