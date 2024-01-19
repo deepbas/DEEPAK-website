@@ -15,6 +15,8 @@ weight: 30
 
 {{% staticref "cheatsheets/data-transformation.pdf" "newtab" %}}`dplyr` Cheatsheet{{% /staticref %}}
 
+{{% staticref "cheatsheets/tidyr.pdf" "newtab" %}}`tidyr` Cheatsheet{{% /staticref %}}
+
 {{% staticref "cheatsheets/lubridate.pdf" "newtab" %}}`lubridate` Cheatsheet{{% /staticref %}}
 
 {{% staticref "cheatsheets/strings.pdf" "newtab" %}}`stringr` Cheatsheet{{% /staticref %}}

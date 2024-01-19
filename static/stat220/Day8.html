@@ -17,6 +17,8 @@
     <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
     <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
     <link href="libs/countdown/countdown.css" rel="stylesheet" />
     <script src="libs/countdown/countdown.js"></script>
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -126,23 +128,133 @@ untidy_data %&gt;%
 
 ## Wide vs. long data
 
-.bqt.font70[
+
+
+.pull-left[
+.bq.font70[
 - .bold[Wide] data has one row per subject, with multiple columns for their repeated measurements
 - .bold[Long] data has multiple rows per subject, with one column for the measurement variable and another indicating from when/where the repeated measures are from
 ]
 
-.pull-left[
 &lt;br&gt;
-&lt;center&gt; 
-&lt;img src="images/SBP_wide2.png" width="73%" height="73%"&gt;&lt;br&gt;
-wide
-&lt;/center&gt;
+
+&lt;table class="table" style="width: auto !important; "&gt;
+&lt;caption&gt;Wide&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; id &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; SBP_visit1 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; SBP_visit2 &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; SBP_visit3 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; a &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #D9D9D9 !important;"&gt;130&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FFFFB3 !important;"&gt;110&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #BEBADA !important;"&gt;112&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #B3DE69 !important;"&gt;120&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FB8072 !important;"&gt;116&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FCCDE5 !important;"&gt;122&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; c &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #D9D9D9 !important;"&gt;130&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #BC80BD !important;"&gt;136&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #CCEBC5 !important;"&gt;138&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDB462 !important;"&gt;119&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #8DD3C7 !important;"&gt;106&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #80B1D3 !important;"&gt;118&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
 ]
-.pull-right[
-&lt;center&gt;
-&lt;img src="images/SBP_long2.png" width="30%" height="20%"&gt;&lt;br&gt;
-long
-&lt;/center&gt;
+.pull-right.font90[
+&lt;table class="table" style="width: auto !important; "&gt;
+&lt;caption&gt;Long&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; id &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; visit &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; SBP &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #D9D9D9 !important;"&gt;130&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #B3DE69 !important;"&gt;120&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; c &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #D9D9D9 !important;"&gt;130&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FDB462 !important;"&gt;119&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FFFFB3 !important;"&gt;110&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FB8072 !important;"&gt;116&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; c &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #BC80BD !important;"&gt;136&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #8DD3C7 !important;"&gt;106&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; a &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #BEBADA !important;"&gt;112&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; b &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #FCCDE5 !important;"&gt;122&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; c &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #CCEBC5 !important;"&gt;138&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; d &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #80B1D3 !important;"&gt;118&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+
 ]
 
 ---
@@ -165,6 +277,8 @@ BP_wide
 ```
 
 ]
+
+--
 
 .pull-right[
 
@@ -473,7 +587,7 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_69b7ddf9" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_c7a177c6" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -539,13 +653,32 @@ complex_dates %&gt;%
   ) %&gt;% knitr::kable()
 ```
 
-
-
-|name |dob                      |dob_date            |
-|:----|:------------------------|:-------------------|
-|Yi   |31-October-1952 14:30:15 |1952-10-31 14:30:15 |
-|Mo   |12-Jan-1984 22:15:00     |1984-01-12 22:15:00 |
-|Dee  |02-Feb-2002 10:45:30     |2002-02-02 10:45:30 |
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; dob &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; dob_date &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Yi &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 31-October-1952 14:30:15 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1952-10-31 14:30:15 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 12-Jan-1984 22:15:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1984-01-12 22:15:00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dee &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 02-Feb-2002 10:45:30 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2002-02-02 10:45:30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 
@@ -569,13 +702,44 @@ complex_dates %&gt;%
   ) %&gt;% knitr::kable()
 ```
 
-
-
-|name |dob                      |dob_date            | dob_year|                                 time_since_birth| age_exact|
-|:----|:------------------------|:-------------------|--------:|------------------------------------------------:|---------:|
-|Yi   |31-October-1952 14:30:15 |1952-10-31 14:30:15 |     1952| 1952-10-31 14:30:15 UTC--2024-01-19 00:34:29 UTC|  71.21539|
-|Mo   |12-Jan-1984 22:15:00     |1984-01-12 22:15:00 |     1984| 1984-01-12 22:15:00 UTC--2024-01-19 00:34:29 UTC|  40.01669|
-|Dee  |02-Feb-2002 10:45:30     |2002-02-02 10:45:30 |     2002| 2002-02-02 10:45:30 UTC--2024-01-19 00:34:29 UTC|  21.95914|
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; dob &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; dob_date &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; dob_year &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; time_since_birth &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; age_exact &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Yi &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 31-October-1952 14:30:15 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1952-10-31 14:30:15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1952-10-31 14:30:15 UTC--2024-01-19 01:32:16 UTC &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 71.21550 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Mo &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 12-Jan-1984 22:15:00 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1984-01-12 22:15:00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1984 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1984-01-12 22:15:00 UTC--2024-01-19 01:32:16 UTC &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 40.01680 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Dee &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 02-Feb-2002 10:45:30 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2002-02-02 10:45:30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2002-02-02 10:45:30 UTC--2024-01-19 01:32:16 UTC &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 21.95925 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 
@@ -618,11 +782,18 @@ date_time_object &lt;- make_datetime(
 date_time_object %&gt;% knitr::kable()
 ```
 
-
-
-|x                   |
-|:-------------------|
-|2023-03-23 18:45:30 |
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2023-03-23 18:45:30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 
@@ -647,11 +818,18 @@ date_time_combined &lt;- make_datetime(
 date_time_combined %&gt;% knitr::kable()
 ```
 
-
-
-|x                   |
-|:-------------------|
-|2023-03-23 18:45:30 |
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; x &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2023-03-23 18:45:30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 
@@ -679,11 +857,30 @@ date_components %&gt;%
   ) %&gt;% knitr::kable()
 ```
 
-
-
-|date_time           | year|month | day| hour| minute| second|
-|:-------------------|----:|:-----|---:|----:|------:|------:|
-|2023-03-23 18:45:30 | 2023|Mar   |  23|   18|     45|     30|
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; date_time &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; month &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; day &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; hour &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; minute &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; second &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2023-03-23 18:45:30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2023 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mar &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 18 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 45 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 30 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 
@@ -707,11 +904,24 @@ date_periods %&gt;%
   ) %&gt;% knitr::kable()
 ```
 
-
-
-|date       |add_month  |add_year   |subtract_week |
-|:----------|:----------|:----------|:-------------|
-|2023-01-31 |2023-02-01 |2024-01-31 |2023-01-24    |
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; date &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; add_month &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; add_year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; subtract_week &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2023-01-31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2023-02-01 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2024-01-31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2023-01-24 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 
@@ -738,11 +948,30 @@ time_diff_example %&gt;%
   )  %&gt;% knitr::kable()
 ```
 
-
-
-|start_date |end_date   |time_diff |         duration_days| duration_weeks| duration_months| duration_years|
-|:----------|:----------|:---------|---------------------:|--------------:|---------------:|--------------:|
-|2023-01-01 |2023-12-31 |364 days  | 31449600s (~52 weeks)|             52|        11.95893|      0.9965777|
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; start_date &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; end_date &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; time_diff &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; duration_days &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; duration_weeks &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; duration_months &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; duration_years &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; 2023-01-01 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2023-12-31 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 364 days &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31449600s (~52 weeks) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.95893 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.9965777 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 
@@ -766,7 +995,7 @@ class: action, middle
 ]
 ]
 
-<div class="countdown" id="timer_0cd9999a" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_b2c10457" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

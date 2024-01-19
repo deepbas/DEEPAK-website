@@ -188,23 +188,74 @@ untidy_data %>%
 
 ## Wide vs. long data
 
-.bqt.font70[
+
+
+.pull-left[
+.bq.font70[
 - .bold[Wide] data has one row per subject, with multiple columns for their repeated measurements
 - .bold[Long] data has multiple rows per subject, with one column for the measurement variable and another indicating from when/where the repeated measures are from
 ]
 
-.pull-left[
 <br>
-<center> 
-<img src="images/SBP_wide2.png" width="73%" height="73%"><br>
-wide
-</center>
+
+```{r, echo=FALSE}
+library(kableExtra)
+library(dplyr)
+
+# Create the data frame
+df <- data.frame(
+  id = c('a', 'b', 'c', 'd'),
+  SBP_visit1 = c(130, 120, 130, 119),
+  SBP_visit2 = c(110, 116, 136, 106),
+  SBP_visit3 = c(112, 122, 138, 118)
+)
+
+# Define the colors for the SBP values
+sbp_values <- unique(c(df$SBP_visit1, df$SBP_visit2, df$SBP_visit3))
+color_palette <- RColorBrewer::brewer.pal(length(sbp_values), "Set3")
+names(color_palette) <- sort(sbp_values)
+
+# Apply cell_spec with the color corresponding to the SBP value
+df <- df %>%
+  mutate(across(starts_with("SBP"), ~cell_spec(., "html", background = color_palette[as.character(.)])))
+
+# Render the table with kable and kableExtra
+kable_styling <- df %>%
+  knitr::kable("html", escape = FALSE, caption = "Wide") %>%
+  kable_styling(full_width = F, position = "left")
+
+# Print the table
+kable_styling
+
+```
+
 ]
-.pull-right[
-<center>
-<img src="images/SBP_long2.png" width="30%" height="20%"><br>
-long
-</center>
+.pull-right.font90[
+```{r, echo=FALSE}
+library(kableExtra)
+library(dplyr)
+
+# Create the data frame for the long format
+df_long <- data.frame(
+  id = rep(c('a', 'b', 'c', 'd'), 3),
+  visit = rep(1:3, each = 4),
+  SBP = c(130, 120, 130, 119, 110, 116, 136, 106, 112, 122, 138, 118)
+)
+
+# Use the same color palette as the wide format
+# Apply cell_spec to the SBP column with the color corresponding to the SBP value
+df_long <- df_long %>%
+  mutate(SBP = cell_spec(SBP, "html", background = color_palette[as.character(SBP)]))
+
+# Render the table with kable and kableExtra
+kable_styling_long <- df_long %>%
+  knitr::kable("html", escape = FALSE, caption = "Long") %>%
+  kable_styling(full_width = F, position = "left") 
+
+# Print the table
+kable_styling_long
+```
+
 ]
 
 ---
@@ -219,6 +270,8 @@ BP_wide
 ```
 
 ]
+
+--
 
 .pull-right[
 
