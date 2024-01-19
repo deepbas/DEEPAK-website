@@ -216,9 +216,9 @@ library(dplyr)
 # Create the data frame
 df <- data.frame(
   id = c('a', 'b', 'c', 'd'),
-  SBP_visit1 = c(130, 120, 130, 119),
-  SBP_visit2 = c(110, 116, 136, 106),
-  SBP_visit3 = c(112, 122, 138, 118)
+  SBP_visit1 = c(132, 120, 130, 118),
+  SBP_visit2 = c(100, 106, 126, 116),
+  SBP_visit3 = c(111, 112, 128, 108)
 )
 
 # Define the colors for the SBP values
@@ -250,7 +250,7 @@ library(dplyr)
 df_long <- data.frame(
   id = rep(c('a', 'b', 'c', 'd'), 3),
   visit = rep(1:3, each = 4),
-  SBP = c(130, 120, 130, 119, 110, 116, 136, 106, 112, 122, 138, 118)
+  SBP = c(132, 120, 130, 118, 100, 106, 126, 116, 111, 112, 128, 108)
 )
 
 # Use the same color palette as the wide format
@@ -405,7 +405,7 @@ BP_long2
 ```
 ]
 
-.footnote[[`readr` cheat sheet]https://deepbas.io/cheatsheets/readr.pdf)]
+.footnote[[`readr` cheat sheet](https://deepbas.io/cheatsheets/readr.pdf)]
 
 ---
 
@@ -598,7 +598,7 @@ date_periods <- tibble(
 
 date_periods %>%
   mutate(
-    add_month = date %m+% months(1), # not
+    add_month = date %m+% months(1), 
     add_year = date %m+% years(1),
     subtract_week = date %m-% weeks(1)
   ) %>% 

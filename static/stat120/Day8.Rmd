@@ -218,24 +218,8 @@ class: middle
 
 <br>
 
-.bqt[
-A $95\%$ confidence interval will contain the true parameter for 95% of all samples.]
-
-
----
-
-class: middle
-
-# Gallup Poll Result Interpretation  
-  
-> " $\ldots$  the margin of sampling error is $\pm$ 3 percentage points at the $95\%$ confidence level."
-
-
-
-<br>
-<br>
-
->  $95\%$ confidence means that $95\%$ of all samples will yield a sample proportion that is within 3 percentage points of the population proportion
+.bqt.font90[
+A .bold[95% confidence interval] means that if we were to draw numerous samples and calculate their confidence intervals, about 95% of these intervals would be expected to contain the true population parameter.]
 
 ---
 
@@ -247,14 +231,14 @@ class: middle
 .bql[
 If the sampling distribution is relatively .bold[symmetric] and .bold[bell-shaped], a $95\%$ confidence interval can be estimated using $$\mathbf{statistic} \pm 2 \times \mathbf{SE}$$]
 
-
-<br>
 <br>
 
-> $95\%$ confidence means $95\%$ of all samples will yield a statistic that is within 2 SE of the population parameter
+
+.bq.font90[A 95% confidence interval suggests that if we were to take many samples and compute the confidence interval for each, we would expect about 95% of these intervals to capture the true, but unknown, population proportion, with the current interval estimating this proportion to be within 3 percentage points of the sample proportion]
 
 
 ---
+
 class: middle
 
 # Confidence Intervals are ...
@@ -303,7 +287,7 @@ class: middle
 
 class: middle
 
-# What to do when we only have one sample - .bold.green-h[BOOTSTRAP!]
+# What to do when we only have one sample - .bold[BOOTSTRAP!]
 
 .bq[
 - .bold[Repeated sampling] is needed to compute the standard error of a sample statistic
@@ -317,8 +301,11 @@ class: middle
 
 # Bootstrap Distribution
 
+> A .bold[bootstrap distribution] is the distribution of many bootstrap statistics.
+
+<br>
+
 .bql[
-- A .bold[bootstrap distribution] is the distribution of many bootstrap statistics.
 
 - The standard deviation of this distribution is called the .bold[bootstrap standard error] of the statistic.
 
@@ -333,8 +320,8 @@ class: middle
 .font50[
 ```{r bootstrap-demo, fig.width = 5, fig.height = 5, out.width = "80%", include=FALSE}
 library(CarletonStats)
-X <- c(20,24,19,23,22,16)
-boot(X)
+X <- c(20,24,19,23,22,16) # data
+boot(X) # bootstrap
 ```
 ]
 
