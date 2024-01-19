@@ -46,9 +46,9 @@ class: title-slide, middle
 
 # .fancy[Tidy Data and Dates]
 
-### .fancy[Spring 23]
+### .fancy[Stat 220]
 
- April 12 2023
+ January 18 2024
 
 ---
 
@@ -466,14 +466,14 @@ class: action, middle
 .pull-right-60[
 &lt;br&gt;
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 8.Rmd file
 - Work on your turn 1
 ]
 
 ]
 
-<div class="countdown" id="timer_3ace6d4e" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_69b7ddf9" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -549,6 +549,8 @@ complex_dates %&gt;%
 
 
 
+
+
 ---
 
 class: middle
@@ -571,9 +573,11 @@ complex_dates %&gt;%
 
 |name |dob                      |dob_date            | dob_year|                                 time_since_birth| age_exact|
 |:----|:------------------------|:-------------------|--------:|------------------------------------------------:|---------:|
-|Yi   |31-October-1952 14:30:15 |1952-10-31 14:30:15 |     1952| 1952-10-31 14:30:15 UTC--2023-04-12 13:13:52 UTC|  70.44476|
-|Mo   |12-Jan-1984 22:15:00     |1984-01-12 22:15:00 |     1984| 1984-01-12 22:15:00 UTC--2023-04-12 13:13:52 UTC|  39.24606|
-|Dee  |02-Feb-2002 10:45:30     |2002-02-02 10:45:30 |     2002| 2002-02-02 10:45:30 UTC--2023-04-12 13:13:52 UTC|  21.18851|
+|Yi   |31-October-1952 14:30:15 |1952-10-31 14:30:15 |     1952| 1952-10-31 14:30:15 UTC--2024-01-19 00:34:29 UTC|  71.21539|
+|Mo   |12-Jan-1984 22:15:00     |1984-01-12 22:15:00 |     1984| 1984-01-12 22:15:00 UTC--2024-01-19 00:34:29 UTC|  40.01669|
+|Dee  |02-Feb-2002 10:45:30     |2002-02-02 10:45:30 |     2002| 2002-02-02 10:45:30 UTC--2024-01-19 00:34:29 UTC|  21.95914|
+
+
 
 ---
 
@@ -620,6 +624,8 @@ date_time_object %&gt;% knitr::kable()
 |:-------------------|
 |2023-03-23 18:45:30 |
 
+
+
 ---
 
 # Combining Date and Time Objects
@@ -646,6 +652,8 @@ date_time_combined %&gt;% knitr::kable()
 |x                   |
 |:-------------------|
 |2023-03-23 18:45:30 |
+
+
 
 
 ---
@@ -677,6 +685,8 @@ date_components %&gt;%
 |:-------------------|----:|:-----|---:|----:|------:|------:|
 |2023-03-23 18:45:30 | 2023|Mar   |  23|   18|     45|     30|
 
+
+
 ---
 
 
@@ -702,6 +712,8 @@ date_periods %&gt;%
 |date       |add_month  |add_year   |subtract_week |
 |:----------|:----------|:----------|:-------------|
 |2023-01-31 |2023-02-01 |2024-01-31 |2023-01-24    |
+
+
 
 
 ---
@@ -733,6 +745,8 @@ time_diff_example %&gt;%
 |2023-01-01 |2023-12-31 |364 days  | 31449600s (~52 weeks)|             52|        11.95893|      0.9965777|
 
 
+
+
 ---
 
 class: action, middle
@@ -752,7 +766,7 @@ class: action, middle
 ]
 ]
 
-<div class="countdown" id="timer_9e24cfd5" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_0cd9999a" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

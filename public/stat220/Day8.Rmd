@@ -122,7 +122,7 @@ class: title-slide, middle
 
 # .fancy[Tidy Data and Dates]
 
-### .fancy[Spring 23]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -392,7 +392,7 @@ class: action, middle
 .pull-right-60[
 <br>
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 8.Rmd file
 - Work on your turn 1
 ]
