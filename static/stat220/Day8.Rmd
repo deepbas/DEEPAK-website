@@ -173,6 +173,7 @@ untidy_data
 .pull-right[## Tidy data: example 1
 
 ```{r}
+library(tidyr)  # for tidying messy data
 library(lubridate)  # for date manipulations
 library(stringr) # for string manipulations
 untidy_data %>% 
@@ -183,6 +184,16 @@ untidy_data %>%
          date = lubridate::dmy(date))    
 ```
 ]
+
+---
+
+background-image: url("images/tidyr_cheatsheet.png")
+background-position: center
+background-size: 75%
+class: clear
+
+
+
 
 ---
 
@@ -364,7 +375,7 @@ BP_long
 .pull-right[
 ```{r}
 BP_long1 <- BP_long %>%
-  separate(visit, c("acrnym", "visit")) #<<
+  separate(visit, c("type", "visit")) #<<
 BP_long1
 ```
 
