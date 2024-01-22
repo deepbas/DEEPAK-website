@@ -121,7 +121,7 @@ class: title-slide, middle
 
 # .fancy[Data Imports]
 
-### .fancy[Spring 23]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -133,7 +133,7 @@ class: title-slide, middle
 library(tidyverse)
 library(janitor)
 bar <- tibble("First Name" = c("Yi", "Do"),
-              "last init" = c("C", "R"),
+              "Last initials" = c("C", "R"),
               "% in" = c(0.1, 0.5),
               "ñ$$$" = 1:2,
               " " = 3:2,
@@ -154,7 +154,7 @@ cleaned_bar
 ---
 
 
-# Handling Missing Data: `drop_na()` and `replace_na()`
+# Handling Missing Data: `tidyr::drop_na()` and `tidyr::replace_na()`
 
 
 .pull-left[
@@ -202,9 +202,7 @@ foo %>% mutate(height = replace_na(height, 0),
 ---
 
 
-
-
-`r chunk_reveal("all", font_size_code="70%", width= c(0.5, 0.5), title = "## Putting It All Together")`
+`r chunk_reveal("all", font_size_code="65%", width= c(0.5, 0.5), title = "## Putting It All Together")`
 
 ```{r all, fig.align='center', echo=FALSE, out.width="100%", eval=FALSE}
 foo %>%
@@ -213,7 +211,8 @@ foo %>%
   drop_na(height) %>%
   mutate(years = replace_na(years, 0),
          height = round(height, 1)) %>%
-  select(id, name, height, years, last_init)
+  select(id, name, height, years, last_initials) %>% 
+  knitr::kable()
 ```
 
 
@@ -405,14 +404,14 @@ class: action, middle
 .pull-right-60[
 <br>
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=39491)
-- Get the class activity 10.Rmd file
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
+- Get the class activity 9.Rmd file
 - Skim through problem 1
 ]
 
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 ---
 
@@ -619,5 +618,5 @@ class: action, middle
 ]
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
