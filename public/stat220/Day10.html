@@ -46,9 +46,9 @@ class: title-slide, middle
 
 # .fancy[Factor manipulations]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
- April 17 2023
+ January 23 2024
 
 ---
 
@@ -73,8 +73,8 @@ class: middle
 
 ]
 
-.footnote[See [`forcats` cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/factors.pdf)
-and [`forcats` vignette]()]
+.footnote[See [`forcats` cheatsheet](https://rstudio.github.io/cheatsheets/factors.pdf)
+and [`forcats` vignette](https://forcats.tidyverse.org/)]
 
 ---
 
@@ -245,50 +245,13 @@ mydata &lt;- tibble(
 
 mydata &lt;- mydata %&gt;%
 * mutate(grade_fac = fct_rev(grade_fac))
-```
-
-
-
-```r
-mydata %&gt;% 
-  arrange(grade_fac)
-# A tibble: 4 × 3
-     id grade grade_fac
-  &lt;int&gt; &lt;chr&gt; &lt;fct&gt;    
-1     1 9th   9th      
-2     4 9th   9th      
-3     3 11th  11th     
-4     2 10th  10th     
-```
-
----
-
-class: middle
-
-
-# `fct_shitf()`
-
-.hljs[`fct_shift()`: Shift factor levels by a specified number of positions, either to the left or right.]
-
-
-
-```r
-# Shift factor levels to the right by 1 position
-mydata &lt;- tibble(
-  id = 1:4, 
-  grade = c("9th", "10th", "11th", "9th")) %&gt;%
-  mutate(grade_fac = factor(grade))
-
-mydata &lt;- mydata %&gt;%
-* mutate(grade_fac = fct_shift(grade_fac, n = 1))
 
 levels(mydata$grade_fac)
-[1] "11th" "9th"  "10th"
+[1] "9th"  "11th" "10th"
 ```
 
 
 ---
-
 
 class: middle
 
@@ -328,7 +291,7 @@ class: action, middle
 &lt;br&gt;
 &lt;br&gt;
 .bql.font90[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 10.Rmd file
 - Work on your turn 1
 - Ask me questions
@@ -336,9 +299,9 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_65f9f358" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_8ab238e0" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
@@ -367,7 +330,7 @@ class: middle
  8  2000 Divorced         44 White $7000 to 7999  Ind,near … Prot… Luth…      NA
  9  2000 Married          44 White $25000 or more Not str d… Prot… Other       0
 10  2000 Married          47 White $25000 or more Strong re… Prot… Sout…       3
-# … with 21,473 more rows
+# ℹ 21,473 more rows
 ```
 
 ---
@@ -398,7 +361,7 @@ count: false
  8  2000 Divorced         44 White $7000 to 7999  Ind,near … Prot… Luth…      NA
  9  2000 Married          44 White $25000 or more Not str d… Prot… Other       0
 10  2000 Married          47 White $25000 or more Strong re… Prot… Sout…       3
-# … with 21,473 more rows
+# ℹ 21,473 more rows
 ```
 ]
 
@@ -430,7 +393,7 @@ gss_cat %&gt;%
  8  2000 Married          53 White $25000 or more Not str d… Prot… Other       2
  9  2000 Married          52 White $25000 or more Strong de… Prot… Sout…       1
 10  2000 Divorced         52 White $25000 or more Ind,near … None  Not …       1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -464,7 +427,7 @@ gss_cat %&gt;%
  8  2000 Married          53 White $25000 or more Not str d… Prot… Other       2
  9  2000 Married          52 White $25000 or more Strong de… Prot… Sout…       1
 10  2000 Divorced         52 White $25000 or more Ind,near … None  Not …       1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -588,7 +551,7 @@ gss_cat %&gt;%
 
 ## Why is the y-axis in this order?
 
-&lt;img src="Day10_files/figure-html/unnamed-chunk-13-1.svg" width="62%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day10_files/figure-html/unnamed-chunk-11-1.svg" width="62%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -618,7 +581,7 @@ count: false
  8  2000 Divorced         44 White $7000 to 7999  Ind,near … Prot… Luth…      NA
  9  2000 Married          44 White $25000 or more Not str d… Prot… Other       0
 10  2000 Married          47 White $25000 or more Strong re… Prot… Sout…       3
-# … with 21,473 more rows
+# ℹ 21,473 more rows
 ```
 ]
 
@@ -7845,6 +7808,7 @@ gss_cat %&gt;%
  
 .panel2-levels-auto[
 
+
 |x                       |
 |:-----------------------|
 |No answer               |
@@ -7863,6 +7827,8 @@ gss_cat %&gt;%
 |Catholic                |
 |Protestant              |
 |Not applicable          |
+
+
 ]
 
 ---
@@ -7882,6 +7848,7 @@ gss_cat %&gt;%
  
 .panel2-levels-auto[
 
+
 |x                       |
 |:-----------------------|
 |No answer               |
@@ -7900,6 +7867,8 @@ gss_cat %&gt;%
 |Catholic                |
 |Protestant              |
 |Not applicable          |
+
+
 ]
 
 &lt;style&gt;
@@ -8034,7 +8003,7 @@ gss_cat %&gt;%
 ## Which political leaning watches more TV?
 
 
-&lt;img src="Day10_files/figure-html/unnamed-chunk-14-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day10_files/figure-html/unnamed-chunk-12-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
 
 --
 
@@ -8068,7 +8037,7 @@ count: false
  8  2000 Divorced         44 White $7000 to 7999  Ind,near … Prot… Luth…      NA
  9  2000 Married          44 White $25000 or more Not str d… Prot… Other       0
 10  2000 Married          47 White $25000 or more Strong re… Prot… Sout…       3
-# … with 21,473 more rows
+# ℹ 21,473 more rows
 ```
 ]
 
@@ -8100,7 +8069,7 @@ gss_cat %&gt;%
  8  2000 Married          53 White $25000 or more Not str d… Prot… Other       2
  9  2000 Married          52 White $25000 or more Strong de… Prot… Sout…       1
 10  2000 Divorced         52 White $25000 or more Ind,near … None  Not …       1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8133,7 +8102,7 @@ gss_cat %&gt;%
  8 Not str democrat         2
  9 Strong democrat          1
 10 Ind,near dem             1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8173,7 +8142,7 @@ gss_cat %&gt;%
  8 Democrat, weak              2
  9 Democrat, strong            1
 10 Independent, near dem       1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8215,7 +8184,7 @@ gss_cat %&gt;%
  8 Democrat, weak              2
  9 Democrat, strong            1
 10 Independent, near dem       1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8404,7 +8373,7 @@ count: false
  8  2000 Divorced         44 White $7000 to 7999  Ind,near … Prot… Luth…      NA
  9  2000 Married          44 White $25000 or more Not str d… Prot… Other       0
 10  2000 Married          47 White $25000 or more Strong re… Prot… Sout…       3
-# … with 21,473 more rows
+# ℹ 21,473 more rows
 ```
 ]
 
@@ -8436,7 +8405,7 @@ gss_cat %&gt;%
  8  2000 Married          53 White $25000 or more Not str d… Prot… Other       2
  9  2000 Married          52 White $25000 or more Strong de… Prot… Sout…       1
 10  2000 Divorced         52 White $25000 or more Ind,near … None  Not …       1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8469,7 +8438,7 @@ gss_cat %&gt;%
  8 Not str democrat         2
  9 Strong democrat          1
 10 Ind,near dem             1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8513,7 +8482,7 @@ gss_cat %&gt;%
  8 liberal            2
  9 liberal            1
 10 liberal            1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8559,7 +8528,7 @@ gss_cat %&gt;%
  8 liberal            2
  9 liberal            1
 10 liberal            1
-# … with 11,327 more rows
+# ℹ 11,327 more rows
 ```
 ]
 
@@ -8891,9 +8860,9 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_e197ca24" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_8eb162f8" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
     </textarea>

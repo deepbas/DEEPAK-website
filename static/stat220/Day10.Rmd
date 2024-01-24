@@ -129,7 +129,7 @@ class: title-slide, middle
 
 # .fancy[Factor manipulations]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -156,8 +156,8 @@ class: middle
 
 ]
 
-.footnote[See [`forcats` cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/factors.pdf)
-and [`forcats` vignette]()]
+.footnote[See [`forcats` cheatsheet](https://rstudio.github.io/cheatsheets/factors.pdf)
+and [`forcats` vignette](https://forcats.tidyverse.org/)]
 
 ---
 
@@ -296,31 +296,6 @@ levels(mydata$grade_fac)
 class: middle
 
 
-# `fct_shitf()`
-
-.hljs[`fct_shift()`: Shift factor levels by a specified number of positions, either to the left or right.]
-
-
-```{r}
-# Shift factor levels to the right by 1 position
-mydata <- tibble(
-  id = 1:4, 
-  grade = c("9th", "10th", "11th", "9th")) %>%
-  mutate(grade_fac = factor(grade))
-
-mydata <- mydata %>%
-  mutate(grade_fac = fct_shift(grade_fac, n = 1)) #<<
-
-levels(mydata$grade_fac)
-```
-
-
----
-
-
-class: middle
-
-
 # `fct_anon()`
 
 .hljs[`fct_anon()`: Anonymize factor levels by replacing them with unique, randomly generated character strings.]
@@ -355,7 +330,7 @@ class: action, middle
 <br>
 <br>
 .bql.font90[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 10.Rmd file
 - Work on your turn 1
 - Ask me questions
@@ -363,7 +338,7 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 ---
 
@@ -613,5 +588,5 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
