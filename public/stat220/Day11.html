@@ -44,66 +44,11 @@ class: title-slide, middle
 
 # .fancy[Basic String Manipulation]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
- April 19 2023
-
----
-
-# Kanye West tweets analysis
-
-.pull-left[
-
-&lt;img src="images/kanyewest.png" width="110%" height="110%"&gt; &lt;br&gt;
-.center[.blue[Kanye West Twitter Feed]]
-
-]
-
---
-
-.pull-right[
-
-&lt;img src="images/kanye-word-cloud.png" width="110%" height="110%"&gt; &lt;br&gt;
-
-]
+ January 25 2024
 
 ---
-
-# Tweets that look like this ...
-
-
-```
-# A tibble: 6 × 1
-  text                                                                          
-  &lt;chr&gt;                                                                         
-1 "Donda House 🙏👽👽 https://t.co/i4pfZiZmeN"                                  
-2 "https://t.co/48B0T5HeRk\n\nWhen we work on our shoes   apparel and accessori…
-3 "I’m working on removing the word I ...correction we’re working on removing t…
-4 "RT @RealCandaceO: “Great minds don’t think alike, they think for themselves”…
-5 "THESE BRING ME BACK TO MY CHILDHOOD ... GROWING UP ON ANIME ... I NEED A PAI…
-6 "RT @KidCudi: Red Table Talk!! https://t.co/bJ4Xbtqwgv"                       
-```
-
---
-
-# ... are changed to a cleaner version
-
-
-```
-# A tibble: 6 × 1
-  text_clean                                                                    
-  &lt;chr&gt;                                                                         
-1 donda house                                                                   
-2 when we work on our shoes apparel and accessories i just think if this thing …
-3 I am working on removing the word i correction we are working on removing the…
-4 great minds do not think alike they think for themselves sakiyah              
-5 these bring me back to my childhood growing up on anime i need a pair         
-6 red table talk exclamationmark exclamationmark                                
-```
-
-
----
-
 
 ## Let's Define Strings
 
@@ -157,7 +102,7 @@ class: middle
 .out-t[pulling apart some text or `string` to do something with it]
 
 &lt;!-- manipulate (or parse) textual data by looking for patterns in a string --&gt;
-.bq.font80[
+.bqt.font80[
 - .Large[The most common tasks in string processing include:]
   + .yellow-h[extracting] numbers from strings, e.g. .yellow-h["12%"]
   + .yellow-h[removing] unwanted characters from text, e.g. .yellow-h["New Jersey_* "]
@@ -295,8 +240,8 @@ str_c(a, b)
 ```r
 building &lt;- "CMC"
 room &lt;- "102"
-begin_time &lt;- "12:30 a.m."
-end_time &lt;- "1:40 p.m."
+begin_time &lt;- "08:30 a.m."
+end_time &lt;- "09:40 a.m."
 days &lt;- "MWF"
 class &lt;- "STAT 220"
 ```
@@ -305,9 +250,8 @@ class &lt;- "STAT 220"
 
 
 ```r
-str_c(class, "meets from", begin_time, "to", end_time, 
-      days, "in", building, room, sep = " ")
-[1] "STAT 220 meets from 12:30 a.m. to 1:40 p.m. MWF in CMC 102"
+str_c(class, "meets from", begin_time, "to", end_time, days, "in", building, room, sep = " ")
+[1] "STAT 220 meets from 08:30 a.m. to 09:40 a.m. MWF in CMC 102"
 ```
 
 
@@ -378,15 +322,15 @@ class: middle
 
 
 ```r
-y &lt;- Sys.Date() # current date
+y &lt;- lubridate::now() # current date
 str_glue("today is {y}")
-today is 2023-04-19
+today is 2024-01-25 22:02:45.931045
 ```
 
 
 ```r
-nm &lt;- "Alex"
-str_glue("Hi, my name is {nm}.")
+name &lt;- "Alex"
+str_glue("Hi, my name is {name}.")
 Hi, my name is Alex.
 ```
 
@@ -398,7 +342,7 @@ Hi, my name is Alex.
 ```r
 # base R equivalent
 paste0("today is ", y)
-[1] "today is 2023-04-19"
+[1] "today is 2024-01-25 22:02:45.931045"
 ```
 
 
@@ -438,6 +382,14 @@ str_sub(phrase, start = c(1,8), end = c(6,11))
 ```
 
 
+--
+
+
+```r
+str_sub(phrase, start = c(1,8), end = c(6,11)) %&gt;% str_flatten(collapse = " ")
+[1] "cellar door"
+```
+
 
 ---
 
@@ -452,16 +404,16 @@ class: action, middle
 .pull-right-60[
 &lt;br&gt;
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 11.Rmd file
 - Work on problem 1
 ]
 
 ]
 
-<div class="countdown" id="timer_506a3f8e" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_c383ef13" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
 ---
@@ -471,15 +423,17 @@ class: middle
 
 # More Special Characters
 
-.bqt.font80[
-- The .yellow-h[|] symbol inside a regex means `"or"`.
+.bqt.font70[
+- The .yellow-h[|] symbol inside a regex means `"or"`
+
+- The .yellow-h[[abe]] means one of a,b, or e
 
 - Use .yellow-h[`\\n`] to matche a newline character
 
 - Use .yellow-h[`\\s`] to match white space characters (spaces, tabs, and newlines)
 
 - Use .yellow-h[`\\w`] to match alphanumeric characters (letters and numbers)
-  - can also use .out-t[`[:alpha:]`] 
+  - can also use .out-t[`[:alnum:]`] 
 
 - Use .yellow-h[`\\d`] to represent digits (numbers)
   - can also use .out-t[`[:digit:]`]
@@ -490,6 +444,18 @@ class: middle
 .footnote[Click [here](https://www.jetbrains.com/help/objc/regular-expression-syntax-reference.html#regex-syntax-reference) for extensive lists]
 
 ---
+
+
+
+background-image: url("images/stringr_character.png")
+background-position: center
+background-size: 60%
+class: clear
+
+
+
+---
+
 
 ## More Special Characters
 
@@ -548,52 +514,10 @@ days %&gt;%
 ```
 
 
----
-
-&lt;br&gt;
-
-# `str_subset()`
-
-&gt; returns all values in a vector which match a pattern
-
-
-```r
-gapminder$country %&gt;% 
-  unique() %&gt;% 
-  str_subset("^[CU].*a$")
-[1] "Cambodia"   "Canada"     "China"      "Colombia"   "Costa Rica"
-[6] "Croatia"    "Cuba"       "Uganda"    
-```
-
---
-
-
-```r
-# columns with names starting with "c"
-gapminder %&gt;% 
-  names() %&gt;% 
-  str_subset("^c")
-[1] "country"   "continent"
-```
-
 
 ---
 
-## `str_sub()`
-
-
-.bq.font80[extracts parts of strings based on their position with the start and end arguments]
-
-
-```r
-gapminder %&gt;% 
-  names() %&gt;% 
-* str_sub(start = 1, end = 6) # return the 1st 6 characters of each column name
-[1] "countr" "contin" "year"   "lifeEx" "pop"    "gdpPer"
-```
-
---
-
+class: middle
 
 ## `str_extract()` 
 
@@ -609,6 +533,12 @@ name_phone &lt;- c("Moly: 250-999-8878",
 str_extract(name_phone,  "\\w+") 
 [1] "Moly" "Ali"  "Eli"  "May" 
 ```
+
+
+&lt;details&gt;
+&lt;summary class="answer"&gt;Click for Hint&lt;/summary&gt;
+Extracts the first word from each string in the given vector
+&lt;/details&gt;
 
 
 ---
@@ -660,12 +590,9 @@ str_replace(gap_names,
 
 ---
 
-&lt;br&gt;
-&lt;br&gt;
-
 count: false
  
-## str_replace_all()
+## **str_replace_all()**
 .panel1-demo1-auto[
 
 ```r
@@ -689,14 +616,14 @@ count: false
  8 Delaware             944,076    63            6.7
  9 District of Columbia 670,377    162          24.2
 10 Florida              20,244,914 1,041         5.1
-# … with 41 more rows
+# ℹ 41 more rows
 ```
 ]
 
 ---
 count: false
  
-## str_replace_all()
+## **str_replace_all()**
 .panel1-demo1-auto[
 
 ```r
@@ -722,14 +649,14 @@ murders %&gt;%
  8 Delaware             944076     63            6.7
  9 District of Columbia 670377     162          24.2
 10 Florida              20244914   1041          5.1
-# … with 41 more rows
+# ℹ 41 more rows
 ```
 ]
 
 ---
 count: false
  
-## str_replace_all()
+## **str_replace_all()**
 .panel1-demo1-auto[
 
 ```r
@@ -756,7 +683,7 @@ murders %&gt;%
  8 Delaware                 944076    63         6.7
  9 District of Columbia     670377   162        24.2
 10 Florida                20244914  1041         5.1
-# … with 41 more rows
+# ℹ 41 more rows
 ```
 ]
 
@@ -813,9 +740,9 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_af6524ab" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_553a4fc3" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">20</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
     </textarea>

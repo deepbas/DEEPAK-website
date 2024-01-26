@@ -139,7 +139,7 @@ class: title-slide, middle
 
 # .fancy[Advanced String Manipulation]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 

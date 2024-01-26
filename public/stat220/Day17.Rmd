@@ -142,7 +142,7 @@ class: title-slide, middle
 
 # .fancy[Advanced Web Scraping]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 

@@ -116,50 +116,11 @@ class: title-slide, middle
 
 # .fancy[Basic String Manipulation]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
 ---
-
-# Kanye West tweets analysis
-
-.pull-left[
-
-<img src="images/kanyewest.png" width="110%" height="110%"> <br>
-.center[.blue[Kanye West Twitter Feed]]
-
-]
-
---
-
-.pull-right[
-
-<img src="images/kanye-word-cloud.png" width="110%" height="110%"> <br>
-
-]
-
----
-
-# Tweets that look like this ...
-
-```{r echo=FALSE}
-kanye %>% select(text) %>% slice(c(2, 49, 67,89,900, 577))
-
-```
-
---
-
-# ... are changed to a cleaner version
-
-```{r, echo=FALSE}
-kanye %>% select(text_clean) %>% slice(c(2, 49, 67,89,900, 577))
-
-```
-
-
----
-
 
 ## Let's Define Strings
 
@@ -207,7 +168,7 @@ class: middle
 .out-t[pulling apart some text or `string` to do something with it]
 
 <!-- manipulate (or parse) textual data by looking for patterns in a string -->
-.bq.font80[
+.bqt.font80[
 - .Large[The most common tasks in string processing include:]
   + .yellow-h[extracting] numbers from strings, e.g. .yellow-h["12%"]
   + .yellow-h[removing] unwanted characters from text, e.g. .yellow-h["New Jersey_* "]
@@ -331,8 +292,8 @@ str_c(a, b)
 ```{r}
 building <- "CMC"
 room <- "102"
-begin_time <- "12:30 a.m."
-end_time <- "1:40 p.m."
+begin_time <- "08:30 a.m."
+end_time <- "09:40 a.m."
 days <- "MWF"
 class <- "STAT 220"
 ```
@@ -340,8 +301,7 @@ class <- "STAT 220"
 --
 
 ```{r}
-str_c(class, "meets from", begin_time, "to", end_time, 
-      days, "in", building, room, sep = " ")
+str_c(class, "meets from", begin_time, "to", end_time, days, "in", building, room, sep = " ")
 ```
 
 
@@ -403,13 +363,13 @@ class: middle
 .pull-left[
 
 ```{r}
-y <- Sys.Date() # current date
+y <- lubridate::now() # current date
 str_glue("today is {y}")
 ```
 
 ```{r}
-nm <- "Alex"
-str_glue("Hi, my name is {nm}.")
+name <- "Alex"
+str_glue("Hi, my name is {name}.")
 ```
 
 ]
@@ -452,6 +412,12 @@ str_sub(phrase, start = c(1,8), end = c(6,11))
 ```
 
 
+--
+
+```{r}
+str_sub(phrase, start = c(1,8), end = c(6,11)) %>% str_flatten(collapse = " ")
+```
+
 
 ---
 
@@ -466,14 +432,14 @@ class: action, middle
 .pull-right-60[
 <br>
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 11.Rmd file
 - Work on problem 1
 ]
 
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 ---
 
@@ -482,15 +448,17 @@ class: middle
 
 # More Special Characters
 
-.bqt.font80[
-- The .yellow-h[|] symbol inside a regex means `"or"`.
+.bqt.font70[
+- The .yellow-h[|] symbol inside a regex means `"or"`
+
+- The .yellow-h[[abe]] means one of a,b, or e
 
 - Use .yellow-h[`\\n`] to matche a newline character
 
 - Use .yellow-h[`\\s`] to match white space characters (spaces, tabs, and newlines)
 
 - Use .yellow-h[`\\w`] to match alphanumeric characters (letters and numbers)
-  - can also use .out-t[`[:alpha:]`] 
+  - can also use .out-t[`[:alnum:]`] 
 
 - Use .yellow-h[`\\d`] to represent digits (numbers)
   - can also use .out-t[`[:digit:]`]
@@ -501,6 +469,18 @@ class: middle
 .footnote[Click [here](https://www.jetbrains.com/help/objc/regular-expression-syntax-reference.html#regex-syntax-reference) for extensive lists]
 
 ---
+
+
+
+background-image: url("images/stringr_character.png")
+background-position: center
+background-size: 60%
+class: clear
+
+
+
+---
+
 
 ## More Special Characters
 
@@ -554,45 +534,10 @@ days %>%
 ```
 
 
----
-
-<br>
-
-# `str_subset()`
-
-> returns all values in a vector which match a pattern
-
-```{r}
-gapminder$country %>% 
-  unique() %>% 
-  str_subset("^[CU].*a$")
-```
-
---
-
-```{r}
-# columns with names starting with "c"
-gapminder %>% 
-  names() %>% 
-  str_subset("^c")
-```
-
 
 ---
 
-## `str_sub()`
-
-
-.bq.font80[extracts parts of strings based on their position with the start and end arguments]
-
-```{r}
-gapminder %>% 
-  names() %>% 
-  str_sub(start = 1, end = 6) # return the 1st 6 characters of each column name #<<
-```
-
---
-
+class: middle
 
 ## `str_extract()` 
 
@@ -606,6 +551,12 @@ name_phone <- c("Moly: 250-999-8878",
        "May: 250-209-7047")
 str_extract(name_phone,  "\\w+") 
 ```
+
+
+<details>
+<summary class="answer">Click for Hint</summary>
+Extracts the first word from each string in the given vector
+</details>
 
 
 ---
@@ -645,10 +596,7 @@ str_replace(gap_names,
 
 ---
 
-<br>
-<br>
-
-`r chunk_reveal("demo1", font_size_code="80%", widths = c(0.5, 0.5), title = "## str_replace_all()")`
+`r chunk_reveal("demo1", font_size_code="80%", widths = c(0.5, 0.5), title = "## **str_replace_all()**")`
 
 .scroll-output-20[
 ```{r demo1, fig.width = 3, fig.height = 3.5, out.width = "100%", include=FALSE}
@@ -679,5 +627,5 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
