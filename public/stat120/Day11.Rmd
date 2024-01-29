@@ -166,37 +166,6 @@ One way to test for ESP is with Zener cards:
 > Subjects draw a card at random and telepathically communicate this to someone who then guesses the symbol
 
 
-<!-- class: middle -->
-
-<!-- # Explaining Random Chance -->
-
-
-<!-- .pull-left.font80[ -->
-<!-- .bql.font80[ -->
-<!-- ## Random Chance with a Coin Toss -->
-
-<!-- - A fair coin has an **equal** chance of landing **heads** or **tails**. -->
-<!-- - Sometimes sequences like "HHHTHH" might emerge. -->
-<!-- - Does it mean heads are more likely? -->
-
-<!-- ## Toss More Times! -->
-
-<!-- - As we toss many more times, what happens to the ratio of heads to tails? -->
-<!-- ] -->
-<!-- ] -->
-<!-- .pull-right[ -->
-
-<!-- <br> -->
-
-<!-- ![](https://media.giphy.com/media/26gs8DLhlh9Drr7BS/giphy.gif) -->
-
-<!-- ] -->
-
-
-<!-- .footnote[[Demo: Flipping a coin](https://seeing-theory.brown.edu/basic-probability/index.html)] -->
-
-<!-- --- -->
-
 ---
 
 

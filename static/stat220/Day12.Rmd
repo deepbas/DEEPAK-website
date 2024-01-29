@@ -153,8 +153,8 @@ class: middle
 
 .pull-left.font90[
 
-Preceding characters are matched ...
-..bq.font120[
+.hljs[Preceding characters are matched ...]
+..bqt.font120[
 - .yellow-h[`*`] = 0 or more
 - .yellow-h[`?`] = 0 or 1
 - .yellow-h[`+`] = 1 or more
@@ -163,8 +163,8 @@ Preceding characters are matched ...
 ]
 .pull-right.font90[
 
-Matching character types 
-.bq.font120[
+.hljs[Matching character types] 
+.bqt.font120[
 - .yellow-h[`\\\d`] = digit
 - .yellow-h[`\\\s`] = white space
 - .yellow-h[`\\\w`] = word
@@ -452,15 +452,15 @@ foo <- c("addidas", "racecar")
 ]
 
 
-.pull-left[
+.pull-left-40[
 .code100[
 ```{r}
-# anything then repeat anything
+# two successions
 str_view(foo, "(.)\\1") 
 ```
 ]
 ]
-.pull-right[
+.pull-right-60[
 .code100[
 ```{r}
 # strings like `xyzzyx`
@@ -508,10 +508,41 @@ str_view_all("it's a goat.",
 .code120[
 ```{r}
 # find a single letter word separated by spaces
-str_view_all("it's a goat.", 
-             "(\\s)(\\w)\\s")
+str_view_all("it's a goat.", "\\s\\w\\b")
+
 ```
 ]
+
+
+---
+
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bql[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
+- Get the class activity 12.Rmd file
+- Let's do Activity 1.
+]
+
+]
+
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+
+
+
+
 
 ---
 
@@ -530,7 +561,7 @@ class: middle
 -->
 
 
-# What are these?
+# `Lookaround` operators: .b[What are these?]
 
 <br>
 
@@ -641,9 +672,8 @@ class: action, middle
 <br>
 <br>
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
-- Get the class activity 13.Rmd file
-- Skim through the problems
+- Let's finish the rest of the activities
+- Ask me questions
 ]
 
 ]

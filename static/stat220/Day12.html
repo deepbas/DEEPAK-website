@@ -47,7 +47,7 @@ class: title-slide, middle
 
 ### .fancy[Stat 220]
 
- January 24 2024
+ January 28 2024
 
 ---
 
@@ -59,8 +59,8 @@ class: middle
 
 .pull-left.font90[
 
-Preceding characters are matched ...
-..bq.font120[
+.hljs[Preceding characters are matched ...]
+..bqt.font120[
 - .yellow-h[`*`] = 0 or more
 - .yellow-h[`?`] = 0 or 1
 - .yellow-h[`+`] = 1 or more
@@ -69,8 +69,8 @@ Preceding characters are matched ...
 ]
 .pull-right.font90[
 
-Matching character types 
-.bq.font120[
+.hljs[Matching character types] 
+.bqt.font120[
 - .yellow-h[`\\\d`] = digit
 - .yellow-h[`\\\s`] = white space
 - .yellow-h[`\\\w`] = word
@@ -399,17 +399,17 @@ foo &lt;- c("addidas", "racecar")
 ]
 
 
-.pull-left[
+.pull-left-40[
 .code100[
 
 ```r
-# anything then repeat anything
+# two successions
 str_view(foo, "(.)\\1") 
 [1] │ a&lt;dd&gt;idas
 ```
 ]
 ]
-.pull-right[
+.pull-right-60[
 .code100[
 
 ```r
@@ -467,11 +467,44 @@ str_view_all("it's a goat.",
 
 ```r
 # find a single letter word separated by spaces
-str_view_all("it's a goat.", 
-             "(\\s)(\\w)\\s")
-[1] │ it's&lt; a &gt;goat.
+str_view_all("it's a goat.", "\\s\\w\\b")
+[1] │ it's&lt; a&gt; goat.
 ```
 ]
+
+
+---
+
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+&lt;br&gt;
+&lt;br&gt;
+.bql[
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
+- Get the class activity 12.Rmd file
+- Let's do Activity 1.
+]
+
+]
+
+<div class="countdown" id="timer_f005079b" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+
+
+
+
+
 
 ---
 
@@ -490,7 +523,7 @@ class: middle
 --&gt;
 
 
-# What are these?
+# `Lookaround` operators: .b[What are these?]
 
 &lt;br&gt;
 
@@ -601,7 +634,7 @@ str_view_all("that is a top cat.","(?&lt;![a-z])t[a-z]+")
 
 class: action, middle
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
 
 
 .pull-left-40[
@@ -611,14 +644,13 @@ class: action, middle
 &lt;br&gt;
 &lt;br&gt;
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
-- Get the class activity 13.Rmd file
-- Skim through the problems
+- Let's finish the rest of the activities
+- Ask me questions
 ]
 
 ]
 
-<div class="countdown" id="timer_eda91634" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_24871c54" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

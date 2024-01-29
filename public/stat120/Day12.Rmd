@@ -73,6 +73,9 @@ yt <- 0
 
 
 
+
+
+
 ```{r xaringanExtra-clipboard, echo=FALSE}
 htmltools::tagList(
   xaringanExtra::use_clipboard(
@@ -285,6 +288,32 @@ With the p-values: $0.005$, $0.15$, and $0.35$, which sample statistic goes with
 
 ---
 
+
+.code50[
+```{r, fig.align='center',out.width="50%", highlight.code = c(1,3)}
+library(CarletonStats)
+FloridaLakes <- read.csv("https://www.lock5stat.com/datasets2e/FloridaLakes.csv")
+permTestCor(FloridaLakes$pH, FloridaLakes$AvgMercury)
+```
+]
+
+
+
+<center>
+
+<div style="position: absolute; top: 20%; left: 50%;">
+    <span style="content: '\2192'; font-size: 30px; color: #920; text-align: center; white-space: pre-line;">
+        In R use <span class="red bold">CarletonStats</span> package
+    </span>
+</div>
+<a></a>
+
+</center>
+
+
+---
+
+
 class: middle
 
 # Alternative Hypothesis
@@ -348,9 +377,58 @@ class: middle
 
 ---
 
+
+.code50[
+```{r, fig.align='center',out.width="50%", highlight.code = c(1,3)}
+library(CarletonStats)
+SleepCaffeine <- read.csv("https://www.lock5stat.com/datasets2e/SleepCaffeine.csv")
+permTest(SleepCaffeine$Words, SleepCaffeine$Group)
+```
+]
+
+
+<center>
+<div style="position: absolute; top: 20%; left: 50%;">
+    <span style="content: '\2192'; font-size: 30px; color: #920; text-align: center; white-space: pre-line;">
+        <span class="red bold">Sleep Vs Caffeine</span> 
+    </span>
+</div>
+<a></a>
+</center>
+
+---
+
 class: middle
 
-## Coccaine Addiction
+## Independent vs. Dependent Samples
+
+.bq.font70[
+- **Independent samples**: No link between groups' observations.
+
+- **Dependent samples**: Observations are naturally paired.
+
+  - Example: Measurements before and after an intervention.
+]
+
+<br>
+
+.bqt.font60[
+
+### Hypothesis Testing for Paired Differences: `permTestPaired()`
+
+- Focus on the average of within-pair differences, $\mu_d = \mu_1 - \mu_2$.
+
+- Hypotheses:
+
+  - $H_0: \mu_d = 0$ (no effect)
+  - $H_A: \mu_d \neq 0$ (presence of effect)
+]
+
+---
+
+class: middle
+
+## Coccaine Addiction (Difference in Proportions)
 
 .bql[In a randomized experiment, 48 cocaine addicts attempting to quit were randomly assigned to take either desipramine (a new drug) or lithium (an existing drug) to test if `desipramine` is more effective than `lithium` at treating .b[cocaine addiction], with relapse as the response variable.
 ]
@@ -498,7 +576,7 @@ class: action
 <br>
 .bql[
 
-- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Let's go over to the [course helper page](https://stat120-winter24.netlify.app/)
 - Please do the class activity and let me know if you have any questions
 - Feel free to talk to your neighbor
 ]
