@@ -13,5 +13,5 @@ Day 12 Slides ({{% staticref "stat220/Day12.html" "newtab" %}}html{{% /staticref
 
 Day 13 Midterm
 
-
+Day 14 Slides ({{% staticref "stat220/Day14.html" "newtab" %}}html{{% /staticref %}})
 

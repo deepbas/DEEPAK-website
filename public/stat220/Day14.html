@@ -47,7 +47,7 @@ class: title-slide, middle
 
 ### .fancy[Stat 220]
 
- January 24 2024
+ February 01 2024
 
 
 ---
@@ -61,7 +61,7 @@ A function is a type of object in R that can perform a specific task.
 &lt;br&gt;
 --
 
-.bqt.font90[
+.bq.font90[
 - Functions take arguments as input and output some manipulated form of the input data.
 
 - A function is specified first with the object name, then parentheses with arguments inside.
@@ -93,7 +93,7 @@ class: middle
 
 # When to write functions?
 
-.font120.bq[
+.font110.bql[
 
 - Using the same code more than once
 
@@ -319,6 +319,7 @@ class: action, middle
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
+&lt;br&gt;
 .bql[
 - Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 14.Rmd file
@@ -327,7 +328,7 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_01583fb8" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_8dab7af7" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -360,7 +361,7 @@ Allows code to:
 
 # if - else
 
-.code120[
+.code110[
 
 ```r
 if(TRUE){
@@ -374,7 +375,7 @@ if(TRUE){
 
 --
 
-.code120[
+.code110[
 
 ```r
 if(FALSE){
@@ -467,8 +468,7 @@ cutoff_make0(x)
 
 ```r
 cutoff_make0(y, cutoff = 4)
-Warning in cutoff_make0(y, cutoff = 4): The input provided is not a numeric
-vector
+Warning in cutoff_make0(y, cutoff = 4): The input provided is not a numeric vector
 ```
 
 ---
@@ -510,13 +510,17 @@ class:middle
 &lt;br&gt;
 &lt;br&gt;
 
-# General Youtube Comment
+# Excerpt from F. Scott Fitzgerald's .b[The Great Gatsby]
 
 ```r
-text &lt;- c("This is SERIOUSLY well put together. Honestly I don’t even know how Television services
-          are still in business when there is QUALITY like this available at our damn fingertips..
-          it’s actually mind boggling and I really think we take these things for granted. Big big
-          BIG ups to the Sidemen and all involved in this.")
+text &lt;- c("He had come a long way to this blue lawn, and his dream must have 
+seemed so close that he could hardly fail to grasp it. He did not know that 
+it was already behind him, somewhere back in that vast obscurity beyond the 
+city, where the dark fields of the republic rolled on under the night. Gatsby 
+believed in the green light, the orgastic future that year by year recedes
+before us. It eluded us then, but that's no matter-tomorrow we will run faster,
+stretch out our arms farther... And one fine morning- So we beat on, boats 
+against the current, borne back ceaselessly into the past.")
 ```
 
 
@@ -529,9 +533,9 @@ text &lt;- c("This is SERIOUSLY well put together. Honestly I don’t even know 
 text_data &lt;- tibble(text = text)
 text_data
 # A tibble: 1 × 1
-  text                                                                          
-  &lt;chr&gt;                                                                         
-1 "This is SERIOUSLY well put together. Honestly I don’t even know how \n      …
+  text                                                                                                                          
+  &lt;chr&gt;                                                                                                                         
+1 "He had come a long way to this blue lawn, and his dream must have \nseemed so close that he could hardly fail to grasp it. H…
 ```
 
 
@@ -551,9 +555,9 @@ count: false
 
 ```
 # A tibble: 1 × 1
-  text                                                                          
-  &lt;chr&gt;                                                                         
-1 "This is SERIOUSLY well put together. Honestly I don’t even know how \n      …
+  text                                                                                                                          
+  &lt;chr&gt;                                                                                                                         
+1 "He had come a long way to this blue lawn, and his dream must have \nseemed so close that he could hardly fail to grasp it. H…
 ```
 ]
 
@@ -574,20 +578,20 @@ text_data %&gt;%
 .panel2-demo-auto[
 
 ```
-# A tibble: 55 × 1
-   word     
-   &lt;chr&gt;    
- 1 this     
- 2 is       
- 3 seriously
- 4 well     
- 5 put      
- 6 together 
- 7 honestly 
- 8 i        
- 9 don’t    
-10 even     
-# ℹ 45 more rows
+# A tibble: 109 × 1
+   word 
+   &lt;chr&gt;
+ 1 he   
+ 2 had  
+ 3 come 
+ 4 a    
+ 5 long 
+ 6 way  
+ 7 to   
+ 8 this 
+ 9 blue 
+10 lawn 
+# ℹ 99 more rows
 ```
 ]
 
@@ -609,63 +613,117 @@ text_data %&gt;%
 .panel2-demo-auto[
 
 
-|word       |
-|:----------|
-|this       |
-|is         |
-|seriously  |
-|well       |
-|put        |
-|together   |
-|honestly   |
-|i          |
-|don’t      |
-|even       |
-|know       |
-|how        |
-|television |
-|services   |
-|are        |
-|still      |
-|in         |
-|business   |
-|when       |
-|there      |
-|is         |
-|quality    |
-|like       |
-|this       |
-|available  |
-|at         |
-|our        |
-|damn       |
-|fingertips |
-|it’s       |
-|actually   |
-|mind       |
-|boggling   |
-|and        |
-|i          |
-|really     |
-|think      |
-|we         |
-|take       |
-|these      |
-|things     |
-|for        |
-|granted    |
-|big        |
-|big        |
-|big        |
-|ups        |
-|to         |
-|the        |
-|sidemen    |
-|and        |
-|all        |
-|involved   |
-|in         |
-|this       |
+|word        |
+|:-----------|
+|he          |
+|had         |
+|come        |
+|a           |
+|long        |
+|way         |
+|to          |
+|this        |
+|blue        |
+|lawn        |
+|and         |
+|his         |
+|dream       |
+|must        |
+|have        |
+|seemed      |
+|so          |
+|close       |
+|that        |
+|he          |
+|could       |
+|hardly      |
+|fail        |
+|to          |
+|grasp       |
+|it          |
+|he          |
+|did         |
+|not         |
+|know        |
+|that        |
+|it          |
+|was         |
+|already     |
+|behind      |
+|him         |
+|somewhere   |
+|back        |
+|in          |
+|that        |
+|vast        |
+|obscurity   |
+|beyond      |
+|the         |
+|city        |
+|where       |
+|the         |
+|dark        |
+|fields      |
+|of          |
+|the         |
+|republic    |
+|rolled      |
+|on          |
+|under       |
+|the         |
+|night       |
+|gatsby      |
+|believed    |
+|in          |
+|the         |
+|green       |
+|light       |
+|the         |
+|orgastic    |
+|future      |
+|that        |
+|year        |
+|by          |
+|year        |
+|recedes     |
+|before      |
+|us          |
+|it          |
+|eluded      |
+|us          |
+|then        |
+|but         |
+|that's      |
+|no          |
+|matter      |
+|tomorrow    |
+|we          |
+|will        |
+|run         |
+|faster      |
+|stretch     |
+|out         |
+|our         |
+|arms        |
+|farther     |
+|and         |
+|one         |
+|fine        |
+|morning     |
+|so          |
+|we          |
+|beat        |
+|on          |
+|boats       |
+|against     |
+|the         |
+|current     |
+|borne       |
+|back        |
+|ceaselessly |
+|into        |
+|the         |
+|past        |
 
 
 ]
@@ -716,55 +774,94 @@ text_data %&gt;%
 
 
 
-|word       |  n|
-|:----------|--:|
-|big        |  3|
-|this       |  3|
-|and        |  2|
-|i          |  2|
-|in         |  2|
-|is         |  2|
-|actually   |  1|
-|all        |  1|
-|are        |  1|
-|at         |  1|
-|available  |  1|
-|boggling   |  1|
-|business   |  1|
-|damn       |  1|
-|don’t      |  1|
-|even       |  1|
-|fingertips |  1|
-|for        |  1|
-|granted    |  1|
-|honestly   |  1|
-|how        |  1|
-|involved   |  1|
-|it’s       |  1|
-|know       |  1|
-|like       |  1|
-|mind       |  1|
-|our        |  1|
-|put        |  1|
-|quality    |  1|
-|really     |  1|
-|seriously  |  1|
-|services   |  1|
-|sidemen    |  1|
-|still      |  1|
-|take       |  1|
-|television |  1|
-|the        |  1|
-|there      |  1|
-|these      |  1|
-|things     |  1|
-|think      |  1|
-|to         |  1|
-|together   |  1|
-|ups        |  1|
-|we         |  1|
-|well       |  1|
-|when       |  1|
+|word        |  n|
+|:-----------|--:|
+|the         |  8|
+|that        |  4|
+|he          |  3|
+|it          |  3|
+|and         |  2|
+|back        |  2|
+|in          |  2|
+|on          |  2|
+|so          |  2|
+|to          |  2|
+|us          |  2|
+|we          |  2|
+|year        |  2|
+|a           |  1|
+|against     |  1|
+|already     |  1|
+|arms        |  1|
+|beat        |  1|
+|before      |  1|
+|behind      |  1|
+|believed    |  1|
+|beyond      |  1|
+|blue        |  1|
+|boats       |  1|
+|borne       |  1|
+|but         |  1|
+|by          |  1|
+|ceaselessly |  1|
+|city        |  1|
+|close       |  1|
+|come        |  1|
+|could       |  1|
+|current     |  1|
+|dark        |  1|
+|did         |  1|
+|dream       |  1|
+|eluded      |  1|
+|fail        |  1|
+|farther     |  1|
+|faster      |  1|
+|fields      |  1|
+|fine        |  1|
+|future      |  1|
+|gatsby      |  1|
+|grasp       |  1|
+|green       |  1|
+|had         |  1|
+|hardly      |  1|
+|have        |  1|
+|him         |  1|
+|his         |  1|
+|into        |  1|
+|know        |  1|
+|lawn        |  1|
+|light       |  1|
+|long        |  1|
+|matter      |  1|
+|morning     |  1|
+|must        |  1|
+|night       |  1|
+|no          |  1|
+|not         |  1|
+|obscurity   |  1|
+|of          |  1|
+|one         |  1|
+|orgastic    |  1|
+|our         |  1|
+|out         |  1|
+|past        |  1|
+|recedes     |  1|
+|republic    |  1|
+|rolled      |  1|
+|run         |  1|
+|seemed      |  1|
+|somewhere   |  1|
+|stretch     |  1|
+|that's      |  1|
+|then        |  1|
+|this        |  1|
+|tomorrow    |  1|
+|under       |  1|
+|vast        |  1|
+|was         |  1|
+|way         |  1|
+|where       |  1|
+|will        |  1|
 
 
 ]
@@ -782,18 +879,18 @@ text_data %&gt;%
 ```r
 stop_words %&gt;% sample_n(10)
 # A tibble: 10 × 2
-   word       lexicon 
-   &lt;chr&gt;      &lt;chr&gt;   
- 1 faces      onix    
- 2 no         snowball
- 3 ordered    onix    
- 4 nowhere    SMART   
- 5 needing    onix    
- 6 even       onix    
- 7 what       onix    
- 8 definitely SMART   
- 9 clearly    SMART   
-10 about      SMART   
+   word    lexicon 
+   &lt;chr&gt;   &lt;chr&gt;   
+ 1 need    onix    
+ 2 example SMART   
+ 3 against onix    
+ 4 never   SMART   
+ 5 down    SMART   
+ 6 should  snowball
+ 7 much    SMART   
+ 8 every   SMART   
+ 9 numbers onix    
+10 is      snowball
 ```
 
 
@@ -804,7 +901,9 @@ class: center, inverse, top
 background-image: url("images/musical_instruments.jpg")
 background-size: cover
 
-## .yellow.b.font200[What is the average sentiment of Amazon shoppers purchasing musical instruments?]
+--
+
+## .yellow.font200[What is the average sentiment of Amazon shoppers purchasing musical instruments?]
 
 ---
 
@@ -838,18 +937,18 @@ count: false
 
 ```
 # A tibble: 10,261 × 3
-   reviewerName                                        reviewText  ratingOverall
-   &lt;chr&gt;                                               &lt;chr&gt;               &lt;dbl&gt;
- 1 "cassandra tu \"Yeah, well, that's just like, u..." not much t…             5
- 2 "Jake"                                              the produc…             5
- 3 "Rick Bennette \"Rick Bennette\""                   the primar…             5
- 4 "RustyBill \"Sunday Rocker\""                       nice winds…             5
- 5 "SEAN MASLANKA"                                     this pop f…             5
- 6 "Bill Lewey \"blewey\""                             so good th…             5
- 7 "Brian"                                             i have use…             5
- 8 "Fender Guy \"Rick\""                               i now use …             3
- 9 "G. Thomas \"Tom\""                                 perfect fo…             5
-10 "Kurt Robair"                                       monster ma…             5
+   reviewerName                                        reviewText                                                  ratingOverall
+   &lt;chr&gt;                                               &lt;chr&gt;                                                               &lt;dbl&gt;
+ 1 "cassandra tu \"Yeah, well, that's just like, u..." not much to write about here but it does exactly what it i…             5
+ 2 "Jake"                                              the product does exactly as it should and is quite afforda…             5
+ 3 "Rick Bennette \"Rick Bennette\""                   the primary job of this device is to block the breath that…             5
+ 4 "RustyBill \"Sunday Rocker\""                       nice windscreen protects my mxl mic and prevents pops only…             5
+ 5 "SEAN MASLANKA"                                     this pop filter is great it looks and performs like a stud…             5
+ 6 "Bill Lewey \"blewey\""                             so good that i bought another one love the heavy cord and …             5
+ 7 "Brian"                                             i have used monster cables for years and with good reason …             5
+ 8 "Fender Guy \"Rick\""                               i now use this cable to run from the output of my pedal ch…             3
+ 9 "G. Thomas \"Tom\""                                 perfect for my epiphone sheraton ii monster cables are wel…             5
+10 "Kurt Robair"                                       monster makes the best cables and a lifetime warranty does…             5
 # ℹ 10,251 more rows
 ```
 ]
@@ -870,18 +969,18 @@ musical_instr_reviews %&gt;%
 
 ```
 # A tibble: 10,261 × 1
-   reviewText                                                                   
-   &lt;chr&gt;                                                                        
- 1 not much to write about here but it does exactly what it is supposed to filt…
- 2 the product does exactly as it should and is quite affordable i did not real…
- 3 the primary job of this device is to block the breath that would otherwise p…
- 4 nice windscreen protects my mxl mic and prevents pops only thing is that the…
- 5 this pop filter is great it looks and performs like a studio filter if you a…
- 6 so good that i bought another one love the heavy cord and gold connectors ba…
- 7 i have used monster cables for years and with good reason the lifetime warra…
- 8 i now use this cable to run from the output of my pedal chain to the input o…
- 9 perfect for my epiphone sheraton ii monster cables are well constructed i ha…
-10 monster makes the best cables and a lifetime warranty doesnt hurt either thi…
+   reviewText                                                                                                                   
+   &lt;chr&gt;                                                                                                                        
+ 1 not much to write about here but it does exactly what it is supposed to filters out the pop sounds now my recordings are muc…
+ 2 the product does exactly as it should and is quite affordable i did not realized it was double screened until it arrived so …
+ 3 the primary job of this device is to block the breath that would otherwise produce a popping sound while allowing your voice…
+ 4 nice windscreen protects my mxl mic and prevents pops only thing is that the gooseneck is only marginally able to hold the s…
+ 5 this pop filter is great it looks and performs like a studio filter if you are recording vocals this will eliminate the pops…
+ 6 so good that i bought another one love the heavy cord and gold connectors bass sounds great i just learned last night how to…
+ 7 i have used monster cables for years and with good reason the lifetime warranty is worth the price alone simple fact cables …
+ 8 i now use this cable to run from the output of my pedal chain to the input of my fender amp after i bought monster cable to …
+ 9 perfect for my epiphone sheraton ii monster cables are well constructed i have several and never had any problems with any o…
+10 monster makes the best cables and a lifetime warranty doesnt hurt either this isnt their top of the line series but it works…
 # ℹ 10,251 more rows
 ```
 ]
@@ -1089,7 +1188,7 @@ musical_instr_reviews %&gt;%
   top_n(25) %&gt;%
   ggplot(aes(fct_reorder(word,n), n)) +
   theme_tufte() +
-* geom_col(fill = "#773232")
+* geom_col(fill = "#79CA32")
 ```
 ]
  
@@ -1113,7 +1212,7 @@ musical_instr_reviews %&gt;%
   top_n(25) %&gt;%
   ggplot(aes(fct_reorder(word,n), n)) +
   theme_tufte() +
-  geom_col(fill = "#773232") +
+  geom_col(fill = "#79CA32") +
 * xlab(NULL)
 ```
 ]
@@ -1138,7 +1237,7 @@ musical_instr_reviews %&gt;%
   top_n(25) %&gt;%
   ggplot(aes(fct_reorder(word,n), n)) +
   theme_tufte() +
-  geom_col(fill = "#773232") +
+  geom_col(fill = "#79CA32") +
   xlab(NULL) +
 * coord_flip()
 ```
@@ -1164,7 +1263,7 @@ musical_instr_reviews %&gt;%
   top_n(25) %&gt;%
   ggplot(aes(fct_reorder(word,n), n)) +
   theme_tufte() +
-  geom_col(fill = "#773232") +
+  geom_col(fill = "#79CA32") +
   xlab(NULL) +
   coord_flip() +
 * ggtitle("Top words in Amazon Musical Instruments Reviews")
@@ -1191,7 +1290,7 @@ musical_instr_reviews %&gt;%
   top_n(25) %&gt;%
   ggplot(aes(fct_reorder(word,n), n)) +
   theme_tufte() +
-  geom_col(fill = "#773232") +
+  geom_col(fill = "#79CA32") +
   xlab(NULL) +
   coord_flip() +
   ggtitle("Top words in Amazon Musical Instruments Reviews") +
@@ -1303,18 +1402,18 @@ set.seed(123)  # for reproducibility
 
 ```
 # A tibble: 10,261 × 3
-   reviewerName                                        reviewText  ratingOverall
-   &lt;chr&gt;                                               &lt;chr&gt;               &lt;dbl&gt;
- 1 "cassandra tu \"Yeah, well, that's just like, u..." not much t…             5
- 2 "Jake"                                              the produc…             5
- 3 "Rick Bennette \"Rick Bennette\""                   the primar…             5
- 4 "RustyBill \"Sunday Rocker\""                       nice winds…             5
- 5 "SEAN MASLANKA"                                     this pop f…             5
- 6 "Bill Lewey \"blewey\""                             so good th…             5
- 7 "Brian"                                             i have use…             5
- 8 "Fender Guy \"Rick\""                               i now use …             3
- 9 "G. Thomas \"Tom\""                                 perfect fo…             5
-10 "Kurt Robair"                                       monster ma…             5
+   reviewerName                                        reviewText                                                  ratingOverall
+   &lt;chr&gt;                                               &lt;chr&gt;                                                               &lt;dbl&gt;
+ 1 "cassandra tu \"Yeah, well, that's just like, u..." not much to write about here but it does exactly what it i…             5
+ 2 "Jake"                                              the product does exactly as it should and is quite afforda…             5
+ 3 "Rick Bennette \"Rick Bennette\""                   the primary job of this device is to block the breath that…             5
+ 4 "RustyBill \"Sunday Rocker\""                       nice windscreen protects my mxl mic and prevents pops only…             5
+ 5 "SEAN MASLANKA"                                     this pop filter is great it looks and performs like a stud…             5
+ 6 "Bill Lewey \"blewey\""                             so good that i bought another one love the heavy cord and …             5
+ 7 "Brian"                                             i have used monster cables for years and with good reason …             5
+ 8 "Fender Guy \"Rick\""                               i now use this cable to run from the output of my pedal ch…             3
+ 9 "G. Thomas \"Tom\""                                 perfect for my epiphone sheraton ii monster cables are wel…             5
+10 "Kurt Robair"                                       monster makes the best cables and a lifetime warranty does…             5
 # ℹ 10,251 more rows
 ```
 ]
@@ -1339,18 +1438,18 @@ musical_instr_reviews %&gt;%
 
 ```
 # A tibble: 10,261 × 1
-   reviewText                                                                   
-   &lt;chr&gt;                                                                        
- 1 not much to write about here but it does exactly what it is supposed to filt…
- 2 the product does exactly as it should and is quite affordable i did not real…
- 3 the primary job of this device is to block the breath that would otherwise p…
- 4 nice windscreen protects my mxl mic and prevents pops only thing is that the…
- 5 this pop filter is great it looks and performs like a studio filter if you a…
- 6 so good that i bought another one love the heavy cord and gold connectors ba…
- 7 i have used monster cables for years and with good reason the lifetime warra…
- 8 i now use this cable to run from the output of my pedal chain to the input o…
- 9 perfect for my epiphone sheraton ii monster cables are well constructed i ha…
-10 monster makes the best cables and a lifetime warranty doesnt hurt either thi…
+   reviewText                                                                                                                   
+   &lt;chr&gt;                                                                                                                        
+ 1 not much to write about here but it does exactly what it is supposed to filters out the pop sounds now my recordings are muc…
+ 2 the product does exactly as it should and is quite affordable i did not realized it was double screened until it arrived so …
+ 3 the primary job of this device is to block the breath that would otherwise produce a popping sound while allowing your voice…
+ 4 nice windscreen protects my mxl mic and prevents pops only thing is that the gooseneck is only marginally able to hold the s…
+ 5 this pop filter is great it looks and performs like a studio filter if you are recording vocals this will eliminate the pops…
+ 6 so good that i bought another one love the heavy cord and gold connectors bass sounds great i just learned last night how to…
+ 7 i have used monster cables for years and with good reason the lifetime warranty is worth the price alone simple fact cables …
+ 8 i now use this cable to run from the output of my pedal chain to the input of my fender amp after i bought monster cable to …
+ 9 perfect for my epiphone sheraton ii monster cables are well constructed i have several and never had any problems with any o…
+10 monster makes the best cables and a lifetime warranty doesnt hurt either this isnt their top of the line series but it works…
 # ℹ 10,251 more rows
 ```
 ]
@@ -2041,1808 +2140,7 @@ dent                    11        0
 dented                   8        0
 dents                    4        0
 deny                     1        0
-denying                  3        0
-dependable               0       31
-dependably               0        1
-deplorable               1        0
-depress                  7        0
-depressed                4        0
-depressing               3        0
-depression               2        0
-depressions              1        0
-desert                   3        0
-deserving                0        2
-desirable                0        2
-desiring                 0        1
-despair                  1        0
-desperate                1        0
-desperately              1        0
-despise                  1        0
-destiny                  0        1
-destroy                  4        0
-detachable               0        2
-deter                    1        0
-deteriorate              7        0
-deterioration            2        0
-detract                  7        0
-detracts                 3        0
-detriment                1        0
-devil                    2        0
-dick                     2        0
-die                     20        0
-died                    15        0
-dies                     7        0
-difficult              158        0
-difficulties             5        0
-difficulty              29        0
-dilemma                  5        0
-diligence                0        1
-diligent                 0        2
-dim                     17        0
-dimmer                   4        0
-din                      1        0
-ding                     5        0
-dings                    6        0
-dinky                    1        0
-dirt                    70        0
-dirty                   78        0
-disable                  3        0
-disabled                 3        0
-disadvantage             5        0
-disadvantages            3        0
-disagree                13        0
-disapointed              3        0
-disapointing             1        0
-disappoint              15        0
-disappointed           150        0
-disappointing           21        0
-disappointingly          1        0
-disappointment          16        0
-disappointments          1        0
-disaster                 3        0
-disastrously             1        0
-disbelief                3        0
-discomfort               2        0
-disconcerting            3        0
-discontinued             9        0
-discourage               3        0
-discouraging             1        0
-disgusted                1        0
-disgusting               1        0
-disillusionment          1        0
-disintegrated            2        0
-dislike                 13        0
-disliked                 5        0
-dislikes                 3        0
-dismal                   2        0
-dismay                   3        0
-dismayed                 2        0
-displeased               2        0
-dispute                  1        0
-disregard                1        0
-diss                     1        0
-dissapointed             8        0
-dissappointed            4        0
-dissatisfaction          2        0
-dissatisfied             5        0
-dissed                   1        0
-dissemble                1        0
-disservice               1        0
-distinction              0        2
-distinctive              0        8
-distinguished            0        1
-distort                  8        0
-distorted               60        0
-distortion             516        0
-distorts                10        0
-distract                 2        0
-distracting              9        0
-distraction              2        0
-distressed               1        0
-disturb                  6        0
-disturbed                1        0
-disturbing              10        0
-divine                   0        1
-dominate                 0        1
-dominated                0        1
-dominates                0        1
-dope                     4        0
-doubt                   61        0
-doubtful                 2        0
-doubts                   8        0
-downer                   2        0
-downfall                 2        0
-downgrade                2        0
-downhill                 1        0
-downside                47        0
-downsides                7        0
-drab                     1        0
-drag                    13        0
-dragged                  3        0
-dragging                 5        0
-drags                    1        0
-drain                    5        0
-drained                  3        0
-drains                   4        0
-drastic                  5        0
-drastically             11        0
-drawback                26        0
-drawbacks               10        0
-dread                    2        0
-dreadfully               1        0
-dreary                   1        0
-dripping                 6        0
-drippy                   1        0
-drips                    2        0
-drones                   1        0
-droop                    1        0
-dropout                  2        0
-dropouts                 1        0
-drowning                 1        0
-drunk                    6        0
-dubious                  2        0
-dud                      6        0
-dull                    47        0
-dumb                    12        0
-dumped                   2        0
-dumping                  2        0
-dumps                    1        0
-durable                  0      294
-dust                    46        0
-dusty                    6        0
-dying                    6        0
-dynamic                  0       76
-earnest                  0        1
-earnestly                0        1
-ease                     0       93
-eased                    0        1
-easier                   0      332
-easiest                  0       29
-easing                   0        1
-easy                     0     1482
-economical               0       17
-ecstatic                 0        2
-educated                 0        2
-effective                0       60
-effectively              0       27
-effectiveness            0        5
-efficient                0       28
-efficiently              0        1
-effortless               0       12
-effortlessly             0       10
-elated                   0        1
-electrify                0        1
-elegant                  0        8
-elegantly                0        1
-elevate                  0        1
-elimination              1        0
-elite                    0        2
-embarrass                1        0
-embarrassment            1        0
-emergency               12        0
-eminence                 0        9
-encourage                0       13
-encouragement            0        2
-encouraging              0        2
-endorse                  0        3
-endorsed                 0        2
-endorsement              0        4
-endorsing                0        2
-energetic                0        1
-engaging                 0        8
-enhance                  0       14
-enhanced                 0        6
-enhancement              0        7
-enhances                 0       10
-enjoy                    0       94
-enjoyable                0       10
-enjoyed                  0       11
-enjoying                 0       11
-enjoyment                0        3
-enjoys                   0        3
-enrich                   0        1
-entertain                0        3
-entertaining             0        3
-enthusiasm               0        3
-enthusiast               0        6
-enthusiastic             0        3
-entice                   0        1
-enticed                  0        1
-enticing                 0        2
-envious                  1        1
-envy                     0        2
-erase                    4        0
-err                      1        0
-errant                   1        0
-erratic                  2        0
-erratically              1        0
-erroneous                1        0
-error                   24        0
-errors                   3        0
-ethical                  0        1
-everlasting              0        1
-evil                     1        0
-exaggeration             3        0
-exceed                   0       15
-exceeded                 0       12
-exceeding                0        3
-exceedingly              0        2
-exceeds                  0        9
-excel                    0        1
-excelent                 0        3
-excelled                 0        1
-excellence               0        4
-excellent                0      429
-excellently              0        5
-excels                   0        6
-exceptional              0       18
-exceptionally            0       11
-excessive               17        0
-excessively              2        0
-excite                   0        1
-excited                  0       30
-exciting                 0        4
-excruciating             1        0
-excuse                  12        0
-excuses                  1        0
-exemplary                0        1
-exhaust                  1        0
-expansive                0        3
-expensive              472        0
-expertly                 0        1
-expire                   1        0
-expired                  2        0
-exquisite                0        3
-extortion                1        0
-extraneous               9        0
-extraordinary            0        2
-eyesore                  1        0
-fabricate                1        0
-fabrication              1        0
-fabulous                 0       11
-facilitate               0        1
-fail                    41        0
-failed                  51        0
-failing                  7        0
-fails                   24        0
-failure                  7        0
-failures                 6        0
-faint                    4        0
-fair                     0       89
-fairly                   0      201
-fairness                 0        5
-faith                    0        9
-faithful                 0        6
-faithfully               0        2
-fake                    16        0
-fall                   133        0
-fallen                  12        0
-falling                 55        0
-falls                   33        0
-false                    7        0
-falter                   1        0
-fame                     0        3
-famed                    0        1
-famous                   0       21
-fanatic                  4        0
-fancier                  0        1
-fancy                    0       41
-fanfare                  0        1
-fans                     0       15
-fantastic                0      158
-fantastically            0        3
-farce                    1        0
-fascination              0        1
-fashionable              0        1
-fast                     0      290
-faster                   0       66
-fastest                  0        3
-fat                     43        0
-fatal                    4        0
-fatally                  1        0
-fatigue                  6        0
-fatigued                 1        0
-fault                   53        0
-faults                   4        0
-faulty                  10        0
-fav                      0        3
-fave                     0        3
-favor                    0       26
-favorable                0        5
-favored                  0        1
-favorite                 0      220
-fear                    19        0
-fearful                  3        0
-fears                    2        0
-feat                     0        4
-fell                    49        0
-fervently                0        1
-festive                  0        1
-fidelity                 0       12
-fierce                   2        0
-fine                     0      742
-finely                   0        2
-finer                    0        8
-finest                   0        9
-finicky                  7        0
-firmer                   0        1
-fist                     4        0
-flagging                 1        0
-flak                     1        0
-flake                    1        0
-flakey                   1        0
-flaking                  2        0
-flaky                    2        0
-flashy                   0        9
-flatter                  0        8
-flattering               0        4
-flaw                    26        0
-flawed                   3        0
-flawless                 0       18
-flawlessly               0       44
-flaws                   23        0
-flexibility              0       56
-flexible                 0      142
-flicker                  1        0
-flickering               1        0
-flimsy                  69        0
-floored                  4        0
-flutter                  0        6
-fond                     0        9
-fondly                   0        1
-fondness                 0        1
-fool                    18        0
-fooled                  17        0
-foolish                  4        0
-foolproof                0        2
-forbid                   2        0
-forbidden                1        0
-foremost                 0        7
-foresight                0        3
-forfeit                  1        0
-fortunate                0        6
-fortunately              0       27
-fortune                  0        9
-fracture                 1        0
-fragile                 34        0
-frail                    2        0
-freak                    8        0
-freaking                10        0
-freaks                   3        0
-free                     0      202
-freed                    0        2
-freedom                  0        2
-freeze                   1        0
-fresh                    0       36
-fresher                  0        3
-fret                   218        0
-frets                  130        0
-friction                33        0
-fried                    1        0
-friendly                 0       34
-friggin                  4        0
-frighteningly            1        0
-frost                    1        0
-frozen                   2        0
-frugal                   0        1
-frustrated               5        0
-frustrating             20        0
-frustration              9        0
-frustrations             1        0
-fumble                   5        0
-fumes                    2        0
-fun                      0      173
-funky                   16        0
-funny                   16        0
-furious                  2        0
-fuss                    19        0
-fussy                    7        0
-futile                   2        0
-futuristic               0        1
-fuzzy                   13        0
-gain                     0      433
-gained                   0        1
-gains                    0        6
-galore                   0        2
-garbage                 19        0
-garish                   3        0
-gasp                     1        0
-gaudy                    1        0
-geezer                   1        0
-gem                      0       12
-gems                     0        2
-generous                 0        7
-generously               0        6
-genius                   0       11
-gentle                   0       33
-gentlest                 0        1
-genuine                  0       22
-ghetto                   1        0
-gifted                   0        1
-gimmick                  5        0
-gimmicks                 4        0
-gimmicky                 4        0
-glad                     0      171
-gladly                   0        5
-glare                    4        0
-glee                     0        2
-glisten                  0        2
-glitch                   1        0
-glitches                 1        0
-glitz                    0        1
-glorious                 0        1
-glory                    0        2
-glow                     0        3
-glowing                  0        1
-glut                     1        0
-godsend                  0        7
-gold                     0       96
-golden                   0        9
-goodness                 0        8
-goof                     1        0
-goofy                    6        0
-gorgeous                 0        8
-grace                    0        7
-gracefully               0        1
-gracious                 0        1
-grainy                   2        0
-grand                    0       27
-grate                    3        0
-gratification            0        2
-grating                  2        0
-greasy                   8        0
-greatness                0        1
-greed                    1        0
-greedy                   1        0
-grief                    1        0
-grin                     0        2
-grind                    6        0
-gripe                   30        0
-gripes                   9        0
-gritty                  11        0
-gross                    5        0
-growl                    6        0
-grudge                   1        0
-grumble                  1        0
-guarantee                0       14
-guidance                 0        5
-guilty                   2        0
-gush                     0        1
-gusto                    0        2
-gutless                  1        0
-gutsy                    0        1
-hack                     1        0
-hail                     0        1
-hallowed                 0        1
-handicapped              1        0
-handily                  0        1
-handsome                 0        6
-handy                    0      155
-hang                    86        0
-hangs                   13        0
-happier                  0       53
-happily                  0        9
-happiness                0        1
-happy                    0      449
-hard                   625        0
-harm                    19        0
-harmed                   1        0
-harmless                 0        1
-harmony                  0       12
-harms                    1        0
-harried                  1        0
-harsh                   38        0
-hassle                  45        0
-hassles                  5        0
-haste                    1        0
-hastily                  2        0
-hate                    81        0
-hated                   17        0
-hater                    1        0
-hates                    1        0
-hating                   1        0
-hatred                   2        0
-haunting                 1        0
-hazard                   3        0
-hazardous                1        0
-headache                 6        0
-headaches                3        0
-healthy                  0        3
-heartily                 0        3
-heaven                   0       12
-heavenly                 0        1
-heck                    35        0
-hefty                   14        0
-hell                    34        0
-hells                    1        0
-helped                   0       50
-helpful                  0       63
-helping                  0        7
-hero                     0        3
-hesitant                13        0
-hideous                  2        0
-hilarious                0        1
-hinder                   2        0
-hindrance                2        0
-hiss                   100        0
-hissed                   1        0
-hissing                 22        0
-hoax                     1        0
-hogs                     1        0
-hollow                  25        0
-holy                     0       23
-honest                   0       36
-honesty                  0        5
-honor                    0        1
-honoring                 0        2
-hooray                   0        6
-hopeful                  0        4
-horrendous               1        0
-horrible                43        0
-horrid                   3        0
-horrific                 1        0
-hot                      0       87
-hug                      0        1
-hum                    104        0
-humble                   0        7
-humid                    8        0
-humility                 0        1
-humming                  6        0
-humor                    0        2
-hung                    13        0
-hurt                    46        0
-hurting                  6        0
-hurts                    8        0
-hype                    20        0
-ideal                    0       59
-ideally                  0        2
-idiocy                   1        0
-idiot                   12        0
-ignorance                2        0
-ignorant                 3        0
-ignore                   8        0
-illuminate               0        1
-illuminating             0        2
-illusion                 1        0
-imbalance                1        0
-immovable                1        0
-impatient                4        0
-impeccable               0        1
-impedance               29        0
-impede                   2        0
-impediment               1        0
-impending                2        0
-imperfect                2        0
-imperfections            1        0
-implication              1        0
-imposing                 1        0
-impossible              39        0
-impossibly               1        0
-impractical              4        0
-imprecise                1        0
-impress                  0       11
-impressed                0      163
-impresses                0        2
-impressive               0       39
-impressively             0        1
-improper                 2        0
-improperly               1        0
-improve                  0       64
-improved                 0       61
-improvement              0       66
-improvements             0        4
-improves                 0       12
-improving                0       11
-inability                4        0
-inaccuracies             1        0
-inaccuracy               1        0
-inaccurate               5        0
-inactive                 1        0
-inadequate               2        0
-inaudible                1        0
-incapable                1        0
-incomparable             1        0
-incompatability          1        0
-incompatible             1        0
-incompetence             1        0
-inconceivable            1        0
-incongruous              1        0
-inconsequential          1        0
-inconsistencies          1        0
-inconsistent             2        0
-inconvenience            4        0
-incorrect                6        0
-incorrectly              7        0
-incredible               0       49
-incredibly               0       41
-indifferent              1        0
-indiscreet               1        0
-indistinguishable        3        0
-ineffective              1        0
-inefficient              2        0
-inept                    2        0
-inevitable               5        0
-inevitably               5        0
-inexcusable              3        0
-inexcusably              1        0
-inexpensive              0      296
-inexperienced            6        0
-infallible               0        1
-inferior                13        0
-inflated                 3        0
-inflexible               1        0
-infuriating              1        0
-ingenious                0        4
-ingeniously              0        1
-ingenuity                0        1
-injure                   2        0
-injury                   2        0
-innovation               0        3
-innovative               0        3
-inopportune              2        0
-inordinately             1        0
-insane                  12        0
-insanely                 5        0
-insanity                 1        0
-insightful               0        1
-insignificant            2        0
-inspiration              0        3
-inspire                  0        1
-inspiring                0        5
-instability              1        0
-instantly                0       27
-instrumental             0        6
-insult                   2        0
-insulting                1        0
-insurmountable           1        0
-integral                 0        3
-integrated               0        8
-intelligence             0        1
-intelligent              0        3
-intense                  2        0
-interfere               17        0
-interference            38        0
-interferes               4        0
-intermittent            11        0
-intimate                 0        3
-intricate                0        2
-intriguing               0        4
-intrude                  1        0
-intrusive                4        0
-intuitive                0       23
-invaluable               0        6
-invasive                 2        0
-inventive                0        1
-invisible               10        0
-irked                    1        0
-irks                     1        0
-ironic                   1        0
-irony                    1        0
-irrationally             1        0
-irregular                1        0
-irregularity             1        0
-irrelevant               6        0
-irresistible             0        1
-irresponsible            1        0
-irritated                2        0
-irritating               3        0
-irritation               3        0
-irritations              1        0
-isolate                  8        0
-isolated                11        0
-isolation               15        0
-issue                  299        0
-issues                 249        0
-itch                     5        0
-itching                  2        0
-itchy                    2        0
-jagged                   2        0
-jam                    143        0
-jarring                  2        0
-jerk                     3        0
-joke                    17        0
-jolt                     1        0
-joy                      0       16
-jumpy                    3        0
-junk                    52        0
-junky                    3        0
-justly                   0        1
-kaput                    2        0
-keen                     0        2
-kill                    18        0
-killed                   4        0
-killer                  18        0
-killing                  9        0
-kills                   13        0
-knife                   13        0
-knock                   59        0
-knowledgeable            0        4
-kudos                    0        5
-lack                    57        0
-lacked                   6        0
-lacking                 32        0
-lackluster               1        0
-lacks                   21        0
-lag                      4        0
-laggy                    1        0
-lame                     8        0
-latency                 44        0
-lazy                    10        0
-lead                     0      122
-leading                  0       10
-leads                    0       50
-leak                     5        0
-leakage                  1        0
-leaking                  3        0
-leaks                    5        0
-lean                     0       15
-led                      0      112
-leery                    5        0
-legendary                0        5
-lemon                   25        0
-lengthy                  5        0
-leverage                 0        7
-liability                2        0
-liable                   1        0
-liberty                  0        1
-lie                      5        0
-lied                     2        0
-lies                     8        0
-lifeless                 7        0
-lifesaver                0        2
-lighter                  0      115
-likable                  0        1
-likes                    0       52
-liking                   0       31
-limit                   11        0
-limitation               3        0
-limitations             23        0
-limited                 76        0
-limits                  10        0
-limp                     2        0
-lively                   0        7
-logical                  0        6
-lone                     3        0
-lonely                   2        0
-lonesome                 1        0
-loose                  135        0
-lose                    94        0
-loses                    7        0
-losing                  37        0
-loss                    58        0
-lost                   108        0
-loud                   273        0
-louder                  72        0
-lousy                    5        0
-love                     0      990
-loved                    0       82
-lovely                   0       21
-lover                    0        2
-loves                    0       64
-loving                   0       10
-loyal                    0        9
-loyalty                  0        4
-luck                     0       52
-lucky                    0       16
-lucrative                0        1
-lukewarm                 2        0
-lure                     1        0
-lush                     0       17
-luster                   0        2
-lustrous                 0        1
-luxurious                0        1
-luxury                   0        1
-lying                   14        0
-mad                      8        0
-magic                    0       17
-magical                  0        8
-magnificent              0        2
-magnificently            0        1
-majestic                 0        1
-manageable               0        7
-maniac                   1        0
-manipulate               7        0
-manipulation             2        0
-mar                      7        0
-marginal                 2        0
-marginally               5        0
-marveled                 0        1
-marvelous                0        6
-mashed                   1        0
-master                   0       52
-masterfully              0        1
-mastery                  0        1
-matchless                0        1
-matte                   22        0
-meaningful               0        2
-meaningless              1        0
-mediocre                 8        0
-mediocrity               1        0
-mercy                    0        1
-merit                    0        3
-mesmerizing              0        1
-mess                    66        0
-messed                  15        0
-messes                   1        0
-messing                 28        0
-messy                   10        0
-meticulous               0        2
-mighty                   0       13
-miracle                  0        8
-miracles                 0        6
-miscellaneous            1        0
-misconception            1        0
-miserable                3        0
-miserably                2        0
-misfortune               1        0
-misgivings               2        0
-mishap                   3        0
-misleading               8        0
-misreading               1        0
-miss                    41        0
-missed                  15        0
-misses                   1        0
-mist                     2        0
-mistake                 46        0
-mistaken                 3        0
-mistakenly               2        0
-mistakes                 4        0
-mistress                 1        0
-misunderstood            2        0
-misuse                   1        0
-mock                     1        0
-modern                   0       57
-modest                   0       11
-monotonous               1        0
-monster                100        0
-monstrous                2        0
-moot                     4        0
-moron                    1        0
-moronic                  1        0
-morons                   2        0
-mortified                1        0
-motley                   1        0
-mourn                    1        0
-muddle                   1        0
-muddy                   46        0
-mundane                  1        0
-murder                   1        0
-mushy                    7        0
-mysterious               3        0
-mysteriously             1        0
-mystery                  4        0
-myth                     1        0
-nagging                  1        0
-narrower                10        0
-nasty                   24        0
-neat                     0       33
-neatest                  0        3
-neatly                   0       11
-needless                16        0
-needlessly               1        0
-negative                79        0
-negatives               13        0
-neglect                  2        0
-neglected                2        0
-negligent                1        0
-nervous                  8        0
-nice                     0     1707
-nicely                   0      224
-nicer                    0       68
-nicest                   0        8
-nifty                    0       11
-niggle                   2        0
-nightmare                5        0
-nimble                   0        1
-nitpick                  4        0
-nitpicking               1        0
-noise                  575        0
-noiseless                0        7
-noises                  32        0
-noisier                  4        0
-noisy                   99        0
-nonexistent              1        0
-nonsense                 8        0
-notably                  0        8
-notoriety                1        0
-notorious                2        0
-notoriously              3        0
-novelty                  0        9
-nuisance                 3        0
-numb                     2        0
-oasis                    0        4
-object                   5        0
-objectionable            2        0
-obliterate               1        0
-obnoxious                4        0
-obscure                  4        0
-obsess                   2        0
-obsession                0        1
-obsolete                 2        0
-obstacle                 1        0
-obstruct                 3        0
-obstruction              1        0
-obtainable               0        2
-obtrusive                3        0
-odd                     32        0
-oddity                   1        0
-oddly                    9        0
-odor                     9        0
-offend                   1        0
-offending                2        0
-offensive                4        0
-omission                 3        0
-omit                     1        0
-openly                   0        1
-openness                 0        1
-optimal                  0        5
-optimistic               0        1
-orderly                  0        1
-outdo                    0        1
-outdone                  0        1
-outperform               0        2
-outrageous               2        0
-outrageously             1        0
-outstanding              0       55
-ovation                  0       35
-overbearing              4        0
-overdone                 1        0
-overheat                 1        0
-overkill                14        0
-overloaded               2        0
-overlook                 1        0
-overpaid                 2        0
-overpower                3        0
-overpriced              24        0
-overrated                1        0
-oversize                 2        0
-overtaken                0        1
-overture                 0        1
-overweight               1        0
-overwhelm                2        0
-overwhelmed              1        0
-overwhelming             7        0
-overwhelmingly           1        0
-overzealous              1        0
-pain                    42        0
-painful                  9        0
-painfully                2        0
-painless                 0        2
-pains                    1        0
-pale                     1        0
-pampers                  0        1
-pan                      7        0
-panic                    2        0
-paradoxical              1        0
-paramount                0        1
-passion                  0        4
-passionate               0        1
-passive                 29        0
-pathetic                 1        0
-pathetically             1        0
-patience                 0       10
-patient                  0        5
-patiently                0        1
-patriot                  0        3
-patriotic                0        1
-paupers                  1        0
-peace                    0       17
-peculiar                 1        0
-peeled                   3        0
-peppy                    0        1
-perfect                  0      745
-perfection               0       11
-perfectly                0      382
-peril                    1        0
-perplexing               2        0
-perplexity               1        0
-persevere                0        1
-personalized             0        1
-petty                    4        0
-phenomenal               0        7
-phenomenally             0        1
-picky                   24        0
-pig                      7        0
-pigs                     2        0
-pinch                   30        0
-pinnacle                 0        2
-pitiful                  1        0
-pittance                 1        0
-plague                   1        0
-plasticky                1        0
-playful                  0        1
-pleasant                 0       22
-pleasantly               0       35
-pleased                  0      198
-pleases                  0        1
-pleasing                 0       20
-pleasure                 0       17
-plentiful                0        1
-pluses                   0        5
-plush                    0       16
-pointless                5        0
-polished                 0       23
-poor                    73        0
-poorly                  19        0
-popular                  0       49
-portable                 0      149
-positive                 0       67
-positively               0        6
-positives                0        5
-powerful                 0       33
-praise                   0       17
-praising                 0        3
-precious                 0       10
-precise                  0       40
-precisely                0       13
-prefer                   0      284
-preferable               0        2
-preferably               0        1
-prefered                 0        3
-preferring               0        3
-prefers                  0        5
-pretend                  3        0
-pretentious              1        0
-pretty                   0      800
-priceless                0        6
-pricey                  27        0
-pricier                  6        0
-primitive                1        0
-prize                    0        3
-problematic             11        0
-prodigy                  0        1
-proficient               0        4
-proficiently             0        1
-profound                 0        1
-profoundly               0        1
-progress                 0        6
-progressive              0        2
-prominent                0        3
-promise                  0       12
-promised                 0       16
-promises                 0        5
-prompt                   0       13
-promptly                 0       12
-proper                   0       78
-properly                 0      123
-proprietary              6        0
-pros                     0       97
-protect                  0       81
-protection               0       69
-protective               0       29
-protest                  1        0
-protested                1        0
-proud                    0        9
-proven                   0       16
-proves                   0        4
-provoke                  1        0
-prowess                  0        1
-prudent                  0        1
-pry                      3        0
-punch                   59        0
-punk                    13        0
-puny                     1        0
-puppets                  3        0
-pure                     0       86
-puzzling                 1        0
-quack                    4        0
-quaint                   0        2
-qualified                0        3
-qualify                  0        4
-qualm                    1        0
-qualms                   1        0
-questionable             5        0
-quibble                  5        0
-quibbles                 1        0
-quicker                  0       20
-quiet                    0      144
-quieter                  0       22
-radical                  1        0
-radically                2        0
-rage                     5        0
-ragged                   7        0
-raging                   4        0
-rail                     1        0
-randomly                 6        0
-rant                     4        0
-rapid                    0        3
-rash                     1        0
-rattle                  16        0
-rattled                  5        0
-rattles                  5        0
-raving                   2        0
-readable                 0       11
-readily                  0       10
-ready                    0       89
-realistic                0       16
-reasonable               0       88
-reclaim                  0        1
-recomend                 0       31
-recommend                0      912
-recommendation           0       20
-recommendations          0        4
-recommended              0      310
-redeeming                0        1
-redundant                6        0
-refined                  0        2
-refinement               0        1
-refresh                  0        1
-refreshing               0        3
-refund                   0       27
-refunded                 0        3
-refuse                   7        0
-refused                  2        0
-refuses                  1        0
-regal                    0        2
-regard                   0       20
-regret                  49        0
-regrets                 12        0
-regrettable              1        0
-regretted                3        0
-reject                   1        0
-rejected                 2        0
-rejecting                3        0
-rejection                2        0
-rejects                  3        0
-rejuvenate               0        1
-relaxed                  0        2
-reliable                 0      105
-reliably                 0        8
-relief                   0       19
-reluctance               1        0
-reluctant                6        0
-remarkable               0        9
-remarkably               0        4
-remedy                   0        2
-remorse                  2        0
-renaissance              0        1
-renewed                  0        2
-renowned                 0        1
-repel                    1        0
-replaceable              0        5
-reputable                0        6
-reputation               0       24
-resistance              20        0
-resound                  0        1
-respect                  0       22
-respectable              0        3
-responsive               0       46
-restored                 0        4
-restrict                 1        0
-restricted               1        0
-restriction              1        0
-retract                  1        0
-retractable              0        2
-revert                   2        0
-revival                  0        1
-revive                   0        1
-revolutionary            0        1
-reward                   0        2
-rich                     0       97
-richer                   0       12
-richness                 0        9
-ridiculous              28        0
-ridiculously             7        0
-rife                     1        0
-rifts                    1        0
-righteous                0        1
-rightly                  0        1
-rigid                   18        0
-rigidity                 2        0
-rip                     17        0
-ripoff                   4        0
-ripped                  10        0
-risk                    32        0
-risky                    1        0
-rival                    1        0
-robust                   0       28
-rockstar                 0        2
-rockstars                0        1
-rogue                   30        0
-roomy                    0        4
-rot                      1        0
-rough                   69        0
-rubbish                  1        0
-ruin                     9        0
-ruined                   5        0
-ruining                  6        0
-rumbling                 2        0
-rumor                    1        0
-runaway                  2        0
-rust                    22        0
-rusts                    1        0
-rusty                    8        0
-sack                     1        0
-sad                     16        0
-sadly                   19        0
-safe                     0       63
-safely                   0       18
-sag                      5        0
-sagging                  2        0
-sap                      1        0
-satisfactory             0        6
-satisfied                0       99
-satisfies                0        2
-satisfy                  0       12
-satisfying               0        8
-saver                    0       18
-savings                  0        6
-savior                   0        1
-savvy                    0        3
-scam                     3        0
-scare                    4        0
-scared                   9        0
-scarred                  1        0
-scary                    3        0
-scoff                    1        0
-scramble                 1        0
-scrambling               1        0
-scrap                    2        0
-scratch                 61        0
-scratched               11        0
-scratches               24        0
-scratchy                13        0
-scream                   7        0
-screech                  1        0
-screwed                 24        0
-scuff                    5        0
-scuffs                   3        0
-seamless                 0        2
-seasoned                 0        9
-secure                   0      127
-securely                 0       67
-selective                0        2
-sensation                0        3
-sensitive                0       90
-severe                   4        0
-sexy                     0        8
-shabby                   1        0
-shady                    1        0
-shake                    7        0
-shaky                    4        0
-shallow                 10        0
-shame                   16        0
-shark                    5        0
-sharp                    0      113
-sharper                  0        9
-sharply                  1        0
-shatter                  2        0
-shimmer                 15        0
-shimmering               0        5
-shimmy                   1        0
-shine                    0       36
-shiny                    0       35
-shit                     2        0
-shock                   73        0
-shocked                 23        0
-shocking                 3        0
-shockingly               6        0
-shoddy                   2        0
-shortage                 1        0
-shortcoming              1        0
-shortcomings             6        0
-shrill                   8        0
-shroud                   1        0
-shrug                    1        0
-sick                    11        0
-sickly                   1        0
-significant              0       38
-silent                   0       26
-silly                   20        0
-simpler                  0       18
-simplest                 0        5
-simplified               0        1
-simplifies               0        2
-simplify                 0        1
-simplifying              0        1
-sin                      1        0
-sincerely                0        5
-sinister                 1        0
-sink                     6        0
-sinking                  1        0
-skeptical               32        0
-sketchy                  2        0
-skill                    0       11
-skilled                  0        4
-skimpy                   1        0
-skinny                  11        0
-slack                    8        0
-slap                    34        0
-slave                    5        0
-sleek                    0       13
-slick                    0       37
-sloppy                   8        0
-sloth                    1        0
-slow                    44        0
-slowed                   1        0
-slower                   4        0
-slowest                  1        0
-slowly                  26        0
-sluggish                 1        0
-smack                    1        0
-smallish                 2        0
-smart                    0       22
-smarter                  0        1
-smartest                 0        1
-smartly                  0        1
-smash                    4        0
-smear                    2        0
-smell                   53        0
-smelled                  1        0
-smelling                 1        0
-smells                  11        0
-smelly                   2        0
-smile                    0        7
-smiles                   0        3
-smiling                  0        2
-smitten                  0        1
-smoke                    7        0
-smooth                   0      208
-smoother                 0       44
-smoothest                0        2
-smoothly                 0       25
-smudge                   4        0
-smudges                 20        0
-smudging                 1        0
-snag                     5        0
-snagged                  4        0
-snagging                 1        0
-snappy                   0        5
-snare                   35        0
-sneering                 1        0
-snob                    11        0
-snobs                    9        0
-soapy                    1        0
-sob                      2        0
-sober                    1        0
-soft                     0      242
-softer                   0       51
-solid                    0      614
-sophisticated            0        5
-sore                    11        0
-soreness                 1        0
-soulful                  0        3
-soundly                  0        1
-sour                     3        0
-spacious                 0        1
-spank                    1        0
-sparkle                  0       13
-sparkling                0        9
-spectacular              0       13
-spectacularly            0        1
-spendy                   2        0
-spilling                 2        0
-spite                    3        0
-splendid                 0        1
-split                   13        0
-splitting                5        0
-spoiled                  4        0
-spontaneous              0        1
-spooky                   1        0
-sporadic                 1        0
-spotty                   2        0
-squash                   2        0
-squeak                  21        0
-squeaks                  7        0
-squeaky                  4        0
-squeal                   3        0
-squealing                2        0
-squeals                  2        0
-stab                     1        0
-stability                0       36
-stabilize                0        2
-stable                   0      133
-stain                    9        0
-stainless                0       23
-stains                   4        0
-stale                    2        0
-stall                    2        0
-standout                 0        1
-stark                    3        0
-static                  35        0
-steady                   0       20
-steal                   37        0
-stealing                 1        0
-steals                   2        0
-steep                    2        0
-stellar                  0        9
-stereotypical            1        0
-stern                    2        0
-sticky                  28        0
-stiff                  110        0
-stiffness               18        0
-sting                   10        0
-stinging                 1        0
-stingy                   2        0
-stink                    5        0
-stinks                   3        0
-stole                    1        0
-stolen                  13        0
-straighten               0        2
-straightforward          0        5
-strain                  32        0
-strained                 1        0
-straining                2        0
-strange                 27        0
-strangely                3        0
-stranger                 1        0
-strangle                 2        0
-streamlined              0        1
-stress                  42        0
-stressful                2        0
-stricken                 1        0
-strict                   1        0
-strictly                15        0
-strident                 2        0
-strike                  13        0
-striking                 0        6
-strikingly               0        1
-stringent                2        0
-strong                   0      243
-stronger                 0       34
-struck                   8        0
-struggle                 5        0
-struggled                6        0
-struggling               4        0
-stubborn                 3        0
-stuck                   54        0
-stuffy                   1        0
-stumble                  1        0
-stumbled                 6        0
-stumped                  1        0
-stunning                 0        8
-stupid                  15        0
-sturdier                 0       18
-sturdy                   0      430
-stutter                  1        0
-stylish                  0        6
-stylized                 0        2
-subdued                  2        0
-sublime                  0        3
-substandard              2        0
-substantive              0        1
-subtract                 8        0
-succeed                  0        3
-succeeding               0        1
-succeeds                 0        1
-success                  0       10
-successful               0        5
-successfully             0        8
-suck                    42        0
-sucked                  12        0
-sucker                   5        0
-sucks                   23        0
-sue                      1        0
-suffer                   9        0
-suffered                 5        0
-suffering                3        0
-suffers                  2        0
-suffice                  0       10
-sufficient               0       26
-sufficiently             0       10
-suicide                  1        0
-suitable                 0       21
-sunk                     1        0
-super                    0      308
-superb                   0       35
-superbly                 0        4
-superior                 0       50
-superiority              0        4
-supple                   0       14
-support                  0      121
-supported                0        2
-supporter                0        2
-supporting               0       12
-supportive               0        1
-supports                 0       16
-suppression              1        0
-supremely                0        2
-surpass                  0        2
-surreal                  0        1
-survival                 0        2
-susceptible             13        0
-suspect                 34        0
-suspicion                1        0
-suspicious               2        0
-suspiciously             1        0
-sustainability           0        3
-sweaty                  16        0
-sweeping                 0        3
-sweet                    0      138
-sweeten                  0        2
-sweetness                0        1
-swipe                    5        0
-swollen                  4        0
-symptom                  1        0
-symptoms                 2        0
-syndrome                 5        0
-tacky                    1        0
-tainted                  1        0
-talent                   0        6
-talented                 0        1
-tangle                   6        0
-tangled                  6        0
-tangles                  4        0
-tank                    73        0
-tanks                    2        0
-tarnish                  6        0
-tarnished                2        0
-tarnishes                1        0
-tarnishing               2        0
-taxing                   2        0
-tease                    2        0
-tedious                  6        0
-tediously                1        0
-tempt                    0        1
-temptation               1        0
-tempting                 0        3
-tenacious                0        1
-tender                   0        2
-tenderness               1        0
-tension                201        0
-terrible                49        0
-terribly                11        0
-terrific                 0       26
-terror                  18        0
-thankful                 0        4
-thicker                 90        0
-thinner                  0       59
-thoughtful               0        1
-thoughtfully             0        3
-thoughtless              1        0
-thrash                  10        0
-threat                   1        0
-threaten                 1        0
-threats                  1        0
-thrift                   0        1
-thrill                   0        2
-thrilled                 0       16
-thrilling                0        1
-thrive                   0        1
-throbbing                1        0
-throttle                 2        0
-thwart                   1        0
-tidy                     0        2
-timely                   0        8
-tired                   37        0
-tiresome                 1        0
-tiring                   4        0
-tolerable                0        2
-toll                     2        0
-top                      0      503
-topple                   7        0
-tops                     0       16
-torture                  4        0
-torturous                1        0
-touchy                   3        0
-tough                    0       79
-tougher                  0        7
-toughest                 0        1
-toughness                3        0
-tout                     1        0
-touted                   3        0
-toxic                    2        0
-traction                 0        2
-tragedy                  1        0
-transparent              0       48
-trap                     2        0
-trapped                  1        0
-trash                   16        0
-trashed                  4        0
-trashy                   6        0
-treasure                 0        3
-tremendously             0        8
-trendy                   0        1
-trick                   71        0
-tricky                  22        0
-triumph                  0        1
-trivial                  5        0
-trivially                0        1
-trouble                 93        0
-troubles                 2        0
-troublesome              1        0
-trumpet                  0        7
-trust                    0       78
-trusted                  0        8
-trusting                 0        5
-trustworthiness          0        1
-trustworthy              0        4
-trusty                   0        6
-truthfully               0        1
-tumble                   3        0
-tumbles                  1        0
-twist                   31        0
-twisted                 10        0
-twists                   3        0
-ugh                      4        0
-ugly                    10        0
-unable                   6        0
-unacceptable             3        0
-unacceptably             1        0
-unaffected               0        2
-unappealing              1        0
-unattractive             2        0
-unavailable              1        0
-unbearable               4        0
-unbeatable               0       14
-unbelievable            20        0
-unbelievably             6        0
-unbiased                 0        1
-unclean                  1        0
-unclear                  1        0
-uncomfortable           32        0
-uncomfortably            2        0
-unconditional            0        1
-unconvincing             1        0
-undamaged                0        2
-undaunted                0        1
-undecided                1        0
-undefined                2        0
-underdog                 1        0
-underestimate            1        0
-underpowered             2        0
-understandable           0        3
-undesirable              2        0
-undisputed               0        1
-undone                   5        0
-undue                    4        0
-uneven                   8        0
-unexpected              10        0
-unexpectedly             5        0
-unfairly                 1        0
-unfamiliar               3        0
-unfavorable              2        0
-unfinished               9        0
-unfit                    1        0
-unforgiving              3        0
-unfortunate              7        0
-unfounded                1        0
-unhappy                  7        0
-unhealthy                1        0
-unhelpful                2        0
-unity                    0        8
-unknown                  4        0
-unleash                  1        0
-unlimited                0       10
-unlucky                  3        0
-unmatched                0        4
-unnatural                4        0
-unnecessary             17        0
-unnerving                1        0
-unorthodox               1        0
-unparalleled             0        1
-unpleasant               8        0
-unprepared               1        0
-unquestionably           0        2
-unravel                  3        0
-unreachable              1        0
-unreadable               1        0
-unreasonable             1        0
-unreliable               5        0
-unresponsive             2        0
-unruly                   1        0
-unsatisfactory           1        0
-unstable                 8        0
-unsteadiness             1        0
-unsuccessful             1        0
-unsure                  11        0
-unsuspecting             1        0
-unthinkable              2        0
-untimely                 1        0
-unusable                22        0
-unuseable                1        0
-unusual                  7        0
-unusually                3        0
-unwanted                31        0
-unwieldy                 3        0
-unwilling                1        0
-upgradable               0        2
-upgradeable              0        1
-upgraded                 0       18
-uphold                   0        1
-uplifting                0        1
-upscale                  0        2
-upset                   11        0
-upsetting                1        0
-usable                   0       41
-useable                  0       18
-useless                 59        0
-utterly                  2        0
-vague                    3        0
-vain                     1        0
-valuable                 0       11
-variety                  0      118
-vent                     2        0
-versatile                0      115
-versatility              0       32
-vibrant                  0        8
-vibrate                  8        0
-vibrates                 1        0
-vibrating                3        0
-vibration               82        0
-vice                    15        0
-viewable                 0        3
-violate                  2        0
-violation                1        0
-violent                  1        0
-viper                    1        0
-vivid                    0        1
-vouch                    0        3
-vulnerable               3        0
-wack                     3        0
-wail                     2        0
-warm                     0      150
-warmer                   0       29
-warmth                   0       27
-warned                  15        0
-warning                 28        0
-warp                     2        0
-warped                   7        0
-wary                     6        0
-waste                   38        0
-wasted                  14        0
-wasteful                 1        0
-wasting                  8        0
-wayward                  1        0
-weak                    57        0
-weaken                   1        0
-weakening                1        0
-weaker                   5        0
-weakness                 5        0
-weaknesses               3        0
-wealthy                  0        1
-weary                    2        0
-wedge                    4        0
-weird                   64        0
-whine                    2        0
-whining                  3        0
-whips                    1        0
-whoa                     0        1
-wholeheartedly           0        6
-wicked                   3        0
-wild                     8        0
-wildly                   1        0
-wimpy                    9        0
-win                      0       25
-windfall                 0        1
-winner                   0       27
-winners                  0        1
-winning                  0        1
-wins                     0        8
-wisdom                   0        1
-wise                     0       66
-wisely                   0        1
-wobble                   5        0
-wobbles                  3        0
-won                      0        9
-wonderful                0      114
-wonderfully              0       21
-wonders                  0       13
-woo                      0        1
-workable                 0       10
-worn                    28        0
-worried                 38        0
-worries                 22        0
-worry                  130        0
-worrying                13        0
-worse                   60        0
-worst                   21        0
-worth                    0      553
-worthiness               0        1
-worthless               16        0
-worthwhile               0       13
-worthy                   0       21
-wound                   90        0
-wounds                  20        0
-wow                      0      109
-wrinkle                  1        0
-wrinkles                 1        0
-wrong                  333        0
-wrought                  1        0
-yay                      0        5
-zap                      1        0
-zaps                     1        0
-zombie                   5        0
+ [ reached getOption("max.print") -- omitted 1802 rows ]
 ```
 ]
 
@@ -3930,7 +2228,7 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_bc19d48c" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_08804760" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

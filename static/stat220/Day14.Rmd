@@ -111,7 +111,7 @@ A function is a type of object in R that can perform a specific task.
 <br>
 --
 
-.bqt.font90[
+.bq.font90[
 - Functions take arguments as input and output some manipulated form of the input data.
 
 - A function is specified first with the object name, then parentheses with arguments inside.
@@ -139,7 +139,7 @@ class: middle
 
 # When to write functions?
 
-.font120.bq[
+.font110.bql[
 
 - Using the same code more than once
 
@@ -351,6 +351,7 @@ class: action, middle
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
+<br>
 .bql[
 - Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 14.Rmd file
@@ -389,7 +390,7 @@ Allows code to:
 
 # if - else
 
-.code120[
+.code110[
 ```{r}
 if(TRUE){
   print("Positive")
@@ -401,7 +402,7 @@ if(TRUE){
 
 --
 
-.code120[
+.code110[
 ```{r}
 if(FALSE){
   print("Positive")
@@ -520,22 +521,29 @@ class:middle
 <br>
 <br>
 
-# General Youtube Comment
+# Excerpt from F. Scott Fitzgerald's .b[The Great Gatsby]
 
 ```r
-text <- c("This is SERIOUSLY well put together. Honestly I don’t even know how Television services
-          are still in business when there is QUALITY like this available at our damn fingertips..
-          it’s actually mind boggling and I really think we take these things for granted. Big big
-          BIG ups to the Sidemen and all involved in this.")
+text <- c("He had come a long way to this blue lawn, and his dream must have 
+seemed so close that he could hardly fail to grasp it. He did not know that 
+it was already behind him, somewhere back in that vast obscurity beyond the 
+city, where the dark fields of the republic rolled on under the night. Gatsby 
+believed in the green light, the orgastic future that year by year recedes
+before us. It eluded us then, but that's no matter-tomorrow we will run faster,
+stretch out our arms farther... And one fine morning- So we beat on, boats 
+against the current, borne back ceaselessly into the past.")
 ```
 
 
 ```{r echo = FALSE}
-text <- c("This is SERIOUSLY well put together. Honestly I don’t even know how 
-          Television services are still in business when there is QUALITY like 
-          this available at our damn fingertips.. it’s actually mind boggling 
-          and I really think we take these things for granted. Big big BIG ups 
-          to the Sidemen and all involved in this.")
+text <- c("He had come a long way to this blue lawn, and his dream must have 
+seemed so close that he could hardly fail to grasp it. He did not know that 
+it was already behind him, somewhere back in that vast obscurity beyond the 
+city, where the dark fields of the republic rolled on under the night. Gatsby 
+believed in the green light, the orgastic future that year by year recedes
+before us. It eluded us then, but that's no matter-tomorrow we will run faster,
+stretch out our arms farther... And one fine morning- So we beat on, boats 
+against the current, borne back ceaselessly into the past.")
 ```
 
 --
@@ -592,7 +600,9 @@ class: center, inverse, top
 background-image: url("images/musical_instruments.jpg")
 background-size: cover
 
-## .yellow.b.font200[What is the average sentiment of Amazon shoppers purchasing musical instruments?]
+--
+
+## .yellow.font200[What is the average sentiment of Amazon shoppers purchasing musical instruments?]
 
 ---
 
@@ -618,7 +628,7 @@ musical_instr_reviews %>%
   top_n(25) %>% 
   ggplot(aes(fct_reorder(word,n), n)) + 
   theme_tufte() +
-  geom_col(fill = "#773232") + 
+  geom_col(fill = "#79CA32") + 
   xlab(NULL) + 
   coord_flip() + 
   ggtitle("Top words in Amazon Musical Instruments Reviews") +
@@ -665,7 +675,7 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
-.bq[
+.bql[
 - Work on activity 2
 - Ask me questions
 ]
