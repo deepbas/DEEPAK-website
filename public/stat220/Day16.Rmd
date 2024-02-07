@@ -301,11 +301,10 @@ class: middle
 
 <!-- - Most of the data on the web is still largely available as HTML -->
 
-> HTML page consists of series of elements which browsers use to interpret how to display the content
+.bqt.font80[HTML page consists of series of elements which browsers use to interpret how to display the content]
 
 <img src="images/html.png"  width="600" height="400" class="center">
 
-<br>
 
 
 <!--
@@ -318,9 +317,9 @@ class: middle
 
 ---
 
-# HyperText Markup Language (HTML)
+## HyperText Markup Language (HTML)
 
-> While it is structured (hierarchical/tree based) it often is not available in a form useful for analysis (flat/tidy).
+.bqt.font100[While it is structured (hierarchical/tree based) it often is not available in a form useful for analysis (flat/tidy).]
 
 <br>
 
@@ -389,22 +388,28 @@ Function      | Description
 
 ---
 
-background-image: url(images/imdb_charts.png)
+background-image: url(images/f1_drivers.png)
 background-position: center
-background-size: cover
+background-size: 80%
 
-# .center[http://www.imdb.com/chart/top/]
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+# .center[https://en.wikipedia.org/wiki/List_of_Formula_One_drivers]
 
 ---
 
 `r chunk_reveal("demo1", widths = c(40, 60), font_size_code="90%", title = "## Demo: read tables into R")`
 
 ```{r,demo1, eval=FALSE, echo=FALSE }
-bow("http://www.imdb.com/chart/top/") %>%
+bow("https://en.wikipedia.org/wiki/List_of_Formula_One_drivers") %>%
   scrape() %>% 
-  html_nodes("table") %>%
-  purrr::pluck(1) %>%
-  html_table() 
+  html_table() %>%
+  purrr::pluck(3) 
 ```
 
 ---

@@ -130,7 +130,7 @@ class: middle
 
 <br>
 
-.bql.font80[
+.bq.font80[
 Distribution for 
 - individual measurements in population (for a quantitative variable)
 - Sampling distribution for a statistic
@@ -195,10 +195,11 @@ ggplot(data = data.frame(x, y), aes(x = x, y = y)) +
 
 ```
 
+--
 
 <center>
 <div style="position: absolute; top: 20%; left: 70%;">
-<span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;">
+<span style="content: '\2192'; font-size: 20px; color: #FFFFFF; text-align: center; white-space: pre-line;">
   <p><strong>Area under the curve <br> for scores 650 & higher</strong></p>
 </span>
 </div>
@@ -214,7 +215,7 @@ ggplot(data = data.frame(x, y), aes(x = x, y = y)) +
 .bq.font80[
 - The curve represents the normal distribution, denoted by $N(\mu, \sigma)$. 
 
-- .red[(CALCULUS!)] Calculating the exact area requires integration, as given by the formula: 
+- .red[(CALCULUS!!)] Calculating the exact area requires integration, as given by the formula: 
 
  Area $=\int_a^b \frac{1}{\sqrt{2 \pi \sigma}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}} d x$
  
@@ -242,13 +243,35 @@ ggplot(data = data.frame(x, y), aes(x = x, y = y)) +
 
 ]
 
+--
+
+<center>
+<div style="position: absolute; top: 5%; left: 70%;">
+<span style="content: '\2192'; font-size: 20px; color: #FF00FF; text-align: center; white-space: pre-line;">
+  <p><strong>Gray area is the <br> area between a and b</strong></p>
+</span>
+</div>
+</center>
+
+
 
 ---
 
-# [StatKey](https://www.lock5stat.com/StatKey/) – Verbal SAT population 
+## [StatKey](https://www.lock5stat.com/StatKey/) – Verbal SAT: What proportion of people score above 650?
 
 <center>
 <img src="images/day14-2.png" width="70%" height="50%"> <br>
+</center>
+
+
+--
+
+<center>
+<div style="position: absolute; top: 30%; left: 50%;">
+<span style="content: '\2192'; font-size: 20px; color: #FFFFFF; text-align: center; white-space: pre-line;">
+  <p><strong>The proportion of people that <br> score above 650 is 15.9%</strong></p>
+</span>
+</div>
 </center>
 
 ---
@@ -257,15 +280,20 @@ class: middle
 
 # Some observations!
 
-.bql[
-- About $16 \%$ of individuals scored 650 or above.
+<left>
+<img src="images/SAT_median.png" width="70%" height="80%"> <br>
+</left>
 
-- The $25^{th}$ percentile score lies between 440 ( 2 SD below 580 ) and the median of 580 . 
-
-- Utilize `Statkey` to fine-tune the left-tail area to 0.25 for precise percentile calculation.
+--
 
 
-]
+<center>
+<div style="position: absolute; top: 10%; left: 40%;">
+<span style="content: '\2192'; font-size: 22px; color: #FFFFFF; text-align: center; white-space: pre-line;">
+  <p><strong>The 25th percentile score lies between <br> 440 (2 SD below 580) and the median of 580</strong></p>
+</span>
+</div>
+</center>
 
 
 
@@ -273,16 +301,18 @@ class: middle
 
 # [StatKey](https://www.lock5stat.com/StatKey/) – Verbal SAT scores
 
-<center>
-<img src="images/day14-3.png" width="50%" height="50%"> <br>
-</center>
+<left>
+<img src="images/day14-3.png" width="55%" height="60%"> <br>
+</left>
+
+--
 
 <center>
-<div style="position: absolute; top: 20%; left: 70%;">
+<div style="position: absolute; top: 20%; left: 50%;">
 <span style="content: '\2192'; font-size: 24px; color: #FF00FF; text-align: center; white-space: pre-line;">
   <p>The 25th percentile is 533.</p>
 <p>About 75% of people in the population score above 533.</p>
-
+<p>About 25% of people in the population score below 533.</p>
 
 </span>
 </div>
@@ -298,6 +328,7 @@ class: middle
 
 
 ```{r}
+# 1 - left-tail-area
 1 - pnorm(650, 580,70)
 ```
 
@@ -312,6 +343,7 @@ class: middle
 ### Alternatively:
 
 ```{r}
+# right-tail-area
 pnorm(650, 580,70, lower.tail = FALSE)
 ```
 
@@ -323,6 +355,7 @@ pnorm(650, 580,70, lower.tail = FALSE)
 ## What score is the $25^{th}$ percentile?
 
 ```{r}
+# qnorm(left-quantile, mean, sd)
 qnorm(.25,580,70)
 ```
 
@@ -331,6 +364,7 @@ qnorm(.25,580,70)
 ## What score is the $75^{th}$ percentile?
 
 ```{r}
+# qnorm(left-quantile, mean, sd)
 qnorm(.75,580,70)
 ```
 
@@ -700,7 +734,7 @@ class: action
 .pull-right-60[
 <br>
 .bql[
-- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Let's go over to the [course helper page](https://stat120-winter24.netlify.app/)
 - Please do the class activity and let me know if you have any questions
 - Feel free to talk to your neighbor
 ]

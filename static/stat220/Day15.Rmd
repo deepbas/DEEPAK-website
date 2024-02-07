@@ -112,7 +112,6 @@ class: title-slide, middle
 
 ---
 
-class: middle
 
 # Why repeat ourselves?
 
@@ -151,6 +150,9 @@ mean(tinydata$z)
 
 ]
 
+--
+
+.out-t[It would be nice to iterate this process so that the same function/operation can be ran multiple times]
 
 ---
 
@@ -186,7 +188,7 @@ the `for()` function is used to specify
 
 
 ```
-for( i  in  items  )
+for( i  in  items)
      ^        ^
      |        |
      |        |___ object we are drawing from
@@ -395,7 +397,7 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 ---
@@ -487,7 +489,7 @@ lapply(tinydata, FUN = mean)
 class: middle
 
 
-# `map`
+# `purrr::map`
 
 > In `purrr`, the `map` function is equivalent to `lapply`
 
@@ -518,7 +520,7 @@ sapply(tinydata, FUN = mean)
 class: middle
 
 
-# `map_dbl`
+# `purrr::map_dbl`
 
 > `map_dbl` is equivalent to `sapply`
 
@@ -533,7 +535,7 @@ map_dbl(tinydata, .f = mean)
 class: middle
 
 
-# `map_df`
+# `purrr::map_df`
 
 > `map_df` returns a data frame instead of a vector
 
@@ -575,7 +577,7 @@ lapply(tinydata, FUN = standardize)
 class: middle
 
 
-# map_df
+# `purrr:::map_df`
 
 > In `purrr`, the `map_df` is equal to `lapply` + `bind_cols`:
 
