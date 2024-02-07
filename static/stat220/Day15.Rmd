@@ -577,7 +577,7 @@ lapply(tinydata, FUN = standardize)
 class: middle
 
 
-# `purrr:::map_df`
+# `purrr::map_df`
 
 > In `purrr`, the `map_df` is equal to `lapply` + `bind_cols`:
 
