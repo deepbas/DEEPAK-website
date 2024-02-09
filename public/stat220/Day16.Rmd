@@ -474,7 +474,7 @@ MinnesotaVikings
 ```
 ]
 
-.footnote[Click [here]("https://www.pro-football-reference.com/teams/min/2023.htm) to go to webpage]
+.footnote[Click [here](https://www.pro-football-reference.com/teams/min/2023.htm) to go to webpage]
 
 
 ---
@@ -544,7 +544,7 @@ class: action, middle
 .pull-right-60[
 <br>
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 16.Rmd file
 - Work on activity 1
 - Ask me questions
