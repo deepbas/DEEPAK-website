@@ -155,6 +155,12 @@ tvshows <- tibble(
 )
 
 
+xaringanExtra::style_panelset_tabs(
+  active_foreground = "#0051BA",
+  hover_foreground = "#d22",
+  font_family = "Roboto"
+)
+
 ```
 
 
@@ -397,7 +403,7 @@ background-size: 80%
 <br>
 <br>
 <br>
-
+<br>
 
 # .center[https://en.wikipedia.org/wiki/List_of_Formula_One_drivers]
 
@@ -457,54 +463,75 @@ class: middle
 
 .code80[
 ```{r}
-webpage <- bow('https://www.imdb.com/search/title/?groups=best_picture_winner&sort=year,desc&count=100&view=advanced') %>%
+MinnesotaVikings <- bow("https://www.pro-football-reference.com/teams/min/2023.htm") %>% 
   scrape()
 ```
 ]
 
 .code100[
 ```{r}
-webpage
+MinnesotaVikings
 ```
 ]
 
-.footnote[Click [here](https://www.imdb.com/search/title/?groups=best_picture_winner&sort=year,desc&count=100&view=advanced) to go to webpage]
+.footnote[Click [here]("https://www.pro-football-reference.com/teams/min/2023.htm) to go to webpage]
+
 
 ---
 
-# Extract titles
+.panelset[
 
-Use `html_nodes()` to extract pieces out of HTML documents
+.panel[
 
-.code100[
-```{r eval=TRUE}
-title_data <- webpage %>% html_nodes(".lister-item-header a") %>% html_text()
+.panel-name[Code]
+```{r, eval=FALSE}
+MinnesotaVikings <- bow("https://www.pro-football-reference.com/teams/min/2023.htm") %>% 
+  scrape()
+
+Team_Stats <- MinnesotaVikings %>% 
+  html_elements("#div_team_stats") %>% 
+  html_table() %>% .[[1]]
+
+library(magrittr) 
+Team_Stats %<>% #  %<>% which allows for direct assignment within the pipe
+  set_names(.[1, ]) %>% # Set column names to the first row
+  janitor::clean_names() %>% # Clean names
+  slice(-1) %>% # Remove the first row
+  mutate(across(everything(), ~na_if(.x, ""))) %>% # Convert any empty strings to NA
+  type.convert(as.is = TRUE) # Convert columns to their most appropriate type
+
+Team_Stats %>% knitr::kable(caption = "Scrapped data for various team stats") 
 ```
 ]
-.scroll-box-14[
-```{r}
-title_data
-```
-]
 
----
+.panel[
 
-# Scrapped table
-
-
-.scroll-output[
+.panel-name[Data]
 ```{r, echo=FALSE}
-DT::datatable(
-  movies_df,
-  fillContainer = FALSE, options = list(pageLength = 10)
-)
+MinnesotaVikings <- bow("https://www.pro-football-reference.com/teams/min/2023.htm") %>% 
+  scrape()
+
+Team_Stats <- MinnesotaVikings %>% 
+  html_elements("#div_team_stats") %>% 
+  html_table() %>% .[[1]]
+
+library(magrittr) 
+Team_Stats %<>% #  %<>% which allows for direct assignment within the pipe
+  set_names(.[1, ]) %>% # Set column names to the first row
+  janitor::clean_names() %>% # Clean names
+  slice(-1) %>% # Remove the first row
+  mutate(across(everything(), ~na_if(.x, ""))) %>% # Convert any empty strings to NA
+  type.convert(as.is = TRUE) # Convert columns to their most appropriate type
+
+Team_Stats %>% knitr::kable(caption = "Scrapped data for various team stats") 
 ```
+
 ]
 
-.footnote[ [Original webpage](https://www.imdb.com/search/title/?count=100&groups=oscar_best_picture_winners&sort=year%2Cdesc&ref_=nv_ch_osc)]
+]
+
 
 ---
-
 
 class: action, middle
 
@@ -525,50 +552,6 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
-
----
-
-background-image: url(images/imdb_tvshows_2023.png)
-background-position: center
-background-size: 100% 98%
-
-# .center[http://www.imdb.com/chart/tvmeter]
-
----
-
-# Scrapped table
-
-.scroll-output[
-```{r, echo=FALSE}
-DT::datatable(
-  tvshows,
-  fillContainer = FALSE, options = list(pageLength = 10)
-)
-```
-]
-
-
----
-
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-<br>
-<br>
-.bq[
-- Work on activity 2
-- Ask me questions
-]
-
-]
-
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

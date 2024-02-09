@@ -517,3 +517,18 @@ pre code {
    color: #215A4A;
 }
 
+
+/* custom.css */
+.panelset {
+  --panel-tab-foreground: currentColor;
+  --panel-tab-active-foreground: #0051BA;
+  --panel-tab-hover-foreground: #d22;
+  --panel-tabs-border-bottom: #ddd;
+  --panel-tab-inactive-opacity: 0.5;
+  --panel-tab-font-family: Roboto, Menlo, Consolas, Monaco, Liberation Mono, Lucida Console, monospace;
+}
+
+.scrollable-table {
+  overflow-x: auto;
+  white-space: nowrap;
+}
