@@ -45,42 +45,87 @@ class: title-slide, middle
 
 # .fancy[Introduction to Shiny]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
- May 08 2023
+ February 10 2024
+
 
 
 ---
 
 class: middle
 
-# Shiny: Overview
+# Introducing Shiny
 
-.bql.font90[
-- Shiny is an R package that provides a fairly high-level framework for creating interactive graphics
-- Shiny web app allows us to build interactive dashboard that we will let Rstudio host for us with their servers
-- Rstudio makes it easy to create and even upload these graphs to the web
-- You can publish Shiny documents to the ShinyApps (https://shinyapps.io) hosted service
+.Large.bq[
+- A special R package for making your data interactive.
+- Turns your analyses into interactive web apps.
 ]
 
 ---
 
 class: middle
 
-# Interactive plots
 
-.bqt.font80[
-- Shiny uses reactive programming to automatically update outputs when inputs change
+# Shiny in Action
 
-- Shiny applications have two components:
-  + a .b[user interface (UI)] object 
-  + a .b[server] function
-  
-- These are passed as arguments to the `shinyApp` function that creates a Shiny app object from this UI/server pair
+.Large.bq[
+- Create dashboards that interact with users.
+- No need for web development skills!
 ]
 
+---
 
-.out-t.font110[The YAML header of this R Markdown document has the line `runtime: shiny` so that RStudio understands this is a Shiny document.]
+class: middle
+
+
+# Hosting Made Easy
+
+.Large.bq[
+- Build in RStudio, host on the web easily.
+- Use RStudio’s servers to share your apps online.
+]
+
+---
+
+class: middle
+
+
+# Share Your Work
+
+.Large.bq[
+- Publish to ShinyApps.io, a place where your Shiny apps live.
+- Share your interactive graphs and data analyses with the world.
+]
+
+---
+
+class: middle
+
+# Making Magic with Shiny
+
+.Large.bq[
+- Shiny brings your data to life by making graphs and tables interactive.
+- It listens: when you change something, Shiny responds by updating the results automatically.
+]
+
+---
+
+class: middle
+
+# Building Blocks of a Shiny App
+
+.bql[
+- Every Shiny app has two main parts:
+  + **User Interface (UI):** What you see on the screen.
+  + **Server Function:** The brain behind the scenes doing the calculations.
+- You combine these with `shinyApp` to make your interactive web app.
+]
+
+.blue-h[
+- To tell RStudio it’s a Shiny app, add `runtime: shiny` to the top of your R Markdown file.
+]
+
 
 ---
 
@@ -111,7 +156,7 @@ background-size: 100% 100%
 
 &lt;br&gt;
 
-## [.b[One nice example: COVID-19 Tracker]](https://shiny.rstudio.com/gallery/covid19-tracker.html)
+# [.bold[One nice example: COVID-19 Tracker]](https://shiny.rstudio.com/gallery/covid19-tracker.html)
 
 
 
@@ -146,7 +191,7 @@ class: action, middle
 .pull-right-60[
 &lt;br&gt;
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 18.Rmd file
 - Work on activity 1
 - Ask me questions
@@ -154,7 +199,7 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_1deaaeaf" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_ece1f8bb" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
@@ -191,7 +236,7 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_309c4cf9" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_5c5ca450" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

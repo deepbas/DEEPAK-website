@@ -15,8 +15,6 @@
     <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
     <link href="libs/font-awesome/css/all.min.css" rel="stylesheet" />
     <link href="libs/font-awesome/css/v4-shims.min.css" rel="stylesheet" />
-    <link href="libs/countdown/countdown.css" rel="stylesheet" />
-    <script src="libs/countdown/countdown.js"></script>
     <script src="https://use.fontawesome.com/5235085b15.js"></script>
 
     <link rel="stylesheet" href="css/xaringan-themer-solns.css" type="text/css" />
@@ -44,9 +42,9 @@ class: title-slide, middle
 
 # .fancy[Shiny Reactivity]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
- May 10 2023
+ February 10 2024
 
 
 ---
@@ -54,7 +52,7 @@ class: title-slide, middle
 class: middle
 
 
-# Shiny reactivity
+# Shiny Reactivity: A Quick Tour
 
 &lt;center&gt;
 &lt;img src="images/reactivity.png" width="80%" height="60%"&gt; &lt;br&gt;
@@ -62,24 +60,20 @@ class: middle
 &lt;/center&gt;
 
 
-.footnote[[Shiny reactivity](https://shiny.rstudio.com/articles/understanding-reactivity.html)]
+.footnote[[Learn more about Shiny reactivity](https://shiny.rstudio.com/articles/understanding-reactivity.html)]
 
 
 ---
 
 class: middle
 
-# `Shiny Reactivity:` Responding to User Input
+# Shiny Reactivity: Listen and React
 
-
-.bql[
-- Shiny .b[reactivity] is a system for managing data dependencies and updates in response to user input.
-
-- Unlike typical R code, Shiny apps are .b[event-driven] and react to user interactions.
-
-- Shiny monitors events and .b[triggers] the necessary code to update the app's state and output.
+.bqt[
+- Think of Shiny as a live conversation between you and your app.
+- Your app listens (reacts) to what you say (input) and responds with answers (output).
+- It keeps the chat going, updating automatically as the conversation evolves.
 ]
-
 
 .footnote[[Understanding reactivity in R](https://shiny.rstudio.com/articles/understanding-reactivity.html)]
 
@@ -87,48 +81,52 @@ class: middle
 
 class: middle
 
-# Reactive Expressions: Connecting Inputs and Outputs
+# Behind the Scenes: Reactive Expressions
 
-.hljs.center[ "Reactive expressions transform reactive inputs into reactive outputs."]
+.center["Reactive expressions link your questions to the app's answers."]
 
 .bql[
-- .b[Reactive expressions] are the building blocks of Shiny reactivity.
+- They're like the app's thought process, taking your input and figuring out the output.
+- They're smart: only recalculating when needed to keep everything running smoothly.
+]
 
-- They are used to manage data dependencies and cache results.
+---
 
-- They automatically update when input values change, ensuring your app stays up-to-date.
+
+class: middle
+
+# Real-World Magic: Reactive Use Cases
+
+.bql[
+- Imagine your app fetching data just as you ask for it:
+  + Choosing a file? It reads it on-the-spot.
+  + Curious about data from a website? It grabs it for you.
+  + Need to crunch some numbers based on your choices? It does the math instantly.
 ]
 
 ---
 
 class: middle
 
-# Examples of common use cases
 
-.bqt[
-- Accessing a database based on user input.
-- Reading data from a file when the user selects a new file.
-- Downloading data over the network in response to user actions.
-- Performing expensive computations that depend on user input.
+# Sharing Secrets: Reactive Values
+
+
+.Large[
+- Reactive values are the app's memory, holding onto data for quick recall.
+- Think of `input$` as the app's ear, always listening for your next request.
 ]
 
 
 ---
 
-class: middle
 
-# Reactive values: Storing and Sharing Data
+.panelset[
 
-.hljs["Reactive values contain values that can be read by other reactive objects."]
+.panel[
 
-.pull-left-40[
-.bql.font90[
-- .b[Reactive values] allow you to store and share data across different parts of your Shiny app.
-- The input object is a special instance of .b[ReactiveValues] that holds user inputs.
-]
-]
+.panel-name[code]
 
-.pull-right-60[
 ```
 library(shiny)
 ui &lt;- fluidPage(
@@ -149,25 +147,66 @@ server &lt;- function(input, output) {
 shinyApp(ui, server)
 ```
 
+
+]
+
+.panel[
+
+.panel-name[output]
+
+&lt;center&gt;
+&lt;img src="images/reactivity_1.png" width="80%" height="80%"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+]
+
 ]
 
 ---
 
+class: action, middle
+
+# 🚀 **Try the Shiny Code Yourself!** 1
+
+
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+
+.pull-right[
+.bql[
+- **Step 1:** Copy the codes on the previous slide
+- **Step 2:** Paste the codes on your R console
+- **Questions?** I'm here to help!
+- **Caution!** Don't forget to close the R Shiny session once you are done!
+]
+]
+
+
+
+---
 
 class: middle
 
-# Triggering reactivity with `eventReactive()`
+# Understanding `eventReactive()` in Shiny
 
-.pull-left[
-.bql.font90[
-- `eventReactive()` is used to create reactive expressions that only update when a specific event occurs.
-- It takes an input, typically an action button, to trigger the update.
-- Useful for controlling when calculations or updates occur, reducing unnecessary computation.
+
+.Large[
+- `eventReactive()` lets a Shiny app react only when you want.
+- Trigger updates with specific actions, like clicking a button.
+- Reduces work by updating calculations only when needed.
 ]
-]
 
 
-.pull-right[
+
+---
+
+.panelset[
+
+.panel[
+
+.panel-name[code]
+
 ```
 ui &lt;- fluidPage(
   mainPanel(
@@ -192,31 +231,72 @@ server &lt;- function(input, output) {
 
 shinyApp(ui, server)
 ```
+
+
 ]
+
+.panel[
+
+.panel-name[output]
+
+&lt;center&gt;
+&lt;img src="images/add1.png" width="80%" height="80%"&gt; &lt;br&gt;
+&lt;/center&gt;
+]
+
+]
+
+
+---
+
+class: action, middle
+
+# 🚀 **Try the Shiny Code Yourself!** 2
+
+
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+
+.pull-right[
+.bql[
+- **Step 1:** Copy the codes on the previous slide
+- **Step 2:** Paste the codes on your R console
+- **Questions?** I'm here to help!
+- **Caution!** Don't forget to close the R Shiny session once you are done!
+]
+]
+
+---
+
+
+class: middle
+
+# `actionButton()`: The Magic Button in Shiny
+
+.center.font200["🖱️ A button that lets users decide when to make things happen."]
 
 ---
 
 class: middle
 
-# `actionButton()`: Triggering Actions on Demand
-
-.hljs["actionButton() creates a button that lets users manually trigger reactive events."]
+# How `actionButton()` Empowers Your App
 
 
-.pull-left[
-.bql.font70[
-- Use `actionButton()` to create a button in the UI that users can click to trigger specific actions.
-
-- Combine with `eventReactive()` to execute code only when the button is clicked.
-
-- Ideal for cases where you want to give users control over when certain actions are executed, rather than updating automatically.
-
-]
-
+.Large[
+- **What it does**: Adds a clickable button to your app's page.
+- **User Power**: Lets people run actions (like calculations or data display) on their command.
+- **Pair with Magic**: Works best with `eventReactive()`, waiting for the click to spring into action.
 ]
 
 
-.pull-right[
+---
+
+.panelset[
+
+.panel[
+
+.panel-name[code]
 
 ```
 ui &lt;- fluidPage(
@@ -241,67 +321,156 @@ shinyApp(ui, server)
 
 ```
 
+
+]
+
+.panel[
+
+.panel-name[output]
+
+&lt;center&gt;
+&lt;img src="images/action.png"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+]
+
+]
+
+---
+
+class: action, middle
+
+# 🚀 **Try the Shiny Code Yourself!** 3
+
+
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+
+.pull-right[
+.bql[
+- **Step 1:** Copy the codes on the previous slide
+- **Step 2:** Paste the codes on your R console
+- **Questions?** I'm here to help!
+- **Caution!** Don't forget to close the R Shiny session once you are done!
+]
 ]
 
 ---
 
 
+
 class: middle
 
-# Storing and managing state with `reactiveValues()`
+# `reactiveValues()`: Your App's Memory
 
-.pull-left-40[
-.bql.font80[
-- `reactiveValues()` is used to create mutable, reactive objects.
-- They can store multiple named values that can be updated independently.
-- Useful for managing complex state or sharing data between multiple reactive expressions.
-]
+.center["Think of `reactiveValues()` as a way for your app to remember and update things."]
+
+
+
+.Large[
+- **Memory Bank**: Stores and updates information your app needs to remember.
+- **Flexibility**: Change one piece of info without affecting the rest.
+- **Teamwork**: Shares data between different parts of your app seamlessly.
 ]
 
-.pull-right-60[
-```
+
+
+---
+
+.panelset[
+
+.panel[
+
+.panel-name[code]
+
+```r
 ui &lt;- fluidPage(
-  mainPanel(
-    numericInput("numInput", "Enter a number:", value = 1),
-    actionButton("incrementButton", "Increment"),
-    textOutput("incrementedValue")
-  )
+  numericInput("numInput", "Enter a number:", 1),
+  actionButton("incrementButton", "Increment"),
+  textOutput("incrementedValue")
 )
 server &lt;- function(input, output) {
+  # App's memory
   values &lt;- reactiveValues(num = 1)
-  incrementedValue &lt;- reactive({
-    if (input$incrementButton &gt; 0) {
-      values$num &lt;- input$numInput + input$incrementButton
-    }
-    values$num
+  
+  observeEvent(input$incrementButton, {
+    values$num &lt;- values$num + 1
   })
-  output$incrementedValue &lt;- renderText(paste("Incremented value:", 
-  incrementedValue()))
+  
+  output$incrementedValue &lt;- renderText({
+    paste("Incremented value:", values$num)
+  })
 }
 shinyApp(ui, server)
 ```
 
+---
+
+
+]
+
+.panel[
+
+.panel-name[output]
+
+&lt;center&gt;
+&lt;img src="images/reactiveValues.png"&gt; &lt;br&gt;
+&lt;/center&gt;
+]
+
 ]
 
 ---
 
+
+
+
+class: action, middle
+
+# 🚀 **Try the Shiny Code Yourself!** 4
+
+
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+
+.pull-right[
+.bql[
+- **Step 1:** Copy the codes on the previous slide
+- **Step 2:** Paste the codes on your R console
+- **Questions?** I'm here to help!
+- **Caution!** Don't forget to close the R Shiny session once you are done!
+]
+]
+
+---
+
+
+
 class: middle
 
-# Observers: Responding to Changes in Reactive Values
-.hljs[`observeEvent()` is used to create observers that react to specific events, often triggered by user interactions like button clicks.
+# `observeEvent()`: The Watchful Eye in Shiny
+
+.center["`observeEvent()` watches for specific actions, like button clicks, to do something special."]
+
+
+.Large[
+- **Action Detector**: Springs into action when it detects its specified trigger (like a button press).
+- **Doer of Tasks**: Executes code to make changes or updates, without needing to return any value.
+- **Perfect Pair**: Works hand-in-hand with `actionButton()` for on-demand actions.
 ]
 
-.pull-left-40[
-
-.bql.font80[
-- Executes code in response to a specified event
-- Can be used with `actionButton()` to perform actions when a button is clicked
-- Doesn't return a value, but causes side effects (e.g., updating output or triggering other reactive expressions)
-]
-]
 
 
-.pull-right-60[
+---
+
+.panelset[
+
+.panel[
+
+.panel-name[code]
+
 ```
 ui &lt;- fluidPage(
   mainPanel(
@@ -326,26 +495,42 @@ shinyApp(ui, server)
 ```
 
 
-
 ]
 
+.panel[
 
+.panel-name[output]
+
+&lt;center&gt;
+&lt;img src="images/observeEvent.png"&gt; &lt;br&gt;
+&lt;/center&gt;
+]
+
+]
 
 ---
 
 class: middle
 
-# Controlling reactivity with `isolate()`
+# `isolate()`: Pausing Reactivity in Shiny
 
-.pull-left-40[
-.bql.font80[
-- The `isolate()` function is used to prevent reactivity within a reactive context.
-- It allows you to use an input or reactive value without triggering a reaction.
-- Useful when you want to control when a reactive expression or output updates.
-]
+.center["Use `isolate()` to freeze time in your app, preventing automatic updates."]
+
+
+.Large[
+- **Control Freak**: Lets you hold back reactions, giving you control over when updates happen.
+- **Stealth Mode**: Use inputs quietly without alerting the rest of your app to change.
+- **Strategic Updates**: Perfect for when you need to fetch or use data on your own terms, not automatically.
 ]
 
-.pull-right-60[
+---
+
+.panelset[
+
+.panel[
+
+.panel-name[code]
+
 ```
 ui &lt;- fluidPage(
   mainPanel(
@@ -367,36 +552,42 @@ shinyApp(ui, server)
 
 ```
 
+
 ]
 
+.panel[
 
+.panel-name[output]
+&lt;center&gt;
+&lt;img src="images/isolate.png"&gt; &lt;br&gt;
+&lt;/center&gt;
+
+]
+
+]
 
 
 ---
 
 class: action, middle
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+# 🚀 **Try the Shiny Code Yourself!** 5
 
 
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
-.pull-right-60[
-&lt;br&gt;
+
+.pull-right[
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
-- Get the class activity 19.Rmd file
-- Let's work on the class activity together
-- Ask me questions
+- **Step 1:** Copy the codes on the previous slide
+- **Step 2:** Paste the codes on your R console
+- **Questions?** I'm here to help!
+- **Caution!** Don't forget to close the R Shiny session once you are done!
+]
 ]
 
-]
 
-<div class="countdown" id="timer_f8364eb5" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
-<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
-</div>
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

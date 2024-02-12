@@ -139,7 +139,7 @@ class: title-slide, middle
 
 # .fancy[Shiny and Interactive Graphs]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 

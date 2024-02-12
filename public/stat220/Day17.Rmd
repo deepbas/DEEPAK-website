@@ -83,41 +83,19 @@ yt <- 0
 # read.csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/agstrat.csv")
 
 base_url <- "https://www.the-numbers.com/movie/budgets/all"
-base_webpage <- read_html(base_url)
-table_base <- html_table(base_webpage)[[1]]
+idx <- seq(1, 6301, 100)
+urls <- map_chr(idx, ~ str_glue("{base_url}/{.x}"))
 
-# all webpages
-new_urls <- "https://www.the-numbers.com/movie/budgets/all/"
+# Use map_df to scrape and combine tables from all pages, ensuring consistent column types
+df_movies <- map_df(urls, ~ {
+  page_data <- read_html(.x) %>%
+    html_table() %>%
+    .[[1]] %>%
+    tibble::as_tibble(.name_repair = "unique") %>%
+    mutate(across(everything(), as.character))
+  return(page_data)
+})
 
-# creating one table
-table_new <-data.frame()
-df_movies <- data.frame()
-
-# iterator
-idx <-  seq(1, 6301, 100)
-
-# it loops through 5501 times so as to extract and then store and then combine about 5000 movies so far extracted.
-
-for (i in 1:length(idx)) {
-  new_webpage <- read_html(str_glue(new_urls, {idx[i]})) 
-  table_new <- html_table(new_webpage)[[1]] %>%
-  tibble::as_tibble(.name_repair = "unique")
-  df_movies <- rbind(df_movies, table_new)
-}
-
-df_movies_tidy <- df_movies %>% rename(ID = `...1`) %>%
-  mutate(ProductionBudget = parse_number(ProductionBudget),
-         DomesticGross = parse_number(DomesticGross),
-         WorldwideGross = parse_number(WorldwideGross),
-         ReleaseDate = mdy(ReleaseDate),
-         ReleaseDate = replace_na(ReleaseDate, make_date()),
-         MonthOfRelease = month(ReleaseDate, label = TRUE),
-         YearOfRelease = year(ReleaseDate))
-
-df_DomesticGross_month <- df_movies_tidy %>%
-  select(MonthOfRelease, DomesticGross) %>%
-  group_by(MonthOfRelease) %>%
-  summarize(AverageByMonth = mean(DomesticGross))
 ```
 
 
@@ -149,15 +127,9 @@ class: title-slide, middle
 
 ---
 
-`r chunk_reveal("demo2", widths = c(60, 60), font_size_code="80%", title = "## Get links")`
-
-```{r demo2, eval=FALSE, echo=FALSE }
-bow(url = "https://www.imdb.com/search/title/?groups=best_picture_winner&sort=year,desc&count=100&view=advanced") %>%
-  scrape() %>%
-  html_elements(css = ".lister-item-header a") %>%
-  html_attr(name = "href") %>%
-  url_absolute(base = "https://www.imdb.com")
-```
+class: center, inverse, top
+background-image: url("images/usafacts.png")
+background-size: 90%
 
 
 ---
@@ -182,21 +154,20 @@ knitr::kable(table_usafacts, format = "html")
 # Scraping multiple tables
 
 ```{r}
-all_url <- "https://finance.yahoo.com/screener/predefined/day_gainers?count=25&offset=" #<<
-idx <- seq(0, 1050, by = 25)  
+all_url <- "https://finance.yahoo.com/screener/predefined/day_gainers?count=25&offset="
+idx <- seq(0, 1050, by = 25)
 
+start_time <- proc.time() # Capture start time
 
-my_list <- list()
-
-for (i in seq_along(idx)) {
-  new_webpage <- read_html(str_glue({all_url}, {idx[i]})) # same as bow(url) %>% scrape() 
-  table_new <- html_table(new_webpage)[[1]] %>%  # first element of the list
-    as_tibble(.name_repair = "unique")  # repairs same column names
-  my_list[[i]] <- table_new
-}
-
-my_df <- do.call(rbind, my_list)
-
+my_df <- map_df(idx, ~ {
+  new_webpage <- read_html(str_glue("{all_url}{.x}")) 
+  table_new <- html_table(new_webpage)[[1]] %>%
+    janitor::clean_names() %>% 
+    mutate(across(everything(), as.character))
+  return(table_new)
+})
+end_time <- proc.time() # Capture end time
+end_time - start_time # Calculate duration
 ```
 
 
@@ -209,7 +180,7 @@ my_df <- do.call(rbind, my_list)
 .scroll-output[
 ```{r, echo=FALSE}
 DT::datatable(
-  my_df %>% select(-`52 Week Range`),
+  my_df %>% select(-x52_week_range),
   fillContainer = FALSE, options = list(pageLength = 5)
 )
 ```
@@ -229,7 +200,7 @@ class: action, middle
 .pull-right-60[
 <br>
 .bql.font90[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 17.Rmd file
 - Work on activity 1
 ]
@@ -238,36 +209,48 @@ class: action, middle
 
 `r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
+---
+
+class: center, inverse, top
+background-image: url("images/numbers_scraping.png")
+background-size: 70%
+
 
 ---
 
 
-`r chunk_reveal("demo3", widths = c(60, 40), font_size_code="80%", title = "## Tidy further")`
+`r chunk_reveal("demo3", widths = c(60, 40), font_size_code="80%", title = "## Scrape, Tidy, and Visualize")`
 
-```{r,demo3, eval=FALSE, echo=FALSE }
+```{r,demo3}
 df_movies %>% 
-  rename(ID = `...1`) %>% 
-  mutate(ProductionBudget = parse_number(ProductionBudget),
-         DomesticGross = parse_number(DomesticGross),
-         WorldwideGross = parse_number(WorldwideGross),
-         ReleaseDate = mdy(ReleaseDate),
-         ReleaseDate = replace_na(ReleaseDate, make_date()),
-         MonthOfRelease = month(ReleaseDate, label = TRUE),
-         YearOfRelease = year(ReleaseDate)) %>%
-  select(MonthOfRelease, DomesticGross) %>%
+mutate(
+  ID = row_number(), 
+  ProductionBudget = parse_number(ProductionBudget),
+  DomesticGross = parse_number(DomesticGross),
+  WorldwideGross = parse_number(WorldwideGross),
+  ReleaseDate = mdy(ReleaseDate),
+  MonthOfRelease = month(ReleaseDate, label = TRUE, abbr = TRUE),
+  YearOfRelease = year(ReleaseDate)
+) %>%
+replace_na(list(ReleaseDate = make_date(year = 1900))) %>%
   group_by(MonthOfRelease) %>%
-  summarize(AverageByMonth = mean(DomesticGross))
+  summarize(AverageByMonth = mean(DomesticGross, na.rm = TRUE)) -> df_DomesticGross_month
 ```
 
 
 ---
 
-class: middle
+##  Introduction to `plotly`
 
 
-# Interactive Donut Plot
+.panelset[
 
-```{r, echo=FALSE, fig.height=7, fig.width=6}
+.panel[
+
+.panel-name[plot]
+
+```{r, echo=FALSE, fig.height=6, fig.width=6}
+library(plotly)
 fig <- df_DomesticGross_month %>% plot_ly(labels = ~MonthOfRelease, values = ~AverageByMonth)
 fig <- fig %>% add_pie(hole = 0.6)
 fig <- fig %>% layout(title = "Average Domestic Gross by Month",  showlegend = F,
@@ -277,11 +260,38 @@ fig <- fig %>% layout(title = "Average Domestic Gross by Month",  showlegend = F
 fig
 ```
 
+
+]
+
+.panel[
+
+.panel-name[code]
+
+```{r, eval=FALSE, fig.height=7, fig.width=6}
+library(plotly)
+fig <- df_DomesticGross_month %>% plot_ly(labels = ~MonthOfRelease, values = ~AverageByMonth)
+fig <- fig %>% add_pie(hole = 0.6)
+fig <- fig %>% layout(title = "Average Domestic Gross by Month",  showlegend = F,
+                      xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                      yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+fig
+```
+
+]
+
+]
+
+
+
 ---
 
 class: middle
 
-# Interactive visualizations using `ggplotly`
+
+
+### `ggplotly` converts `ggplot2` figures into interactive `plotly` graphs.
+
 
 .scroll-box-16[
 ```{r}
@@ -289,52 +299,177 @@ midwest %>% as_tibble()
 ```
 ]
 
-
-
 ---
 
+
 # Interactive visualizations using `ggplotly`
+
+
+.panelset[
+
+.panel[
+
+.panel-name[plot]
 
 ```{r, echo=FALSE, fig.height=7, fig.width=6}
-midwest %>%
-  filter(inmetro == T) %>%
-  plot_ly(x =  ~ percbelowpoverty, y =  ~ percollege) %>%
-  add_markers()
+gg <- ggplot(midwest, aes(x = area, y = poptotal)) + geom_point()
+ggplotly(gg)
 ```
+
+
+]
+
+.panel[
+
+.panel-name[code]
+
+```{r, eval=FALSE}
+gg <- ggplot(midwest, aes(x = area, y = poptotal)) + geom_point()
+ggplotly(gg)
+```
+
+
+]
+
+]
 
 ---
 
-class: middle
+## Enhance plots with `tooltips` for better interactivity:
 
-# Interactive visualizations using `ggplotly`
+.panelset[
 
-```{r}
-mtcars %>% as_tibble() %>% head()
+.panel[
+
+.panel-name[plot]
+
+```{r, echo=FALSE, fig.height=7, fig.width=6}
+gg <- mtcars %>%
+  ggplot(aes(wt, mpg, color = factor(gear), text = paste("Gear:", gear))) +
+  geom_point()
+ggplotly(gg, tooltip = "text")
+
 ```
 
---
 
-```{r, fig.height=7, fig.width=6, eval=FALSE}
-gp = mtcars %>%
-  mutate(amFactor = factor(am, labels = c('auto', 'manual')),
-         hovertext = paste(wt, mpg, amFactor)) %>%
-  arrange(wt) %>%
-  ggplot(aes(x = wt, y = mpg, color = amFactor)) +
-  geom_smooth(se = F) +
-  geom_point(aes(color = amFactor)) + theme_economist_white()
+]
+
+.panel[
+
+.panel-name[code]
+
+```{r, eval=FALSE}
+gg <- mtcars %>%
+  ggplot(aes(wt, mpg, color = factor(gear), text = paste("Gear:", gear))) +
+  geom_point()
+ggplotly(gg, tooltip = "text")
+
 ```
 
---
+
+]
+
+]
+
+---
+
+##  Highlight data points on hover:
 
 
-```{r}
-ggplotly()  #<<
+.panelset[
+
+.panel[
+
+.panel-name[plot]
+
+
+```{r, echo=FALSE, fig.height=7, fig.width=6}
+gg <- mtcars %>%
+  ggplot(aes(wt, mpg, color = factor(carb))) +
+  geom_point(size = 3) +
+  theme_minimal()
+ggplotly(gg) %>% layout(hovermode = "closest")
 ```
+
+
+]
+
+.panel[
+
+.panel-name[code]
+
+```{r, eval=FALSE}
+gg <- mtcars %>%
+  ggplot(aes(wt, mpg, color = factor(carb))) +
+  geom_point(size = 3) +
+  theme_minimal()
+ggplotly(gg) %>% layout(hovermode = "closest")
+```
+
+
+]
+
+]
 
 
 ---
 
-# Interactive visualizations using `ggplotly`
+.panelset[
+
+.panel[
+
+.panel-name[plot]
+```{r, echo=FALSE, fig.height=7, fig.width=6}
+library(plotly)
+library(ggplot2)
+
+p <- ggplot(midwest, aes(x = percbelowpoverty, y = percollege)) + 
+  geom_point() + # Add points
+  theme_minimal() + # Use a minimal theme
+  labs(x = "Percentage Below Poverty", 
+       y = "Percentage College Educated", 
+       title = "Education vs. Poverty in the Midwest")
+
+ggplotly(p)
+```
+
+
+]
+
+.panel[
+
+.panel-name[code]
+```{r, eval=FALSE}
+library(plotly)
+library(ggplot2)
+
+p <- ggplot(midwest, aes(x = percbelowpoverty, y = percollege)) + 
+  geom_point() + # Add points
+  theme_minimal() + # Use a minimal theme
+  labs(x = "Percentage Below Poverty", 
+       y = "Percentage College Educated", 
+       title = "Education vs. Poverty in the Midwest")
+
+ggplotly(p)
+```
+
+
+]
+
+]
+
+
+
+
+---
+
+
+.panelset[
+
+.panel[
+
+.panel-name[plot]
+
 
 ```{r, echo=FALSE, fig.height=7, fig.width=6}
 gp = mtcars %>%
@@ -348,15 +483,41 @@ gp = mtcars %>%
 ggplotly()
 ```
 
+
+
+]
+
+.panel[
+
+.panel-name[code]
+
+
+```{r, eval=FALSE, fig.height=7, fig.width=6}
+gp = mtcars %>%
+  mutate(amFactor = factor(am, labels = c('auto', 'manual')),
+         hovertext = paste(wt, mpg, amFactor)) %>%
+  arrange(wt) %>%
+  ggplot(aes(x = wt, y = mpg, color = amFactor)) +
+  geom_smooth(se = F) +
+  geom_point(aes(color = amFactor))
+
+ggplotly()
+```
+
+
+]
+
+]
+
 ---
 
 # DT: Interactive Data Tables
 
-.code100[
+.code70[
 ```{r, eval=FALSE}
 library(ggplot2movies)
-movies %>%
-  select(1:6) %>%
+library(DT)
+movies %>% select(1:6) %>%
   filter(rating > 8, !is.na(budget), votes > 1000) %>% 
   datatable(fillContainer = FALSE, options = list(pageLength = 6))
 ```
@@ -372,28 +533,6 @@ movies %>%
   datatable(fillContainer = FALSE, options = list(pageLength = 6))
 ```
 
----
-
-
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-<br>
-<br>
-.bq[
-- Work on activity 2
-- Ask me questions
-]
-
-]
-
-`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 
