@@ -276,7 +276,6 @@ class: action, middle
 ![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 .pull-right-60[
-<br>
 .bql[
 - Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 18.Rmd file
