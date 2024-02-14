@@ -251,6 +251,19 @@ background-size: 100% 100%
 
 # .center[http://shinyapps.io/]
 
+---
+
+
+
+class: center, inverse, top
+background-image: url("images/shiny_Minnesota.png")
+background-size: 100% 100%
+
+<br>
+
+
+## https://deepbas.shinyapps.io/covid/
+
 
 ---
 
@@ -267,47 +280,11 @@ class: action, middle
 .bql[
 - Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 18.Rmd file
-- Work on activity 1
+- Work on activity together with me
 - Ask me questions
 ]
 
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
-
----
-
-
-class: center, inverse, top
-background-image: url("images/shiny_Minnesota.png")
-background-size: 100% 100%
-
-<br>
-
-
-## https://deepbas.shinyapps.io/covid/
-
----
-
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-<br>
-.bq[
-- Let's go over to class activity 18 .Rmd file on class [moodle](https://moodle.carleton.edu/course/view.php?id=41417) and practice building a shiny app together
-- Ask me questions
-]
-
-]
-
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
-
+`r countdown(minutes = 30, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

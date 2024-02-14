@@ -290,6 +290,24 @@ b).  No
 
 ---
 
+
+
+class: center, inverse, top
+background-image: url("images/pooled_proportion.png")
+background-size: cover
+
+## .bold[Pooled Proportion]
+
+<center>
+<div style="position: absolute; top: 80%; left: 10%;">
+<span style="content: '\2192'; font-size: 20px; color: #FFFFFF; text-align: center; white-space: pre-line;">
+  <p><strong>Pooling is done to combine the data from both groups and come  <br> up with a combined proportion, assuming the groups are the same</strong></p>
+</span>
+</div>
+</center>
+
+---
+
 class: middle
 
 # Pooled Proportion
@@ -585,7 +603,7 @@ class: action
 
 ]
 
-`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 25, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 
