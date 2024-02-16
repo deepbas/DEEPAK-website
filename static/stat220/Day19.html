@@ -44,7 +44,7 @@ class: title-slide, middle
 
 ### .fancy[Stat 220]
 
- February 10 2024
+ February 15 2024
 
 
 ---
@@ -386,20 +386,23 @@ class: middle
 
 ```r
 ui &lt;- fluidPage(
-  numericInput("numInput", "Enter a number:", 1),
+  titlePanel("Simple Counter"),
+  numericInput("adjustValue", "Adjust by:", 1),
   actionButton("incrementButton", "Increment"),
-  textOutput("incrementedValue")
+  actionButton("decrementButton", "Decrement"),
+  br(),
+  textOutput("currentValue")
 )
 server &lt;- function(input, output) {
-  # App's memory
-  values &lt;- reactiveValues(num = 1)
-  
+  counter &lt;- reactiveValues(value = 0)
   observeEvent(input$incrementButton, {
-    values$num &lt;- values$num + 1
+    counter$value &lt;- counter$value + input$adjustValue
   })
-  
-  output$incrementedValue &lt;- renderText({
-    paste("Incremented value:", values$num)
+  observeEvent(input$decrementButton, {
+    counter$value &lt;- counter$value - input$adjustValue
+  })
+  output$currentValue &lt;- renderText({
+    paste("Current Value:", counter$value)
   })
 }
 shinyApp(ui, server)
@@ -510,6 +513,30 @@ shinyApp(ui, server)
 
 ---
 
+
+class: action, middle
+
+# 🚀 **Try the Shiny Code Yourself!** 5
+
+
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+
+.pull-right[
+.bql[
+- **Step 1:** Copy the codes on the previous slide
+- **Step 2:** Paste the codes on your R console
+- **Questions?** I'm here to help!
+- **Caution!** Don't forget to close the R Shiny session once you are done!
+]
+]
+
+
+
+---
+
+
 class: middle
 
 # `isolate()`: Pausing Reactivity in Shiny
@@ -533,23 +560,26 @@ class: middle
 
 ```
 ui &lt;- fluidPage(
-  mainPanel(
-    textInput("textInput", "Enter some text"),
-    actionButton("submitButton", "Submit"),
-    textOutput("outputText")
-  )
+  textInput("textInput", "Enter some text"),
+  actionButton("submitButton", "Submit"),
+  textOutput("outputText"),
+  textOutput("counter")
 )
-
 server &lt;- function(input, output) {
+  counter &lt;- reactiveValues(clicks = 0)
+  
   observeEvent(input$submitButton, {
+    counter$clicks &lt;- counter$clicks + 1
     output$outputText &lt;- renderText({
+      # Using isolate() to prevent reactivity on textInput changes
       paste("You submitted:", isolate(input$textInput))
+    })
+    output$counter &lt;- renderText({
+      paste("Submit button clicked", counter$clicks, "times")
     })
   })
 }
-
 shinyApp(ui, server)
-
 ```
 
 
@@ -571,7 +601,7 @@ shinyApp(ui, server)
 
 class: action, middle
 
-# 🚀 **Try the Shiny Code Yourself!** 5
+# 🚀 **Try the Shiny Code Yourself!** 6
 
 
 .pull-left[

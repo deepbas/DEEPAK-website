@@ -585,112 +585,6 @@ c) $2 \cdot \mathrm{t}^* \cdot \frac{s}{\sqrt{n}}$
 $\text {CI = statistic } \pm \text { margin of error }$
 </details>
 
----
-
-class: middle
-
-# Chips Ahoy!
-
-.hljs[A group of Air Force cadets bought bags of Chips Ahoy! cookies from all over the country to verify this claim.  They hand counted the number of chips in 42 bags.]
-
-
-.pull-left[
-
-<center>
-<img src="images/chipsahoy.png", width="95%" height="90%"> <br>
-</center>
-
-
-]
-
-.pull-right[
-
-.bql[
-\begin{aligned}
-& \bar{x}=1261.6 \text { chips } \\
-& s=117.6 \text { chips } \\
-& n=42 \text { bags }
-\end{aligned}
-]
-
-]
-
-
-
-.footnote[
-Source: Warner, B. $\&$ Rutledge, J. (1999). “Checking the Chips Ahoy! Guarantee,” Chance, 12(1).
-]
-
----
-
-class: middle
-
-# Chips Ahoy! Hypothesis Test
-
-
-.pull-left-60[
-.bql.font90[
-
-1. State hypotheses: $H_0: \mu=1000 \quad \& \quad H_a: \mu>1000$
-
-2. Check conditions:  $n=42 \geq 30 \quad$ `r emo::ji("check")`
-
-3. Calculate test statistic: $$t=\frac{\bar{X}-\mu_0}{s / \sqrt{n}}=\frac{1261.6-1000}{117.6 / \sqrt{42}}=14.4$$
-
-4. Compute p-value: $p-$ value $\approx 0$
-
-5. Interpret in context:
-
-]
-
-]
-
-.pull-right-40[
-
-<center>
-<img src="images/chipsahoy_pvalue.png", width="100%" height="100%"> <br>
-</center>
-
-.hljs.yellow-h[This provides extremely strong evidence that the average number of chips per bag of Chips Ahoy! cookies is significantly greater than 1000.]
-
-]
-
-
-
----
-
-class: middle
-
-# Chips Ahoy! Give a 99% confidence interval for the average number of chips in each bag.
-
-.pull-left-60[
-
-.bql.font90[
-
-1. State hypotheses: $H_0: \mu=1000 \quad \& \quad H_a: \mu>1000$
-
-2. Check conditions:  $n=42 \geq 30 \quad$ `r emo::ji("check")`
-
-3. Find $t^*$: $t^*=2.7$
-
-4. Compute confidence interval: $\begin{aligned}  \bar{X} \pm t^* \times \frac{s}{\sqrt{n}} &=  1261.6 \pm 2.7 \times \frac{117.6}{\sqrt{42}} \\ & = (1212.6,1310.6)\end{aligned}$
-
-5. Interpret in context:
-
-
-]
-
-]
-
-.pull-right-40[
-
-<center>
-<img src="images/chipsahoy_ci.png", width="100%" height="100%"> <br>
-</center>
-
-.hljs[We are 99% confident that the average number of chips per bag of Chips Ahoy! cookies is between 1212.6 and 1310.6 chips.]
-
-]
 
 ---
 
@@ -711,5 +605,5 @@ class: action
 
 ]
 
-`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 30, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

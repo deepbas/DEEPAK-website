@@ -451,20 +451,23 @@ class: middle
 
 ```r
 ui <- fluidPage(
-  numericInput("numInput", "Enter a number:", 1),
+  titlePanel("Simple Counter"),
+  numericInput("adjustValue", "Adjust by:", 1),
   actionButton("incrementButton", "Increment"),
-  textOutput("incrementedValue")
+  actionButton("decrementButton", "Decrement"),
+  br(),
+  textOutput("currentValue")
 )
 server <- function(input, output) {
-  # App's memory
-  values <- reactiveValues(num = 1)
-  
+  counter <- reactiveValues(value = 0)
   observeEvent(input$incrementButton, {
-    values$num <- values$num + 1
+    counter$value <- counter$value + input$adjustValue
   })
-  
-  output$incrementedValue <- renderText({
-    paste("Incremented value:", values$num)
+  observeEvent(input$decrementButton, {
+    counter$value <- counter$value - input$adjustValue
+  })
+  output$currentValue <- renderText({
+    paste("Current Value:", counter$value)
   })
 }
 shinyApp(ui, server)
@@ -575,6 +578,30 @@ shinyApp(ui, server)
 
 ---
 
+
+class: action, middle
+
+# 🚀 **Try the Shiny Code Yourself!** `r (yt <- yt + 1)`
+
+
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+
+.pull-right[
+.bql[
+- **Step 1:** Copy the codes on the previous slide
+- **Step 2:** Paste the codes on your R console
+- **Questions?** I'm here to help!
+- **Caution!** Don't forget to close the R Shiny session once you are done!
+]
+]
+
+
+
+---
+
+
 class: middle
 
 # `isolate()`: Pausing Reactivity in Shiny
@@ -598,23 +625,26 @@ class: middle
 
 ```
 ui <- fluidPage(
-  mainPanel(
-    textInput("textInput", "Enter some text"),
-    actionButton("submitButton", "Submit"),
-    textOutput("outputText")
-  )
+  textInput("textInput", "Enter some text"),
+  actionButton("submitButton", "Submit"),
+  textOutput("outputText"),
+  textOutput("counter")
 )
-
 server <- function(input, output) {
+  counter <- reactiveValues(clicks = 0)
+  
   observeEvent(input$submitButton, {
+    counter$clicks <- counter$clicks + 1
     output$outputText <- renderText({
+      # Using isolate() to prevent reactivity on textInput changes
       paste("You submitted:", isolate(input$textInput))
+    })
+    output$counter <- renderText({
+      paste("Submit button clicked", counter$clicks, "times")
     })
   })
 }
-
 shinyApp(ui, server)
-
 ```
 
 
