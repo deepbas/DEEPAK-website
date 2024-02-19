@@ -178,100 +178,400 @@ class: middle
 
 ---
 
-class: middle
 
-# Mapping objects
+.panelset[
 
-extract county-level data for the state of Minnesota using the 'map' function. 
+.panel[
 
-```
-MNcounty <- map("county", "Minnesota", plot=FALSE, fill=TRUE)
-```
+.panel-name[Why do we need map?]
 
-convert this data into a SpatialPolygons object using 'map2SpatialPolygons'
+.hljs[
+- We need to construct a data framework of Minnesota's county boundaries, facilitating detailed mapping, analysis, and tailored visual insights at the county level.
 
-```
-MNmap <- map2SpatialPolygons(MNcounty, IDs = MNcounty$names)
-```
+- It creates a foundational geographic template for Minnesota, focusing on the county layout for subsequent customization and exploration.  ]
 
-
-.bql[
-The resulting object, MNmap, represents the geographical boundaries of each county in Minnesota.
 ]
+
+.panel[
+
+.panel-name[Mapping objects in R]
+
+```{r}
+MNcounty <- map("county", "Minnesota", plot=FALSE, fill=TRUE); MNcounty
+```
+
+
+]
+
+
+
+]
+
+---
+
+
+
+.panelset[
+
+
+.panel[
+
+.panel-name[Why do we need polygons?]
+
+.hljs[
+
+- We then need to convert the Minnesota county data into a `SpatialPolygons` object for use in R's spatial analysis and mapping libraries.
+
+- Label each county within the spatial object, enabling easy access and manipulation in R environments.
+]
+
+
+]
+
+
+.panel[
+
+.panel-name[Mapping objects]
+
+```{r}
+MNmap <- map2SpatialPolygons(MNcounty, IDs = MNcounty$names); MNmap
+```
+
+
+]
+
+]
+
 
 
 ---
 
-`r chunk_reveal("demo3", widths = c(10, 10), font_size_code="40%", title = "# We need numeric data to project!", display_type = c("code"))`
+`r chunk_reveal("demo3", widths = c(10, 10), font_size_code="40%", title = "# We need numeric data to project!", display_type = c("code", "output"))`
 
 
 ```{r, demo3, eval=TRUE, echo=FALSE}
-table_usafacts <- bow(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/state/minnesota") %>%
+bow(url = "https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/state/minnesota") %>%
   scrape() %>% 
   html_elements(css = "table") %>% 
-  html_table()
-covidMN <- table_usafacts[[2]]
+  html_table() %>% 
+  pluck(2) ->
+  covidMN
 
 # tidy it up
-covidMN_final <- covidMN %>% janitor::clean_names() %>%
+ covidMN %>% janitor::clean_names() %>%
   mutate(cases = as.numeric(str_remove(cases, ","))) %>%
-  mutate(county = str_remove(county, " County"))
-glimpse(covidMN_final)
+  mutate(county = str_remove(county, " County")) ->
+  covidMN_final
 ```
 
 
 ---
 
-class: middle
 
-# Merging Geographical and Covid-19 Data
 
-```
-map <- SpatialPolygonsDataFrame(MNmap, covidMN_final, match.ID = FALSE)
-```
+.panelset[
 
+
+.panel[
+
+.panel-name[Merging Geographical and Covid-19 Data]
 
 .bql.font80[
-- Create a SpatialPolygonsDataFrame, which merges our geographical data (MNmap) with the Covid-19 case data (covidMN_final). 
+- Integrate Minnesota's geographic layout with Covid-19 data into a single analytical framework, enabling spatial analysis of the pandemic's impact across counties.
 
-  - This new data frame, 'map', contains both the geographical boundaries of each county and the associated Covid-19 case data.
+- The resulting dataset, 'map', combines location outlines with health statistics, offering a comprehensive view for targeted interventions and studies.
+  
+]
+]
+
+.panel[
+
+.panel-name[Code]
+
+```{r}
+map <- SpatialPolygonsDataFrame(MNmap, covidMN_final, match.ID = FALSE); map
+```
+
+
+]
+
+
 ]
 
 ---
 
-class: middle
+.panelset[
 
-# Defining Color Palettes
 
-.bql.font60[
-.hljs[Viridis color palette with colorNumeric:]
-```
+.panel[
+
+.panel-name[Demo]
+
+```{r, echo=FALSE, out.width="100%",  fig.height = 7,  fig.width = 6}
+library(leaflet)
+library(viridis) # For viridis color palette
+library(sp) # Assuming 'map' is a SpatialPolygonsDataFrame
+
+# Prepare the color palette
 pal <- colorNumeric(palette = "viridis", domain = map$cases)
-```
-Other options: heat, Dark2, Spectral
 
-.hljs[RColorBrewer palette (Paired) with colorBin:]
-
+# Create the Leaflet map
+leaflet(data = map) %>% setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+  addProviderTiles(provider = providers$CartoDB.Positron) %>% # Adding a light base map for contrast
+  addPolygons(fillColor = ~pal(cases), 
+              fillOpacity = 0.7, 
+              color = "white", 
+              weight = 1,
+              popup = ~paste("Cases: ", cases)) %>%
+  addLegend(pal = pal, values = ~cases, 
+            title = "Case Counts",
+            opacity = 1)
 ```
-bins <- c(0, 1000, 5000, 10000, 100000, Inf)
-pal <- colorBin(palette = "Paired", domain = map$cases, bins = bins)
-```
 
-Other options: Accent
 
-.hljs[RColorBrewer palette (Set1) with colorQuantile:]
-
-```
-pal <- colorQuantile(palette = "Pastel1", domain = map$cases, n = 5)
-```
-Other options: Set1
 ]
+
+
+.panel[
+.panel-name[`Viridis` color palette with `colorNumeric`]
+```{r, eval=FALSE, out.width="100%",  fig.height = 7,  fig.width = 6}
+library(leaflet)
+library(viridis) 
+library(sp) 
+
+# Prepare the color palette
+pal <- colorNumeric(palette = "viridis", domain = map$cases)
+
+# Create the Leaflet map
+leaflet(data = map) %>% setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+  addProviderTiles(provider = providers$CartoDB.Positron) %>% # Adding a light base map for contrast
+  addPolygons(fillColor = ~pal(cases), # adds geographical shapes to a map
+              fillOpacity = 0.7, 
+              color = "white", 
+              weight = 1) %>%
+  addLegend(pal = pal, values = ~cases, # adds a legend to the Leaflet map
+            title = "Case Counts",
+            opacity = 1)
+```
+]
+
+
+]
+
+---
+
+.panelset[
+
+.panel[
+
+.panel-name[Demo]
+
+```{r, echo=FALSE, out.width="100%",  fig.height = 7,  fig.width = 6}
+library(leaflet)
+library(RColorBrewer) # For the "Paired" palette
+
+# Define bins for categorizing case counts
+bins <- c(0, 1000, 5000, 10000, 100000, Inf)
+
+# Prepare the color palette using colorBin
+pal <- colorBin(palette = "Paired", domain = map$cases, bins = bins)
+
+# Create the Leaflet map
+leaflet(data = map) %>% 
+  setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+   addProviderTiles(provider = providers$CartoDB.Positron) %>% # Adding a light base map for contrast
+  addPolygons(fillColor = ~pal(cases), 
+              fillOpacity = 0.7, 
+              color = "white", 
+              weight = 1,
+              popup = ~paste("Cases: ", cases)) %>%
+  addLegend(pal = pal, values = ~cases, 
+            title = "Case Counts", 
+            bins = bins, # Specify bins in the legend
+            opacity = 1)
+
+```
+
+
+]
+
+.panel[
+.panel-name[`RColorBrewer` palette (Paired) with `colorBin`]
+
+```{r, eval=FALSE, out.width="100%",  fig.height = 7,  fig.width = 6}
+library(leaflet)
+library(RColorBrewer) # For the "Paired" palette
+
+# Define bins for categorizing case counts
+bins <- c(0, 1000, 5000, 10000, 100000, Inf)
+
+# Prepare the color palette using colorBin
+pal <- colorBin(palette = "Paired", domain = map$cases, bins = bins)
+
+# Create the Leaflet map
+leaflet(data = map) %>% 
+  setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+   addProviderTiles(provider = providers$CartoDB.Positron) %>% # Adding a light base map for contrast
+  addPolygons(fillColor = ~pal(cases), 
+              fillOpacity = 0.7, 
+              color = "white", 
+              weight = 1,
+              popup = ~paste("Cases: ", cases)) %>%
+  addLegend(pal = pal, values = ~cases, 
+            title = "Case Counts", 
+            bins = bins, # Specify bins in the legend
+            opacity = 1)
+
+```
+]
+
+
+
+]
+
+---
+
+.panelset[
+
+.panel[.panel-name[Demo]
+
+```{r, echo=FALSE, out.width="100%",  fig.height = 7,  fig.width = 6}
+library(leaflet)
+library(RColorBrewer) # For diverging color palettes
+
+# Assuming map$cases is preprocessed for logarithmic divergence from median
+
+# Calculate median and apply a logarithmic transformation to create bins
+median_cases <- median(map$cases, na.rm = TRUE)
+# Creating a symmetric set of bins around the median, for demonstration
+bins <- c(1, median_cases/2, median_cases, median_cases*2, max(map$cases))
+# Prepare the color palette using a diverging scheme
+# Note: Adjust palette choice for actual logarithmic data preprocessing
+pal <- colorBin(palette = "RdYlBu", domain = map$cases, bins = bins, na.color = "transparent")
+
+# Create the Leaflet map
+leaflet(data = map) %>%
+  setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+  addProviderTiles(provider = providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(cases),
+              fillOpacity = 0.7,
+              color = "white",
+              weight = 1,
+              popup = ~paste("Cases: ", cases)) %>%
+  addLegend(pal = pal, values = ~cases,
+            title = "Case Counts",
+            opacity = 1)
+
+```
+
+
+]
+
+
+.panel[
+.panel-name[Leaflet map with a diverging color scale]
+
+```{r, eval=FALSE}
+library(leaflet)
+library(RColorBrewer) 
+
+median_cases <- median(map$cases, na.rm = TRUE)
+bins <- c(1, median_cases/2, median_cases, median_cases*2, max(map$cases))
+
+pal <- colorBin(palette = "RdYlBu", domain = map$cases, bins = bins, na.color = "transparent")
+
+leaflet(data = map) %>%
+  setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+  addProviderTiles(provider = providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(cases),
+              fillOpacity = 0.7,
+              color = "white",
+              weight = 1,
+              popup = ~paste("Cases: ", cases)) %>%
+  addLegend(pal = pal, values = ~cases,
+            title = "Case Counts",
+            opacity = 1)
+```
+
+
+]
+
+
+
+]
+
+---
+
+.panelset[
+
+.panel[.panel-name[Demo]
+
+```{r, echo=FALSE, out.width="100%",  fig.height = 7,  fig.width = 6}
+library(leaflet)
+library(RColorBrewer) # For accessing a variety of color palettes
+
+# Prepare the color palette using colorQuantile
+# "Pastel1" is chosen for its soft, distinguishable colors ideal for categorizing data into quantiles
+pal <- colorQuantile(palette = "Dark2", domain = map$cases, n = 5)
+
+# Create the Leaflet map
+leaflet(data = map) %>%
+  setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+  addProviderTiles(provider = providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(cases),
+              fillOpacity = 0.7,
+              color = "white",
+              weight = 1,
+              popup = ~paste("Cases: ", cases)) %>%
+  addLegend(pal = pal, values = ~cases,
+            title = "Case Counts by Quantile",
+            opacity = 1)
+
+
+```
+
+
+]
+
+
+.panel[
+.panel-name[Leaflet map with a `colorQuantile` color scale]
+
+```{r, eval=FALSE}
+library(leaflet)
+library(RColorBrewer) 
+
+
+pal <- colorQuantile(palette = "Dark2", domain = map$cases, n = 5)
+
+# Create the Leaflet map
+leaflet(data = map) %>%
+  setView(lng = -93.1616, lat = 45.9983, zoom = 5.5) %>% 
+  addProviderTiles(provider = providers$CartoDB.Positron) %>%
+  addPolygons(fillColor = ~pal(cases),
+              fillOpacity = 0.7,
+              color = "white",
+              weight = 1,
+              popup = ~paste("Cases: ", cases)) %>%
+  addLegend(pal = pal, values = ~cases,
+            title = "Case Counts by Quantile",
+            opacity = 1)
+
+```
+
+
+]
+
+
+
+]
+
 
 ---
 
 class: middle
 
-# Creating labels
+# Creating better labels
 
 ```
 labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", map$county, map$cases) %>%
@@ -279,112 +579,33 @@ labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", map$county, map$ca
 ```
 
 ```{r}
-labels[1:5]
+labels
 ```
 
 
 ---
 
-class: middle
 
-# Initializing Leaflet Map
+class: action, middle
 
-.hljs[Leaflet is a JavaScript library for creating dynamic maps that support panning and zooming along with various annotations like markers, polygons, and popups.]
+# 🚀 **Try the Leaflet Code Yourself!** `r (yt <- yt + 1)`
 
 
-```{r, out.width="100%",  fig.height = 5,  fig.width = 6}
-l <- leaflet(map) %>% addTiles() %>% setView(lng = -93.1616, lat = 44.4583, zoom = 5) 
-l
-```
-
----
-
-class: middle
-
-# Adding Polygons and Highlight Options
-
-.hljs[ `addPolygons` adds geographical shapes to a map. ]
-
-.pull-left-40[
-```
-l <- l %>% addPolygons(
-  color = "grey", 
-  weight = 1,
-  fillColor = ~pal(cases), 
-  fillOpacity = 0.7,
-  highlightOptions = highlightOptions(weight = 5),
-  label = labels
-)
-```
+.pull-left[
+![Try it out!](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
 ]
 
-
-.pull-right-60[
-
-.bq.font60[
-- Styling arguments include `color` (for border color), `weight` (for border thickness), `fillColor` (for the color inside the polygons), and `fillOpacity` (for the transparency of the fill color).
-- `fillColor` means that the fill color of the polygons  is determined by the numerical quantity being projected, allowing for a visual representation of the data
-- `highlightOptions` argument sets what happens when a user hovers over a polygon, and the `label` argument sets the label that is displayed when this happens. ]
+.pull-right[
+<br>
+.bql[
+- **Step 1:** Copy the codes on the previous slides
+- **Step 2:** Paste the codes on Activity 1 on your .Rmd file 
+- **Questions?** I'm here to help!
+]
 ]
 
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
----
-
-class: middle
-
-# Adding a Legend
-
-
-.hljs[ `addLegend` adds a legend to the Leaflet map. It provides necessary context for the map's colors and markers, improving its interpretability.]
-
-.pull-left-40[
-```
-l <- l %>% addLegend(
-  pal = pal, 
-  values = ~cases, 
-  opacity = 0.5,
-  title = "Observed Cases", 
-  position = "bottomright"
-)
-```
-]
-
-
-.pull-right-60[
-
-.bq.font60[
-
-**Color Palette**: The `pal` argument is used to specify the color palette. This palette is used to color the items in the legend and, correspondingly, the polygons on the map.
-
-**Opacity**: The `opacity` argument sets the level of transparency for the legend. Lower values make the legend more transparent, while higher values make it more opaque.
-
-**Title and Position**: The `title` argument allows you to provide a title for the legend, giving context to the information displayed. The `position` argument controls where the legend is placed on the map, with options like "bottomright", "bottomleft", "topright", and "topleft".
- ]
-]
-
-
-
-
-
----
-
-class: middle
-
-# Recap: thins we can do with `leaflet`
-
-.bql.font80[
-- Make the background map with `leaflet()`, `addTiles()` and `setView()`
-
-- Use `addPolygons()` to add the shape of country/states/county
-
-- Translate a numeric variable to a palette of color
-
-  - Quantile with .out-t[colorQuantile]
-  - Numeric with .out-t[colorNumeric]
-  - Bin with .out-t[colorBin]
-]
-
-.footnote[For more information, [click here](https://rstudio.github.io/leaflet/)]
 
 ---
 
@@ -407,10 +628,10 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   output$mymap <- renderLeaflet({
-    leaflet() %>%
-      addTiles() %>%
-      addPolygons() %>%
-      addLegend()
+    leaflet() %>% # FILL IN ##
+      addTiles() %>% # FILL IN ##
+      addPolygons() %>% # FILL IN ##
+      addLegend() # FILL IN ##
   })
 }
 ```
@@ -419,7 +640,7 @@ server <- function(input, output, session) {
 
 ---
 
-`r chunk_reveal("demo4", widths = c(40, 40), font_size_code="80%", title = "# Objects needed for plotting", display_type = c("code"))`
+`r chunk_reveal("demo4", widths = c(40, 40), font_size_code="80%", title = "# Summary: Mapping and Plotting Objects", display_type = c("code"))`
 
 ```{r, demo4, eval=FALSE, echo=FALSE}
 library(leaflet) # for leaflet maps
@@ -470,160 +691,6 @@ l %>% addPolygons(color = "grey", weight = 1,
 
 
 
----
-
-`r chunk_reveal("demo6", widths = c(40, 40), font_size_code="80%", title = "# Objects needed for plotting", display_type = c("code"))`
-
-```{r, demo6, eval=FALSE, echo=FALSE}
-library(leaflet) # for leaflet maps
-library(maps) # for map data
-library(sp) # for spatial polygons
-library(maptools) # for sp polygon data frame
-
-
-MNcounty <- map("county", "Minnesota", plot=FALSE, fill=TRUE)
-MNmap <- map2SpatialPolygons(MNcounty, IDs = MNcounty$names)
-map <- SpatialPolygonsDataFrame(MNmap, covidMN_final, match.ID = FALSE)
-
-
-
-pal <- colorNumeric(palette = "viridis", alpha = TRUE, domain = map$cases)
-bins <- c(0, 1000, 5000, 10000, 100000, Inf)
-pal <- colorBin("viridis", domain = map$cases, bins = bins)
-
-labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", map$county, map$cases) %>%
-  lapply(htmltools::HTML)
-
-l <- leaflet(map) %>% addTiles() %>% setView(lng = -93.1616, lat = 44.4583, zoom = 5) 
-
-l %>% addPolygons(color = "grey", weight = 1,
-                  fillColor = ~pal(cases), fillOpacity = 0.7,
-                  highlightOptions = highlightOptions(weight = 5),
-                  label = labels) %>%
-  addLegend(pal = pal, values = ~cases, opacity = 0.5, 
-            title = "Observed Cases", 
-            position = "bottomright")
-
-```
-
----
-
-# Interactive leaflet map
-
-```{r, echo=FALSE, fig.height=7, fig.width=5}
-
-l <- leaflet(map) %>% addTiles() %>% setView(lng = -93.1616, lat = 46, zoom = 6) 
-
-l %>% addPolygons(color = "grey", weight = 1,
-                  fillColor = ~pal(cases), fillOpacity = 0.7,
-                  highlightOptions = highlightOptions(weight = 5),
-                  label = labels) %>%
-                  addLegend(pal = pal, values = ~cases, opacity = 0.5, 
-                            title = "Observed Cases", 
-                            position = "bottomright")
-
-```
-
----
-
-
-`r chunk_reveal("demo7", widths = c(40, 40), font_size_code="80%", title = "# Another example", display_type = c("code"))`
-
-```{r, demo7, eval=FALSE, echo=FALSE}
-# Scrape the data
-covid_final <- read_html("https://usafacts.org/visualizations/covid-vaccine-tracker-states/state/minnesota") %>%
-  html_elements(css = "table") %>% html_table() %>% .[[1]] %>%
-  janitor::clean_names() %>%
-  mutate_at(2:4, parse_number) %>% mutate(state = str_to_lower(state)) %>%
-  filter(state %in% c("minnesota", "wisconsin", "iowa", "michigan", "illinois", "indiana"))
-
-# Prepare the map
-USA <- maps::map("state", regions = c("minnesota", "wisconsin", "iowa", "michigan", "illinois","indiana"), plot = FALSE, fill=TRUE) %>%
-  map2SpatialPolygons(IDs = str_remove(.$names, "(?=:).+"))
-
-# Merge the data and the map
-map <- SpatialPolygonsDataFrame(USA, covid_final, match.ID = FALSE)
-
-# Create bins and color palette
-bins <- seq(min(map$percent_fully_vaccinated), max(map$percent_fully_vaccinated), length.out = 6)
-pal <- colorBin("viridis", domain = map$percent_fully_vaccinated, bins = bins)
-
-# Create labels
-labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", str_to_upper(map$state), map$percent_fully_vaccinated) %>%
-  lapply(htmltools::HTML)
-
-# Plot the map
-leaflet(map) %>% 
-  addTiles() %>% 
-  setView(lng = -93.1616, lat = 44.4583, zoom = 4) %>%
-  addPolygons(
-    color = "grey", 
-    weight = 1,
-    fillColor = ~pal(percent_fully_vaccinated), 
-    fillOpacity = 0.7,
-    highlightOptions = highlightOptions(weight = 5),
-    label = labels
-  ) %>%
-  addLegend(
-    pal = pal, 
-    values = ~percent_fully_vaccinated, 
-    opacity = 0.5, 
-    title = "Percent Vaccn.", 
-    position = "bottomright"
-  )
-
-```
-
----
-
-# Interactive leaflet map 2
-
-```{r, echo=FALSE, fig.height=7, fig.width=5}
-# Scrape the data
-covid_final <- read_html("https://usafacts.org/visualizations/covid-vaccine-tracker-states/state/minnesota") %>%
-  html_elements(css = "table") %>% html_table() %>% .[[1]] %>%
-  janitor::clean_names() %>%
-  mutate_at(2:4, parse_number) %>% mutate(state = str_to_lower(state)) %>%
-  filter(state %in% c("minnesota", "wisconsin", "iowa", "michigan", "illinois", "indiana"))
-
-# Prepare the map
-USA <- maps::map("state", regions = c("minnesota", "wisconsin", "iowa", "michigan", "illinois","indiana"), plot = FALSE, fill=TRUE) %>%
-  map2SpatialPolygons(IDs = str_remove(.$names, "(?=:).+"))
-
-# Merge the data and the map
-map <- SpatialPolygonsDataFrame(USA, covid_final, match.ID = FALSE)
-
-# Create bins and color palette
-bins <- seq(min(map$percent_fully_vaccinated), max(map$percent_fully_vaccinated), length.out = 6)
-pal <- colorBin("viridis", domain = map$percent_fully_vaccinated, bins = bins)
-
-# Create labels
-labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", str_to_upper(map$state), map$percent_fully_vaccinated) %>%
-  lapply(htmltools::HTML)
-
-# Plot the map
-leaflet(map) %>% 
-  addTiles() %>% 
-  setView(lng = -93.1616, lat = 44.4583, zoom = 4) %>%
-  addPolygons(
-    color = "grey", 
-    weight = 1,
-    fillColor = ~pal(percent_fully_vaccinated), 
-    fillOpacity = 0.7,
-    highlightOptions = highlightOptions(weight = 5),
-    label = labels
-  ) %>%
-  addLegend(
-    pal = pal, 
-    values = ~percent_fully_vaccinated, 
-    opacity = 0.5, 
-    title = "Percent Vaccn.", 
-    position = "bottomright"
-  )
-
-```
-
-
 
 ---
 
@@ -638,12 +705,14 @@ class: action, middle
 .pull-right-60[
 <br>
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 20.Rmd file
-- Work on activity 1
+- Work on activity 2 and 3
 - Ask me questions
 ]
 
 ]
 
-`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 30, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
