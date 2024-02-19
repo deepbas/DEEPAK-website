@@ -574,7 +574,7 @@ class: middle
 # Creating better labels
 
 ```
-labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", map$county, map$cases) %>%
+labels <- str_glue("<strong> {map$county} </strong> <br/> Observed: {map$cases}") %>%
   lapply(htmltools::HTML)
 ```
 
@@ -656,7 +656,7 @@ map <- SpatialPolygonsDataFrame(MNmap, covidMN_final, match.ID = FALSE)
 bins <- c(0, 1000, 5000, 10000, 100000, Inf)
 pal <- colorBin("magma", pretty = TRUE, domain = map$cases, bins = bins)
 
-labels <- sprintf("<strong> %s </strong> <br/> Observed: %s", map$county, map$cases) %>%
+labels <- str_glue("<strong> {map$county} </strong> <br/> Observed: {map$cases}") %>%
   lapply(htmltools::HTML)
 
 l <- leaflet(map) %>% addTiles() %>% setView(lng = -93.1616, lat = 44.4583, zoom = 5) 
