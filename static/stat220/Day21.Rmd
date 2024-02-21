@@ -172,7 +172,7 @@ class: middle
 - from June 2012 to September 2012
 ]
 
-.footnote[Click [here](https://archive.ics.uci.edu/ml/datasets/Algerian+Forest+Fires+Dataset++#) to learn more about the dataset]
+.footnote[Click [here](https://archive.ics.uci.edu/dataset/547/algerian+forest+fires+dataset) to learn more about the dataset]
 
 
 ---
