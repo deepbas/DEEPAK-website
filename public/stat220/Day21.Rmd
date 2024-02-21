@@ -123,7 +123,7 @@ class: title-slide, middle
 
 # .fancy[Introduction to Classification]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -141,7 +141,7 @@ Predicting what category a (future) observation falls into
 <br>
 --
 
-.bq.font90[**Examples:**
+.bqt.font90[**Examples:**
 - .bold[Astronomy:] Whether an exoplanet is habitable (or not)
 - .bold[Filtering:] Identify spam emails
 - .bold[Medicine:] Use lab results to determine who has a disease (or not)
@@ -685,7 +685,7 @@ class: action, middle
 .pull-right-60[
 <br>
 .bql[
-- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=41417)
+- Let's go over to maize server/ local Rstudio and our class [moodle](https://moodle.carleton.edu/course/view.php?id=43045)
 - Get the class activity 21.Rmd file
 - Work on activity 1
 - Ask me questions
@@ -693,5 +693,5 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

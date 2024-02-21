@@ -517,3 +517,15 @@ pre code {
    color: #215A4A;
 }
 
+remark-code, .remark-inline-code {
+      font-family: "Courier New", Courier, monospace;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      padding: 2px 5px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.07);
+    }
+    pre.remark-code {
+      padding: 5px;
+      overflow: auto;
+      max-height: 400px;
+    }

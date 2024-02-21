@@ -129,9 +129,9 @@ class: middle
 
 # Central Limit Theorem for means: One sample
 
-.bql-list[
-
-The sampling distribution for a sample mean is approximately $N\left(\mu, S E_{\bar{x}}\right)$]
+.hljs[
+The sampling distribution for a sample mean, $\bar{x}$, is approximately $N\left(\mu, S E_{\bar{x}}\right)$
+]
 
 <br>
 
@@ -150,7 +150,7 @@ class: middle
 
 # Central Limit Theorem for means: Two independent samples:
 
-.bql-list[
+.hljs[
 The sampling distribution for a difference of two independent sample means is approximately $N\left(\mu_{1}-\mu_{2}, S E_{\bar{x}_{1}-\bar{x}_{2}}\right)$
 ]
 
@@ -168,7 +168,7 @@ class: middle
 
 # Academic Performance Index (API) 
 
-.bql-list[
+.hljs[
 Academic Performance Index (API) is a number reflecting a school’s performance on a statewide standardized test
   - simple random sample of $n=200$ schools
   - variable `growth` measures the growth in API from 1999 to 2000 (API 2000 - API 1999).
@@ -192,13 +192,13 @@ table(api$wealth)
 ```
 ]
 
-
 .code100[
 ```{r, collapse=TRUE}
 library(dplyr)
 api %>% 
   group_by(wealth) %>% 
-  summarize(mean(growth), sd(growth))
+  summarize(mean = mean(growth), 
+            sd = sd(growth))
 ```
 ]
 
@@ -216,13 +216,13 @@ ggplot(api, aes(x = growth, y = wealth)) + geom_boxplot() +
 
 ## Hypothesis Test: Can we use t-inference methods to compare mean growths?
 
-.bql.font80[
+.hljs[
 - Both samples sizes (98 and 102) can be deemed large 
 - No severe skewness (but two extreme outliers)
 ]
 
-.bqt.font80[
-- Estimated Standard Error : $SD_{\bar{x}_h - \bar{x}_l} = \sqrt{\dfrac{28.75380^2}{102} + \dfrac{29.95048^2}{98}} = 4.1544$
+.bql.font80[
+- Estimated Standard Error : $SE_{\bar{x}_h - \bar{x}_l} = \sqrt{\dfrac{28.75380^2}{102} + \dfrac{29.95048^2}{98}} = 4.1544$
 
 - Test statistics: $t = \dfrac{(25.24510 - 38.82653) - 0}{4.154404} = -3.2692$
 ]
@@ -234,7 +234,7 @@ ggplot(api, aes(x = growth, y = wealth)) + geom_boxplot() +
 # Two-sample t-test
 
 ```{r, highlight.output = c(5)}
-t.test(growth ~ wealth, data = api)
+t.test(growth ~ wealth, data = api) 
 ```
 
 .font80[
@@ -254,16 +254,18 @@ which(api$growth > 120 )
 
 ```{r, collapse=TRUE}
 library(dplyr)
-api %>% slice(74,119)  
+api %>% slice(74,119)  # slice the corresponding rows from the dataset #<<
 ```
 
 ---
 
-# Remove Outliers
+# `t.test` with outliers removed
 
 ```{r, highlight.output = c(5)}
-t.test(growth ~ wealth, data = api, subset = -c(74,119))
+t.test(growth ~ wealth, data = api, subset = -c(74,119)) #<<
 ```
+
+--
 
 ..hljs[How does removing outliers influence `t-test` stat and p-value?]
 
@@ -273,7 +275,7 @@ t.test(growth ~ wealth, data = api, subset = -c(74,119))
 # Confidence Interval
 
 .pull-left[
-.bql-list.font90[
+.bql.font90[
 
 .hljs[
 .bolder[95% Confidence Interval from the output:]
@@ -296,7 +298,7 @@ t.test(growth ~ wealth, data = api, subset = -c(74,119))
 
 <br>
 
-.bql.font90[
+.bq.font90[
 .bold[Interpretation:] We are 95% confident that the mean API growth between 1999 and 2000 for all low wealth
 schools is anywhere from 8.96 points to 23.57 points higher than the mean API growth for all high wealth
 schools in California.
@@ -378,17 +380,21 @@ ggplot(tuition, aes(sample = Diff)) +
 
 ---
 
-## Tuition example
+## Tuition example: `t-test`
 
-
-
+.pull-left[
 ```{r, collapse=TRUE}
 t.test(tuition$Diff)
 ```
+]
 
+.pull-right[
 ```{r, collapse=TRUE}
-sd(tuition$Diff)/sqrt(19)  # SE for mean diff
+# alternate method
+t.test(tuition$Res, tuition$NonRes, paired = TRUE)
 ```
+
+]
 
 .bq.font90[
 
@@ -410,11 +416,11 @@ class: action
 
 <br>
 .bql[
-- Let's go over to the [course helper page](https://stat120-fall23.netlify.app/)
+- Let's go over to the [course helper page](https://stat120-winter24.netlify.app/)
 - Please do the class activity and let me know if you have any questions
 - Feel free to talk to your neighbor
 ]
 ]
 
-`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 25, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
