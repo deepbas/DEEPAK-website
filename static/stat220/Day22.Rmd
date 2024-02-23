@@ -134,7 +134,7 @@ class: title-slide, middle
 
 # .fancy[Model Accuracy and Evaluation]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -218,10 +218,9 @@ class: middle
 
 ```{r}
 set.seed(123) # set seed for reproducibility
-
 # Prepare the raw dataset
 fire_raw <- fire %>% select(temperature, isi, classes)
-
+# split the data randomly into training and testing set, 75-25
 fire_split <- initial_split(fire_raw, prop = 0.75) 
 ```
 
@@ -318,7 +317,7 @@ class: middle
 
 ```{r}
 test_features <- fire_test %>% select(temperature, isi) 
-fire_pred <- predict(fire_fit, test_features)
+fire_pred <- predict(fire_fit, test_features, type = "raw")
 fire_results <- fire_test %>% 
   select(classes) %>% 
   bind_cols(predicted = fire_pred)
@@ -394,7 +393,7 @@ class: action, middle
 .pull-right-60[
 <br>
 .bq[
-- Get the class activity 22.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=41417) 
+- Get the class activity 22.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
 - Let's work on group activity 1 together
 ]
 
@@ -402,7 +401,7 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 ---
 
@@ -572,13 +571,17 @@ ggplot(data = fire_train) +
 
 ```{r echo=FALSE, out.width = "70%", fig.width = 5.5, fig.height = 4.5, fig.align='center'}
 ggplot(data = fire_test) +
-  geom_point(data = prediction_table, aes(x = temperature, y = isi, color = classes), alpha = 0.2) +
+  geom_point(data = prediction_table, aes(x = temperature, 
+                                          y = isi, 
+                                          color = classes), 
+             alpha = 0.2) +
   geom_point(aes(x = temperature, y = isi, fill = classes), color = "black", pch = 21) +
   labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
   scale_fill_wsj() +
   scale_color_wsj() +
   theme_tufte() +
-  coord_equal() + theme(plot.title = element_text(hjust = 0.5)) + ggtitle("Evaluating performance")
+  coord_equal() + theme(plot.title = element_text(hjust = 0.5)) + 
+  ggtitle("Evaluating performance")
 ```
 
 
@@ -610,7 +613,7 @@ background-size: 60%
 
 ## Performance metrics
 
-
+.pull-left[
 .bq[Common metrics include:
 
 - accuracy
@@ -618,20 +621,25 @@ background-size: 60%
 - specificity
 - positive predictive value (PPV)
 ]
+]
 
+.pull-right[
 
 ```{r, echo=FALSE}
 confusion_matrix <- conf_mat(fire_results, truth = classes, estimate = predicted) #<<
 ```
 
 .font120[
-```{r}
-conf_mat(fire_results, truth = classes, estimate = predicted)
+```{r, echo=FALSE}
+conf_mat(fire_results, truth = classes, estimate = predicted) %>%  autoplot()
 ```
 ]
+]
 
-
-
+```{r, eval=FALSE}
+# code
+conf_mat(fire_results, truth = classes, estimate = predicted) %>%  autoplot()
+```
 
 ---
 
