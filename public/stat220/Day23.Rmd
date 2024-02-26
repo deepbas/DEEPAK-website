@@ -1,5 +1,5 @@
 ---
-title: "Cross Validation and Logistic Regression"
+title: "Linear Regression"
 subtitle: "<br/> Spring 2023"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -119,7 +119,6 @@ fire_knn_fit <- fire_knn_spec %>%
 data(PimaIndiansDiabetes2)
 db <- PimaIndiansDiabetes2
 db <- db %>% drop_na() %>% mutate(diabetes = fct_rev(factor(diabetes))) 
-
 ```
 
 
@@ -142,20 +141,22 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Cross Validation and Logistic Regression]
+# .fancy[Cross Validation and Linear Regression]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
 
 ---
 
+class: plain-background
+
 
 # Resampling methods
 
 <center>
-<img src="images/resampling.svg" width="60%" height="60%"> <br>
+<img src="images/resampling.png" style="width:60%; height:auto;"> <br>
 </center>
 
 
@@ -163,8 +164,6 @@ class: title-slide, middle
 
 
 .footnote[[Kuhn and Johnson (2019)](https://bookdown.org/max/FES/resampling.html)]
-
-
 ---
 
 
@@ -218,7 +217,6 @@ plot_grid <- expand.grid(temperature = temp_grid, isi = isi_grid)
 knn_pred_grid <- predict(fire_knn_fit, plot_grid, type = "raw")
 
 prediction_table <- bind_cols(plot_grid, data.frame(classes = knn_pred_grid))
-
 ```
 
 
@@ -229,7 +227,7 @@ prediction_table <- bind_cols(plot_grid, data.frame(classes = knn_pred_grid))
 ts1 <- ggplot(data = fire_train) +
   geom_point(data = prediction_table, aes(x = temperature, y = isi, color = classes), alpha = 0.05) +
   geom_point(aes(x = temperature, y = isi, color = classes), alpha = 0.5) +
-  labs(x = "Temperature", y = "Initian Spread Index (ISI)") +
+  labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
   scale_fill_wsj() +
   scale_color_wsj() +
   theme_light() +
@@ -283,7 +281,7 @@ prediction_table1 <- bind_cols(plot_grid, data.frame(classes = knn_pred_grid1))
 ts2 <- ggplot(data = fire_train1) +
   geom_point(data = prediction_table1, aes(x = temperature, y = isi, color = classes), alpha = 0.05) +
   geom_point(aes(x = temperature, y = isi, color = classes), alpha = 0.5) +
-  labs(x = "Temperature", y = "Initian Spread Index (ISI)") +
+  labs(x = "Temperature", y = "Initial Spread Index (ISI)") +
   scale_fill_wsj() +
   scale_color_wsj() +
   theme_light() +
@@ -352,7 +350,7 @@ knn_spec <- nearest_neighbor(
 
 set.seed(1234)
 
-fire_vfold <- vfold_cv(fire_raw, v = 5, strata = classes)
+fire_vfold <- vfold_cv(fire_raw, v = 5, strata = classes, repeats = 10)
 
 k_vals <- tibble(neighbors = seq(from = 1, to = 15, by = 1))
 
@@ -373,12 +371,12 @@ ggplot(cv_metrics %>% filter(.metric == "accuracy"), aes(x = neighbors, y = mean
   labs(x = "#Neighbors", y = "Accuracy (Cross-Validation)") +
   theme_light() +
   scale_x_continuous(breaks = 1:15, minor_breaks = NULL) + 
-  scale_y_continuous(limits = c(0.93,1.0))
+  scale_y_continuous(limits = c(0.93,0.96))
 
 ```
 
 .hljs.purple[
-- Based on accuracy, $k=6$ appears best, We can look at other metrics. Notice that accuracy doesn't always decrease with $k$
+- Based on accuracy, $k=4$ appears best, We can look at other metrics. Notice that accuracy doesn't always decrease with $k$
 ]
 
 ---
@@ -417,7 +415,8 @@ knn_spec <- nearest_neighbor(mode = "classification",
 Split the `fire_train` data set into `v = 5` folds, stratified by `classes`
 
 ```{r}
-fire_vfold <- vfold_cv(fire_train, v = 5, strata = classes)
+# replicate 5-fold cross-validation 10 times, with unique partitions for each iteration
+fire_vfold <- vfold_cv(fire_train, v = 5, strata = classes, repeats = 10)
 ```
 
 
@@ -430,7 +429,7 @@ class: middle
 Create a grid of $K$ values, the number of neighbors
 
 ```{r}
-k_vals <- tibble(neighbors = seq(from = 1, to = 15, by = 1))
+k_vals <- tibble(neighbors = seq(from = 1, to = 40, by = 1))
 ```
 
 
@@ -452,7 +451,7 @@ class: middle
 
 ## Choosing K
 
-Collect the performance metrics and find the best model
+Collect the performance metrics 
 
 .font110[
 ```{r}
@@ -467,6 +466,9 @@ class: middle
 
 ## Choosing K
 
+Collect the performance metrics and find the best model
+
+
 ```{r}
 cv_metrics %>%
   group_by(.metric) %>%
@@ -476,7 +478,7 @@ cv_metrics %>%
 
 ---
 
-# Choosing K
+# Choosing K: Visualization
 
 ```{r, echo=FALSE, fig.width=8, fig.height=4.5, fig.align='center', out.width = "90%"}
 final.results <- cv_metrics %>%  mutate(.metric = as.factor(.metric)) %>%
@@ -490,7 +492,9 @@ final.results %>%
   scale_color_wsj() + 
   scale_x_continuous(breaks = k_vals[[1]]) +
   theme(panel.grid.minor.x = element_blank())+
-  labs(color='Metric', y = "Estimate", x = "K")
+  labs(color='Metric', y = "Estimate", x = "K") +
+  theme(panel.grid.minor.x = element_blank(),
+        axis.text=element_text(size=6, angle = 20))
 ```
 
 ---
@@ -499,7 +503,7 @@ background-position: middle, center
 background-size: 55%
 ## The full process
 
-.footnote[Image source: rafalab.github.io/dsbook/]
+.footnote[Image source: [rafalab.github.io/dsbook/](rafalab.github.io/dsbook/)]
 
 ---
 
@@ -516,174 +520,302 @@ class: action, middle
 <br>
 <br>
 .bq[
-- Get the class activity 23.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=41417) 
+- Get the class activity 23.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
 - Let's work on group activity 1 together
 ]
 
+]
 
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+class: middle
+
+# Supervised Learning 
+
+.bql[
+- .b[Supervised learning:] Learning a function that maps an input to an output based on example `inputoutput` pairs.
+- .b[Function:] $\mathrm{y}=\mathrm{f}(\mathrm{x})$, where $\mathrm{y}$ is the label (output) we predict, and $\mathrm{x}$ is the feature(s) (input).
+- .b[Goal:] Find a function that calculates $y$ from $x$ values accurately for all cases in the training dataset.
+]
+
+
+---
+
+class: middle
+
+## Linear Regression: The Basics
+
+.hljs[Linear regression fits a linear equation to observed data to describe the relationship between variables.]
+
+### Formulation: $y=\beta_0 + \beta_1x_1 + \beta_2x_2 + \cdots + \epsilon$, where:
+
+.bq.font90[
+- $y$ is the dependent variable (what we're trying to predict),
+- $x_1, x_2, \cdots$ are independent variables (features),
+- $\beta_0, \beta_1, \beta_2, \cdots$ are coefficients, and $\epsilon$ represents the error term.
+]
+
+.yellow-h[.b[Objective:] Minimize the differences between the observed values and the values predicted by the linear equation.]
+
+
+---
+
+class: middle
+
+# Relevant Metrics
+
+.bql[
+$$\text{MSE} =\frac{1}{n} \sum_{i=1}^n\left(y_i-\hat{y}_i\right)^2$$
+
+
+$$\text{RMSE} =\sqrt{\frac{1}{n} \sum_{i=1}^n\left(y_i-\hat{y}_i\right)^2}$$
+]
+
+
+---
+
+class: middle
+
+# Case study: Bike Share Scheme
+
+.hljs[Data from a real study on a bicycle sharing scheme was collected to predict rental numbers based on seasonality and weather conditions.]
+
+.scrollable-table[
+```{r, echo=FALSE, results='asis'}
+url_data <- "https://raw.githubusercontent.com/MicrosoftDocs/ml-basics/master/data/daily-bike-share.csv"
+# Load the data into the R session
+bike <- read_csv(url_data) %>% drop_na() %>% 
+  select(-instant, -dteday) %>% 
+  mutate_at(vars(c("holiday", "mnth", "season", "weathersit", "weekday", "workingday", "yr")), as.factor)
+
+# View first few rows
+bike %>% 
+  slice_head(n = 7) %>% 
+  knitr::kable()
+```
+]
+
+---
+
+class: middle
+
+.font70[
+| Variable        | Description |
+|--------------|-------------|
+| instant      | An identifier for each unique row |
+| season       | Encoded numerical value for the season (1 for spring, 2 for summer, 3 for fall, 4 for winter) |
+| yr           | Observation year in the study, spanning two years (0 for 2011, 1 for 2012) |
+| mnth         | Month of observation, numbered from 1 (January) to 12 (December) |
+| holiday      | Indicates if the observation was on a public holiday (binary value) |
+| weekday      | Day of the week of the observation (0 for Sunday to 6 for Saturday) |
+| workingday   | Indicates if the day was a working day (binary value, excluding weekends and holidays) |
+| weathersit   | Weather condition category (1 for clear, 2 for mist/cloud, 3 for light rain/snow, 4 for heavy rain/hail/snow/fog) |
+| temp         | Normalized temperature in Celsius |
+| atemp        | Normalized "feels-like" temperature in Celsius |
+| hum          | Normalized humidity level |
+| windspeed    | Normalized wind speed |
+| rentals      | Count of bicycle rentals recorded |
 
 ]
 
-`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
 ---
 
-
-
-class: inverse, middle
-
-# .Large[Let's see further example of classification using simple logistic regression!]
-
----
 
 .panelset[
-.panel[.panel-name[Logistic Regression (LR)]
-.bq.font80[
-- Binary response, $Y$,  with an explanatory (predictor, features) variables, $X_1$.
-- We model the probability that $Y$ belongs to a particular category.
 
+.panel[
 
-$$P(Y = 1 ) = \frac{e^{\beta_0 + \beta_1X_1}}{1 + e^{\beta_0 + \beta_1X_1}}$$
-
-$$\text{Odds} = \frac{P(Y = 1 )}{1 - P(Y = 1 )} = e^{\beta_0 + \beta_1X_1}$$
-
-$$\text{Log Odds} = \beta_0 + \beta_1X_1$$
-]
-
-]
-
-
-.panel[.panel-name[Visual]
-
-```{r, echo = FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
-db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
-ggplot(db_plot, aes(x=glucose, y=y)) + 
-  geom_point(aes(color=diabetes, shape = diabetes)) + 
-  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE) + 
-  labs(y = "Probability of diabetes", title = "Logistic regression probability of diabetes given glucose")+
-  theme_tufte()+
-  scale_color_wsj()
-```
-
-]
-
-.panel[.panel-name[Data Preparation]
-
-```{r}
-# Create data split for train and test
-set.seed(12345)
-db_single <- db %>% select(diabetes, glucose) %>% 
-  mutate(diabetes = fct_relevel(diabetes, ref = "neg" )) 
-db_split <- initial_split(db_single, prop = 0.80)
-
-# Create training data
-db_train <- db_split %>% training()
-
-# Create testing data
-db_test <- db_split %>% testing()
-```
-]
-
-
-.panel[.panel-name[Modeling]
-
-```{r}
-set.seed(12345)
-db_recipe <- recipe(diabetes ~ ., data = db_train) %>%
-  step_scale(all_predictors()) %>%
-  step_center(all_predictors()) %>% prep()
-
-fitted_logistic_model <- logistic_reg(engine = "glm",  # Call the model
-                                      mode = "classification") %>% 
-                        fit(diabetes~., data = db_train)  # Fit the model
-```
-
-]
-]
-
----
-
-class: middle
-
-# Tidy the Summary
-
-```{r}
-broom::tidy(fitted_logistic_model)
-```
-
-
----
-
-class: middle
-
-# Odds Ratio
-
-$$ODDS = \frac{probability}{1 - probability}$$
-
-
-```{r}
-broom::tidy(fitted_logistic_model, exponentiate = TRUE)
-```
-
-
----
-
-# Threshold for classification
-
-```{r, echo= FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
-set.seed(12345)
-t <- 0.5
-x.thres<- (log(t/(1-t))-fitted_logistic_model$fit$coefficients[1])/fitted_logistic_model$fit$coefficients[2]
-
-db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
-
-ggplot(db_plot, aes(x=glucose, y=y)) + 
-  geom_jitter(aes(color=diabetes, shape =diabetes), height = 0.01) + 
-  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE) + 
-  labs(y="Probability of diabetes", title = "Probability of diabetes given glucose") + 
-  geom_segment(aes(x=x.thres, xend=180,y=0.50,yend=0.50), linetype = "dashed", col = "firebrick") + 
-  geom_segment(aes(x=x.thres, xend=x.thres,y=1,yend=0), linetype = "dashed") +
-  geom_text(x=181, y=.49, label = "threshold = 143.11", color="blue",family="Times") + 
-  annotate(geom = "rect", xmin = x.thres, xmax = 200, ymin = -.05, ymax = .05, fill = "blue", alpha = 0.1) + 
-  geom_text(x=170, y = .15,label = "diabetes", color="blue",family="Times")+
-  theme_tufte() + 
-  xlim(c(54,200))
-```
-
-
----
-
-
-class: middle
-
-# Class Prediction
-
-.code80[
-```{r, fig.width=6, fig.height=4.5, fig.align='center', out.width = "50%"}
-set.seed(12345)
-pred_class <- predict(fitted_logistic_model,  new_data = db_test) 
-bind_cols(db_test %>% select(diabetes), pred_class) %>% 
-  conf_mat(diabetes, .pred_class) %>% # confusion matrix
-  autoplot(type = "heatmap") # with graphics
-```
-]
-
----
-
-# Class Probabilities with `threshold = 0.50`
-
-```{r}
-# Prediction Probabilities
-library(probably)
-pred_prob <- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
-
-db_results <- db_test %>% bind_cols(pred_prob) %>%
-  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .5)) %>%
-  select(diabetes, glucose, contains(".pred"))
-```
+.panel-name[Descriptive Statistics]
 
 ```{r, echo=FALSE}
-head(db_results,10)
+bike %>%
+  select(atemp, temp, hum, windspeed, rentals) %>%
+  map_df(~summary(.), .id = "variable") %>%
+  mutate(across(-variable, round, digits = 6)) %>% knitr::kable()
+```
+
+]
+
+
+.panel[
+
+.panel-name[Code]
+
+
+```{r, eval=FALSE}
+bike %>%
+  select(atemp,temp, hum, windspeed, rentals) %>%
+  map_df(~summary(.), .id = "variable") %>%
+  mutate(across(-variable, round, digits = 6))
+```
+
+]
+
+]
+
+---
+
+class: middle
+
+```{r, echo=FALSE, out.width="80%", fig.width=7, fig.height=5, fig.align='center'}
+
+library(GGally)
+library(ggplot2)
+
+numeric_features <- bike %>% 
+  select(c(atemp, temp, hum, windspeed, rentals))
+
+
+# Custom function for upper panel (correlation coefficients)
+upper_panel <- function(data, mapping, ...) {
+  ggally_cor(data = data, mapping = mapping, ...)
+}
+
+# Custom function for lower panel (scatter plot with smooth line)
+lower_panel <- function(data, mapping, ...) {
+  ggally_smooth(data = data, mapping = mapping, ...)
+}
+
+# Custom function for diag panel (density plot)
+diag_panel <- function(data, mapping, ...) {
+  ggally_densityDiag(data = data, mapping = mapping, ...)
+}
+
+# Create the ggpairs plot
+ggpairs(numeric_features, 
+        upper = list(continuous = wrap(upper_panel, size = 4)), 
+        lower = list(continuous = wrap(lower_panel, size = 1, color = 'blue', alpha = 0.4)),
+        diag = list(continuous = wrap(diag_panel, size = 1, color = 'darkgreen')),
+        legends = FALSE) +
+  theme_light() +
+  theme(legend.position = "none") # Remove legends to clean up the plot
+
+
+
+```
+
+
+---
+
+
+class: middle
+
+```{r, echo=FALSE, out.width="80%", fig.width=7, fig.height=5, fig.align='center'}
+categorical_features <- bike %>% 
+  select(c(season, mnth, holiday, weekday, workingday, weathersit, rentals, yr))
+categorical_features <- categorical_features %>% 
+  pivot_longer(!rentals, names_to = "features", values_to = "values") %>%
+  group_by(features) %>% 
+  mutate(values = factor(values))
+
+# Plot a box plot for each feature
+categorical_features %>%
+  ggplot() +
+  geom_boxplot(aes(x = values, y = rentals, fill = features), alpha = 0.9, show.legend = F) +
+  facet_wrap(~ features, scales = 'free') +
+  paletteer::scale_fill_paletteer_d("RColorBrewer::Set3") +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 90))
+```
+
+---
+
+class: middle
+
+# Data preparation and train-test split
+
+```{r}
+set.seed(2056)
+bike_select <- bike %>% 
+  select(c(season, mnth, holiday, weekday, workingday, weathersit,
+           temp, atemp, hum, windspeed, rentals)) %>% 
+    mutate(across(1:6, factor))
+
+
+bike_split <- bike_select %>% 
+  initial_split(prop = 0.75, strata = holiday) # proportion stratified by holiday
+
+bike_train <- training(bike_split)
+bike_test <- testing(bike_split)
+```
+
+---
+
+class: middle
+
+# Model specification
+
+```{r}
+
+lm_spec <- # your model specification
+  linear_reg() %>%  # model type
+  set_engine(engine = "lm") %>%  # model engine
+  set_mode("regression") # model mode
+```
+
+
+```{r}
+# Show your model specification
+lm_spec
+```
+
+---
+
+class: middle
+
+# Fit the model
+
+```{r}
+# Train a linear regression model
+lm_mod <- lm_spec %>% 
+  fit(rentals ~ ., data = bike_train)
+```
+
+
+.scrollable-table[
+```{r}
+glance(lm_mod$fit) %>% knitr::kable()
+```
+]
+
+
+---
+
+class: middle
+
+# Predict on test data
+
+```{r}
+results <- bike_test %>% 
+  bind_cols(lm_mod %>% 
+    predict(new_data = bike_test)) %>% 
+      select(c(rentals, .pred))
+```
+
+```{r}
+results %>% slice_head(n =6) %>% knitr::kable()
+```
+
+---
+
+class: middle
+
+
+# Evaluate the model
+
+
+```{r}
+eval_metrics <- metric_set(rmse, rsq)
+
+# Evaluate RMSE, R2 based on the results
+eval_metrics(data = results,
+             truth = rentals,
+             estimate = .pred) %>% 
+  select(-2)
 ```
 
 
@@ -691,73 +823,30 @@ head(db_results,10)
 
 class: middle
 
-# Custom Metrics
 
-.pull-left[
-```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "90%"}
-db_results %>%  
-  conf_mat(diabetes,.pred_class) %>% 
-  autoplot(type = "heatmap")
-```
-]
-
-.pull-right[
-```{r}
-custom_metrics <- metric_set(accuracy, 
-                             sens, 
-                             spec, 
-                             ppv)
-custom_metrics(db_results,
-               truth = diabetes,
-               estimate = .pred_class)
-```
-]
-
----
-
-
-# Class Probabilities with `threshold = 0.70`
-
-```{r}
-# Prediction Probabilities
-library(probably)
-pred_prob <- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
-
-db_results <- db_test %>% bind_cols(pred_prob) %>%
-  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .70)) %>%
-  select(diabetes, glucose, contains(".pred"))
+```{r, echo=FALSE, out.width="80%", fig.width=7, fig.height=5, fig.align='center'}
+results %>%
+  ggplot(mapping = aes(x = rentals, y = .pred)) +
+  geom_point(size = 2, aes(color = "Predictions"), alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = 'darkorange', linetype = "dashed", size = 1) +
+  scale_color_manual("", 
+                     values = "steelblue") +
+  labs(title = "Daily Bike Share Predictions",
+       subtitle = "Comparison of Actual vs. Predicted Rentals",
+       x = "Actual",
+       y = "Predicted",
+       caption = "Data source: Bike Share System") +
+  theme_minimal(base_size = 14) +
+  theme(plot.title = element_text(hjust = 0.5, size = 20, face = "bold"),
+        plot.subtitle = element_text(hjust = 0.5, size = 14),
+        plot.caption = element_text(size = 8, margin = margin(t = 10)),
+        legend.position = "none",
+        legend.title = element_blank(),
+        legend.text = element_text(size = 12),
+        axis.title = element_text(face = "bold", size = 14),
+        axis.text = element_text(size = 12)) 
 ```
 
-```{r, echo=FALSE}
-head(db_results,10)
-```
-
-
----
-
-class: middle
-
-# Custom Metrics
-
-.pull-left[
-```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "90%"}
-db_results %>%  
-  conf_mat(diabetes,.pred_class) %>% 
-  autoplot(type = "heatmap")
-```
-]
-
-.pull-right[
-```{r}
-custom_metrics <- metric_set(accuracy, 
-                             sens, 
-                             spec, 
-                             ppv)
-custom_metrics(db_results,
-               truth = diabetes,
-               estimate = .pred_class)
-```
-]
 
 ---
 

@@ -532,3 +532,8 @@ pre code {
   overflow-x: auto;
   white-space: nowrap;
 }
+
+.plain-background {
+  background-color: #ffffff;
+}
+

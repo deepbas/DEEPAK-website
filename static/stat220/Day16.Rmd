@@ -507,6 +507,7 @@ Team_Stats %>% knitr::kable(caption = "Scrapped data for various team stats")
 .panel[
 
 .panel-name[Data]
+.scrollable-table[
 ```{r, echo=FALSE}
 MinnesotaVikings <- bow("https://www.pro-football-reference.com/teams/min/2023.htm") %>% 
   scrape()
@@ -525,6 +526,7 @@ Team_Stats %<>% #  %<>% which allows for direct assignment within the pipe
 
 Team_Stats %>% knitr::kable(caption = "Scrapped data for various team stats") 
 ```
+]
 
 ]
 

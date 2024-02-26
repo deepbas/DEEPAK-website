@@ -177,7 +177,7 @@ end_time - start_time # Calculate duration
 
 ### Multiple tables combined
 
-.scroll-output[
+.scrollable-table[
 ```{r, echo=FALSE}
 DT::datatable(
   my_df %>% select(-x52_week_range),

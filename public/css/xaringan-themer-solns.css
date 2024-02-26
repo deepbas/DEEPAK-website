@@ -512,3 +512,11 @@ ul2 {
    border-radius: 10px;
    color: #215A4A;
 }
+
+
+.scrollable-table {
+  overflow-x: auto;
+  display: block;
+  max-width: 100%;
+}
+

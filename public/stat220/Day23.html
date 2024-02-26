@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Cross Validation and Logistic Regression</title>
+    <title>Linear Regression</title>
     <meta charset="utf-8" />
     <meta name="author" content="Bastola" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -41,20 +41,22 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Cross Validation and Logistic Regression]
+# .fancy[Cross Validation and Linear Regression]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
- May 19 2023
+ February 25 2024
 
 
 ---
+
+class: plain-background
 
 
 # Resampling methods
 
 &lt;center&gt;
-&lt;img src="images/resampling.svg" width="60%" height="60%"&gt; &lt;br&gt;
+&lt;img src="images/resampling.png" style="width:60%; height:auto;"&gt; &lt;br&gt;
 &lt;/center&gt;
 
 
@@ -62,8 +64,6 @@ class: title-slide, middle
 
 
 .footnote[[Kuhn and Johnson (2019)](https://bookdown.org/max/FES/resampling.html)]
-
-
 ---
 
 
@@ -118,7 +118,7 @@ class: middle
 &lt;img src="Day23_files/figure-html/unnamed-chunk-4-1.svg" width="75%" style="display: block; margin: auto;" /&gt;
 
 .hljs.purple[
-- Based on accuracy, `\(k=6\)` appears best, We can look at other metrics. Notice that accuracy doesn't always decrease with `\(k\)`
+- Based on accuracy, `\(k=4\)` appears best, We can look at other metrics. Notice that accuracy doesn't always decrease with `\(k\)`
 ]
 
 ---
@@ -160,7 +160,8 @@ Split the `fire_train` data set into `v = 5` folds, stratified by `classes`
 
 
 ```r
-fire_vfold &lt;- vfold_cv(fire_train, v = 5, strata = classes)
+# replicate 5-fold cross-validation 10 times, with unique partitions for each iteration
+fire_vfold &lt;- vfold_cv(fire_train, v = 5, strata = classes, repeats = 10)
 ```
 
 
@@ -174,7 +175,7 @@ Create a grid of `\(K\)` values, the number of neighbors
 
 
 ```r
-k_vals &lt;- tibble(neighbors = seq(from = 1, to = 15, by = 1))
+k_vals &lt;- tibble(neighbors = seq(from = 1, to = 40, by = 1))
 ```
 
 
@@ -197,7 +198,7 @@ class: middle
 
 ## Choosing K
 
-Collect the performance metrics and find the best model
+Collect the performance metrics 
 
 .font110[
 
@@ -207,12 +208,12 @@ cv_metrics %&gt;% head(6)
 # A tibble: 6 × 7
   neighbors .metric     .estimator  mean     n std_err .config              
       &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
-1         1 accuracy    binary     0.967     5  0.0243 Preprocessor1_Model01
-2         1 ppv         binary     0.985     5  0.0154 Preprocessor1_Model01
-3         1 sensitivity binary     0.957     5  0.0286 Preprocessor1_Model01
-4         1 specificity binary     0.98      5  0.02   Preprocessor1_Model01
-5         2 accuracy    binary     0.967     5  0.0243 Preprocessor1_Model02
-6         2 ppv         binary     0.985     5  0.0154 Preprocessor1_Model02
+1         1 accuracy    binary     0.987    50 0.00343 Preprocessor1_Model01
+2         1 ppv         binary     0.999    50 0.00133 Preprocessor1_Model01
+3         1 sensitivity binary     0.979    50 0.00586 Preprocessor1_Model01
+4         1 specificity binary     0.998    50 0.002   Preprocessor1_Model01
+5         2 accuracy    binary     0.987    50 0.00343 Preprocessor1_Model02
+6         2 ppv         binary     0.999    50 0.00133 Preprocessor1_Model02
 ```
 ]
 
@@ -222,31 +223,43 @@ class: middle
 
 ## Choosing K
 
+Collect the performance metrics and find the best model
+
+
 
 ```r
 cv_metrics %&gt;%
   group_by(.metric) %&gt;%
   slice_max(mean) 
-# A tibble: 26 × 7
+# A tibble: 20 × 7
 # Groups:   .metric [4]
-   neighbors .metric  .estimator  mean     n std_err .config              
-       &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
- 1         3 accuracy binary     0.983     5  0.0167 Preprocessor1_Model03
- 2         4 accuracy binary     0.983     5  0.0167 Preprocessor1_Model04
- 3         3 ppv      binary     1         5  0      Preprocessor1_Model03
- 4         4 ppv      binary     1         5  0      Preprocessor1_Model04
- 5         7 ppv      binary     1         5  0      Preprocessor1_Model07
- 6         8 ppv      binary     1         5  0      Preprocessor1_Model08
- 7         9 ppv      binary     1         5  0      Preprocessor1_Model09
- 8        10 ppv      binary     1         5  0      Preprocessor1_Model10
- 9        11 ppv      binary     1         5  0      Preprocessor1_Model11
-10        12 ppv      binary     1         5  0      Preprocessor1_Model12
-# … with 16 more rows
+   neighbors .metric     .estimator  mean     n std_err .config              
+       &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
+ 1         1 accuracy    binary     0.987    50 0.00343 Preprocessor1_Model01
+ 2         2 accuracy    binary     0.987    50 0.00343 Preprocessor1_Model02
+ 3        11 ppv         binary     1        50 0       Preprocessor1_Model11
+ 4        12 ppv         binary     1        50 0       Preprocessor1_Model12
+ 5        13 ppv         binary     1        50 0       Preprocessor1_Model13
+ 6        14 ppv         binary     1        50 0       Preprocessor1_Model14
+ 7        15 ppv         binary     1        50 0       Preprocessor1_Model15
+ 8        16 ppv         binary     1        50 0       Preprocessor1_Model16
+ 9        17 ppv         binary     1        50 0       Preprocessor1_Model17
+10        18 ppv         binary     1        50 0       Preprocessor1_Model18
+11         1 sensitivity binary     0.979    50 0.00586 Preprocessor1_Model01
+12         2 sensitivity binary     0.979    50 0.00586 Preprocessor1_Model02
+13        11 specificity binary     1        50 0       Preprocessor1_Model11
+14        12 specificity binary     1        50 0       Preprocessor1_Model12
+15        13 specificity binary     1        50 0       Preprocessor1_Model13
+16        14 specificity binary     1        50 0       Preprocessor1_Model14
+17        15 specificity binary     1        50 0       Preprocessor1_Model15
+18        16 specificity binary     1        50 0       Preprocessor1_Model16
+19        17 specificity binary     1        50 0       Preprocessor1_Model17
+20        18 specificity binary     1        50 0       Preprocessor1_Model18
 ```
 
 ---
 
-# Choosing K
+# Choosing K: Visualization
 
 &lt;img src="Day23_files/figure-html/unnamed-chunk-12-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
@@ -256,7 +269,7 @@ background-position: middle, center
 background-size: 55%
 ## The full process
 
-.footnote[Image source: rafalab.github.io/dsbook/]
+.footnote[Image source: [rafalab.github.io/dsbook/](rafalab.github.io/dsbook/)]
 
 ---
 
@@ -273,130 +286,157 @@ class: action, middle
 &lt;br&gt;
 &lt;br&gt;
 .bq[
-- Get the class activity 23.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=41417) 
+- Get the class activity 23.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
 - Let's work on group activity 1 together
 ]
 
-
-
 ]
 
-<div class="countdown" id="timer_985bf47c" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_6a338332" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
----
-
-
-
-class: inverse, middle
-
-# .Large[Let's see further example of classification using simple logistic regression!]
 
 ---
+
+class: middle
+
+# Supervised Learning 
+
+.bql[
+- .b[Supervised learning:] Learning a function that maps an input to an output based on example `inputoutput` pairs.
+- .b[Function:] `\(\mathrm{y}=\mathrm{f}(\mathrm{x})\)`, where `\(\mathrm{y}\)` is the label (output) we predict, and `\(\mathrm{x}\)` is the feature(s) (input).
+- .b[Goal:] Find a function that calculates `\(y\)` from `\(x\)` values accurately for all cases in the training dataset.
+]
+
+
+---
+
+class: middle
+
+## Linear Regression: The Basics
+
+.hljs[Linear regression fits a linear equation to observed data to describe the relationship between variables.]
+
+### Formulation: `\(y=\beta_0 + \beta_1x_1 + \beta_2x_2 + \cdots + \epsilon\)`, where:
+
+.bq.font90[
+- `\(y\)` is the dependent variable (what we're trying to predict),
+- `\(x_1, x_2, \cdots\)` are independent variables (features),
+- `\(\beta_0, \beta_1, \beta_2, \cdots\)` are coefficients, and `\(\epsilon\)` represents the error term.
+]
+
+.yellow-h[.b[Objective:] Minimize the differences between the observed values and the values predicted by the linear equation.]
+
+
+---
+
+class: middle
+
+# Relevant Metrics
+
+.bql[
+`$$\text{MSE} =\frac{1}{n} \sum_{i=1}^n\left(y_i-\hat{y}_i\right)^2$$`
+
+
+`$$\text{RMSE} =\sqrt{\frac{1}{n} \sum_{i=1}^n\left(y_i-\hat{y}_i\right)^2}$$`
+]
+
+
+---
+
+class: middle
+
+# Case study: Bike Share Scheme
+
+.hljs[Data from a real study on a bicycle sharing scheme was collected to predict rental numbers based on seasonality and weather conditions.]
+
+.scrollable-table[
+
+
+|season |yr |mnth |holiday |weekday |workingday |weathersit |     temp|    atemp|      hum| windspeed| rentals|
+|:------|:--|:----|:-------|:-------|:----------|:----------|--------:|--------:|--------:|---------:|-------:|
+|1      |0  |1    |0       |6       |0          |2          | 0.344167| 0.363625| 0.805833| 0.1604460|     331|
+|1      |0  |1    |0       |0       |0          |2          | 0.363478| 0.353739| 0.696087| 0.2485390|     131|
+|1      |0  |1    |0       |1       |1          |1          | 0.196364| 0.189405| 0.437273| 0.2483090|     120|
+|1      |0  |1    |0       |2       |1          |1          | 0.200000| 0.212122| 0.590435| 0.1602960|     108|
+|1      |0  |1    |0       |3       |1          |1          | 0.226957| 0.229270| 0.436957| 0.1869000|      82|
+|1      |0  |1    |0       |4       |1          |1          | 0.204348| 0.233209| 0.518261| 0.0895652|      88|
+|1      |0  |1    |0       |5       |1          |2          | 0.196522| 0.208839| 0.498696| 0.1687260|     148|
+
+
+]
+
+---
+
+class: middle
+
+.font70[
+| Variable        | Description |
+|--------------|-------------|
+| instant      | An identifier for each unique row |
+| season       | Encoded numerical value for the season (1 for spring, 2 for summer, 3 for fall, 4 for winter) |
+| yr           | Observation year in the study, spanning two years (0 for 2011, 1 for 2012) |
+| mnth         | Month of observation, numbered from 1 (January) to 12 (December) |
+| holiday      | Indicates if the observation was on a public holiday (binary value) |
+| weekday      | Day of the week of the observation (0 for Sunday to 6 for Saturday) |
+| workingday   | Indicates if the day was a working day (binary value, excluding weekends and holidays) |
+| weathersit   | Weather condition category (1 for clear, 2 for mist/cloud, 3 for light rain/snow, 4 for heavy rain/hail/snow/fog) |
+| temp         | Normalized temperature in Celsius |
+| atemp        | Normalized "feels-like" temperature in Celsius |
+| hum          | Normalized humidity level |
+| windspeed    | Normalized wind speed |
+| rentals      | Count of bicycle rentals recorded |
+
+]
+
+---
+
 
 .panelset[
-.panel[.panel-name[Logistic Regression (LR)]
-.bq.font80[
-- Binary response, `\(Y\)`,  with an explanatory (predictor, features) variables, `\(X_1\)`.
-- We model the probability that `\(Y\)` belongs to a particular category.
+
+.panel[
+
+.panel-name[Descriptive Statistics]
 
 
-`$$P(Y = 1 ) = \frac{e^{\beta_0 + \beta_1X_1}}{1 + e^{\beta_0 + \beta_1X_1}}$$`
 
-`$$\text{Odds} = \frac{P(Y = 1 )}{1 - P(Y = 1 )} = e^{\beta_0 + \beta_1X_1}$$`
+|variable  |     Min.|    1st Qu.|     Median|       Mean|     3rd Qu.|        Max.|
+|:---------|--------:|----------:|----------:|----------:|-----------:|-----------:|
+|atemp     | 0.079070|   0.337842|   0.486733|   0.474354|    0.608602|    0.840896|
+|temp      | 0.059130|   0.337083|   0.498333|   0.495385|    0.655417|    0.861667|
+|hum       | 0.000000|   0.520000|   0.626667|   0.627894|    0.730209|    0.972500|
+|windspeed | 0.022392|   0.134950|   0.180975|   0.190486|    0.233214|    0.507463|
+|rentals   | 2.000000| 315.500000| 713.000000| 848.176471| 1096.000000| 3410.000000|
 
-`$$\text{Log Odds} = \beta_0 + \beta_1X_1$$`
-]
 
-]
-
-
-.panel[.panel-name[Visual]
-
-&lt;img src="Day23_files/figure-html/unnamed-chunk-13-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
 
 ]
 
-.panel[.panel-name[Data Preparation]
+
+.panel[
+
+.panel-name[Code]
+
 
 
 ```r
-# Create data split for train and test
-set.seed(12345)
-db_single &lt;- db %&gt;% select(diabetes, glucose) %&gt;% 
-  mutate(diabetes = fct_relevel(diabetes, ref = "neg" )) 
-db_split &lt;- initial_split(db_single, prop = 0.80)
-
-# Create training data
-db_train &lt;- db_split %&gt;% training()
-
-# Create testing data
-db_test &lt;- db_split %&gt;% testing()
-```
-]
-
-
-.panel[.panel-name[Modeling]
-
-
-```r
-set.seed(12345)
-db_recipe &lt;- recipe(diabetes ~ ., data = db_train) %&gt;%
-  step_scale(all_predictors()) %&gt;%
-  step_center(all_predictors()) %&gt;% prep()
-
-fitted_logistic_model &lt;- logistic_reg(engine = "glm",  # Call the model
-                                      mode = "classification") %&gt;% 
-                        fit(diabetes~., data = db_train)  # Fit the model
+bike %&gt;%
+  select(atemp,temp, hum, windspeed, rentals) %&gt;%
+  map_df(~summary(.), .id = "variable") %&gt;%
+  mutate(across(-variable, round, digits = 6))
 ```
 
 ]
+
 ]
 
 ---
 
 class: middle
 
-# Tidy the Summary
-
-
-```r
-broom::tidy(fitted_logistic_model)
-# A tibble: 2 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)  -5.61     0.678       -8.28 1.20e-16
-2 glucose       0.0392   0.00514      7.62 2.55e-14
-```
-
-
----
-
-class: middle
-
-# Odds Ratio
-
-`$$ODDS = \frac{probability}{1 - probability}$$`
-
-
-
-```r
-broom::tidy(fitted_logistic_model, exponentiate = TRUE)
-# A tibble: 2 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)  0.00364   0.678       -8.28 1.20e-16
-2 glucose      1.04      0.00514      7.62 2.55e-14
-```
-
-
----
-
-# Threshold for classification
-
-&lt;img src="Day23_files/figure-html/unnamed-chunk-18-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Day23_files/figure-html/unnamed-chunk-16-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -404,49 +444,139 @@ broom::tidy(fitted_logistic_model, exponentiate = TRUE)
 
 class: middle
 
-# Class Prediction
-
-.code80[
-
-```r
-set.seed(12345)
-pred_class &lt;- predict(fitted_logistic_model,  new_data = db_test) 
-bind_cols(db_test %&gt;% select(diabetes), pred_class) %&gt;% 
-  conf_mat(diabetes, .pred_class) %&gt;% # confusion matrix
-  autoplot(type = "heatmap") # with graphics
-```
-
-&lt;img src="Day23_files/figure-html/unnamed-chunk-19-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
-]
+&lt;img src="Day23_files/figure-html/unnamed-chunk-17-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Class Probabilities with `threshold = 0.50`
+class: middle
+
+# Data preparation and train-test split
 
 
 ```r
-# Prediction Probabilities
-library(probably)
-pred_prob &lt;- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
+set.seed(2056)
+bike_select &lt;- bike %&gt;% 
+  select(c(season, mnth, holiday, weekday, workingday, weathersit,
+           temp, atemp, hum, windspeed, rentals)) %&gt;% 
+    mutate(across(1:6, factor))
 
-db_results &lt;- db_test %&gt;% bind_cols(pred_prob) %&gt;%
-  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .5)) %&gt;%
-  select(diabetes, glucose, contains(".pred"))
+
+bike_split &lt;- bike_select %&gt;% 
+  initial_split(prop = 0.75, strata = holiday) # proportion stratified by holiday
+
+bike_train &lt;- training(bike_split)
+bike_test &lt;- testing(bike_split)
+```
+
+---
+
+class: middle
+
+# Model specification
+
+
+```r
+
+lm_spec &lt;- # your model specification
+  linear_reg() %&gt;%  # model type
+  set_engine(engine = "lm") %&gt;%  # model engine
+  set_mode("regression") # model mode
 ```
 
 
+
+```r
+# Show your model specification
+lm_spec
+Linear Regression Model Specification (regression)
+
+Computational engine: lm 
 ```
-    diabetes glucose .pred_neg  .pred_pos .pred_class
-25       pos     143 0.5040090 0.49599103         neg
-52       neg     101 0.8402912 0.15970881         neg
-60       neg     105 0.8181391 0.18186086         neg
-64       neg     141 0.5235673 0.47643271         neg
-69       neg      95 0.8693592 0.13064080         neg
-83       neg      83 0.9141287 0.08587128         neg
-98       neg      71 0.9445349 0.05546507         neg
-110      pos      95 0.8693592 0.13064080         neg
-135      neg      96 0.8648480 0.13515203         neg
-143      neg     108 0.8000067 0.19999330         neg
+
+---
+
+class: middle
+
+# Fit the model
+
+
+```r
+# Train a linear regression model
+lm_mod &lt;- lm_spec %&gt;% 
+  fit(rentals ~ ., data = bike_train)
+```
+
+
+.scrollable-table[
+
+```r
+glance(lm_mod$fit) %&gt;% knitr::kable()
+```
+
+
+
+| r.squared| adj.r.squared|    sigma| statistic| p.value| df|    logLik|      AIC|      BIC| deviance| df.residual| nobs|
+|---------:|-------------:|--------:|---------:|-------:|--:|---------:|--------:|--------:|--------:|-----------:|----:|
+| 0.6956614|     0.6798592| 385.1778|  44.02308|       0| 27| -4025.838| 8109.677| 8234.559| 77148225|         520|  548|
+
+
+]
+
+
+---
+
+class: middle
+
+# Predict on test data
+
+
+```r
+results &lt;- bike_test %&gt;% 
+  bind_cols(lm_mod %&gt;% 
+    predict(new_data = bike_test)) %&gt;% 
+      select(c(rentals, .pred))
+```
+
+
+```r
+results %&gt;% slice_head(n =6) %&gt;% knitr::kable()
+```
+
+
+
+| rentals|     .pred|
+|-------:|---------:|
+|     331| 962.99041|
+|     131| 777.55036|
+|     148|  93.80756|
+|     251| 779.49463|
+|      75| -86.39861|
+|     150| 483.58901|
+
+
+
+---
+
+class: middle
+
+
+# Evaluate the model
+
+
+
+```r
+eval_metrics &lt;- metric_set(rmse, rsq)
+
+# Evaluate RMSE, R2 based on the results
+eval_metrics(data = results,
+             truth = rentals,
+             estimate = .pred) %&gt;% 
+  select(-2)
+# A tibble: 2 × 2
+  .metric .estimate
+  &lt;chr&gt;       &lt;dbl&gt;
+1 rmse      380.   
+2 rsq         0.710
 ```
 
 
@@ -454,93 +584,9 @@ db_results &lt;- db_test %&gt;% bind_cols(pred_prob) %&gt;%
 
 class: middle
 
-# Custom Metrics
 
-.pull-left[
-&lt;img src="Day23_files/figure-html/unnamed-chunk-22-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
-]
+&lt;img src="Day23_files/figure-html/unnamed-chunk-26-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
-.pull-right[
-
-```r
-custom_metrics &lt;- metric_set(accuracy, 
-                             sens, 
-                             spec, 
-                             ppv)
-custom_metrics(db_results,
-               truth = diabetes,
-               estimate = .pred_class)
-# A tibble: 4 × 3
-  .metric  .estimator .estimate
-  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
-1 accuracy binary         0.848
-2 sens     binary         0.930
-3 spec     binary         0.636
-4 ppv      binary         0.869
-```
-]
-
----
-
-
-# Class Probabilities with `threshold = 0.70`
-
-
-```r
-# Prediction Probabilities
-library(probably)
-pred_prob &lt;- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
-
-db_results &lt;- db_test %&gt;% bind_cols(pred_prob) %&gt;%
-  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .70)) %&gt;%
-  select(diabetes, glucose, contains(".pred"))
-```
-
-
-```
-    diabetes glucose .pred_neg  .pred_pos .pred_class
-25       pos     143 0.5040090 0.49599103         pos
-52       neg     101 0.8402912 0.15970881         neg
-60       neg     105 0.8181391 0.18186086         neg
-64       neg     141 0.5235673 0.47643271         pos
-69       neg      95 0.8693592 0.13064080         neg
-83       neg      83 0.9141287 0.08587128         neg
-98       neg      71 0.9445349 0.05546507         neg
-110      pos      95 0.8693592 0.13064080         neg
-135      neg      96 0.8648480 0.13515203         neg
-143      neg     108 0.8000067 0.19999330         neg
-```
-
-
----
-
-class: middle
-
-# Custom Metrics
-
-.pull-left[
-&lt;img src="Day23_files/figure-html/unnamed-chunk-26-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
-]
-
-.pull-right[
-
-```r
-custom_metrics &lt;- metric_set(accuracy, 
-                             sens, 
-                             spec, 
-                             ppv)
-custom_metrics(db_results,
-               truth = diabetes,
-               estimate = .pred_class)
-# A tibble: 4 × 3
-  .metric  .estimator .estimate
-  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
-1 accuracy binary         0.785
-2 sens     binary         0.754
-3 spec     binary         0.864
-4 ppv      binary         0.935
-```
-]
 
 ---
 
@@ -561,7 +607,7 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_b1acb4db" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_9d691834" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>

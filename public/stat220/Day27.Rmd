@@ -1,5 +1,5 @@
 ---
-title: "Case Study: Random Forest"
+title: "Model Accuracy and Evaluation"
 subtitle: "<br/> Fall 2022"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -90,6 +90,9 @@ select <- dplyr::select
 # theme_set(theme_stata(base_size = 10))
 
 yt <- 0
+
+data(PimaIndiansDiabetes)
+db <- PimaIndiansDiabetes
 ```
 
 
@@ -113,200 +116,279 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Unlocking the Power of Machine Learning]
-## .fancy[Address Formatting Correctness Prediction]
+
+# .fancy[Decision Trees and Random Forest]
+
 ### .fancy[Spring 2023]
+
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
 ---
 
-
-class: inverse, middle
-
-
-
-.bql[# Example - Detecting Typos in Addresses
-Consider the task of detecting typos in street addresses. A machine learning model could be trained to classify addresses as correct or incorrect based on various features, one of which could be the .b[Levenshtein distance] from a known correct address.
-]
-
-
----
-
 class: middle
 
-# Examples of Addresses
-
-.pull-left[
-.bq.font80[
-## Correct Addresses
-1. 530 5th St E, Northfield, MN, 55057
-2. 123 Main St, Los Angeles, CA, 90034
-3. 789 Broadway, Apt 12B, New York, NY, 10025
-4. 456 Pine Ave, San Francisco, CA, 94108
-5. 159 River Rd, Boston, MA, 02115
-]
-]
-.pull-right[
-.bq.font80[## Incorrect Addresses
-1. 530 5th Street East, North, MN, 55057
-2. 123 Mian Street, Los Angeles, CA, 9003
-3. 78 Broadway, Apt 12B, New York, NY, 10025
-4. 456Pine Avenue, San Francisco, CA, 94108
-5. 159 River Rd, Bosotn, MA, 02115
-]
-]
-
-
----
-
-class: middle
-
-# The Problem
-## Incorrect and inconsistently formatted addresses
-
-.pull-left[
-.bql.font80[
-- Inconsistently formatted addresses pose a significant problem in data management and analysis.
-- They can lead to inaccurate data matching, ineffective communication, and inefficiencies in logistics and delivery services.
-- Incorrect addresses can also pose security issues and lead to lost business opportunities.
-]
-]
-.pull-right[
-.bql.font80[
-- Address standardization and validation is crucial in various domains such as e-commerce, logistics, healthcare, and public services.
-- Data scientists often need to assess the validity of addresses, correct them where possible, or flag potential issues for further investigation.
-]
-]
-
-
-.hljs[Our aim is to develop a machine learning model that can predict if a given address is correctly formatted based on various features.]
-
----
-
-class: middle
-
-# One Potential Solution: Random Forest for Address Formatting
-
-.pull-left[
-## Why Random Forest?
-.bq.font80[
-- .highlight[Ability to handle complex patterns]: Addresses can have diverse and complex patterns
-- .highlight[Robust to overfitting]: The ensemble nature of Random Forest makes it less likely to overfit compared to simpler models
-- .highlight[Feature importance]: Random Forest provides a straightforward way to measure the importance of each feature
-]
-]
-
-
-.pull-right[
-## Training Random Forest
-.bq.font80[
-- The Random Forest model is trained using our dataset, which contains both correctly and incorrectly formatted addresses.
-- Each address is represented by a set of features such as its length, number of words, presence of apartment number, zip code correctness, etc.
-- Our model learns to predict the correctness of an address based on these features.
-]
-]
-
----
-
-class: middle
-
-# Feature and Feature Engineering
-
-.pull-left[
+## Decision Tree
 
 .bql[
-"Length"               
-"Number of Words"      
-"State Code"          
-"Zip Code"           
-"Levenshtein Distance"  
-"Presence of apt no"    
-"Presence of street no"   
+- learns how to best split the dataset into smaller and smaller subsets to predict the target value
 ]
 
-]
+.pull-left[
+.bq.font80[
+- Data is continuously split according to a certain parameter
 
+- Two main entities:
+
+  + .out-t[nodes]: where the data is split
+  + .out-t[leaves]: decisions or final outcomes
+]
+]
 .pull-right[
-.bql[
-
-"Presence of street name" 
-"Presence of city"      
-"Presence of state"     
-"Presence of zip code"   
-"State code correctness" 
-"Zip code correctness"
-"Typo in street name" 
+<br>
+```{r echo = FALSE}
+knitr::include_graphics("images/taylor-tree.png")
+```
 
 ]
-
-
-]
-
-
-
 
 ---
 
 class: middle
 
-#  Levenshtein distance
+# Decision Tree
 
-.hljs[Levenshtein distance is a tool used for quantifying the difference between two sequences by calculating the minimum number of single-character edits needed to transform one string into the other.]
+.yellow-h[Use features to make subsets of cases that are as similar (“pure”) as possible with respect to the outcome]
 
-.bqt.font80[
+.bq.font80[
+- Start with all observations in one group
 
-- This measure utilizes three types of edits: insertions, deletions, and substitutions.
+- Find the variable/feature/split that best separates the outcome
 
-- Due to its ability to assess string similarity and difference, Levenshtein distance finds extensive use in applications where such determinations are necessary.
+- Divide the data into two groups (leaves) on the split (node)
+
+- Within each split, find the best variable/split that separates the outcomes
+
+- Continue until the groups are too small or sufficiently “pure”
 ]
 
-
-.footnote[Levenshtein, Vladimir I. "Binary codes capable of correcting deletions, insertions, and reversals." In Soviet physics doklady, vol. 10, no. 8, pp. 707-710. 1966.]
 
 ---
 
-class: middle
+# Dataset
 
-# Calculation of Levenshtein Distance
-
-.hljs[Let's consider two strings: kitten and sitting. To transform "kitten" into "sitting" we could:]
-
-.bql.font90[
-- Substitute "k" with "s" - sitting
-- Substitute "e" with "i" - sittin
-- Append "g" - sitting
+.code120[
+```{r}
+data(PimaIndiansDiabetes2)
+db <- PimaIndiansDiabetes2 %>% drop_na() %>%
+  mutate(diabetes = fct_relevel(diabetes, ref = "neg"))
+```
 ]
 
-.blue-h[The Levenshtein distance between "kitten" and "sitting" is therefore 3.]
+--
+
+```{r}
+glimpse(db)
+```
 
 ---
 
 
 class: middle
 
-# R code for calculating Levenshtein Distance for Address Validation
+# Data preparation and pre-processing
 
+.code120[
+```{r}
+set.seed(314) 
+db_split <- initial_split(db, prop = 0.75)
+db_train <- db_split %>% training()
+db_test <- db_split %>% testing()
+```
+]
 
-```{r, eval=FALSE}
-# Calculate the Levenshtein distance between the provided and correct address
-levenshtein_distance <- stringdist::stringdist(address, correct_address)
+.code120[
+```{r}
+# scaling not needed
+db_recipe <- recipe(diabetes ~ ., data = db_train) %>%
+ step_dummy(all_nominal(), -all_outcomes()) %>%
+ prep()
+```
+]
+
+---
+
+class: middle
+
+# Model Specification
+
+.bq[
+- .out-t.bold[cost_complexity:] The cost complexity parameter, the minimum improvement in the model needed at each node
+- .out-t.bold[tree_depth:] The maximum depth of a tree
+- .out-t.bold[min_n:] The minimum number of data points in a node that are required for the node to be split further.
+]
+
+```{r}
+tree_model <- decision_tree(cost_complexity = tune(),
+                            tree_depth = tune(),
+                            min_n = tune()) %>% 
+              set_engine('rpart') %>% 
+              set_mode('classification')
+```
+
+---
+
+class: middle
+
+# Workflow
+
+.code120[
+```{r}
+# Combine the model and recipe into a workflow 
+tree_workflow <- workflow() %>% 
+                 add_model(tree_model) %>% 
+                 add_recipe(db_recipe)
+```
+]
+
+---
+
+class: middle
+
+# Hyperparameter tuning
+
+.code120[
+```{r}
+# Create folds for cross validation on the training data set
+db_folds <- vfold_cv(db_train, v = 5, strata = diabetes)
+```
+]
+
+.code120[
+```{r}
+## Create a grid of hyperparameter values to test
+tree_grid <- grid_random(cost_complexity(),
+                          tree_depth(),
+                          min_n(), 
+                          size = 10)
+```
+]
+
+---
+
+class: middle
+
+# View grid
+
+.font130[
+```{r}
+tree_grid
+```
+]
+
+---
+
+class: middle
+
+# Tuning Hyperparameters with `tune_grid()`
+
+.code120[
+```{r}
+# Tune decision tree workflow
+set.seed(314)
+tree_tuning <- tree_workflow %>% 
+               tune_grid(resamples = db_folds,
+                         grid = tree_grid)
+```
+]
+
+---
+
+class: middle
+
+# Best model
+
+```{r}
+# Select best model based on accuracy
+best_tree <- tree_tuning %>% 
+             select_best(metric = 'accuracy')
 ```
 
 
+
+```{r}
+# View the best tree parameters
+best_tree
+```
+
+---
+
+<br>
+
+# Finalize workflow
+
+```{r}
+final_tree_workflow <- tree_workflow %>% 
+                       finalize_workflow(best_tree)
+```
+
+--
+
+# Fit the model
+
+```{r}
+tree_wf_fit <- final_tree_workflow %>% 
+               fit(data = db_train)
+```
+
+--
+
+# Extract fit 
+
+```{r}
+tree_fit <- tree_wf_fit %>% 
+            extract_fit_parsnip()
+```
+
+---
+
+.code80[
+```{r, echo=TRUE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "55%", fig.cap="Variable Importance"}
+vip(tree_fit)
+```
+]
+
+---
+.code80[
+```{r, echo=TRUE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "55%", fig.cap="Decision Tree"}
+rpart.plot(tree_fit$fit, roundint = FALSE)
+```
+]
+
 ---
 
 class: middle
 
-# Other examples
+# Train and Evaluate With `last_fit()`
 
-In addition to address validation, the Levenshtein distance can be used in a wide range of other applications. 
+```{r}
+tree_last_fit <- final_tree_workflow %>% 
+                 last_fit(db_split)
+```
 
-.bq.font90[
-- DNA sequence alignment in bioinformatics
-- Spell checking and correction
-- Duplicate detection in data cleaning.
-]
+
+```{r}
+tree_last_fit %>% collect_metrics()
+```
+
+---
+
+# Confusion matrix
+
+```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
+tree_predictions <- tree_last_fit %>% collect_predictions()
+conf_mat(tree_predictions, truth = diabetes, estimate = .pred_class) %>%  autoplot()
+```
 
 ---
 
@@ -320,11 +402,190 @@ class: action, middle
 ]
 .pull-right-60[
 <br>
+<br>
 .bq[
-- Get the class activity 27.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=39491) 
+- Get the class activity 26.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=39491) 
 - Let's work on group activity 1 together
 ]
 
+
+
 ]
 
-`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 5, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+---
+
+class: inverse, middle
+
+
+> Now, let's talk about random forest
+
+
+---
+
+class: middle
+
+# Random Forest
+
+.out-t[Random forests take decision trees and construct more powerful models in terms of prediction accuracy.]
+
+
+
+.font80.bq[
+- <!--The main mechanism that powers this algorithm is--> Repeated sampling (with replacement) of the training data to produce a sequence of decision tree models. 
+
+- These models are then averaged to obtain a single prediction for a given value in the predictor space.
+
+- The random forest model selects a random subset of predictor variables for splitting the predictor space in the tree building process. <!--This is done for every iteration of the algorithm, typically 100 to 2,000 times.-->
+]
+
+---
+
+class: middle
+
+# Model Specification
+
+.bq[
+- .out-t.bold[mtry:] The number of predictors that will be randomly sampled at each split when creating the tree models
+
+- .out-t.bold[trees:] The number of decision trees to fit and ultimately average
+
+- .out-t.bold[min_n:] The minimum number of data points in a node that are required for the node to be split further
+]
+
+---
+<br>
+<br>
+
+# Model Specification
+
+```{r}
+rf_model <- rand_forest(mtry = tune(),
+                        trees = tune(),
+                        min_n = tune()) %>% 
+            set_engine('ranger', importance = "impurity") %>% 
+            set_mode('classification')
+```
+
+--
+
+# Workflow
+
+```{r}
+rf_workflow <- workflow() %>% 
+               add_model(rf_model) %>% 
+               add_recipe(db_recipe)
+```
+
+---
+
+class: middle
+
+# Hyperparameter Tuning
+
+```{r}
+## Create a grid of hyperparameter values to test
+set.seed(314)
+rf_grid <- grid_random(mtry() %>% range_set(c(2, 7)),
+                       trees(),
+                       min_n(),
+                       size = 15)
+```
+
+---
+
+# View Grid
+
+```{r}
+rf_grid
+```
+
+---
+
+class: middle
+
+# Tuning Hyperparameters with `tune_grid()`
+
+
+```{r}
+## Tune random forest workflow
+set.seed(314)
+
+rf_tuning <- rf_workflow %>% 
+             tune_grid(resamples = db_folds,
+                       grid = rf_grid)
+```
+
+---
+
+class: middle
+
+# Select best
+
+```{r}
+## Select best model based on roc_auc
+best_rf <- rf_tuning %>% 
+           select_best(metric = 'accuracy')
+```
+
+```{r}
+# View the best parameters
+best_rf
+```
+
+---
+
+<br>
+
+<br>
+
+# Finalize workflow
+
+```{r}
+final_rf_workflow <- rf_workflow %>% 
+                     finalize_workflow(best_rf)
+```
+
+--
+
+# Variable Importance
+
+```{r}
+rf_wf_fit <- final_rf_workflow %>% 
+             fit(data = db_train)
+
+rf_fit <- rf_wf_fit %>% 
+          extract_fit_parsnip()
+
+```
+
+---
+
+# Variable Importance
+
+```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+vip(rf_fit)
+```
+
+
+---
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+<br>
+<br>
+.bq[
+- Please continue working on group activity 2
+]
+
+]
+
+`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`

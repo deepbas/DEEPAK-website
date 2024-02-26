@@ -1,5 +1,5 @@
 ---
-title: "Intro to Clustering"
+title: "Logistic Regression"
 subtitle: "<br/> Spring 2023"
 author: "Bastola"
 date: "`r format(Sys.Date(), ' %B %d %Y')`"
@@ -74,7 +74,6 @@ library(paletteer)
 library(corrr)
 library(scico)
 library(gridExtra)
-library(factoextra)
 
 
 select <- dplyr::select
@@ -84,38 +83,44 @@ select <- dplyr::select
 
 yt <- 0
 
-USAData <- as_tibble(USArrests, rownames = "state") %>% drop_na() %>%
-  column_to_rownames("state")
-
-
 standardize <- function(x, na.rm = FALSE) {
   (x - mean(x, na.rm = na.rm)) / sd(x, na.rm = na.rm)
 }
 
-set.seed(233)
+# Load the fire data
+fire <- read_csv("https://raw.githubusercontent.com/deepbas/statdatasets/main/Algeriafires.csv")
+fire <- fire %>% clean_names() %>% na.omit() %>% mutate_at(c(10,13), as.numeric)
+fire1 <- fire %>% mutate(across(where(is.numeric), standardize))
 
-clus_df <- tibble(
-  x1 = rnorm(n = 150, mean = rep(c(5,7,8), each = 50)),
-  x2 = rnorm(n = 150, mean = rep(c(2, 5, 1), each = 50)),
-  y = unlist(lapply(1:3, function(x) rep(as.character(x),50)))
-)
+fire_raw <- fire %>% select(temperature, isi, classes)
 
 
-my_df <- tibble(
-  X1 = rnorm(n = 50, mean = rep(c(1, 3), each = 25)),
-  X2 = rnorm(n = 50, mean = rep(c(1.3, 1), each = 25))
-)
+fire1 <- fire %>% 
+  mutate(across(where(is.numeric), standardize)) %>% 
+  mutate(classes = as.factor(classes))
 
-multi_kmeans <- tibble(k = 1:10) %>%
-  mutate(
-    model = purrr::map(k, ~ kmeans(my_df, centers = .x, nstart = 25)),
-    tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss)
-  )
 
-d2 <- dist(my_df, method = "euclidean")
-hc2 <- hclust(d2)
+fire_recipe <- recipe(classes ~ ., data = fire_raw) %>%
+ step_scale(all_predictors()) %>%
+ step_center(all_predictors()) %>%
+ prep()
+
+fire_scaled <- bake(fire_recipe, fire_raw)
+
+fire_knn_spec <- nearest_neighbor(mode = "classification",
+                             engine = "kknn",
+                             weight_func = "rectangular",
+                             neighbors = 5)
+
+fire_knn_fit <- fire_knn_spec %>%
+ fit(classes ~ ., data = fire_scaled)
+
+
+data(PimaIndiansDiabetes2)
+db <- PimaIndiansDiabetes2
+db <- db %>% drop_na() %>% mutate(diabetes = fct_rev(factor(diabetes))) 
+
 ```
-
 
 
 
@@ -137,471 +142,95 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Intro to Clustering]
+# .fancy[Cross Validation and Linear Regression]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
----
-
-# Supervised learning
-
-<center>
-<img src="images/supervised-machine-learning.png" width="60%" height="60%"> <br>
-</center>
-
-
-.bql.font80[
-- train or "supervise" algorithms to use labels to classify data or predict outcomes
-
-- use labeled inputs and outputs to measure model accuracy  
-]
-
-
-.footnote[Image source: click [here](https://www.javatpoint.com/supervised-machine-learning)]
 
 ---
 
-class: middle
-
-# Unsupervised learning
-
-<center>
-<img src="images/unsupervised.jpg" width="70%" height="70%"> <br>
-</center>
-
-
-.bql.font60[
-
-- uses statistical learning algorithms to analyze and cluster unlabeled data sets 
-
-- discover hidden patterns in data without human intervention, so "unsupervised"
-
-  - group unlabeled data based on their similarities or differences
-
-]
-
-
-
-.footnote[Image source: click [here](https://www.geeksforgeeks.org/clustering-in-machine-learning/)]
-
----
-
-# Example: get cluster association from unlabeled data
-
-```{r, echo=FALSE}
-clus_df_left <- clus_df %>% select(-y)
-```
-
-
-.pull-left[
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width="100%"}
-
-ggplot(clus_df_left, aes(x = x1, y = x2)) + 
-  geom_point() +
-  coord_fixed() +
-  theme_tufte()
-```
-
-]
-.pull-right[
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width="100%"}
-ggplot(clus_df, aes(x = x1, y = x2, color = y, shape = y)) + 
-  geom_point() +
-  coord_fixed() +
-  scale_color_fivethirtyeight() +
-  theme_tufte() +
-  theme(legend.position = "none") 
-
-```
-
-]
-
-```{r, echo=FALSE}
-clus_df <- clus_df %>% select(-y)
-```
-
---
-<div style="position: absolute; top: 10%; left: 10%;">
-<span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;">
-  <p style="font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold;">No labels!</p>
-</span>
-</div>
-
-
---
-
-<div style="position: absolute; top: 10%; left: 60%;">
-<span style="content: '\2192'; font-size: 40px; color: #FF00FF; text-align: center; white-space: pre-line;">
-  <p style="font-family: 'Comic Sans MS', cursive, sans-serif; font-weight: bold;">Labels!!</p>
-</span>
-</div>
-
-
-
---
-
-.bold[Can use an unsupervised algorithm called k-means to achieve this!]
-
----
-
-
-class: middle
-
-# K-means Basics
-
-.bq[
-- Algorithm to group data into K clusters
-
-- Starts with an initial clustering of data
-
-- Iteratively improves the cluster assignments 
-
-- Stops until the assignments cannot be improved further
-]
-
----
-
-class: middle
-
-# Algorithm
-
-.bq[
-1. Randomly assign a number, from 1 to K, to each of the observations
-
-2. Compute the centroid of each of the K clusters
-
-3. Assign each point to the nearest centroid and redefine the cluster
-
-4. Repeat steps 2 and 3 until no point change clusters
-]
-
----
-
-# Main Idea
-
-.out-t[To minimize the total within cluster variation]
-
-<br>
-
-.bq.font80[
-The total within-cluster variation is the sum of squared Euclidean distances between items and the corresponding centroid:
-
-$$WSS = \sum_{k=1}^K WSS(C_k) = \sum_{k=1}^K \sum_{x_i \in C_k}(x_i - \mu_k)^2$$
-where:
-- WSS is the Within Cluster Sum of Squared Errors 
-- $x_i$ is a data point in the cluster $C_k$
-- $\mu_k$ is the mean value of the points assigned to the cluster $C_k$
-]
-
----
-
-.bold[(1). Randomly assign a number, from 1 to *K* , to each of the observations]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-set.seed(77)
-clus_df <- clus_df %>% 
-  mutate(cluster_assign = as.character(sample(as.character(1:3), 150, replace=TRUE)))
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() + 
-  scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") + 
-  theme_tufte()
-```
-
-
----
-
-.bold[(2). Compute the centroid of each cluster]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-centroids <- clus_df %>% 
-  group_by(cluster_assign) %>%
-  summarize_all(mean)
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign), pch="X", size=4, show.legend=FALSE) + 
-  scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") + 
-  theme_tufte()
-```
-
-
----
-
-.bold[(3). Re-assign each observation to the cluster whose centroid is closest]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
-distance <- distance[4:153,1:3]
-min_dist <- as.vector(apply(distance,1,min))
-new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
-clus_df <- clus_df %>% mutate(cluster_assign =as.character(new_cluster))
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign), pch="X", size=4, show.legend=FALSE)+ 
-  scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
----
-
-.bold[(4). Re-compute the centroid of each cluster]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-centroids <- clus_df %>% 
-  group_by(cluster_assign) %>%
-  summarize_all(mean)
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
- scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
-
----
-
-.bold[(5). Re-assign each observation to the cluster whose centroid is closest]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
-distance <- distance[4:153,1:3]
-min_dist <- as.vector(apply(distance,1,min))
-new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
-clus_df <- clus_df %>% mutate( cluster_assign =as.character(new_cluster))
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
-  scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
-
----
-
-.bold[(6). Re-compute the centroid of each cluster]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-centroids <- clus_df %>% 
-  group_by(cluster_assign) %>%
-  summarize_all(mean)
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
- scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
-
----
-
-.bold[(7). Re-assign each observation to the cluster whose centroid is closest]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
-distance <- distance[4:153,1:3]
-min_dist <- as.vector(apply(distance,1,min))
-new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
-clus_df <- clus_df %>% mutate( cluster_assign =as.character(new_cluster))
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
-  scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
-
----
-
-.bold[(8). Re-compute the centroid of each cluster]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-centroids <- clus_df %>% 
-  group_by(cluster_assign) %>%
-  summarize_all(mean)
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
- scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
-
----
-
-.bold[(9). Re-assign each observation to the cluster whose centroid is closest]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-distance <- as.matrix(dist(rbind(select(centroids, -cluster_assign), select(clus_df, -cluster_assign))))
-distance <- distance[4:153,1:3]
-min_dist <- as.vector(apply(distance,1,min))
-new_cluster <- sapply(1:150, function(x) which(distance[x,] == min_dist[x]))
-clus_df <- clus_df %>% mutate( cluster_assign =as.character(new_cluster))
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
-  scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
-
----
-
-.bold[(10). Re-compute the centroid of each cluster]
-
-```{r, echo=FALSE, fig.height = 4, fig.width = 4.5, fig.align='center', out.width=600, warning=FALSE}
-centroids <- clus_df %>% 
-  group_by(cluster_assign) %>%
-  summarize_all(mean)
-ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) + 
-  geom_point()+
-  coord_fixed() +
-  geom_point(data=centroids, aes(x=x1,y=x2, color=cluster_assign),pch="X", size=4, show.legend=FALSE) + 
- scale_color_fivethirtyeight("cluster") +
-  scale_shape_discrete("cluster") +
-  theme_tufte()
-```
-
----
-
-class: middle
-
-# `USArrests`
-
-```{r}
-USAData <- as_tibble(USArrests, rownames = "state") %>% drop_na() %>%
-  column_to_rownames("state") %>%
-  select(Murder, UrbanPop)
-```
-
-```{r}
-head(USAData, 10)
-```
-
----
-
-class: middle
-
-# Means and standard deviations
-
-
-```{r}
-USAData %>%
-  map_dfr(mean)
-```
-
-
-
-```{r}
-USAData %>%
-  map_dfr(sd)
-```
-
-
----
-
-class: middle
-
-# Standardize the data
-
-<!-- Don't want the clustering algorithm to depend to an arbitrary variable unit -->
-
-```{r}
-USAData <- USAData %>% mutate(across(where(is.numeric), standardize))
-```
-
-```{r}
-head(USAData,10)
-```
-
-
-
----
 
 class: inverse, middle
 
-# .center.bql.Large[So, how do we fit all of this in R?]
+# .Large[Let's see further example of classification using simple logistic regression!]
 
 ---
 
-class: middle
+.panelset[
+.panel[.panel-name[Logistic Regression (LR)]
+.bq.font80[
+- Binary response, $Y$,  with an explanatory (predictor, features) variables, $X_1$.
+- We model the probability that $Y$ belongs to a particular category.
 
-# `kmeans()`
 
-.bql.font90[
-- `kmeans()` function takes a matrix or data-frame or tibble and the number of centers/clusters we want to find.
+$$P(Y = 1 ) = \frac{e^{\beta_0 + \beta_1X_1}}{1 + e^{\beta_0 + \beta_1X_1}}$$
 
-- We also set `nstart = 20-25` to have multiple initial starting positions in the hope of finding global optimal solution instead of local optimal solution
+$$\text{Odds} = \frac{P(Y = 1 )}{1 - P(Y = 1 )} = e^{\beta_0 + \beta_1X_1}$$
 
-- Use `set.seed()` for reproducibility
+$$\text{Log Odds} = \beta_0 + \beta_1X_1$$
+]
+
+]
+
+
+.panel[.panel-name[Visual]
+
+```{r, echo = FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
+ggplot(db_plot, aes(x=glucose, y=y)) + 
+  geom_point(aes(color=diabetes, shape = diabetes)) + 
+  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE) + 
+  labs(y = "Probability of diabetes", title = "Logistic regression probability of diabetes given glucose")+
+  theme_tufte()+
+  scale_color_wsj()
+```
+
+]
+
+.panel[.panel-name[Data Preparation]
+
+```{r}
+# Create data split for train and test
+set.seed(12345)
+db_single <- db %>% select(diabetes, glucose) %>% 
+  mutate(diabetes = fct_relevel(diabetes, c("neg", "pos"))) 
+db_split <- initial_split(db_single, prop = 0.80)
+
+# Create training data
+db_train <- db_split %>% training()
+
+# Create testing data
+db_test <- db_split %>% testing()
+```
+]
+
+
+.panel[.panel-name[Modeling]
+
+```{r}
+set.seed(12345)
+db_recipe <- recipe(diabetes ~ ., data = db_train) %>%
+  step_scale(all_predictors()) %>%
+  step_center(all_predictors()) %>% prep()
+
+fitted_logistic_model <- logistic_reg(engine = "glm",  # Call the model
+                                      mode = "classification") %>% 
+                        fit(diabetes~., data = db_train)  # Fit the model
+```
+
+]
 ]
 
 ---
 
 class: middle
 
-# Within Cluster Sum of Squared Errors (WSS)
-
-.bq.font90[
-- Calculate WSS for different values of K.
-
-- Choose K for which WSS first starts to diminish.
-
-- Visually deciphered with an .bold[elbow graph].
-
-- The number of clusters is taken at the elbow joint point.
-]
-
----
-
-class: middle
-
-# K-means
-
+# Tidy the Summary
 
 ```{r}
-set.seed(1234)
-k.means <- kmeans(USAData, centers = 2, nstart = 25)
-```
-
-
----
-
-# `k.means`
-
-```{r}
-k.means
-```
-
-
-
----
-
-class: middle
-
-# Tidy the information
-
-
-```{r}
-k.means %>% broom::tidy()
+broom::tidy(fitted_logistic_model)
 ```
 
 
@@ -609,182 +238,149 @@ k.means %>% broom::tidy()
 
 class: middle
 
-# `Glance` at the sum of square decompositions
+# Odds Ratio
+
+$$ODDS = \frac{probability}{1 - probability}$$
 
 
 ```{r}
-glance(k.means)
+broom::tidy(fitted_logistic_model, exponentiate = TRUE)
 ```
 
 
 ---
+
+# Threshold for classification
+
+```{r, echo= FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+set.seed(12345)
+t <- 0.5
+x.thres<- (log(t/(1-t))-fitted_logistic_model$fit$coefficients[1])/fitted_logistic_model$fit$coefficients[2]
+
+db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
+
+ggplot(db_plot, aes(x=glucose, y=y)) + 
+  geom_jitter(aes(color=diabetes, shape =diabetes), height = 0.01) + 
+  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE) + 
+  labs(y="Probability of diabetes", title = "Probability of diabetes given glucose") + 
+  geom_segment(aes(x=x.thres, xend=180,y=0.50,yend=0.50), linetype = "dashed", col = "firebrick") + 
+  geom_segment(aes(x=x.thres, xend=x.thres,y=1,yend=0), linetype = "dashed") +
+  geom_text(x=175, y=.46, label = "threshold = 143.11", color="blue",family="Times") + 
+  annotate(geom = "rect", xmin = x.thres, xmax = 200, ymin = -.05, ymax = .05, fill = "blue", alpha = 0.1) + 
+  annotate(geom = "rect", xmin = 55, xmax = x.thres, ymin = 0.95, ymax = 1.05, fill = "red", alpha = 0.1) + 
+  geom_text(x=170, y = .15,label = "diabetes", color="blue",family="Times")+
+  theme_tufte() + 
+  xlim(c(54,200))
+```
+
+
+---
+
 
 class: middle
 
-# `augment` from `broom` package
-
-.scroll-box-20[
-```{r}
-knitr::kable(broom::augment(k.means, data = USAData))
-```
-]
-
----
-
-```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%" }
-set.seed(1234)
-USAData %>%
-  mutate(cluster = k.means$cluster,
-         state = row.names(USAData)) %>%
-  ggplot(aes(y = UrbanPop, x = Murder, color = factor(cluster), label = state)) +
-  ggrepel::geom_text_repel() + scale_color_discrete(name="cluster") +
-  theme_stata()
-```
-
----
-
-# In-built function for visuals using `factoextra`
+# Class Prediction
 
 .code80[
-```{r, fig.width=8, fig.height=6, fig.align='center', out.width = "55%"}
-library(factoextra)
-fviz_cluster(k.means, data = USAData, repel = TRUE, ggtheme = theme_tufte())
+```{r, fig.width=6, fig.height=4.5, fig.align='center', out.width = "50%"}
+set.seed(12345)
+pred_class <- predict(fitted_logistic_model,  new_data = db_test) 
+bind_cols(db_test %>% select(diabetes), pred_class) %>% 
+  conf_mat(diabetes, .pred_class) %>% # confusion matrix
+  autoplot(type = "heatmap") # with graphics
 ```
 ]
 
 ---
 
-```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%"}
-k.means1 <- k.means
-k.means2 <- kmeans(USAData, centers = 3, nstart = 25)
-k.means3 <- kmeans(USAData, centers = 4, nstart = 25)
-k.means4 <- kmeans(USAData, centers = 5, nstart = 25)
-
-# plots to compare
-p1 <- fviz_cluster(k.means1, geom = "point", data = USAData, ggtheme = theme_tufte()) + ggtitle("k = 2")
-p2 <- fviz_cluster(k.means2, geom = "point",  data = USAData, ggtheme = theme_tufte()) + ggtitle("k = 3")
-p3 <- fviz_cluster(k.means3, geom = "point",  data = USAData, ggtheme = theme_tufte()) + ggtitle("k = 4")
-p4 <- fviz_cluster(k.means4, geom = "point",  data = USAData, ggtheme = theme_tufte()) + ggtitle("k = 5")
-
-library(gridExtra)
-grid.arrange(p1, p2, p3, p4, nrow = 2)
-```
-
-
----
-
-
-class: action, middle
-
-# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
-
-
-.pull-left-40[
-![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
-]
-.pull-right-60[
-<br>
-<br>
-.bq[
-- Get the class activity 24.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=41417) 
-- Let's work on group activity 1 together
-]
-
-
-
-]
-
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
-
----
-
-
-class: middle, inverse
-
-# .red[Visuals do not tell all the story]
-
-.bqt[Visuals tell us where the true delineations occur, but do not tell us what the optimal number of clusters is.]
-
-
----
-
-
-# Determine the optimal number of clusters
-
+# Class Probabilities with `threshold = 0.50`
 
 ```{r}
-set.seed(1234)
-multi_kmeans <- tibble(k = 1:10) %>%
-  mutate(
-    model = purrr::map(k, ~ kmeans(USAData, centers = .x, nstart = 25)), #<<
-    tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss) 
-  )
+# Prediction Probabilities
+library(probably)
+pred_prob <- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
 
-multi_kmeans
+db_results <- db_test %>% bind_cols(pred_prob) %>%
+  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .5)) %>%
+  select(diabetes, glucose, contains(".pred"))
 ```
 
-
----
-
-# Determine the optimal number of clusters
-
-
-```{r}
-set.seed(1234)
-multi_kmeans <- tibble(k = 1:10) %>%
-  mutate(
-    model = purrr::map(k, ~ kmeans(USAData, centers = .x, nstart = 25)),
-    tot.withinss = purrr::map_dbl(model, ~ glance(.x)$tot.withinss) #<<
-  )
-
-multi_kmeans
+```{r, echo=FALSE}
+head(db_results,10)
 ```
 
-
----
-
-```{r, echo=FALSE, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%"}
-multi_kmeans %>%
-  ggplot(aes(k, tot.withinss)) +
-  geom_point() +
-  geom_line() +
-  annotate("text", x = multi_kmeans$k[5] + 1, 
-           y = multi_kmeans$tot.withinss[5] + 15, 
-           label = "Elbow", size = 5) +
-  
-  annotate("segment", x = multi_kmeans$k[5] + 0.5, y = multi_kmeans$tot.withinss[5] + 15, 
-                 xend = multi_kmeans$k[5], yend = multi_kmeans$tot.withinss[5], colour = "blue", size = 1, arrow = arrow(length = unit(.4,"cm"))) +
-  theme_light()+
-  xlab("K") +
-  ylab("Total within-cluster sum of squares")+
-  scale_x_continuous(breaks = 1:15) +
-  theme(panel.grid.minor.x = element_blank())
-```
-
----
-
-```{r, echo=FALSE, fig.width=8, fig.height=6, fig.align='center', out.width = "75%"}
-set.seed(1234)
-kmeans.final <- kmeans(USAData, 5, nstart = 25)
-fviz_cluster(kmeans.final, data = USAData, repel = TRUE, ggtheme = theme_tufte())
-```
 
 ---
 
 class: middle
 
-# Extract the centroids
+# Custom Metrics
 
-.code140[
-```{r}
-USAData %>%
-  mutate(Cluster = kmeans.final$cluster) %>%
-  group_by(Cluster) %>%
-  summarise_all("mean")
+.pull-left[
+```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "90%"}
+db_results %>%  
+  conf_mat(diabetes,.pred_class) %>% 
+  autoplot(type = "heatmap")
 ```
 ]
 
+.pull-right[
+```{r}
+custom_metrics <- metric_set(accuracy, 
+                             sens, 
+                             spec, 
+                             ppv)
+custom_metrics(db_results,
+               truth = diabetes,
+               estimate = .pred_class)
+```
+]
+
+---
+
+
+# Class Probabilities with `threshold = 0.70`
+
+```{r}
+# Prediction Probabilities
+library(probably)
+pred_prob <- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
+
+db_results <- db_test %>% bind_cols(pred_prob) %>%
+  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .70)) %>%
+  select(diabetes, glucose, contains(".pred"))
+```
+
+```{r, echo=FALSE}
+head(db_results,10)
+```
+
+
+---
+
+class: middle
+
+# Custom Metrics
+
+.pull-left[
+```{r, echo=FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "90%"}
+db_results %>%  
+  conf_mat(diabetes,.pred_class) %>% 
+  autoplot(type = "heatmap")
+```
+]
+
+.pull-right[
+```{r}
+custom_metrics <- metric_set(accuracy, 
+                             sens, 
+                             spec, 
+                             ppv)
+custom_metrics(db_results,
+               truth = diabetes,
+               estimate = .pred_class)
+```
+]
 
 ---
 
@@ -799,13 +395,11 @@ class: action, middle
 .pull-right-60[
 <br>
 <br>
-<br>
 .bq[
-- Please continue working on the remainder of the group activities
+- Please continue working on group activity 2
 ]
 
 ]
 
 `r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
-
 
