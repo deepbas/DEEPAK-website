@@ -407,7 +407,7 @@ ComfortReligion$expected
 .bq.font90[
 - If we get a red warning when running `chisq.test`, it usually means the sample size conditions aren't met to use the chi-square model. 
 
-- Instead run a randomization test with
+- Instead run a randomization test with `simulate.p.value = TRUE`
 ]
 
 

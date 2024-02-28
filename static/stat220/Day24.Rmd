@@ -118,8 +118,8 @@ fire_knn_fit <- fire_knn_spec %>%
 
 data(PimaIndiansDiabetes2)
 db <- PimaIndiansDiabetes2
-db <- db %>% drop_na() %>% mutate(diabetes = fct_rev(factor(diabetes))) 
-
+db <- db %>% drop_na()  %>% 
+  mutate(diabetes = fct_relevel(diabetes, c("neg", "pos"))) # Relevels 'diabetes' factor to ensure 'neg' comes before 'pos'
 ```
 
 
@@ -142,7 +142,7 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Cross Validation and Linear Regression]
+# .fancy[Logistic Regression]
 
 ### .fancy[Stat 220]
 
@@ -154,12 +154,94 @@ class: title-slide, middle
 
 class: inverse, middle
 
-# .Large[Let's see further example of classification using simple logistic regression!]
+# .Large[Let's see an example of classification using simple logistic regression!]
+
+
+---
+
+class: middle
+
+# Outline
+
+.hljs[
+- .b[Goal:] Understand why logistic regression is used for categorical outcomes.
+- .b[Context:] Traditional linear regression is limited to continuous outcomes.
+- .b[Solution:] Logistic regression models the probability of a categorical outcome.
+]
+
+---
+
+class: middle
+
+# Why Not Linear Regression?
+
+.b[
+- Issue with categorical outcomes: Predictions can fall outside the $[0,1]$ range.
+- Consequence: Nonsensical probability predictions for binary outcomes $(Y=0\text{ or }Y=1)$).
+]
+
+---
+
+class: middle
+
+# Introduction to Logistic Regression
+
+.bold[
+- Solution: Transform the outcome into a format that linear regression can handle.
+- Method: Model the log odds of the probability of success versus failure.
+]
+
+---
+
+class: middle
+
+# From Probability to Odds
+
+.bql[
+- Probability: Chance of success ( $Y=1$ ) over total possibilities.
+$$P(Y=1)=\frac{\text { number of successes }}{\text { total trials }}$$
+- Odds: Ratio of the probability of success to the probability of failure.
+$$Odds =\frac{P(Y=1)}{1-P(Y=1)}$$
+]
+
+
+---
+
+class: middle
+
+# Logit Transformation
+
+
+.bq[
+- Goal: Convert odds to a continuous scale that can span negative to positive infinity.
+- Logit Function: Natural logarithm of the odds.
+$$\log \left(\frac{P(Y=1)}{1-P(Y=1)}\right)$$
+- Why? Makes it possible to use linear regression techniques.
+]
+
 
 ---
 
 .panelset[
-.panel[.panel-name[Logistic Regression (LR)]
+
+.panel[.panel-name[LR Visualization]
+
+```{r, echo = FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
+db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
+ggplot(db_plot, aes(x=glucose, y=y)) + 
+  geom_jitter(aes(color=diabetes), width = 0.1, height = 0.01, shape = 16) +  # Adds jitter to points for better visibility
+  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE, color = "black") +  # Logistic regression line
+  labs(y = expression(paste("Probability of diabetes, ", p == P(Y == 1))), 
+       title = "Logistic regression probability of diabetes given glucose")+
+  theme_tufte()+
+  scale_color_wsj()
+```
+
+]
+
+
+
+.panel[.panel-name[LR Summary]
 .bq.font80[
 - Binary response, $Y$,  with an explanatory (predictor, features) variables, $X_1$.
 - We model the probability that $Y$ belongs to a particular category.
@@ -175,34 +257,19 @@ $$\text{Log Odds} = \beta_0 + \beta_1X_1$$
 ]
 
 
-.panel[.panel-name[Visual]
 
-```{r, echo = FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
-db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
-ggplot(db_plot, aes(x=glucose, y=y)) + 
-  geom_point(aes(color=diabetes, shape = diabetes)) + 
-  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE) + 
-  labs(y = "Probability of diabetes", title = "Logistic regression probability of diabetes given glucose")+
-  theme_tufte()+
-  scale_color_wsj()
-```
-
-]
 
 .panel[.panel-name[Data Preparation]
 
 ```{r}
 # Create data split for train and test
-set.seed(12345)
-db_single <- db %>% select(diabetes, glucose) %>% 
-  mutate(diabetes = fct_relevel(diabetes, c("neg", "pos"))) 
-db_split <- initial_split(db_single, prop = 0.80)
-
-# Create training data
+set.seed(12345) # Ensures reproducibility of the data split
+db_single <- db %>% 
+  select(diabetes, glucose) %>%  
+  mutate(diabetes = fct_relevel(diabetes, c("neg", "pos"))) # Relevels 'diabetes' factor to ensure 'neg' comes before 'pos'
+db_split <- initial_split(db_single, prop = 0.80) 
 db_train <- db_split %>% training()
-
-# Create testing data
-db_test <- db_split %>% testing()
+db_test <- db_split %>% testing() 
 ```
 ]
 
@@ -210,14 +277,14 @@ db_test <- db_split %>% testing()
 .panel[.panel-name[Modeling]
 
 ```{r}
-set.seed(12345)
-db_recipe <- recipe(diabetes ~ ., data = db_train) %>%
-  step_scale(all_predictors()) %>%
-  step_center(all_predictors()) %>% prep()
+set.seed(12345) # Ensures reproducibility in model results
+db_recipe <- recipe(diabetes ~ ., data = db_train) %>% # Defines preprocessing recipe for modeling
+  step_scale(all_predictors()) %>% # Scales all predictor variables
+  step_center(all_predictors()) %>% prep() # Centers all predictor variables and prepares recipe
 
-fitted_logistic_model <- logistic_reg(engine = "glm",  # Call the model
-                                      mode = "classification") %>% 
-                        fit(diabetes~., data = db_train)  # Fit the model
+fitted_logistic_model <- logistic_reg(engine = "glm",  # Specifies logistic regression model using glm engine
+                                      mode = "classification") %>% # Sets model to classification mode
+                        fit(diabetes~., data = db_train)  # Fits model to training data
 ```
 
 ]
@@ -234,18 +301,93 @@ broom::tidy(fitted_logistic_model)
 ```
 
 
+
+$$\log \left(\frac{p}{1-p}\right)=-5.61+0.0392 \cdot \text { glucose }$$
+
+Where $p = P(Y = 1)$ is the probability of having diabetes 
+
 ---
 
-class: middle
+<br>
+<br>
+<br>
 
-# Odds Ratio
 
-$$ODDS = \frac{probability}{1 - probability}$$
+# Interpreting Coefficients: Log Odds
+
+.b[
+- Coefficient Meaning: Change in log odds of the outcome for a one-unit increase in the predictor.
+]
+
+--
+
+.hljs.blue[A coefficient of 0.0392 for glucose means...]
+
+--
+
+.hljs.blue[...a one-unit increase in glucose level increases the log odds of diabetes by 0.0392.]
+
+---
+
+<br>
+<br>
+
+# Exponentiating Coefficients: Odds Ratios
+
+$$Odds = \frac{probability}{1 - probability}$$
 
 
 ```{r}
 broom::tidy(fitted_logistic_model, exponentiate = TRUE)
 ```
+
+--
+
+$$\text { Odds }=0.00364 \times(1.04)^{\text {glucose }}$$
+--
+
+.blue-h[An odds ratio of 1.04 means that for each additional unit of glucose, the odds of having diabetes increase by 4%.]
+
+---
+
+class: middle
+
+# Understanding Odds Ratios
+
+.bold[
+- Transformation: Turning log-odds coefficients into odds ratios.
+- Odds Ratio $=e^{\beta_i}$
+- Interpretation: For each unit increase in the predictor, the odds multiply by the odds ratio.
+]
+
+
+---
+
+
+
+class: action, middle
+
+# <i class="fa fa-pencil-square-o" style="font-size:48px;color:purple">&nbsp;Group&nbsp;Activity&nbsp;`r (yt <- yt + 1)`</i>    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+.bq[
+- Get the class activity 24.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
+- Let's work on group activity 1 together
+]
+
+.b[Hint:
+- Calculate log odds: $-5.61 + (0.0392 \times 150)$
+- Convert log odds to odds: $e^{\text{log odds}}$
+- Convert odds to probability: $\frac{\text{Odds}}{1 + \text{Odds}}$]
+
+]
+
+`r countdown(minutes = 15, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 
 
 ---
@@ -255,22 +397,22 @@ broom::tidy(fitted_logistic_model, exponentiate = TRUE)
 ```{r, echo= FALSE, fig.width=6, fig.height=4.5, fig.align='center', out.width = "60%"}
 set.seed(12345)
 t <- 0.5
-x.thres<- (log(t/(1-t))-fitted_logistic_model$fit$coefficients[1])/fitted_logistic_model$fit$coefficients[2]
+x.thres <- (log(t / (1 - t)) - fitted_logistic_model$fit$coefficients[1]) / fitted_logistic_model$fit$coefficients[2]
 
 db_plot <- db %>% mutate(y = ifelse(diabetes == "pos", 1, 0))
 
-ggplot(db_plot, aes(x=glucose, y=y)) + 
-  geom_jitter(aes(color=diabetes, shape =diabetes), height = 0.01) + 
-  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE) + 
-  labs(y="Probability of diabetes", title = "Probability of diabetes given glucose") + 
-  geom_segment(aes(x=x.thres, xend=180,y=0.50,yend=0.50), linetype = "dashed", col = "firebrick") + 
-  geom_segment(aes(x=x.thres, xend=x.thres,y=1,yend=0), linetype = "dashed") +
-  geom_text(x=175, y=.46, label = "threshold = 143.11", color="blue",family="Times") + 
-  annotate(geom = "rect", xmin = x.thres, xmax = 200, ymin = -.05, ymax = .05, fill = "blue", alpha = 0.1) + 
-  annotate(geom = "rect", xmin = 55, xmax = x.thres, ymin = 0.95, ymax = 1.05, fill = "red", alpha = 0.1) + 
-  geom_text(x=170, y = .15,label = "diabetes", color="blue",family="Times")+
-  theme_tufte() + 
-  xlim(c(54,200))
+ggplot(db_plot, aes(x = glucose, y = y)) + 
+  geom_jitter(aes(color = diabetes), width = 0.1, height = 0.01, shape = 16) + 
+  geom_smooth(method = glm, method.args = list(family = binomial), se = FALSE, color = "black") + 
+  labs(y = expression(paste("Probability of diabetes, ", p == P(Y == 1))), 
+       x = "Glucose Level", 
+       title = "Probability of Diabetes Given Glucose Level") +   geom_vline(xintercept = x.thres, linetype = "dashed", color = "firebrick") + 
+  annotate("text", x = x.thres + 3, y = 0.45, label = sprintf("Threshold: %.2f", x.thres), hjust = 0, color = "firebrick") + 
+  annotate(geom = "rect", xmin = x.thres, xmax = 200, ymin = -.05, ymax = .05, fill = "black", alpha = 0.1) + 
+  annotate(geom = "rect", xmin = 55, xmax = x.thres, ymin = 0.95, ymax = 1.05, fill = "firebrick", alpha = 0.1) + 
+  theme_tufte() +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom") +
+  xlim(c(54, 200))
 ```
 
 
@@ -293,7 +435,7 @@ bind_cols(db_test %>% select(diabetes), pred_class) %>%
 
 ---
 
-# Class Probabilities with `threshold = 0.50`
+# Class Probabilities with `threshold = 0.70`
 
 ```{r}
 # Prediction Probabilities
@@ -301,7 +443,7 @@ library(probably)
 pred_prob <- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
 
 db_results <- db_test %>% bind_cols(pred_prob) %>%
-  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .5)) %>%
+  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .7)) %>%
   select(diabetes, glucose, contains(".pred"))
 ```
 
@@ -401,5 +543,5 @@ class: action, middle
 
 ]
 
-`r countdown(minutes = 10, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 30, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
 

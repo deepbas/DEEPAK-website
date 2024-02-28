@@ -41,11 +41,11 @@ layout: true
 
 class: title-slide, middle
 
-# .fancy[Cross Validation and Linear Regression]
+# .fancy[Logistic Regression]
 
 ### .fancy[Stat 220]
 
- February 23 2024
+ February 27 2024
 
 
 ---
@@ -53,12 +53,85 @@ class: title-slide, middle
 
 class: inverse, middle
 
-# .Large[Let's see further example of classification using simple logistic regression!]
+# .Large[Let's see an example of classification using simple logistic regression!]
+
+
+---
+
+class: middle
+
+# Outline
+
+.hljs[
+- .b[Goal:] Understand why logistic regression is used for categorical outcomes.
+- .b[Context:] Traditional linear regression is limited to continuous outcomes.
+- .b[Solution:] Logistic regression models the probability of a categorical outcome.
+]
+
+---
+
+class: middle
+
+# Why Not Linear Regression?
+
+.b[
+- Issue with categorical outcomes: Predictions can fall outside the `\([0,1]\)` range.
+- Consequence: Nonsensical probability predictions for binary outcomes `\((Y=0\text{ or }Y=1)\)`).
+]
+
+---
+
+class: middle
+
+# Introduction to Logistic Regression
+
+.bold[
+- Solution: Transform the outcome into a format that linear regression can handle.
+- Method: Model the log odds of the probability of success versus failure.
+]
+
+---
+
+class: middle
+
+# From Probability to Odds
+
+.bql[
+- Probability: Chance of success ( `\(Y=1\)` ) over total possibilities.
+`$$P(Y=1)=\frac{\text { number of successes }}{\text { total trials }}$$`
+- Odds: Ratio of the probability of success to the probability of failure.
+`$$Odds =\frac{P(Y=1)}{1-P(Y=1)}$$`
+]
+
+
+---
+
+class: middle
+
+# Logit Transformation
+
+
+.bq[
+- Goal: Convert odds to a continuous scale that can span negative to positive infinity.
+- Logit Function: Natural logarithm of the odds.
+`$$\log \left(\frac{P(Y=1)}{1-P(Y=1)}\right)$$`
+- Why? Makes it possible to use linear regression techniques.
+]
+
 
 ---
 
 .panelset[
-.panel[.panel-name[Logistic Regression (LR)]
+
+.panel[.panel-name[LR Visualization]
+
+&lt;img src="Day24_files/figure-html/unnamed-chunk-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+.panel[.panel-name[LR Summary]
 .bq.font80[
 - Binary response, `\(Y\)`,  with an explanatory (predictor, features) variables, `\(X_1\)`.
 - We model the probability that `\(Y\)` belongs to a particular category.
@@ -74,27 +147,20 @@ class: inverse, middle
 ]
 
 
-.panel[.panel-name[Visual]
 
-&lt;img src="Day24_files/figure-html/unnamed-chunk-1-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
-
-]
 
 .panel[.panel-name[Data Preparation]
 
 
 ```r
 # Create data split for train and test
-set.seed(12345)
-db_single &lt;- db %&gt;% select(diabetes, glucose) %&gt;% 
-  mutate(diabetes = fct_relevel(diabetes, c("neg", "pos"))) 
-db_split &lt;- initial_split(db_single, prop = 0.80)
-
-# Create training data
+set.seed(12345) # Ensures reproducibility of the data split
+db_single &lt;- db %&gt;% 
+  select(diabetes, glucose) %&gt;%  
+  mutate(diabetes = fct_relevel(diabetes, c("neg", "pos"))) # Relevels 'diabetes' factor to ensure 'neg' comes before 'pos'
+db_split &lt;- initial_split(db_single, prop = 0.80) 
 db_train &lt;- db_split %&gt;% training()
-
-# Create testing data
-db_test &lt;- db_split %&gt;% testing()
+db_test &lt;- db_split %&gt;% testing() 
 ```
 ]
 
@@ -103,14 +169,14 @@ db_test &lt;- db_split %&gt;% testing()
 
 
 ```r
-set.seed(12345)
-db_recipe &lt;- recipe(diabetes ~ ., data = db_train) %&gt;%
-  step_scale(all_predictors()) %&gt;%
-  step_center(all_predictors()) %&gt;% prep()
+set.seed(12345) # Ensures reproducibility in model results
+db_recipe &lt;- recipe(diabetes ~ ., data = db_train) %&gt;% # Defines preprocessing recipe for modeling
+  step_scale(all_predictors()) %&gt;% # Scales all predictor variables
+  step_center(all_predictors()) %&gt;% prep() # Centers all predictor variables and prepares recipe
 
-fitted_logistic_model &lt;- logistic_reg(engine = "glm",  # Call the model
-                                      mode = "classification") %&gt;% 
-                        fit(diabetes~., data = db_train)  # Fit the model
+fitted_logistic_model &lt;- logistic_reg(engine = "glm",  # Specifies logistic regression model using glm engine
+                                      mode = "classification") %&gt;% # Sets model to classification mode
+                        fit(diabetes~., data = db_train)  # Fits model to training data
 ```
 
 ]
@@ -133,13 +199,40 @@ broom::tidy(fitted_logistic_model)
 ```
 
 
+
+`$$\log \left(\frac{p}{1-p}\right)=-5.61+0.0392 \cdot \text { glucose }$$`
+
+Where `\(p = P(Y = 1)\)` is the probability of having diabetes 
+
 ---
 
-class: middle
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 
-# Odds Ratio
 
-`$$ODDS = \frac{probability}{1 - probability}$$`
+# Interpreting Coefficients: Log Odds
+
+.b[
+- Coefficient Meaning: Change in log odds of the outcome for a one-unit increase in the predictor.
+]
+
+--
+
+.hljs.blue[A coefficient of 0.0392 for glucose means...]
+
+--
+
+.hljs.blue[...a one-unit increase in glucose level increases the log odds of diabetes by 0.0392.]
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+
+# Exponentiating Coefficients: Odds Ratios
+
+`$$Odds = \frac{probability}{1 - probability}$$`
 
 
 
@@ -151,6 +244,57 @@ broom::tidy(fitted_logistic_model, exponentiate = TRUE)
 1 (Intercept)  0.00364   0.678       -8.28 1.20e-16
 2 glucose      1.04      0.00514      7.62 2.55e-14
 ```
+
+--
+
+`$$\text { Odds }=0.00364 \times(1.04)^{\text {glucose }}$$`
+--
+
+.blue-h[An odds ratio of 1.04 means that for each additional unit of glucose, the odds of having diabetes increase by 4%.]
+
+---
+
+class: middle
+
+# Understanding Odds Ratios
+
+.bold[
+- Transformation: Turning log-odds coefficients into odds ratios.
+- Odds Ratio `\(=e^{\beta_i}\)`
+- Interpretation: For each unit increase in the predictor, the odds multiply by the odds ratio.
+]
+
+
+---
+
+
+
+class: action, middle
+
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+
+
+.pull-left-40[
+![](https://media.giphy.com/media/RKApDdwsQ6jkwd6RNn/giphy.gif)
+]
+.pull-right-60[
+
+.bq[
+- Get the class activity 24.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
+- Let's work on group activity 1 together
+]
+
+.b[Hint:
+- Calculate log odds: `\(-5.61 + (0.0392 \times 150)\)`
+- Convert log odds to odds: `\(e^{\text{log odds}}\)`
+- Convert odds to probability: `\(\frac{\text{Odds}}{1 + \text{Odds}}\)`]
+
+]
+
+<div class="countdown" id="timer_08072ea1" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">15</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 
 ---
@@ -182,7 +326,7 @@ bind_cols(db_test %&gt;% select(diabetes), pred_class) %&gt;%
 
 ---
 
-# Class Probabilities with `threshold = 0.50`
+# Class Probabilities with `threshold = 0.70`
 
 
 ```r
@@ -191,17 +335,17 @@ library(probably)
 pred_prob &lt;- predict(fitted_logistic_model,  new_data = db_test,   type = "prob")
 
 db_results &lt;- db_test %&gt;% bind_cols(pred_prob) %&gt;%
-  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .5)) %&gt;%
+  mutate(.pred_class = make_two_class_pred(.pred_neg, levels(diabetes), threshold = .7)) %&gt;%
   select(diabetes, glucose, contains(".pred"))
 ```
 
 
 ```
     diabetes glucose .pred_neg  .pred_pos .pred_class
-25       pos     143 0.5040090 0.49599103         neg
+25       pos     143 0.5040090 0.49599103         pos
 52       neg     101 0.8402912 0.15970881         neg
 60       neg     105 0.8181391 0.18186086         neg
-64       neg     141 0.5235673 0.47643271         neg
+64       neg     141 0.5235673 0.47643271         pos
 69       neg      95 0.8693592 0.13064080         neg
 83       neg      83 0.9141287 0.08587128         neg
 98       neg      71 0.9445349 0.05546507         neg
@@ -234,10 +378,10 @@ custom_metrics(db_results,
 # A tibble: 4 × 3
   .metric  .estimator .estimate
   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
-1 accuracy binary         0.848
-2 sens     binary         0.930
-3 spec     binary         0.636
-4 ppv      binary         0.869
+1 accuracy binary         0.785
+2 sens     binary         0.754
+3 spec     binary         0.864
+4 ppv      binary         0.935
 ```
 ]
 
@@ -307,7 +451,7 @@ custom_metrics(db_results,
 
 class: action, middle
 
-# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;1&lt;/i&gt;    
+# &lt;i class="fa fa-pencil-square-o" style="font-size:48px;color:purple"&gt;&amp;nbsp;Group&amp;nbsp;Activity&amp;nbsp;2&lt;/i&gt;    
 
 
 .pull-left-40[
@@ -322,9 +466,9 @@ class: action, middle
 
 ]
 
-<div class="countdown" id="timer_c9e4576b" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
+<div class="countdown" id="timer_a6139575" data-update-every="1" tabindex="0" style="top:0;right:0;padding:3px 4px;font-size:2em;">
 <div class="countdown-controls"><button class="countdown-bump-down">&minus;</button><button class="countdown-bump-up">&plus;</button></div>
-<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+<code class="countdown-time"><span class="countdown-digits minutes">30</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 
     </textarea>
