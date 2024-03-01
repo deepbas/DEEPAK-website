@@ -139,7 +139,7 @@ class: title-slide, middle
 
 # .fancy[Intro to Clustering]
 
-### .fancy[Spring 2023]
+### .fancy[Stat 220]
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
@@ -148,7 +148,7 @@ class: title-slide, middle
 # Supervised learning
 
 <center>
-<img src="images/supervised-machine-learning.png" width="60%" height="60%"> <br>
+<img src="images/supervised.png" width="60%" height="60%"> <br>
 </center>
 
 
@@ -251,7 +251,7 @@ class: middle
 
 # K-means Basics
 
-.bq[
+.bq.font80[
 - Algorithm to group data into K clusters
 
 - Starts with an initial clustering of data
@@ -267,7 +267,7 @@ class: middle
 
 # Algorithm
 
-.bq[
+.bqt.font80[
 1. Randomly assign a number, from 1 to K, to each of the observations
 
 2. Compute the centroid of each of the K clusters
@@ -275,24 +275,6 @@ class: middle
 3. Assign each point to the nearest centroid and redefine the cluster
 
 4. Repeat steps 2 and 3 until no point change clusters
-]
-
----
-
-# Main Idea
-
-.out-t[To minimize the total within cluster variation]
-
-<br>
-
-.bq.font80[
-The total within-cluster variation is the sum of squared Euclidean distances between items and the corresponding centroid:
-
-$$WSS = \sum_{k=1}^K WSS(C_k) = \sum_{k=1}^K \sum_{x_i \in C_k}(x_i - \mu_k)^2$$
-where:
-- WSS is the Within Cluster Sum of Squared Errors 
-- $x_i$ is a data point in the cluster $C_k$
-- $\mu_k$ is the mean value of the points assigned to the cluster $C_k$
 ]
 
 ---
@@ -482,6 +464,26 @@ ggplot(clus_df, aes(x=x1,y=x2, color=cluster_assign, shape=cluster_assign)) +
 
 ---
 
+
+# Main Idea
+
+.out-t[To minimize the total within cluster variation]
+
+<br>
+
+.bq.font80[
+The total within-cluster variation is the sum of squared Euclidean distances between items and the corresponding centroid:
+
+$$WSS = \sum_{k=1}^K WSS(C_k) = \sum_{k=1}^K \sum_{x_i \in C_k}(x_i - \mu_k)^2$$
+where:
+- WSS is the Within Cluster Sum of Squared Errors 
+- $x_i$ is a data point in the cluster $C_k$
+- $\mu_k$ is the mean value of the points assigned to the cluster $C_k$
+]
+
+---
+
+
 class: middle
 
 # `USArrests`
@@ -613,7 +615,7 @@ class: middle
 
 
 ```{r}
-glance(k.means)
+broom::glance(k.means)
 ```
 
 
@@ -621,7 +623,7 @@ glance(k.means)
 
 class: middle
 
-# `augment` from `broom` package
+# `augment` the cluster identity
 
 .scroll-box-20[
 ```{r}
@@ -686,7 +688,7 @@ class: action, middle
 <br>
 <br>
 .bq[
-- Get the class activity 24.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=41417) 
+- Get the class activity 25.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
 - Let's work on group activity 1 together
 ]
 
@@ -702,7 +704,7 @@ class: action, middle
 
 class: middle, inverse
 
-# .red[Visuals do not tell all the story]
+# .purple[Visuals do not tell all the story]
 
 .bqt[Visuals tell us where the true delineations occur, but do not tell us what the optimal number of clusters is.]
 
@@ -801,7 +803,7 @@ class: action, middle
 <br>
 <br>
 .bq[
-- Please continue working on the remainder of the group activities
+- Please continue working on the remainder of the class activities
 ]
 
 ]
