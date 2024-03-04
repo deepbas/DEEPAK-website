@@ -97,376 +97,134 @@ class: title-slide, middle
 
 `r format(Sys.Date(), ' %B %d %Y')`
 
+
 ---
 
+class: middle
 
-# Simple Linear Model
+# Conducting a Linear Regression Test
+
+.bqt.font90[
+## .bold[Step 1: Stating the Hypotheses]
+
+- Null Hypothesis $(H_0)$: There is no linear relationship between the predictor and response variables. Mathematically, $H_0: \beta_1 = 0$.
+- Alternative Hypothesis $(H_1)$: There is a linear relationship between the predictor and response variables. Mathematically, $H_1: \beta_1 \neq 0$.
+]
+
+---
+
+class: middle
+
+# Conducting a Linear Regression Test
+
+.bqt.font90[
+## .bold[Step 2: Checking Conditions]
+
+1. **Linearity:** The relationship between the predictor and response variable should be linear.
+2. **Independence:** Observations are independent of each other.
+3. **Homoscedasticity:** Constant variance of error terms.
+4. **Normality:** The residuals of the model should be approximately normally distributed.
+]
+
+---
+
+class: middle
+
+# Conducting a Linear Regression Test
+
+
+.bql.font90[
+## .bold[Step 3: Calculating the t-Statistic]
+
+The t-statistic is calculated using the formula:
+
+$$ t = \frac{\hat{\beta}_1 - 0}{SE(\hat{\beta}_1)} $$
+
+- $\hat{\beta}_1$ is the estimated slope coefficient.
+- $SE(\hat{\beta}_1)$ is the standard error of the estimated slope.
+]
+
+.hljs[This statistic helps us determine if the observed relationship between the variables is statistically significant.]
+
+
+---
+
+class: middle
+
+# Conducting a Linear Regression Test
+
+
+.bq.font80[
+## .bold[Step 4: Calculating the p-Value]
+
+- The p-value is obtained from the t-distribution with $n - 2$ degrees of freedom, where $n$ is the number of observations.
+- It indicates the probability of observing a t-statistic as extreme as, or more extreme than, the one calculated from the sample data, under the assumption that the null hypothesis is true.
+]
+
+---
+
+class: middle
+
+# Conducting a Linear Regression Test
+
+
+
+.bqt.font80[
+## .bold[Step 5: Drawing Conclusions]
+
+- **If p-value < $\alpha$:** Reject $H_0$. There is sufficient evidence to conclude there is a significant linear relationship between the predictor and response variable.
+- **If p-value > $\alpha$:** Fail to reject $H_0$. There is not enough evidence to conclude there is a significant linear relationship.
+]
+
+---
+
+class: middle
+
+## Confidence Interval for the Slope
+
+.bqt.font90[
+- A 95% confidence interval for the slope $(\beta_1)$ can be calculated as:
+
+$$ CI: \hat{\beta}_1 \pm t^* \cdot SE(\hat{\beta}_1) $$
+
+- $t^*$ is the threshold from the t-distribution for a given confidence level.
+]
 
 
 .hljs[
-The population/true simple linear model is:
+### .bold[Interpreting the Confidence Interval]
 
-\begin{align*}
-y=\beta_{0}+\beta_{1} x+\varepsilon
-\end{align*}
+- If the confidence interval for $\beta_1$ does not include 0, it supports the conclusion that there is a significant linear relationship.
+- The confidence interval provides a range of plausible values for the slope, giving insight into the strength and direction of the relationship.
 ]
-
-.bql[
-- $\beta_{0}$ and $\beta_{1}$ are unknown parameters corresponding to the y-intercept and the slope, respectively
-- $\varepsilon$ is the random error
-- Estimate with $b_{0}$ and $b_{1}$ from the least squares line $\hat{y}=b_{0}+b_{1} x$
-]
-
---
-
-.out-t[How accurate are the estimates? ]
 
 ---
 
-### Recall: Least Square Regression
+class: middle
+
+# Case Study
 
 .pull-left[
+.bql[
+.b[Objective:]
+Learn to conduct linear regression analysis, focusing on GPA as a response to studying mathematics.
 
-.hljs[
-X = Cricket chirp rate
-
-Y = Temperature
+.b[Dataset:]
+School score data comprising GPA and average years spent studying mathematics.
+]
 ]
 
 
-```{r, echo=FALSE}
-data <- data.frame(Chirps = c(81, 97, 103, 123, 150, 182, 195),
-                   Temp = c(54.5, 59.5, 63.5, 67.5, 72.0, 78.5, 83.0))
-
-knitr::kable(data, format = "html")
-```
-
-
-]
 .pull-right[
+.b[Tools:]
 
-\begin{align*}
-\widehat{\text { Temp }}=37.7+0.23 \text { Chirps }
-\end{align*}
-
-```{r, echo=FALSE}
-ggplot(data, aes(x = Chirps, y = Temp)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE)
-```
-
-]
-
---
-
-<center>
-<div style="position: absolute; top: 25%; left: 35%;">
-<span style="content: '\2192'; font-size: 30px; color: #920; text-align: center; white-space: pre-line;">
-  <p>What are the parameters being estimated? </p>
-   <i class="gg-arrow-long-right"></i>
-</span>
-</div>
-</center>
-
----
-
-class: middle
-
-# Inference for the Slope
-
-.bql[
-Confidence intervals and hypothesis tests for the slope can be done using the familiar .b[formulas]:
-
-\begin{align*}
-b_{1} \pm t^* \cdot S E \qquad\qquad t=\frac{b_{1}-\text { null slope }}{S E}
-\end{align*}
-
+- R for data analysis
+- `ggplot2` for data visualization
+- Base R plots for diagnostic checks
 ]
 
 ---
 
-class: middle
-
-# Technology Examples
-
-### Slope estimate and Standard Error
-
-.font120[
-```{r, eval=FALSE}
-chirps.lm <- lm(Temp ~ Chirps, data = data)
-summary(chirps.lm)
-```
-]
-
-```
-Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
-Chirps       0.23067    0.01423   16.21 1.63e-05 ***
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 1.528 on 5 degrees of freedom
-Multiple R-squared:  0.9813
-```
-
----
-
-class: middle
-
-# Confidence Interval for Slope
-
-```
-Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept) 37.67858    1.97817   19.05 7.35e-06 ***
-Chirps       0.23067    0.01423   16.21 1.63e-05 ***
-```
-
-.hljs[
-We can use the values for $b_1$ and $SE$ from the regression output to form a confidence interval in the usual way:
-\begin{align*}
-b_{1} \pm t^{*} \cdot S E
-\end{align*}
-]
-
-.b[
-Here, $t^{*}$ uses $n-2$ degrees of freedom, since we are estimating two parameters in the simple linear model.
-]
----
-
-class: middle
-
-# Confidence Interval for Slope
-
-
-.bqt[Find a 95% confidence interval for the slope of the cricket temperature model.]
-
-```r
-Temperature  =  37.7 + 0.231 Chirps
-Predictor       Coef    SE Coef      T    Pr(>|t|)    
-Constant    37.67858    1.97817   19.05  7.35e-06 ***
-Chirps       0.23067    0.01423   16.21  1.63e-05 ***
-```
-
-.hljs[
-\begin{align*}
-b_{1} \pm t^* \cdot S E
-\end{align*}
-]
-
----
-
-# Hypothesis Test for Slope
-
-.bql[Population Simple Linear Model: $y=\beta_{0}+\beta_{1} x+\varepsilon$
-
-\begin{align*}
-H_0& : \beta_1 = 0  \qquad \Longrightarrow \text{ No linear relationship }\\
-H_a& : \beta_1 \neq 0  \qquad  \Longrightarrow \text{ Some relationship }
-\end{align*}
-
-
-\begin{align*}
-t=\frac{\text { statistic-null }}{S E}=\frac{b_{1}-0}{S E}=\frac{b_{1}}{S E}
-\end{align*}
-]
-
-<br>
-
-.bq.font90[
-- Again, $\boldsymbol{b}_{1}$ and SE come from R output.
-- We find the p-value by using a $t$ distribution with $n-2$ df
-]
-
----
-
-class: middle
-
-# Hypothesis Test for Slope
-
-.bql[
-Confirm the .b[p-value] given by the regression output for testing the slope of the cricket chirp model.
-]
-
-```r
-Temperature  =  37.7 + 0.231 Chirps
-Predictor       Coef    SE Coef      T    Pr(>|t|)    
-Constant    37.67858    1.97817   19.05  7.35e-06 ***
-Chirps       0.23067    0.01423   16.21  1.63e-05 ***
-```
-
-.hljs[
-.pull-left[
-.blockquote[
-\begin{align*}
-H_0 :& \beta_1 = 0 \\
-H_a :& \beta_1 \neq 0
-\end{align*}
-]
-]
-.pull-right[
-.blockquote[
-\begin{align*}
-t=\frac{b_{1}}{S E}
-\end{align*}
-]
-]
-]
-
----
-
-# Hypothesis Test for Correlation
-
-.bqt[How else can we measure the strength of association between two quantitative variables?]
-
---
-
-.hljs[
-.b[Recall:] $r$ = sample correlation, $\rho$ = population correlation
-]
-
-
---
-
-.hljs[
-.pull-left-40[
-.b[
-\begin{align*}
-H_0 :& \rho = 0 \\
-H_a :& \rho \neq 0
-\end{align*}
-
-Find the p-value using a t-distribution with n - 2 df
-
-]
-]
-.pull-right-60[
-.b[
-\begin{align*}
-t & =\frac{\text { statistic -null }}{S E}=\frac{r-0}{\sqrt{\frac{1-r^{2}}{n-2}}} = =\frac{r}{\frac{\sqrt{1-r^{2}}}{\sqrt{n-2}}}\\&=\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)
-\end{align*}
-
-]
-]
-]
-
----
-
-# Hypothesis Test for Correlation
-
-.bqt[The correlation for the .b[n = 7] cricket chirp data points is .b[r = 0.99062]. Compute the t-statistic for the test:]
-
-.hljs[
-\begin{align*}
-H_0 :& \rho = 0 \\
-H_a :& \rho \neq 0
-\end{align*}
-
-\begin{align*}
-t & =\left(\frac{r \sqrt{n-2}}{\sqrt{1-r^{2}}}\right)\\
-&=\frac{0.99062 \sqrt{7-2}}{\sqrt{1-0.99062^{2}}}=16.21
-\end{align*}
-]
-
----
-
-# Coefficient of Determination, $R^2$
-
-.hljs[
-.blue-h[Recall that for correlation:] $-1 \leq r \leq 1$
-
-If we square the correlation, we get the .b[coefficient of determination], which is a number between 0 and 1 that can be interpreted as a proportion or percentage.
-]
-
-<br>
-
-.bql[
-
-$R^{2}=$ proportion of .b[variability] in the response variable, $Y$, that is "explained" by the explanatory variable, $X$.
-
-- By convention we use a capital $R^2$, although the value is just $r^2$ for a single explanatory variable.
-]
-
----
-
-# Checking Condition
-
-.hljs[
-\begin{align*}
-y=\beta_{0}+\beta_{1} x+\varepsilon
-\end{align*}
-
-For a simple linear model, we assume the errors $(\varepsilon)$ are randomly distributed above and below the line.
-]
-
-<br>
-
-.bql.font80[.b[Quick check] : Look at a scatterplot with regression line on it. Watch out for:
-- Curved (nonlinear) patterns in the data
-- Consistently changing variability
-- Outliers and influential points
-
-]
-
-
----
-
-
-class: middle
-
-# Partitioning Variability
-
-.hljs[
-\begin{align*}
-Y=\beta_{0}+\beta_{1} X+\varepsilon
-\end{align*}
-
-\begin{align*}
-\text { Data }=\text { Model }+\text { Error }
-\end{align*}
-
-.b[Split the total variability in Y into two pieces, variability explained by the model + unexplained (residual error) variability]
-]
-
-
-<center>
-<img src="images/anova-variability.png" width="100%" height="30%"> 
-</center>
-
-
----
-
-class: middle
-
-# Measuring Variability
-
-<center>
-<img src="images/anova-variability.png" width="100%" height="30%"> 
-</center>
-
-
-.bqt[
-Total variability in $Y: \quad$ $SSTotal$ $=\sum(y-\bar{y})^{2}$
-
-Explained variability: $\quad$ $SSModel$ $=\sum(\hat{y}-\bar{y})^{2}$
-
-Unexplained variability: $\quad S S E=\sum(y-\hat{y})^{2}$
-]
-
----
-
-# Graphically
-
-.hljs[
-$$Y=\beta_{0} + \beta_{1} X+\varepsilon \qquad \qquad \text { Data }=\text { Model }+\text { Error }$$
-]
-
-<center>
-<img src="images/residual-deviations.png" width="60%" height="60%"> 
-</center>
-
----
 
 class: action
 
@@ -482,8 +240,258 @@ class: action
 
 .bql[
 - Go over to the in-class activity file
-- Complete the remaining activity and practice further
+- Let's do a case study together as a class
 ]
 ]
 
-`r countdown(minutes = 20, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+`r countdown(minutes = 40, seconds = 00, top = 0 , color_background = "inherit", padding = "3px 4px", font_size = "2em")`
+
+
+---
+
+class: middle
+
+# Step 1: Load and Inspect Data
+
+
+```{r}
+# load school_scores.csv from your data directory
+school_scores <- readr::read_csv("data/school_scores.csv")
+# View the structure of the dataset
+dplyr::glimpse(school_scores)
+```
+
+
+---
+
+class: middle
+
+# Step 2: Data Cleaning
+
+.pull-left[
+Cleaning Tasks:
+
+- Standardize column names
+- Remove rows with missing values
+]
+
+.pull-right[
+
+```{r}
+school_scores_clean <- school_scores %>%
+  janitor::clean_names() %>%
+  tidyr::drop_na()
+```
+
+]
+
+---
+
+class: middle
+
+# Step 3: Data Manipulation
+
+```{r}
+school_final <- school_scores_clean %>%
+  dplyr::select(academic_subjects_mathematics_average_gpa, state_name,
+                academic_subjects_mathematics_average_years, total_math
+                ) %>%
+mutate(GPA_category = cut(academic_subjects_mathematics_average_gpa,
+                            breaks = c(-Inf, 3.25, 3.5, Inf),
+                            labels = c("Low", "Good", "Excellent")))
+```
+
+
+---
+
+
+.panelset[
+
+.panel[.panel-name[Step 4: Exploratory Data Analysis (EDA)]
+```{r, echo=FALSE, out.width="70%", fig.width=7, fig.height=4, fig.align='center'}
+ggplot(data = school_final, aes(x = academic_subjects_mathematics_average_years, 
+                                y = academic_subjects_mathematics_average_gpa)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Study Years", y = "GPA")
+
+```
+]
+
+
+.panel[.panel-name[Code]
+```{r, eval=FALSE}
+ggplot(data = school_final, aes(x = academic_subjects_mathematics_average_years, 
+                                y = academic_subjects_mathematics_average_gpa)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(x = "Study Years", y = "GPA")
+
+```
+]
+
+
+]
+
+
+---
+
+class: middle
+
+## Step 5: Linear Regression Model
+
+.font40[
+```{r}
+GPA.lm <- lm(academic_subjects_mathematics_average_gpa ~ 
+               academic_subjects_mathematics_average_years, 
+             data = school_final)
+summary(GPA.lm)
+```
+]
+
+
+---
+
+class: middle
+
+## Step 6: Diagnostic Plots: Residual Plot
+
+
+
+
+
+```{r, echo=FALSE, out.width="90%", fig.width=7, fig.height=4, fig.align='center'}
+plot(GPA.lm, which = 1) # Residual Plot
+```
+
+
+---
+
+class: middle
+
+## Step 6: Diagnostic Plots: QQ Plot
+
+
+
+```{r, echo=FALSE, out.width="90%", fig.width=7, fig.height=4, fig.align='center'}
+plot(GPA.lm, which = 2) # QQ Plot
+```
+
+
+
+---
+
+class: middle
+
+# Step 7: Hypothesis Testing for Slope
+
+.hljs[
+$H_0: \beta_1 = 0$ (No relationship)
+$H_1: \beta_1 \neq 0$ (A relationship exists)
+]
+
+.bql[
+Hypothesis tests for the slope follow the formula:
+
+$$t=\frac{b_1-\text { null slope }}{S E}$$ 
+]
+
+```{r}
+slope_estimate <- coef(GPA.lm)["academic_subjects_mathematics_average_years"]
+slope_std_error <- summary(GPA.lm)$coefficients["academic_subjects_mathematics_average_years", "Std. Error"]
+t_value <- (slope_estimate- 0) / slope_std_error
+p_value <- 2 * pt(-abs(t_value), df = summary(GPA.lm)$df[2])
+```
+
+.pull-left[
+
+```{r, collapse=TRUE}
+t_value
+```
+
+]
+.pull-right[
+```{r, collapse=TRUE}
+p_value
+```
+
+]
+
+---
+
+
+class: middle
+
+# Step 8: CI for Slope
+
+.hljs[
+$H_0: \beta_1 = 0$ (No relationship)
+$H_1: \beta_1 \neq 0$ (A relationship exists)
+]
+
+.bql[
+Confidence intervals for the slope follow the formula:
+
+$$b_1 \pm t^* \cdot S E$$
+where $b_1$ is the slope estimate, $SE(b_1)$ is the standard error of the slope, and $t^*$ is the threshold from the t-distribution.
+
+]
+
+```{r}
+conf_interval <- confint(GPA.lm, "academic_subjects_mathematics_average_years", level = 0.95)
+conf_interval
+```
+
+
+---
+
+class: middle
+
+# Step 9: Handling Outliers
+
+
+```{r, echo=FALSE, out.width="70%", fig.width=7, fig.height=4, fig.align='center'}
+school_selected <- school_final %>% 
+  filter(state_name %in% c("Alabama", "California", "Montana", "Minnesota", "Nevada"))
+
+ggplot(school_selected, aes(x=GPA_category, y=total_math, fill=GPA_category)) +
+  theme_bw() +
+  geom_boxplot() +
+  geom_jitter(width = 0.2) +
+  labs(title="Boxplot of Math SAT Across GPA Categories",
+       y="Average Math Score", x="GPA") +
+  stat_summary(fun=mean, geom="point", shape=10, size=2, color="red", fill="black")
+
+```
+
+.hljs[
+Visual inspection using boxplots helps in spotting outliers within these categories.
+]
+
+---
+
+class: middle
+
+# Step 10: Removing Outliers
+
+```{r, echo=FALSE, out.width="70%", fig.width=7, fig.height=4, fig.align='center'}
+school_selected_no_outlier <- school_selected %>%
+  filter(GPA_category == "Excellent" & total_math >= 575 & total_math <= 800 |
+         GPA_category == "Good" & total_math >= 525 & total_math <= 575 |
+         GPA_category == "Low" & total_math >= 425 & total_math <= 525)
+
+school_selected_no_outlier %>%
+  ggplot(aes(x=GPA_category, y=total_math, fill=GPA_category)) +
+  theme_bw() +
+  geom_boxplot() +
+  geom_jitter(width = 0.2) +
+  labs(title="Boxplot of Math SAT Across GPA Categories",
+       y="Average Math Score", x="GPA") +
+  stat_summary(fun=mean, geom="point", shape=10, size=2, color="red", fill="black")
+```
+
+
+.hljs[With outliers removed, we re-visualize the math SAT scores across GPA categories to better understand the data distribution.]
+
+
+
