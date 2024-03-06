@@ -10,3 +10,5 @@ weight: 20
 
 
 Day 26 Slides ({{% staticref "stat120/Day26.html" "newtab" %}}html{{% /staticref %}})
+
+Day 27 Midterm 3

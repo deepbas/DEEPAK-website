@@ -130,9 +130,10 @@ class: middle
 
 ## Decision Tree
 
-.bql[
-- learns how to best split the dataset into smaller and smaller subsets to predict the target value
+.hljs.font80[
+A decision tree algorithm learns by repeatedly splitting the dataset into increasingly smaller subsets to accurately predict the target value.
 ]
+
 
 .pull-left[
 .bq.font80[
@@ -158,7 +159,7 @@ class: middle
 
 # Decision Tree
 
-.yellow-h[Use features to make subsets of cases that are as similar (“pure”) as possible with respect to the outcome]
+.yellow-h.font80[Use features to make subsets of cases that are as similar (“pure”) as possible with respect to the outcome]
 
 .bq.font80[
 - Start with all observations in one group
@@ -222,12 +223,13 @@ class: middle
 
 # Model Specification
 
-.bq[
+.bql.font80[
 - .out-t.bold[cost_complexity:] The cost complexity parameter, the minimum improvement in the model needed at each node
 - .out-t.bold[tree_depth:] The maximum depth of a tree
 - .out-t.bold[min_n:] The minimum number of data points in a node that are required for the node to be split further.
 ]
 
+.code120[
 ```{r}
 tree_model <- decision_tree(cost_complexity = tune(),
                             tree_depth = tune(),
@@ -235,6 +237,7 @@ tree_model <- decision_tree(cost_complexity = tune(),
               set_engine('rpart') %>% 
               set_mode('classification')
 ```
+]
 
 ---
 
@@ -278,9 +281,9 @@ tree_grid <- grid_random(cost_complexity(),
 
 class: middle
 
-# View grid
+## View grid
 
-.font130[
+.code130[
 ```{r}
 tree_grid
 ```
@@ -307,19 +310,20 @@ tree_tuning <- tree_workflow %>%
 class: middle
 
 # Best model
-
+.code120[
 ```{r}
 # Select best model based on accuracy
 best_tree <- tree_tuning %>% 
              select_best(metric = 'accuracy')
 ```
+]
 
-
-
+.code120[
 ```{r}
 # View the best tree parameters
 best_tree
 ```
+]
 
 ---
 
@@ -327,28 +331,34 @@ best_tree
 
 # Finalize workflow
 
+.code110[
 ```{r}
 final_tree_workflow <- tree_workflow %>% 
                        finalize_workflow(best_tree)
 ```
+]
 
 --
 
 # Fit the model
 
+.code110[
 ```{r}
 tree_wf_fit <- final_tree_workflow %>% 
                fit(data = db_train)
 ```
+]
 
 --
 
 # Extract fit 
 
+.code120[
 ```{r}
 tree_fit <- tree_wf_fit %>% 
             extract_fit_parsnip()
 ```
+]
 
 ---
 
@@ -371,15 +381,18 @@ class: middle
 
 # Train and Evaluate With `last_fit()`
 
+.code110[
 ```{r}
 tree_last_fit <- final_tree_workflow %>% 
                  last_fit(db_split)
 ```
+]
 
-
+.code110[
 ```{r}
 tree_last_fit %>% collect_metrics()
 ```
+]
 
 ---
 
@@ -404,7 +417,7 @@ class: action, middle
 <br>
 <br>
 .bq[
-- Get the class activity 26.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
+- Get the class activity 27.Rmd file from  [moodle](https://moodle.carleton.edu/course/view.php?id=43045) 
 - Let's work on group activity 1 together
 ]
 
@@ -419,7 +432,7 @@ class: action, middle
 class: inverse, middle
 
 
-> Now, let's talk about random forest
+.Large[Now, let's talk about random forest]
 
 
 ---
@@ -428,11 +441,10 @@ class: middle
 
 # Random Forest
 
-.out-t[Random forests take decision trees and construct more powerful models in terms of prediction accuracy.]
+.hljs[Random forests take decision trees and construct more powerful models in terms of prediction accuracy.]
 
 
-
-.font80.bq[
+.font90.bq[
 - <!--The main mechanism that powers this algorithm is--> Repeated sampling (with replacement) of the training data to produce a sequence of decision tree models. 
 
 - These models are then averaged to obtain a single prediction for a given value in the predictor space.
@@ -446,7 +458,7 @@ class: middle
 
 # Model Specification
 
-.bq[
+.bql.font80[
 - .out-t.bold[mtry:] The number of predictors that will be randomly sampled at each split when creating the tree models
 
 - .out-t.bold[trees:] The number of decision trees to fit and ultimately average
@@ -460,6 +472,7 @@ class: middle
 
 # Model Specification
 
+.code110[
 ```{r}
 rf_model <- rand_forest(mtry = tune(),
                         trees = tune(),
@@ -467,16 +480,19 @@ rf_model <- rand_forest(mtry = tune(),
             set_engine('ranger', importance = "impurity") %>% 
             set_mode('classification')
 ```
+]
 
 --
 
 # Workflow
 
+.code120[
 ```{r}
 rf_workflow <- workflow() %>% 
                add_model(rf_model) %>% 
                add_recipe(db_recipe)
 ```
+]
 
 ---
 
@@ -484,22 +500,26 @@ class: middle
 
 # Hyperparameter Tuning
 
+.code120[
 ```{r}
 ## Create a grid of hyperparameter values to test
 set.seed(314)
 rf_grid <- grid_random(mtry() %>% range_set(c(2, 7)),
                        trees(),
                        min_n(),
-                       size = 15)
+                       size = 10)
 ```
+]
 
 ---
 
-# View Grid
+## View Grid
 
+.code130[
 ```{r}
 rf_grid
 ```
+]
 
 ---
 
@@ -507,7 +527,7 @@ class: middle
 
 # Tuning Hyperparameters with `tune_grid()`
 
-
+.code120[
 ```{r}
 ## Tune random forest workflow
 set.seed(314)
@@ -516,6 +536,7 @@ rf_tuning <- rf_workflow %>%
              tune_grid(resamples = db_folds,
                        grid = rf_grid)
 ```
+]
 
 ---
 
@@ -523,16 +544,21 @@ class: middle
 
 # Select best
 
+.code120[
 ```{r}
 ## Select best model based on roc_auc
 best_rf <- rf_tuning %>% 
            select_best(metric = 'accuracy')
 ```
+]
 
+
+.code120[
 ```{r}
 # View the best parameters
 best_rf
 ```
+]
 
 ---
 
@@ -542,15 +568,18 @@ best_rf
 
 # Finalize workflow
 
+.code120[
 ```{r}
 final_rf_workflow <- rf_workflow %>% 
                      finalize_workflow(best_rf)
 ```
+]
 
 --
 
 # Variable Importance
 
+.code120[
 ```{r}
 rf_wf_fit <- final_rf_workflow %>% 
              fit(data = db_train)
@@ -559,6 +588,7 @@ rf_fit <- rf_wf_fit %>%
           extract_fit_parsnip()
 
 ```
+]
 
 ---
 
@@ -583,7 +613,7 @@ class: action, middle
 <br>
 <br>
 .bq[
-- Please continue working on group activity 2
+- Let's continue working on group activity 2
 ]
 
 ]
