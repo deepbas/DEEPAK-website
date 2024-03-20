@@ -8,9 +8,12 @@ type: book
 weight: 20
 ---
 
+<!--
 
 Day 12 Slides ({{% staticref "stat120/Day12.html" "newtab" %}}html{{% /staticref %}})
 
 Day 13 Slides ({{% staticref "stat120/Day13.html" "newtab" %}}html{{% /staticref %}})
 
 Day 14 Slides ({{% staticref "stat120/Day14.html" "newtab" %}}html{{% /staticref %}})
+
+-->
